@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.adm.learningMgr.dao.LearningMgrDAO">
+	
+	<!-- 교육생 정보조회-->
+	<select id="getXrayModuleList" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" resultType="egovframework.com.adm.learningMgr.vo.EduModule" >	
+			SELECT                                                  											
+			      A.XRAY_EDU_MODULE_ID          /*X-ray교육모듈ID*/        
+			     , A.XRAY_EDU_MODULE_NM          /*X-ray교육모듈명칭*/        
+			     , A.XRAY_EDU_MODULE_DC          /*X-ray교육모듈설명*/        
+			     , A.ALL_CASE_CNT                /*전체건수*/        
+			     , A.SUPPORT_REQUEST_CASE_CNT    /*지원요청건수*/        
+			     , A.OPEN_LIMIT_CASE_CNT         /*개봉제한건수*/        
+			     , A.OPEN_PASS_CASE_CNT          /*개봉통과건수*/        
+			     , A.PASS_CASE_CNT               /*통과건수*/        
+			     , A.USE_YN                      /*사용여부*/        
+			     , A.INSERT_DATE                      /*등록일시*/        
+			     , A.INSERT_ID                      /*등록자*/        
+			     , A.UPDATE_DATE                      /*수정일시*/        
+			     , A.UPDATE_ID                      /*수정자*/        
+			     , A.SETEQ_QUESTION_CNT          /*출제문제수*/ 
+			FROM XTS_XRAY_EDU_MODULE_INFO A                                             								 
+		ORDER BY A.XRAY_EDU_MODULE_ID     
+	</select>		
+	
+			
+	<!-- XRAY 판독 배점관리 조회-->
+	<select id="getXrayPointList" parameterType="egovframework.com.adm.learningMgr.vo.XrayPoint" resultType="egovframework.com.adm.learningMgr.vo.XrayPoint" >			
+        SELECT 
+           POINTS_STD_ID                                             /* 배점기준ID */
+          ,POINTS_STD_NM                                             /* 배점기준명칭 */
+          ,POINTS_STD_DC                                             /* 배점기준설명 */
+          ,USE_YN                                                    /* 사용여부 */              
+        FROM XTS_POINTS_STD_INFO                                       /* XBT배점기준정보 Table */
+	    ORDER BY POINTS_STD_ID                                          /* 배점기준ID */			     
+	</select>     
+	   
+	<!-- XRAY 판독 배점관리 하위 조회-->
+	<select id="getXrayPointDetailList" parameterType="egovframework.com.adm.learningMgr.vo.XrayPointDetail" resultType="egovframework.com.adm.learningMgr.vo.XrayPointDetail" >	     
+         SELECT 
+		    POINTS_STD_ID /* 배점기준ID */
+           ,ACTION_DIV                     AS ACTION_DIV /* ACTION구분 */
+		   ,FN_GET_COMCODE_NAME('0002', ACTION_DIV ,'kor')    AS ACTION_NM /* ACTION구분명 */
+		   ,NVL(BAN_UNIT_SCORE,0)                      AS BAN_UNIT_SCORE /* 금지물품점수 */
+		   ,NVL(LIMIT_UNIT_SCORE,0)                    AS LIMIT_UNIT_SCORE /* 제한물품점수 */
+		   ,NVL(QUESTION_UNIT_SCORE,0)                 AS QUESTION_UNIT_SCORE /* 의심물품점수 */
+		   ,NVL(PASS_UNIT_SCORE,0)                     AS PASS_UNIT_SCORE /* 통과물품점수 */
+	     FROM XTS_POINTS_STD_DC t1                                                                                    
+	</select>            			
+			
+			
+</mapper>

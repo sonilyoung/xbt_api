@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.common.dao.CommonDAO">
+	
+	<!-- 공통코드그룹 -->
+	<select id="getCommonGroupList" parameterType="egovframework.com.common.vo.Common" resultType="egovframework.com.common.vo.Common">
+		SELECT
+			XCC.CODE_ID AS CODE_NO 			
+			,XCC.GROUP_ID
+			,XCC.CODE_ID
+			,XCC.CODE_VALUE
+			,XCC.SORT_ORDER			
+			,XLD.CODE_NAME
+			,XCC.USE_YN			
+			,XCC.INSERT_ID
+			,XCC.INSERT_DATE
+			,XCC.UPDATE_ID
+			,XCC.UPDATE_DATE
+		FROM XTS_COMMON_CODE XCC  INNER JOIN XTS_COMMON_DETAIL XLD 
+		ON XCC.CODE_ID = XLD.CODE_ID
+		AND XCC.GROUP_ID = XLD.GROUP_ID
+		AND XCC.MAIN_YN = 'Y'  		
+		AND XLD.LANGUAGE_CODE = #{languageCode}
+	</select>		
+	
+	<!-- 공통코드목록 -->
+	<select id="getCommonList" parameterType="egovframework.com.common.vo.Common" resultType="egovframework.com.common.vo.Common">
+		SELECT
+			XCC.CODE_ID AS CODE_NO 			
+			,XCC.GROUP_ID
+			,XCC.CODE_ID
+			,XCC.CODE_VALUE
+			,XCC.SORT_ORDER			
+			,XLD.CODE_NAME
+			,XCC.USE_YN			
+			,XCC.INSERT_ID
+			,XCC.INSERT_DATE
+			,XCC.UPDATE_ID
+			,XCC.UPDATE_DATE
+		FROM XTS_COMMON_CODE XCC  INNER JOIN XTS_COMMON_DETAIL XLD 
+		ON XCC.CODE_ID = XLD.CODE_ID
+		AND XCC.GROUP_ID = XLD.GROUP_ID
+		AND XCC.GROUP_ID = #{groupId} 
+		AND MAIN_YN IS NULL
+		AND XLD.LANGUAGE_CODE = #{languageCode}
+	</select>	
+	
+
+</mapper>

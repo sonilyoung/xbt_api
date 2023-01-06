@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.adm.userMgr.dao.UserMgrDAO">
+	
+	<!-- 교육생 정보조회-->
+	<select id="getUserList" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >	
+			SELECT 
+				 A.USER_NO
+               , A.USER_ID                     /*사용자ID*/        
+               , A.USER_NM                     /*사용자명*/        
+               , A.USER_PW                     /*패스워드*/
+               , CASE WHEN A.USER_PHOTO IS NOT NULL
+                	THEN '1' ELSE '0' END AS PHOTO_YN		 /*교육생사진여부*/
+               , '' AS USER_PHOTO								 /*교육생사진(조회 속도를 위해 조회하지 않음 입력을 위해 빈칸 처리)*/
+               , A.AUTH_CD                     /*권한코드*/        
+               , K.AUTH_NM	                 /*권한코드이름*/
+               , FN_GET_COMCODE_NAME('0003', A.COMPANY ,'kor') as COMPANY	                 /*회사*/
+               , A.DEPT                        /*부서*/    
+               , A.POSITION	                 /*직급*/
+               , A.TRAINING_DIV                /*교육구분*/
+               , A.TEL_NO                      /*전화번호*/        
+               , A.HP_NO                       /*핸드폰번호*/        
+               , A.EMAIL                       /*이메일*/        
+               , A.LOGIN_START                 /*최초로그인*/        
+               , A.LOGIN_LAST                  /*최종로그인*/        
+               , A.LOGIN_ERROR                 /*로그인에러*/        
+               , A.PW_PRIOR                    /*이전비밀번호*/        
+               , A.PW_CHANGE                   /*비밀번호변경일*/        
+               , A.PW_UPDATE                   /*비밀번호변경주기*/        
+               , A.PW_PERIOD                   /*비밀번호변경기간*/        
+               , A.USE_YN                     /*사용여부*/        
+               , A.INSERT_ID                      /*등록자ID*/        
+               , A.INSERT_DATE                      /*등록일자*/        
+               , A.UPDATE_ID                      /*수정자ID*/        
+               , A.UPDATE_DATE                      /*수정일자*/        
+         FROM XTS_STU_USER A LEFT JOIN XTS_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD			
+	</select>		
+	
+			
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.adm.contents.dao.ContentsDAO">
+	
+	<!-- 언어셋확인 -->
+	<select id="getLanguageList" parameterType="egovframework.com.adm.contents.vo.Language" resultType="egovframework.com.adm.contents.vo.Language">
+		SELECT CODE_NO
+		, LANGUAGE_NAME
+		, LANGUAGE_CODE
+		, USE_YN
+		, INSERT_ID
+		, INSERT_DATE
+		FROM XTS_LANGUAGE_CODE
+	</select>	
+	
+	<!-- 그룹관리 
+	<select id="getContentsList" parameterType="egovframework.com.adm.contents.vo.Contents" resultType="egovMap" >
+			SELECT UNIT_GROUP_NO, /*코드번호*/
+			       UNIT_GROUP_CD, /*물품코드분류*/
+			       ${query} /*언어셋*/
+			       ACTION_DIV,/*ACTION구분*/
+			       ${queryDesc} /*물품분류설명*/
+			       OPEN_YN,/*개봉여부*/
+			       PASS_YN,/*통과여부*/
+			       USE_YN,/*사용여부*/
+			       UNIT_IMG,/*물품이미지*/
+			       INSERT_DATE,/*등록일*/
+			       INSERT_ID,/*등록자*/
+			       UPD_DT,/*수정일*/
+			       UPD_ID,/*수정자*/
+			       PARENT_UNIT_GROUP_CD/*상위물품분류코드*/
+			FROM  XTS_UNIT_GROUP XUG 
+			INNER JOIN XTS_LANGUAGE_DETAIL XLC 
+			ON XUG.UNIT_GROUP_CD = XLC.CODE_ID
+	</select>-->
+	
+	
+	<select id="getContentsList" parameterType="egovframework.com.adm.contents.vo.Contents" resultType="egovMap" >
+			SELECT UNIT_GROUP_NO, /*코드번호*/
+			       UNIT_GROUP_CD, /*물품코드분류*/
+			       CODE_NAME AS UNIT_NAME , /*물품분류명칭*/
+			       ACTION_DIV,/*ACTION구분*/
+			       CODE_DESC AS UNIT_DESC,/*물품분류설명*/
+			       OPEN_YN,/*개봉여부*/
+			       PASS_YN,/*통과여부*/
+			       XLC.USE_YN,/*사용여부*/
+			       UNIT_IMG,/*물품이미지*/
+			       XLC.INSERT_DATE,/*등록일*/
+			       XLC.INSERT_ID,/*등록자*/
+			       XLC.UPDATE_DATE,/*수정일*/
+			       XLC.UPDATE_ID,/*수정자*/
+			       PARENT_UNIT_GROUP_CD/*상위물품분류코드*/
+			FROM  XTS_UNIT_GROUP XUG 
+			INNER JOIN XTS_LANGUAGE_DETAIL XLC 
+			ON XUG.UNIT_GROUP_CD = XLC.CODE_ID
+			WHERE XLC.LANGUAGE_CODE = #{languageCode}
+	</select>	
+	
+	<!-- 그룹관리수정 -->
+	<update id="updateGroup" parameterType="egovframework.com.adm.contents.vo.Contents" >	
+		UPDATE XTS_UNIT_GROUP SET 
+		USE_YN = #{useYn}
+		,ACTION_DIV = #{actionDiv}
+		WHERE UNIT_GROUP_CD = #{unitGroupNo}	
+	</update>
+	
+	<!-- 그룹관리수정 -->
+	<update id="updateGroupLanguage" parameterType="egovframework.com.adm.contents.vo.Contents" >
+		UPDATE XTS_LANGUAGE_DETAIL SET 
+		CODE_NAME = #{unitName}
+		,CODE_DESC = #{unitDesc}
+		WHERE CODE_ID = #{unitGroupNo} 
+		AND LANGUAGE_CODE = #{languageCode}		
+	</update>	
+
+	<!-- 이미지저장 -->
+	<update id="saveUnitImage" parameterType="egovframework.com.adm.contents.vo.Contents" >
+		UPDATE XTS_UNIT_GROUP SET UNIT_IMG = #{unitImg} 
+		WHERE UNIT_GROUP_NO = #{unitGroupNo}
+	</update>
+	
+	<!-- 물품콘텐츠관리 정보관리 -->
+	<select id="getInformationList" parameterType="egovframework.com.adm.contents.vo.UnitInformation" resultType="egovframework.com.adm.contents.vo.UnitInformation" >	
+		SELECT 
+			UNIT_INFO_NO
+			, UNIT_ID /*물품아이디*/
+			, UNIT_GROUP_CD/*뭎품그룹코드*/
+			, XLD.CODE_NAME AS UNIT_NAME /*물품명*/
+			, XLD.CODE_DESC AS UNIT_DESC /*물품설명*/
+			, XLD.USE_YN/*사용여부*/
+			, CASE WHEN XLD.USE_YN = 1 THEN '사용' ELSE '미사용' END AS USE_YN_NM
+		FROM XTS_UNIT_INFO XUI INNER JOIN XTS_LANGUAGE_DETAIL XLD 
+		ON XUI.UNIT_ID = XLD.CODE_ID
+		and XLD.LANGUAGE_CODE = #{languageCode}		
+	</select>	
+	
+	
+	
+	<!-- xray콘텐츠관리-정보관리 -->
+	<select id="getXrayInformationList" parameterType="egovframework.com.adm.contents.vo.Xrayformation" resultType="egovframework.com.adm.contents.vo.Xrayformation" >	
+			SELECT                                                  											
+			     A.BAG_SCAN_ID                 /*가방촬영ID*/
+			     , A.UNIT_ID                     /*물품ID*/        
+			     , (SELECT CODE_NAME FROM XTS_LANGUAGE_DETAIL XLD WHERE LANGUAGE_CODE='KOR' AND CODE_ID = A.UNIT_ID) AS UNIT_NAME                     /*물품ID*/        
+			     , C.OPEN_YN                     /*개봉여부*/        
+			     , C.PASS_YN                     /*통과여부*/        
+			     , C.ACTION_DIV                  /*ACTION구분*/        
+			     , A.STUDY_LVL                   /*학습레벨*/        
+			     , A.USE_YN                      /*사용여부*/        
+			     , A.FRONT_USE_YN                /*정면사용여부*/        
+			     , A.SIDE_USE_YN                 /*측면사용여부*/        
+			     , A.DECIP_MACHINE_CD            /*판독기기코드*/        
+			     , A.DUPLEX_YN                   /*양방향여부*/        
+			     , A.INSERT_DATE                      /*등록일시*/        
+			     , A.INSERT_ID                      /*등록자*/        
+			     , A.UPDATE_DATE                      /*수정일시*/        
+			     , A.UPDATE_DATE                      /*수정자*/   
+			FROM XTS_BAG_INFO A INNER JOIN XTS_UNIT_INFO B INNER JOIN XTS_UNIT_GROUP C
+			ON A.UNIT_ID=B.UNIT_ID
+			AND A.UNIT_ID=B.UNIT_ID
+			AND B.UNIT_GROUP_CD=C.UNIT_GROUP_CD 	             												 
+		ORDER BY BAG_SCAN_ID	  	
+	</select>
+	
+	<!-- xray콘텐츠관리-상세목록 -->
+	<select id="getXrayDetailList" parameterType="egovframework.com.adm.contents.vo.Xrayformation" resultType="egovframework.com.adm.contents.vo.Xrayformation" >
+         SELECT                                       											
+     		A.BAG_SCAN_ID                 /*가방촬영ID*/        
+		     , A.SEQ                         /*순번*/        
+		     , A.UNIT_ID                     /*물품ID*/   
+		     , (SELECT CODE_NAME FROM XTS_LANGUAGE_DETAIL XLD WHERE LANGUAGE_CODE='KOR' AND CODE_ID = A.UNIT_ID) AS UNIT_NAME                     /*물품명*/
+		     , (SELECT CODE_DESC FROM XTS_LANGUAGE_DETAIL XLD WHERE LANGUAGE_CODE='KOR' AND CODE_ID = A.UNIT_ID) AS UNIT_DESC                     /*물품설명*/     
+		     , A.INSERT_DATE                      /*등록일시*/        
+		     , A.INSERT_ID                      /*등록자*/        
+		     , A.UPDATE_DATE                      /*수정일시*/        
+		     , A.UPDATE_ID                      /*수정자*/
+    		 , C.ACTION_DIV                  /*ACTION구분*/
+         	 , C.OPEN_YN					 /*개봉여부*/
+    		 , C.PASS_YN					 /*통과여부*/
+		FROM XTS_BAG_CONST_UNIT A INNER JOIN XTS_UNIT_INFO B INNER JOIN XTS_UNIT_GROUP C
+		ON  A.UNIT_ID=B.UNIT_ID
+      	AND B.UNIT_GROUP_CD=C.UNIT_GROUP_CD                                               												 
+        AND A.BAG_SCAN_ID = #{bagScanId}		
+	</select>
+	
+	
+	
+	<!-- 물품콘텐츠관리 정보관리 가방물품정보 -->
+	<select id="getBagUnitInfoList" parameterType="egovframework.com.adm.contents.vo.UnitInformation" resultType="egovframework.com.adm.contents.vo.UnitInformation" >	
+		SELECT 
+			UNIT_INFO_NO
+			, UNIT_ID /*물품아이디*/
+			, UNIT_GROUP_CD/*뭎품그룹코드*/
+			, XLD.CODE_NAME AS UNIT_NAME /*물품명*/
+			, XLD.CODE_DESC AS UNIT_DESC /*물품설명*/
+			, XLD.USE_YN/*사용여부*/
+			, CASE WHEN XLD.USE_YN = 1 THEN '사용' ELSE '미사용' END AS USE_YN_NM
+		FROM XTS_UNIT_INFO XUI INNER JOIN XTS_LANGUAGE_DETAIL XLD 
+		ON XUI.UNIT_GROUP_CD = XLD.CODE_ID 
+		AND XLD.LANGUAGE_CODE = #{languageCode}		
+	</select>		
+	
+			
+</mapper>

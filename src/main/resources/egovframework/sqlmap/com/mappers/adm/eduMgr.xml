@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.adm.eduMgr.dao.EduMgrDAO">
+	
+	<!-- 교육과정관리-그룹관리 조회-->
+	<select id="getEduGroupList" parameterType="egovframework.com.adm.eduMgr.vo.EduGroupMgr" resultType="egovframework.com.adm.eduMgr.vo.EduGroupMgr" >			
+      SELECT 
+      		  TA1.PROC_GROUP_no
+              ,TA1.PROC_GROUP_CD                                                                 /* 과정분류코드 */
+              ,TA1.PROC_GROUP_NM                                                                 /* 과정분류명칭 */
+              ,TA1.PROC_GROUP_DC                                                                 /* 과정분류설명 */
+              ,TA1.PROC_GROUP_SORT                                                               /* 과정분류순서 */
+              ,TA1.USE_YN                                                   /* 사용여부 */
+              ,TA1.PARENT_PROC_GROUP_CD                                                          /* 상위과정분류코드 */
+              ,TA1.TOP_PROC_GROUP_CD                                                             /* 최상위과정분류코드 */
+          FROM XTS_PROC_GROUP TA1                                                              /* XBT과정분류 Table */
+         WHERE 1=1
+		<choose>
+			<when test='searchType == "1"'>
+	            AND TA1.PARENT_PROC_GROUP_CD = '*'                                                  /* 상위과정분류코드 */
+	            AND TA1.TOP_PROC_GROUP_CD    = '*'                                                  /* 최상위과정분류코드 */			
+			</when>
+			<when test='searchType == "2"'>
+				AND TA1.TOP_PROC_GROUP_CD = #{procGroupCd}/* 상위과정분류코드 */
+			</when>
+			<when test='searchType == "1"'>
+				AND TA1.PARENT_PROC_GROUP_CD = #{procGroupCd}                                                  /* 상위과정분류코드 */	
+			</when>			
+		</choose>		         
+         ORDER BY TA1.PROC_GROUP_CD                                                            /* 과정분류코드 */
+	</select>  
+	
+	<!-- 교육과정관리-과정분류 조회-->
+	<select id="getEduClassList" parameterType="egovframework.com.adm.eduMgr.vo.EduClass" resultType="egovframework.com.adm.eduMgr.vo.EduClass" >			
+      SELECT 
+            A.PROC_GROUP_DTL_GROUP_CD                                                                   /* 과정분류상세분류코드 */
+            ,A.PROC_GROUP_DTL_GROUP_NM                                                                   /* 과정분류상세분류명 */  
+            ,A.LARGE_GROUP_CD                                                                            /* 대분류코드 */
+            ,A.MIDDLE_GROUP_CD                                                                           /* 중분류코드 */                                               
+            ,A.SMALL_GROUP_CD                                                                            /* 소분류코드 */                                               
+            ,(SELECT PROC_GROUP_NM FROM XTS_PROC_GROUP WHERE PROC_GROUP_CD = A.LARGE_GROUP_CD) AS LARGE_GROUP_NM  /* 대분류명 */
+            ,(SELECT PROC_GROUP_NM FROM XTS_PROC_GROUP WHERE PROC_GROUP_CD = A.MIDDLE_GROUP_CD) AS MIDDLE_GROUP_NM  /* 중분류명 */                                               
+            ,(SELECT PROC_GROUP_NM FROM XTS_PROC_GROUP WHERE PROC_GROUP_CD = A.SMALL_GROUP_CD) AS SMALL_GROUP_NM  /* 소분류명 */                                                   
+            ,A.INSERT_DATE                                                                                    /* 등록일시 */
+            ,A.INSERT_ID                                                                                    /* 등록자 */
+            ,A.UPDATE_DATE                                                                                    /* 수정일시 */
+            ,A.UPDATE_ID                                                                                    /* 수정자 */
+       FROM XTS_PROC_GROUP_INFO A
+      ORDER BY A.PROC_GROUP_DTL_GROUP_CD                                                              /* 과정분류코드 */
+	</select>  	   
+	
+	
+	<!-- 교육과정관리-과정등록 조회-->
+	<select id="getEduProcList" parameterType="egovframework.com.adm.eduMgr.vo.EduProc" resultType="egovframework.com.adm.eduMgr.vo.EduProc" >
+	    SELECT 
+			PROC_CD/*과정코드*/
+			,PROC_NM/*과정명*/
+			,PROC_GROUP_DTL_GROUP
+			,PROC_GROUP_DTL_GROUP_NM/*과정분류상세분류명*/
+			,LARGE_GROUP_CD/*대분류코드*/
+			,LARGE_GROUP_CD_NM/*대분류코드명*/
+			,MIDDLE_GROUP_CD/*중분류코드*/
+			,MIDDLE_GROUP_CD_NM/*중분류코드명*/
+			,SMALL_GROUP_CD/*소분류코드*/
+			,SMALL_GROUP_CD_NM/*소분류코드명*/
+			,TOT_STUDY_DATE/*총학습일자*/
+			,TOT_STUDY_TIME/*총학습시간*/
+			,LIMIT_PERSON_CNT/*한계인원수*/
+			,SCORE_100/*점수100*/
+			,ENDING_STD_SCORE/*수료기준점수*/
+			,ENDING_STD_ATTEND_PERCENT/*수료기준출석율*/
+			,PROC_INTRO_TARGET/*과정소개목적*/
+			,PROC_DC_CONTENT/*과정설명내용*/
+			,GRADE/*학점*/
+			,USE_YN/*XBT사용여부*/
+	    FROM XTS_PROC_INFO				
+	</select>
+	
+	<!-- 교육과정관리-과정등록 상세조회-->  	 	
+	<select id="getEduProcDetail" parameterType="egovframework.com.adm.eduMgr.vo.EduProcDetail" resultType="egovframework.com.adm.eduMgr.vo.EduProcDetail" >
+         SELECT 
+			   T2.PROC_CD   /* 과정코드 */
+			  ,T1.TOT_STUDY_TIME/*교육시간*/
+			  ,T1.GRADE/*학점*/
+			  ,T1.TOT_STUDY_DATE/*교육일수*/
+			  ,LIMIT_PERSON_CNT/*정원*/
+			  ,T2.REAL_TEST_USE_YN /* 실기평가사용여부 */
+			  ,T2.REAL_WBT_PROC_DIV/* 실기WBT과정구분 */
+			  ,T2.REAL_PLUS_SCORE  /* 실기가중치 */
+			  ,T2.REAL_SCORE_100   /* 실기점수100 */
+			  ,T2.XRAY_STR_STAGE   /* X-RAY시작단계 */
+			  ,T2.XRAY_END_STAGE   /* X-RAY종료단계 */
+			  ,T2.XRAY_LAST_TEST_TYPE/* X-RAY최종평가방식 */
+			  ,T2.BAN_PASS_FAIL_PROCESS/* 금지통과불합격처리 */
+			  ,T2.BODY_STR_STAGE       /* BODY시작단계 */
+			  ,T2.BODY_END_STAGE       /* BODY종료단계 */
+			  ,T2.EDU_TYPE             /* 교육타입 */
+			  ,T2.DECIP_LAST_TEST_EFFECT_CNT /* 판독최종평가실시횟수 */
+			  ,T2.THEORY_LAST_TEST_EFFECT_CNT /* 이론최종평가실시횟수 */
+			  ,T2.REPEATED_STUDYING_YN /* 반복학습여부 */			  
+		  FROM XTS_PROC_INFO T1 INNER JOIN XTS_PROC_CONF T2
+		  ON T1.PROC_CD = T2.PROC_CD   
+		  WHERE T1.PROC_CD = #{procCd}   				
+	</select>	
+	
+	<!-- 교육차수관리-차수등록조회-->  	 	
+	<select id="getEduBaselineList" parameterType="egovframework.com.adm.eduMgr.vo.EduBaselineProc" resultType="egovframework.com.adm.eduMgr.vo.EduBaselineProc" >
+        SELECT 
+			TA1.PROC_CD /* 과정코드 */
+			,TA1.PROC_YEAR /* 과정년도 */			
+			, CONCAT('[', TA1.PROC_CD, ']' , TA3.PROC_NM, ' - ', TA1.PROC_SEQ, '차') AS PROC_NM /* 과정명 */
+			,CONCAT(TO_CHAR(TA1.EDU_STR_DT, 'YYYY-MM-DD'), '~' , TO_CHAR(TA1.EDU_END_DT, 'YYYY-MM-DD'))  AS EDU_DATE /* 교육기간 */
+			,IFNULL(TA1.TOT_STUDY_TIME, 0) AS TOT_STUDY_TIME /*학습기간*/
+			,CONCAT(IFNULL(TA1.TOT_STUDY_TIME, 0) /* 총학습시간 */ , '/' , IFNULL(TA1.PROC_GAIN_GRADE, 0) /* 과정취득학점 */) AS TIME_GRADE
+			,TA1.LIMIT_PERSON_CNT /* 한계인원수 */
+			,CASE 
+			  WHEN TA1.ENDING_PROCESS_END_YN='0' THEN '진행중' 
+			  WHEN TA1.ENDING_PROCESS_END_YN='1' THEN '완료' 
+			  ELSE '' END
+			AS ENDING_PROCESS_END_STATUS/* 수료처리완료여부 */
+		  FROM XTS_PROC_BASELINE_INFO TA1                                                                                                              /* XBT과정차수정보 TABLE */
+              ,XTS_PROC_BASELINE_CONF TA2                                                                                                              /* XBT과정차수설정 TABLE */
+              ,XTS_PROC_INFO     TA3                                                                                                              /* XBT과정정보 TABLE */
+         WHERE TA1.PROC_CD   = TA2.PROC_CD                                                                                                        /* 과정코드 */
+           AND TA1.PROC_YEAR = TA2.PROC_YEAR                                                                                                      /* 과정년도 */
+           AND TA1.PROC_SEQ  = TA2.PROC_SEQ                                                                                                       /* 과정차수 */
+           AND TA2.PROC_CD   = TA3.PROC_CD                                                                                                        /* 과정코드 */
+	     ORDER BY TA1.PROC_YEAR DESC   		          	
+	</select>
+	
+	<!-- 교육차수관리-차수등록상세조회-->  	 	
+	<select id="getEduBaselineDetail" parameterType="egovframework.com.adm.eduMgr.vo.EduBaselineDetailProc" resultType="egovframework.com.adm.eduMgr.vo.EduBaselineDetailProc" >
+        SELECT 
+			   TA1.PROC_CD                                                                                                                        /* 과정코드 */
+			   ,TA1.PROC_YEAR                                                                                                                      /* 과정년도 */
+              , CONCAT('[', TA1.PROC_CD, ']' , TA3.PROC_NM, ' - ', TA1.PROC_SEQ, '차') AS PROC_NM /* 과정명 */
+			  ,TA1.PROC_SEQ                                                                                                                       /* 과정차수 */                                                                  /* 화면삭제제어여부 */
+			  ,TO_CHAR(TA1.SUGANG_REQ_STR_DT,     'YYYYMMDD') AS SUGANG_REQ_STR_DT                                                                /* 수강신청시작일시 */
+			  ,TO_CHAR(TA1.SUGANG_REQ_DEADLINE_DT,'YYYYMMDD') AS SUGANG_REQ_DEADLINE_DT                                                           /* 수강신청마감일시 */
+			  ,TO_CHAR(TA1.EDU_STR_DT,'YYYYMMDD') AS EDU_STR_DT                                                                                   /* 교육시작일시 */
+			  ,TO_CHAR(TA1.EDU_END_DT,'YYYYMMDD') AS EDU_END_DT                                                                                   /* 교육종료일시 */              
+			  ,TA1.TOT_STUDY_TIME                                                                                                                 /* 총학습시간 */
+			  ,TA1.TOT_STUDY_DATE                                                                                                                 /* 총학습일자 */
+			  ,TA1.PROC_GAIN_GRADE                                                                                                                /* 과정취득학점 */
+              ,TA1.LIMIT_PERSON_CNT /* 한계인원수 */
+			  ,TA1.ENDING_STD_SCORE                                                                                                               /* 수료기준점수 */
+			  ,TA1.ENDING_STD_ATTEND_PERCENT                                                                                                      /* 수료기준출석율 */
+			  ,TA2.EDU_TYPE                                                                                                                       /* 교육타입 */
+			  ,TA2.XRAY_LAST_TEST_TYPE                                                                                                            /* X-RAY최종평가방식 */
+			  ,TA2.DECIP_LAST_TEST_EFFECT                                                                                                         /* 판독최종평가횟수 */
+			  ,TA2.THEORY_LAST_TEST_EFFECT                                                                                                        /* 이론최종평가횟수 */
+			  ,TA2.BAN_PASS_FAIL_PROCESS                                                                                                          /* 금지통과불합격처리 */
+			  ,TA2.REPEATED_STUDYING_YN                                                                                                           /* 반복학습여부 */
+			  ,TA1.ENDING_PROCESS_END_YN                                                                      /* 수료처리완료여부 */
+		  FROM XTS_PROC_BASELINE_INFO TA1                                                                                                              /* XBT과정차수정보 TABLE */
+              ,XTS_PROC_BASELINE_CONF TA2                                                                                                              /* XBT과정차수설정 TABLE */
+              ,XTS_PROC_INFO     TA3                                                                                                              /* XBT과정정보 TABLE */
+         WHERE TA1.PROC_CD   = TA2.PROC_CD                                                                                                        /* 과정코드 */
+           AND TA1.PROC_YEAR = TA2.PROC_YEAR                                                                                                      /* 과정년도 */
+           AND TA1.PROC_SEQ  = TA2.PROC_SEQ                                                                                                       /* 과정차수 */
+           AND TA2.PROC_CD   = TA3.PROC_CD                                                                                                        /* 과정코드 */
+	       AND TA1.PROC_CD =  #{procCd}              	
+	</select>
+	
+	<!-- 교육차수관리-차수등록상세 하위 조회-->  	 	
+	<select id="getEduBaselineSubList" parameterType="egovframework.com.adm.eduMgr.vo.EduBaselineSubProc" resultType="egovframework.com.adm.eduMgr.vo.EduBaselineSubProc" >
+        SELECT 
+			   PROC_CD        /* 과정코드 */
+			  ,EVALUATION_SUBJECT_CD  /* 평가과목코드 */
+			  ,FN_GET_COMCODE_NAME('0004', EVALUATION_SUBJECT_CD ,'kor')    AS EVALUATION_SUBJECT_NM  /* 평가과목 */
+			  ,REAL_TEST_USE_YN                                                                         /* 실기점수반영여부 */
+			  ,NVL(REAL_PRESCO,0) AS REAL_PRESCO                                                        /* 실기만점 */
+			  ,PATTERN_PLUS_SCORE                                                                       /* 패턴가중치 */			  
+			  ,PATTERN_FALL_SCORE                                                                       /* 패턴과락점수 */
+			  ,(SELECT PROC_NM FROM  XTS_PROC_INFO WHERE PROC_CD=T1.PROC_CD AND PROC_YEAR=T1.PROC_YEAR AND PROC_SEQ=T1.PROC_SEQ ) AS PROC_NM /* 과정명 */
+		  FROM XTS_PROC_BASELINE_PATTERN T1                                                                      /* 교육차수패턴 Table */
+		 WHERE PROC_CD   = #{procCd}                                                                         /* 과정코드 */
+		   AND PROC_YEAR = #{procYear}                                                                      /* 과정년도 */
+		   AND PROC_SEQ  = #{procSeq}   
+		   
+		   		   
+	</select>		
+	
+	
+	<!-- 교육차수관리-차수별 메뉴관리조회-->  	 	
+	<select id="getEduBaselineMenuList" parameterType="egovframework.com.adm.eduMgr.vo.EduBaselineMenu" resultType="egovframework.com.adm.eduMgr.vo.EduBaselineMenu" >
+        SELECT 
+			TA1.PROC_CD /* 과정코드 */
+			,TA1.PROC_YEAR /* 과정년도 */	
+			,TA2.PROC_SEQ/*차수*/
+			,TA3.PROC_NM /* 과정명 */
+		  FROM XTS_PROC_BASELINE_INFO TA1                                                                                                              /* XBT과정차수정보 Table */
+              ,XTS_PROC_BASELINE_CONF TA2                                                                                                              /* XBT과정차수설정 Table */
+              ,XTS_PROC_INFO     TA3                                                                                                              /* XBT과정정보 Table */
+         WHERE TA1.PROC_CD   = TA2.PROC_CD                                                                                                        /* 과정코드 */
+           AND TA1.PROC_YEAR = TA2.PROC_YEAR                                                                                                      /* 과정년도 */
+           AND TA1.PROC_SEQ  = TA2.PROC_SEQ                                                                                                       /* 과정차수 */
+           AND TA2.PROC_CD   = TA3.PROC_CD                                                                                                        /* 과정코드 */
+	     ORDER BY TA1.PROC_YEAR DESC  	
+	</select>
+	
+	<!-- 교육차수관리-차수별 메뉴관리 하위조회-->  	 	
+	<select id="getEduBaselineMenuSubList" parameterType="egovframework.com.adm.eduMgr.vo.EduBaselineMenu" resultType="egovframework.com.adm.eduMgr.vo.EduBaselineMenu" >
+		SELECT 
+		T2.MENU_NO 
+		,FN_GET_LANGUAGECODE_NAME(T2.MENU_CD ,'KOR')    AS MENU_NM /* ACTION구분명 */
+		,T2.MENU_CD
+		FROM XTS_PROC_BASELINE_MENU_CONF T1 INNER JOIN XTS_STU_MENU_MAS T2
+		ON T1.MENU_CD = T2.MENU_CD 
+	 	WHERE T1.PROC_CD   = #{procCd}                                                                         /* 과정코드 */
+		AND T1.PROC_YEAR = #{procYear}                                                                      /* 과정년도 */
+		AND T1.PROC_SEQ  = #{procSeq}   			
+	</select>	
+</mapper>
