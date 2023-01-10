@@ -109,7 +109,7 @@
 			TA1.PROC_CD /* 과정코드 */
 			,TA1.PROC_YEAR /* 과정년도 */			
 			, CONCAT('[', TA1.PROC_CD, ']' , TA3.PROC_NM, ' - ', TA1.PROC_SEQ, '차') AS PROC_NM /* 과정명 */
-			,CONCAT(TO_CHAR(TA1.EDU_STR_DT, 'YYYY-MM-DD'), '~' , TO_CHAR(TA1.EDU_END_DT, 'YYYY-MM-DD'))  AS EDU_DATE /* 교육기간 */
+			,CONCAT(TO_CHAR(TA1.EDU_STR_DATE, 'YYYY-MM-DD'), '~' , TO_CHAR(TA1.EDU_END_DATE, 'YYYY-MM-DD'))  AS EDU_DATE /* 교육기간 */
 			,IFNULL(TA1.TOT_STUDY_TIME, 0) AS TOT_STUDY_TIME /*학습기간*/
 			,CONCAT(IFNULL(TA1.TOT_STUDY_TIME, 0) /* 총학습시간 */ , '/' , IFNULL(TA1.PROC_GAIN_GRADE, 0) /* 과정취득학점 */) AS TIME_GRADE
 			,TA1.LIMIT_PERSON_CNT /* 한계인원수 */
@@ -135,10 +135,10 @@
 			   ,TA1.PROC_YEAR                                                                                                                      /* 과정년도 */
               , CONCAT('[', TA1.PROC_CD, ']' , TA3.PROC_NM, ' - ', TA1.PROC_SEQ, '차') AS PROC_NM /* 과정명 */
 			  ,TA1.PROC_SEQ                                                                                                                       /* 과정차수 */                                                                  /* 화면삭제제어여부 */
-			  ,TO_CHAR(TA1.SUGANG_REQ_STR_DT,     'YYYYMMDD') AS SUGANG_REQ_STR_DT                                                                /* 수강신청시작일시 */
-			  ,TO_CHAR(TA1.SUGANG_REQ_DEADLINE_DT,'YYYYMMDD') AS SUGANG_REQ_DEADLINE_DT                                                           /* 수강신청마감일시 */
-			  ,TO_CHAR(TA1.EDU_STR_DT,'YYYYMMDD') AS EDU_STR_DT                                                                                   /* 교육시작일시 */
-			  ,TO_CHAR(TA1.EDU_END_DT,'YYYYMMDD') AS EDU_END_DT                                                                                   /* 교육종료일시 */              
+			  ,TO_CHAR(TA1.SUGANG_REQ_START_DATE,     'YYYYMMDD') AS SUGANG_REQ_START_DATE                                                                /* 수강신청시작일시 */
+			  ,TO_CHAR(TA1.SUGANG_REQ_DEADLINE_DATE,'YYYYMMDD') AS SUGANG_REQ_DEADLINE_DATE                                                           /* 수강신청마감일시 */
+			  ,TO_CHAR(TA1.EDU_STR_DATE,'YYYYMMDD') AS EDU_STR_DATE                                                                                   /* 교육시작일시 */
+			  ,TO_CHAR(TA1.EDU_END_DATE,'YYYYMMDD') AS EDU_END_DATE                                                                                   /* 교육종료일시 */              
 			  ,TA1.TOT_STUDY_TIME                                                                                                                 /* 총학습시간 */
 			  ,TA1.TOT_STUDY_DATE                                                                                                                 /* 총학습일자 */
 			  ,TA1.PROC_GAIN_GRADE                                                                                                                /* 과정취득학점 */

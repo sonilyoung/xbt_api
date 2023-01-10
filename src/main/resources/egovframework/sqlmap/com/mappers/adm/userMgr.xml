@@ -34,7 +34,166 @@
                , A.UPDATE_ID                      /*수정자ID*/        
                , A.UPDATE_DATE                      /*수정일자*/        
          FROM XTS_STU_USER A LEFT JOIN XTS_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD			
+	</select>	
+	
+	
+	<!-- 교육생 차수관리 상단목록-->
+	<select id="getUserBaselineList" parameterType="egovframework.com.adm.userMgr.vo.UserBaseline" resultType="egovframework.com.adm.userMgr.vo.UserBaseline" >	
+          SELECT 
+               TA1.PROC_YEAR/* 과정년도 */
+              ,TA1.PROC_CD  /* 과정코드 */
+              ,TA1.PROC_SEQ /* 과정차수 */
+              , CONCAT('[', TA1.PROC_CD, ']' , TA3.PROC_NM, ' - ', TA1.PROC_SEQ, '차') AS PROC_NM /* 과정명 */
+              ,CONCAT(TO_CHAR(TA2.EDU_START_DATE, 'YYYY-MM-DD') , '~' , TO_CHAR(TA2.EDU_END_DATE, 'YYYY-MM-DD')) AS EDU_DATE /* 교육기간 */
+              ,CONCAT(COUNT(*) , '/' ,TA2.LIMIT_PERSON_CNT) AS TRAINEES       /* 교육인원 */
+              ,TA2.PROC_GAIN_GRADE                                                                                     /* 과정취득학점 */
+              ,TA2.ENDING_PROCESS_END_YN                                                  AS ENDING_PROCESS_END_YN     /* 수료처리완료여부 */
+          FROM XTS_STUDENT_INFO  TA1                                                                                   /* XBT교육생정보 Table */
+              ,XTS_PROC_BASELINE_INFO TA2                                                                              /* XBT과정차수정보 Table */
+              ,XTS_PROC_INFO     TA3                                                                                   /* XBT과정정보 Table */
+         WHERE TA1.PROC_CD   = TA2.PROC_CD                                                                             /* 과정코드 */
+           AND TA1.PROC_YEAR = TA2.PROC_YEAR                                                                           /* 과정년도 */
+           AND TA1.PROC_SEQ  = TA2.PROC_SEQ                                                                            /* 과정차수 */
+           AND TA2.PROC_CD   = TA3.PROC_CD                                                                             /* 과정코드 */
+         GROUP BY TA1.PROC_YEAR                               /* 과정년도 */
+                 ,TA1.PROC_CD                                                                                         /* 과정코드 */
+                 ,TA1.PROC_SEQ                                                                                        /* 과정차수 */
+                 ,TA3.PROC_NM                                                                                         /* 과정명 */
+                 ,TA2.EDU_START_DATE                                                                                  /* 교육시작일자 */
+                 ,TA2.EDU_END_DATE                                                                                    /* 교육종료일자 */
+                 ,TA2.LIMIT_PERSON_CNT                                                                                /* 한계인원수 */
+                 ,TA2.PROC_GAIN_GRADE                                                                                 /* 과정취득학점 */
+                 ,TA2.ENDING_PROCESS_END_YN                                                                           /* 수료처리완료여부 */
+         ORDER BY TA1.PROC_YEAR DESC                                                                                  /* 과정년도 */
+                 ,TA1.PROC_CD                                                                                         /* 과정코드 */
+                 ,TA1.PROC_SEQ                                                                                        /* 과정차수 */
 	</select>		
 	
+	<!-- 교육생 차수관리 교육생정보-->
+	<select id="getUserBaselineSubList" parameterType="egovframework.com.adm.userMgr.vo.UserBaselineSub" resultType="egovframework.com.adm.userMgr.vo.UserBaselineSub" >
+        SELECT 
+			   TA1.PROC_CD                           /* 과정코드 */
+			  ,TA1.USER_ID                           /* 사용자ID */
+			  ,TA2.USER_NM                           /* 사용자명 */
+			  ,TA1.GOIN_STATUS_CD                    /* 입교상태코드 */
+			  ,TA1.GOIN_STATUS                       /* 입교상태 */
+          FROM XTS_STUDENT_INFO TA1                  /* XBT교육생정보 Table */
+              ,XTS_STU_USER     TA2                  /* XBT교육생 Table */
+         WHERE TA1.USER_ID   = TA2.USER_ID        /* 사용자ID */
+           AND TA1.PROC_YEAR = #{procYear}            /* 과정년도 */
+           AND TA1.PROC_CD   = #{procCd}              /* 과정코드 */
+           AND TA1.PROC_SEQ  = #{procSeq}               /* 과정차수 */     		
+	</select>		
+	
+	<!-- 교육생 차수관리 교육생 상세정보-->
+	<select id="getUserBaselineSubDetail" parameterType="egovframework.com.adm.userMgr.vo.UserBaselineDetail" resultType="egovframework.com.adm.userMgr.vo.UserBaselineDetail" >
+        SELECT 
+			  TA1.PROC_YEAR                         /* 교육년도 */
+			  ,TA1.PROC_GAIN_GRADE                   /* 이수학점 */
+			  ,TA1.PROC_NM                           /* 과정명 */
+			  ,TA1.PROC_CD                           /* 과정코드 */
+			  ,TA1.PROC_SEQ                          /* 과정차수 */
+			  ,TA1.START_DATE                          /* 학습시작일자 */
+			  ,TA1.END_DATE                          /* 학습종료일자 */
+			  ,TA2.COMPANY                           /* 회사명 */
+			  ,TA2.DEPT                           /* 부서명 */
+			  ,TA1.GOIN_STATUS                       /* 입교상태 */
+			  ,TA1.ATTEND_PERCENT                    /* 출석율 */
+			  ,TA1.UN_GOIN_REASON_CD                 /* 미입교사유코드 */
+			  ,TA1.UN_GOIN_REASON                    /* 미입교사유 */			  
+			  ,TA1.GAIN_SCORE                        /* 취득점수 */
+			  ,TA1.XTS_RANK                              /* 석차 */
+			  ,TA1.ENDING_YN                         /* 수료여부 */
+			  ,TA1.PASS_YN                           /* 합격여부 */
+			  ,TA1.UN_ENDING_REASON_CD               /* 미수료사유코드 */
+			  ,TA1.UN_ENDING_REASON_NM               /* 미수료사유명 */			  
+          FROM XTS_STUDENT_INFO TA1                  /* XBT교육생정보 Table */
+              ,XTS_STU_USER     TA2                  /* XBT교육생 Table */
+         WHERE TA1.USER_ID   = TA2.USER_ID        /* 사용자ID */
+           AND TA1.PROC_YEAR = #{procYear}             /* 과정년도 */
+           AND TA1.PROC_CD   = #{procCd}              /* 과정코드 */
+           AND TA1.PROC_SEQ  = #{procSeq}               /* 과정차수 */ 
+           AND TA2.USER_ID = #{userId}				/* 사용자ID */
+           		
+	</select>	
+	
+	<!-- 교육생 차수관리 교육생 상세 하위정보목록-->
+	<select id="getUserBaselineSubDetailList" parameterType="egovframework.com.adm.userMgr.vo.UserBaselineSubInfo" resultType="egovframework.com.adm.userMgr.vo.UserBaselineSubInfo" >
+	<![CDATA[
+       SELECT
+       		EVALUATION_SUBJECT_CD
+       		,FN_GET_COMCODE_NAME('0004', EVALUATION_SUBJECT_CD,'KOR') AS EVALUATION_SUBJECT_NAME
+            ,T1.TOT_SCORE
+			,T1.REAL_SCORE
+			,CASE WHEN CAST(T1.TOT_SCORE AS INTEGER) < CAST(T1.PATTERN_FALL_SCORE AS INTEGER) THEN 0
+			      ELSE 1
+			 END AS PATTERN_PASS_YN
+			,CASE WHEN B.END_TEST = 'END' THEN '완료'
+			WHEN B.END_TEST = 'ING' THEN '진행중'
+			ELSE ''
+			END AS END_TEST
+		FROM(
+			SELECT 
+				 A.PROC_CD
+				,A.PROC_YEAR
+				,A.PROC_SEQ
+				,A.USER_ID
+				,A.PROC_NO
+				,A.PATTERN
+				,B.REAL_TEST_USE_YN
+				,NVL(A.PATTERN_SCORE,0) AS PATTERN_SCORE
+				,NVL(A.REAL_SCORE,0) AS REAL_SCORE
+				,B.REAL_PRESCO AS REAL_PRESCO 
+				,NVL(B.PATTERN_PLUS_SCORE,0) AS PATTERN_PLUS_SCORE 
+				,NVL(B.PATTERN_FALL_SCORE,0) AS PATTERN_FALL_SCORE
+				,FLOOR(CASE WHEN B.REAL_TEST_USE_YN='0' THEN NVL(A.PATTERN_SCORE,0)
+				      WHEN B.REAL_TEST_USE_YN='1' THEN NVL(A.PATTERN_SCORE,0)*(100-NVL(B.PATTERN_PLUS_SCORE,0))/100 + NVL(A.REAL_SCORE,0)/B.REAL_PRESCO*100*NVL(B.PATTERN_PLUS_SCORE,0)/100
+				 END) AS TOT_SCORE 
+				,EVALUATION_SUBJECT_CD
+			FROM xts_student_pattern_score A
+			    ,xts_proc_baseline_pattern B
+			WHERE 1=1
+			AND A.PROC_CD = B.PROC_CD
+			AND A.PROC_YEAR = B.PROC_YEAR
+			AND A.PROC_SEQ = B.PROC_SEQ
+			AND A.PROC_NO = B.PROC_NO
+			AND A.PROC_CD = #{procCd}
+			AND A.PROC_YEAR = #{procYear}
+			AND A.PROC_SEQ = #{procSeq}
+		)T1,
+		(
+			SELECT
+				 T.*
+				 ,A.END_TEST
+			FROM(
+				SELECT 
+					 PROC_CD
+					,PROC_YEAR
+					,PROC_SEQ
+					,USER_ID
+					,TEST_SEQ
+					,PATTERN
+					,PASS_YN
+				FROM xts_xray_stage_type
+				WHERE 1=1
+				AND PROC_CD = #{procCd}
+				AND PROC_YEAR = #{procYear}
+				AND PROC_SEQ = #{procSeq}
+				AND USER_ID = #{userId}
+			)T
+			,XTS_PROC_BASELINE_CONF A
+			WHERE 1=1
+			AND T.PROC_CD=A.PROC_CD
+			AND T.PROC_YEAR=A.PROC_YEAR
+			AND T.PROC_SEQ=A.PROC_SEQ
+		) B
+		WHERE 1=1
+		AND T1.USER_ID = #{userId}
+		AND T1.PROC_CD = B.PROC_CD
+		AND T1.PROC_YEAR = B.PROC_YEAR
+		AND T1.PROC_SEQ = B.PROC_SEQ
+		AND T1.PATTERN = B.PATTERN
+		]]>
+	</select>				
 			
 </mapper>

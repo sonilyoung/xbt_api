@@ -9,10 +9,10 @@ public class EduBaselineDetailProc {
 	private String procYear;/* 과정년도 */
 	private String procNm; /* 과정명 */
 	private String procSeq;/* 과정차수 */
-	private String sugangReqStrDt;/* 수강신청시작일시 */
+	private String sugangReqStartDate;/* 수강신청시작일시 */
 	private String sugangReqDeadlineDt;/* 수강신청마감일시 */
-	private String eduStrDt;     /* 교육시작일시 */
-	private String eduEndDt;     /* 교육종료일시 */              
+	private String eduStartDate;     /* 교육시작일시 */
+	private String eduEndDate;     /* 교육종료일시 */              
 	private String totStudyTime; /* 총학습시간 */
 	private String totStudyDate;  /* 총학습일자 */
 	private String procGainGrade; /* 과정취득학점 */

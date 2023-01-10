@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.com.adm.learningMgr.dao.LearningMgrDAO">
 	
-	<!-- 교육생 정보조회-->
+	<!-- XRAY 판독모듈 정보조회-->
 	<select id="getXrayModuleList" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" resultType="egovframework.com.adm.learningMgr.vo.EduModule" >	
 			SELECT                                                  											
 			      A.XRAY_EDU_MODULE_ID          /*X-ray교육모듈ID*/        

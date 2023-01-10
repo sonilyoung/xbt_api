@@ -32,23 +32,13 @@
 	</select>
 
 	<update id="updateLoginTime" parameterType="String">
-		UPDATE RFT_USER
-		   SET LAST_LOGIN_DATE = now()
-		 WHERE LOGIN_ID = #{userId}
 	</update>	
 
 	<update id="updateLoginCnt" parameterType="String">
-		 UPDATE RFT_USER SET 
-		 	LOGIN_CNT = (SELECT COALESCE(LOGIN_CNT, 0)+1 FROM RFT_USER WHERE LOGIN_ID = #{userId})
-		 WHERE LOGIN_ID = #{userId}
 	</update>
 	
 	<select id="getPwdInfo" parameterType="egovframework.com.adm.login.vo.Login" 
 		resultType="egovframework.com.adm.login.vo.Login">
-		SELECT
-		     USER_PW
-		  FROM XBT_USER  
-		 WHERE USER_ID = #{userId}
 	</select>	
 
 </mapper>

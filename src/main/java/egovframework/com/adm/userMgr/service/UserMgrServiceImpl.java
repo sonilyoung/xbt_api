@@ -6,7 +6,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import egovframework.com.adm.eduMgr.vo.EduProcDetail;
 import egovframework.com.adm.userMgr.dao.UserMgrDAO;
+import egovframework.com.adm.userMgr.vo.UserBaseline;
+import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
+import egovframework.com.adm.userMgr.vo.UserBaselineSub;
+import egovframework.com.adm.userMgr.vo.UserBaselineSubInfo;
 import egovframework.com.adm.userMgr.vo.UserInfo;
 import lombok.extern.log4j.Log4j2;
 
@@ -41,6 +46,34 @@ public class UserMgrServiceImpl implements UserMgrService {
 	public List<UserInfo> getUserList(UserInfo params) {
 		// TODO Auto-generated method stub
 		return (List<UserInfo>) userMgrDAO.getUserList(params);
+	}
+
+
+	@Override
+	public List<UserBaseline> getUserBaselineList(UserBaseline params) {
+		// TODO Auto-generated method stub
+		return (List<UserBaseline>) userMgrDAO.getUserBaselineList(params);
+	}
+
+
+	@Override
+	public List<UserBaselineSub> getUserBaselineSubList(UserBaselineSub params) {
+		// TODO Auto-generated method stub
+		return (List<UserBaselineSub>) userMgrDAO.getUserBaselineSubList(params);
+	}
+
+
+	@Override
+	public Object getUserBaselineSubDetail(UserBaselineDetail params) {
+		// TODO Auto-generated method stub
+		return (UserBaselineDetail) userMgrDAO.getUserBaselineSubDetail(params);
+	}
+
+
+	@Override
+	public List<UserBaselineSubInfo> getUserBaselineSubDetailList(UserBaselineSubInfo params) {
+		// TODO Auto-generated method stub
+		return (List<UserBaselineSubInfo>) userMgrDAO.getUserBaselineSubDetailList(params);
 	}
 
 }
