@@ -19,8 +19,8 @@ public class ContentsDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".getLanguageList", params);
 	}
 	
-	public List<EgovMap> getContentsList(Contents params) {
-		return selectList(Namespace + ".getContentsList", params);
+	public List<EgovMap> getGroupList(Contents params) {
+		return selectList(Namespace + ".getGroupList", params);
 	}
 	
 	public int updateGroup(Contents params) {

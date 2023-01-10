@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.com.adm.eduMgr.dao.EduMgrDAO">
 	
+	<!-- 교육관리-->
+		
 	<!-- 교육과정관리-그룹관리 조회-->
 	<select id="getEduGroupList" parameterType="egovframework.com.adm.eduMgr.vo.EduGroupMgr" resultType="egovframework.com.adm.eduMgr.vo.EduGroupMgr" >			
       SELECT 

@@ -105,7 +105,7 @@ public class ContentsController {
 		
 		try {
 			//그룹관리조회
-			ContentsMgr resultList = contentsService.getContentsList(params);
+			ContentsMgr resultList = contentsService.getGroupList(params);
 	        return new BaseResponse<ContentsMgr>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);

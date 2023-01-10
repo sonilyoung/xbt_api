@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.com.adm.contents.dao.ContentsDAO">
 	
+	<!-- 컨텐츠관리-->
+		
 	<!-- 언어셋확인 -->
 	<select id="getLanguageList" parameterType="egovframework.com.adm.contents.vo.Language" resultType="egovframework.com.adm.contents.vo.Language">
 		SELECT CODE_NO
@@ -34,8 +36,8 @@
 			ON XUG.UNIT_GROUP_CD = XLC.CODE_ID
 	</select>-->
 	
-	
-	<select id="getContentsList" parameterType="egovframework.com.adm.contents.vo.Contents" resultType="egovMap" >
+	<!-- 그룹관리 -->
+	<select id="getGroupList" parameterType="egovframework.com.adm.contents.vo.Contents" resultType="egovMap" >
 			SELECT UNIT_GROUP_NO, /*코드번호*/
 			       UNIT_GROUP_CD, /*물품코드분류*/
 			       CODE_NAME AS UNIT_NAME , /*물품분류명칭*/

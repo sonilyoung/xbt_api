@@ -32,7 +32,7 @@ public interface ContentsService {
 	
 	public List<Language> getLanguageList(Language params);
 	
-	public ContentsMgr getContentsList(Contents params);
+	public ContentsMgr getGroupList(Contents params);
 	
 	public void updateGroup(Contents params);
 	

@@ -44,7 +44,7 @@ public class ContentsServiceImpl implements ContentsService {
 	private ContentsDAO contentsDAO;
 
 	@Override
-	public ContentsMgr getContentsList(Contents params) {
+	public ContentsMgr getGroupList(Contents params) {
 		// TODO Auto-generated method stub
 		
 		//컨텐츠셋팅
@@ -83,7 +83,7 @@ public class ContentsServiceImpl implements ContentsService {
 		result.setHeaderInfo(headerInfo);
 		*/
 		
-		List<EgovMap> resultList = contentsDAO.getContentsList(params);
+		List<EgovMap> resultList = contentsDAO.getGroupList(params);
 		ContentsMgr result = new ContentsMgr();
 		result.setResultList(resultList);
 		return result;

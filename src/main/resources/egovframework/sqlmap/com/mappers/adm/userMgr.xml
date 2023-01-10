@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.com.adm.userMgr.dao.UserMgrDAO">
 	
+	<!-- 교육생관리-->
+		
 	<!-- 교육생 정보조회-->
 	<select id="getUserList" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >	
 			SELECT 
