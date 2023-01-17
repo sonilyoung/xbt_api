@@ -49,7 +49,7 @@
               ,CONCAT(TO_CHAR(TA2.EDU_START_DATE, 'YYYY-MM-DD') , '~' , TO_CHAR(TA2.EDU_END_DATE, 'YYYY-MM-DD')) AS EDU_DATE /* 교육기간 */
               ,CONCAT(COUNT(*) , '/' ,TA2.LIMIT_PERSON_CNT) AS TRAINEES       /* 교육인원 */
               ,TA2.PROC_GAIN_GRADE                                                                                     /* 과정취득학점 */
-              ,TA2.ENDING_PROCESS_END_YN                                                  AS ENDING_PROCESS_END_YN     /* 수료처리완료여부 */
+              ,case when TA2.ENDING_PROCESS_END_YN = '0' then '미완료' else '완료' end AS ENDING_PROCESS_END_YN     /* 수료처리완료여부 */
           FROM XTS_STUDENT_INFO  TA1                                                                                   /* XBT교육생정보 Table */
               ,XTS_PROC_BASELINE_INFO TA2                                                                              /* XBT과정차수정보 Table */
               ,XTS_PROC_INFO     TA3                                                                                   /* XBT과정정보 Table */
@@ -152,8 +152,8 @@
 				      WHEN B.REAL_TEST_USE_YN='1' THEN NVL(A.PATTERN_SCORE,0)*(100-NVL(B.PATTERN_PLUS_SCORE,0))/100 + NVL(A.REAL_SCORE,0)/B.REAL_PRESCO*100*NVL(B.PATTERN_PLUS_SCORE,0)/100
 				 END) AS TOT_SCORE 
 				,EVALUATION_SUBJECT_CD
-			FROM xts_student_pattern_score A
-			    ,xts_proc_baseline_pattern B
+			FROM XTS_STUDENT_PATTERN_SCORE A
+			    ,XTS_PROC_BASELINE_PATTERN B
 			WHERE 1=1
 			AND A.PROC_CD = B.PROC_CD
 			AND A.PROC_YEAR = B.PROC_YEAR
@@ -176,7 +176,7 @@
 					,TEST_SEQ
 					,PATTERN
 					,PASS_YN
-				FROM xts_xray_stage_type
+				FROM XTS_XRAY_STAGE_TYPE
 				WHERE 1=1
 				AND PROC_CD = #{procCd}
 				AND PROC_YEAR = #{procYear}
