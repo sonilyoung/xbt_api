@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.adm.learningMgr.dao.LearningMgrDAO;
 import egovframework.com.adm.learningMgr.vo.EduModule;
+import egovframework.com.adm.learningMgr.vo.EduType;
 import egovframework.com.adm.learningMgr.vo.XrayPoint;
 import egovframework.com.adm.learningMgr.vo.XrayPointDetail;
 import lombok.extern.log4j.Log4j2;
@@ -58,5 +59,12 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 		// TODO Auto-generated method stub
 		return (List<XrayPointDetail>) learningMgrDAO.getXrayPointDetailList(params);
 	}
+	
+	@Override
+	public List<EduType> getEduTypeList(EduType params) {
+		// TODO Auto-generated method stub
+		return (List<EduType>) learningMgrDAO.getEduTypeList(params);
+	}
+	
 
 }

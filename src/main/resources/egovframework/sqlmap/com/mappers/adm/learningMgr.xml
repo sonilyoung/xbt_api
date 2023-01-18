@@ -51,4 +51,24 @@
 	</select>            			
 			
 			
+	
+	<!-- 교육타입관리-->  	 	
+	<select id="getEduTypeList" parameterType="egovframework.com.adm.learningMgr.vo.EduType" resultType="egovframework.com.adm.learningMgr.vo.EduType" >
+		  SELECT
+			   A.EDU_TYPE_ID                                               /* 교육타입ID */			  
+              ,A.EDU_TYPE_NM                                               /* 교육타입명칭 */
+              ,A.EDU_TYPE_DC                                               /* 교육타입설명 */
+              ,A.USE_YN                                                    /* 사용여부 */
+			  ,A.POINTS_STD_ID                   /* 배점기준ID */
+			  ,B.POINTS_STD_NM                   /* 배점기준명칭 */
+			  ,A.INSERT_ID /* 등록자ID */
+			  ,A.INSERT_DATE /* 등록일 */
+			  ,A.UPDATE_ID /* 수정자ID */
+			  ,A.UPDATE_DATE /* 수정일 */
+		  FROM XTS_EDU_TYPE_INFO A                                         /* XTS교육타입상세 TABLE */
+		  LEFT JOIN XTS_POINTS_STD_INFO B
+		  ON A.POINTS_STD_ID = B.POINTS_STD_ID 
+	</select>	
+				
+			
 </mapper>

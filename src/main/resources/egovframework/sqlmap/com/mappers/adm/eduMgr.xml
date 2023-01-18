@@ -215,4 +215,5 @@
 		AND T1.PROC_YEAR = #{procYear}                                                                      /* 과정년도 */
 		AND T1.PROC_SEQ  = #{procSeq}   			
 	</select>	
+	
 </mapper>

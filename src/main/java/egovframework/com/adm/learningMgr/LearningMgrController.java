@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.com.adm.learningMgr.service.LearningMgrService;
 import egovframework.com.adm.learningMgr.vo.EduModule;
+import egovframework.com.adm.learningMgr.vo.EduType;
 import egovframework.com.adm.learningMgr.vo.XrayPoint;
 import egovframework.com.adm.learningMgr.vo.XrayPointDetail;
 import egovframework.com.adm.login.service.LoginService;
@@ -134,5 +136,30 @@ public class LearningMgrController {
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
     }  		
+	
+    /**
+     * 교육타입관리 조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/getEduTypeList.do")
+    @ApiOperation(value = "교육타입관리 조회", notes = "교육타입관리 조회")
+    public BaseResponse<List<EduType>> getEduTypeList(HttpServletRequest request
+    		,@RequestBody EduType params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		
+		try {
+			List<EduType> resultList = learningMgrService.getEduTypeList(params);
+	        return new BaseResponse<List<EduType>>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }     	
 	    
 }

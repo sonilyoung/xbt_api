@@ -3,6 +3,7 @@ package egovframework.com.adm.learningMgr.service;
 import java.util.List;
 
 import egovframework.com.adm.learningMgr.vo.EduModule;
+import egovframework.com.adm.learningMgr.vo.EduType;
 import egovframework.com.adm.learningMgr.vo.XrayPoint;
 import egovframework.com.adm.learningMgr.vo.XrayPointDetail;
 
@@ -30,4 +31,6 @@ public interface LearningMgrService {
 	public List<XrayPoint> getXrayPointList(XrayPoint params);
 	
 	public List<XrayPointDetail> getXrayPointDetailList(XrayPointDetail params);
+	
+	public List<EduType> getEduTypeList(EduType params);
 }

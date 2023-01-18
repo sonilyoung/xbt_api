@@ -54,5 +54,4 @@ public class EduMgrDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".getEduBaselineMenuSubList", params);
 	}		
 	
-	
 }

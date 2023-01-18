@@ -15,7 +15,7 @@ import okhttp3.Response;
 @Service("egovCbtEdcReinforcementServiceImpl")
 public class EgovCbtEdcReinforcementServiceImpl implements EgovCbtEdcReinforcementService {
 	
-	private String url = "http://192.168.132.221:60000/arrange_level";
+	private String url = "http://127.0.0.1:8080/test/arrange_level.do";
 	
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovCbtEdcReinforcementServiceImpl.class);
