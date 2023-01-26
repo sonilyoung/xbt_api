@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import egovframework.com.api.edc.service.EgovCbtEdcThreeDimensionService;
+import egovframework.com.api.edc.service.EgovXtsEdcThreeDimensionService;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -19,11 +19,11 @@ import okio.ByteString;
 
 
 @Service("egovCbtEdcThreeDimensionServiceImpl")
-public class EgovCbtEdcThreeDimensionServiceImpl implements EgovCbtEdcThreeDimensionService {
+public class EgovXtsEdcThreeDimensionServiceImpl implements EgovXtsEdcThreeDimensionService {
 	
 	private String url = "http://192.168.132.220:8000/recon3d";
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovCbtEdcThreeDimensionServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovXtsEdcThreeDimensionServiceImpl.class);
 
 	@Override
 	public String threeDimension(Object value) throws Exception {

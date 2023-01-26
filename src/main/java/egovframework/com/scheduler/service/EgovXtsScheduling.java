@@ -25,15 +25,15 @@ import org.springframework.stereotype.Service;
  *  </pre>
  */
 
-@Service("egovBbsStatsScheduling")
-public class EgovBbsStatsScheduling extends EgovAbstractServiceImpl {
+@Service("egovXtsScheduling")
+public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 
 
 	/**
 	 * 하루단위로 작업하는 배치 프로그램
 	 * @exception Exception
 	 */
-	public void summaryBbsStats() throws Exception {
+	public void xtsStats() throws Exception {
 		System.out.println("엠폴시스템 raw이미지 저장 인터페이스");
 		
 		

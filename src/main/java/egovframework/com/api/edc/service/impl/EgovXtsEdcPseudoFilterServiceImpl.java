@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import egovframework.com.api.edc.service.EgovCbtEdcPseudoFilterService;
+import egovframework.com.api.edc.service.EgovXtsEdcPseudoFilterService;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -17,9 +17,9 @@ import okhttp3.Response;
 import okio.ByteString;
 
 @Service("egovCbtEdcPseudoFilterServiceImpl")
-public class EgovCbtEdcPseudoFilterServiceImpl implements EgovCbtEdcPseudoFilterService {
+public class EgovXtsEdcPseudoFilterServiceImpl implements EgovXtsEdcPseudoFilterService {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovCbtEdcPseudoFilterServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovXtsEdcPseudoFilterServiceImpl.class);
 	
 	private String url = "http://192.168.132.220:8000/filter";
 

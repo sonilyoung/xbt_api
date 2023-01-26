@@ -1,5 +1,5 @@
 package egovframework.com.api.edc.service;
 
-public interface EgovCbtEdcPseudoFilterService {
+public interface EgovXtsEdcPseudoFilterService {
 	public String pseudoFilter(Object value) throws Exception;
 }

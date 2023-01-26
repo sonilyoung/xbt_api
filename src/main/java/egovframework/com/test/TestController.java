@@ -50,9 +50,17 @@ public class TestController {
     @GetMapping("/arrange_level.do")
     @ApiOperation(value = "test api", notes = "test api.")
     @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
-    public BaseResponse<TestResultApi> login(HttpServletRequest request
+    public BaseResponse<String> test1(HttpServletRequest request
     		,@RequestParam(required = false) String params) {
-    	
+        return new BaseResponse<String>("200");
+    }
+    
+    
+    @GetMapping("/arrange_level.do")
+    @ApiOperation(value = "test api", notes = "test api.")
+    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public BaseResponse<TestResultApi> test2(HttpServletRequest request
+    		,@RequestParam(required = false) String params) {
     	
     	List<TestApi> unitInfoList = new ArrayList<TestApi>();
     	TestApi unitInfo = new TestApi();
@@ -81,6 +89,6 @@ public class TestController {
     	result.setCbtUnitImg(cbtUnitImgList);
     	
         return new BaseResponse<TestResultApi>(result);
-    }
+    }    
     
 }

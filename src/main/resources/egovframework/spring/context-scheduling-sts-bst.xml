@@ -4,8 +4,8 @@
 
 	<!--  통계 작업 정의 -->
 	<bean id="xtsStats" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="egovBbsStatsScheduling" />
-		<property name="targetMethod" value="summaryBbsStats" />
+		<property name="targetObject" ref="egovXtsScheduling" />
+		<property name="targetMethod" value="xtsStats" />
 		<property name="concurrent" value="false" />
 	</bean>
 

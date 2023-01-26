@@ -3,7 +3,7 @@ package egovframework.com.api.edc.service;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class EgovCbtEdcApiVO {
+public class EgovXtsEdcApiVO {
 	
 	private HashMap<Flag, PseudoFilter> pseudo;
 	private HashMap<Flag, ThreeDimension> dimension;

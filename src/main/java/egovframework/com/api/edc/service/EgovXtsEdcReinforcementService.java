@@ -1,6 +1,6 @@
 package egovframework.com.api.edc.service;
 
-public interface EgovCbtEdcReinforcementService {
+public interface EgovXtsEdcReinforcementService {
 	
 	public boolean reinforcementLearningAi() throws Exception;
 	
