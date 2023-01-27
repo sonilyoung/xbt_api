@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,15 +49,6 @@ public class TestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
 
     private OfficeMessageSource officeMessageSource;
-
-    @GetMapping("/arrange_level.do")
-    @ApiOperation(value = "test api", notes = "test api.")
-    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
-    public BaseResponse<String> test1(HttpServletRequest request
-    		,@RequestParam(required = false) String params) {
-        return new BaseResponse<String>("200");
-    }
-    
     
     @GetMapping("/arrange_level.do")
     @ApiOperation(value = "test api", notes = "test api.")
@@ -89,6 +83,18 @@ public class TestController {
     	result.setCbtUnitImg(cbtUnitImgList);
     	
         return new BaseResponse<TestResultApi>(result);
-    }    
+    }
+    
+    
+    @GetMapping("/selectEmpUnitImage.do")
+    @ApiOperation(value = "test api", notes = "test api.")
+    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public JSONObject selectEmpUnitImage(HttpServletRequest request
+    		,@RequestParam(required = false) String params) throws ParseException {
+    	String response = "{\"unitImages\": [ {\"cbtUnitImg\": [ {\"imgType\": \"COLOR\", \"imgRotate\": \"90º\", \"unitImg\": \"string\"}],\"decipMachineCd\": \"0000\", \"studyLvl\": \"1\", \"unitGroupCd\": \"1001\", \"unitId\": \"101\", \"unitInfo\": [{\"langSet\": \"kr\", \"unitDes\": \"gun\"}]}]}";
+    	JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) parser.parse(response);
+        return jsonObject;
+    }       
     
 }

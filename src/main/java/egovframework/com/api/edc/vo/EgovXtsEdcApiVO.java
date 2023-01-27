@@ -1,4 +1,4 @@
-package egovframework.com.api.edc.service;
+package egovframework.com.api.edc.vo;
 
 import java.util.HashMap;
 import java.util.Objects;

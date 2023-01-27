@@ -1,4 +1,4 @@
-package egovframework.com.api.edc.service.impl;
+package egovframework.com.api.edc.service;
 
 import java.util.Map;
 

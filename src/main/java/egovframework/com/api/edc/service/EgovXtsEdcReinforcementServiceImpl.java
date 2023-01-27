@@ -1,4 +1,4 @@
-package egovframework.com.api.edc.service.impl;
+package egovframework.com.api.edc.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

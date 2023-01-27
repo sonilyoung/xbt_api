@@ -3,6 +3,7 @@ package egovframework.com.api.edc.web;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +22,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.com.adm.eduMgr.vo.EduBaselineProc;
+import egovframework.com.api.edc.service.EgovXtsEdcApiService;
 import egovframework.com.api.edc.service.EgovXtsEdcPseudoFilterService;
 import egovframework.com.api.edc.service.EgovXtsEdcReinforcementService;
 import egovframework.com.api.edc.service.EgovXtsEdcThreeDimensionService;
+import egovframework.com.api.edc.vo.UnitImages;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.http.BaseResponse;
@@ -44,6 +47,9 @@ public class EgovXtsEdcApiController {
 	
 	@Autowired
 	private EgovXtsEdcReinforcementService egovXtsEdcReinforcementService;
+	
+	@Autowired
+	private EgovXtsEdcApiService egovXtsEdcApiService;	
 	
 	@ResponseBody
 	@RequestMapping(value = {"/thngManagetApi.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
@@ -105,6 +111,27 @@ public class EgovXtsEdcApiController {
 		return new BaseResponse<JsonNode>(json);
 	}
 	
+	
+    /**
+     * 엘폴 api
+     * 
+     * @param param
+     * @return Company
+     */	
+	@ResponseBody
+	@RequestMapping(value = {"/selectEmpUnitImage.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public  BaseResponse<JsonNode> selectEmpUnitImage(HttpServletRequest request
+    		,@RequestBody UnitImages params) throws Exception{		
+		JsonNode json = null;
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> result = egovXtsEdcApiService.selectEmpUnitImage(params);
+		json = mapper.convertValue(result, JsonNode.class);
+		
+		//LOGGER.info(result + "");
+		return new BaseResponse<JsonNode>(json);
+	}
+		
 	
 	
 	

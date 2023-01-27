@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.api.edc.dao.EgovXtsEdcApiDAO">
+	
+	
+	<!-- 단건 엠폴시스템 이미지 저장 및 업데이트-->
+	<update id="saveEmpUnitImage" parameterType="egovframework.com.api.edc.vo.UnitImages" >
+		INSERT INTO XTS_UNIT_IMG_INFO				
+			SET UNIT_SCAN_ID    	= #{unitScanId} 		                //물품촬영id
+				,UNIT_ID			= #{unitId}		                    //물품id
+				,IMG_TYPE			= #{imgType}		                    //이미지유형
+				,UNIT_GROUP_CD		= #{unitGroupCd}		                //그룹cd
+				,STUDY_LVL			= #{studyLvl}		                //학습레벨
+				,USE_YN				= #{useYn}                           //사용여부		
+				,DECIP_MACHINE_CD	= #{decipMachineCd}                  //판독기코드		
+				,IMG_ROTATE			= #{imgRotate}                       //각도별사진		
+				,REAL_IMG			= #{realImg}                         //실물이미지		
+				,COLOR_IMG			= #{colorImg}                        //컬러이미지		
+				,BW_IMG				= #{bwImg}                           //흑백이미지		
+				,LANG_SET			= #{langSet}                         //언어셋		
+				,UNIT_DESC			= #{unitDesc}                        //유닛설명		
+				,INSERT_DATE		= #{insertDate}                      //등록일		
+				,INSERT_ID			= #{insertId}                        //등록자		
+				,UPDATE_DATE		= #{updateDate}                      //수정일		
+				,UPDATE_ID			= #{updateId}                        //수정자
+			ON DUPLICATE KEY UPDATE		
+				,UNIT_ID			= #{unitId}		                    //물품id
+				,IMG_TYPE			= #{imgType}		                    //이미지유형
+				,UNIT_GROUP_CD		= #{unitGroupCd}		                //그룹cd
+				,STUDY_LVL			= #{studyLvl}		                //학습레벨
+				,USE_YN				= #{useYn}                           //사용여부		
+				,DECIP_MACHINE_CD	= #{decipMachineCd}                  //판독기코드		
+				,IMG_ROTATE			= #{imgRotate}                       //각도별사진		
+				,REAL_IMG			= #{realImg}                         //실물이미지		
+				,COLOR_IMG			= #{colorImg}                        //컬러이미지		
+				,BW_IMG				= #{bwImg}                           //흑백이미지		
+				,LANG_SET			= #{langSet}                         //언어셋		
+				,UNIT_DESC			= #{unitDesc}                        //유닛설명		
+				,INSERT_DATE		= #{insertDate}                      //등록일		
+				,INSERT_ID			= #{insertId}                        //등록자		
+				,UPDATE_DATE		= #{updateDate}                      //수정일		
+				,UPDATE_ID			= #{updateId}                        //수정자			
+	</update>	
+	
+</mapper>
