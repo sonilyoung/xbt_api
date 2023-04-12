@@ -8,8 +8,11 @@ import org.springframework.web.multipart.MultipartFile;
 import egovframework.com.adm.contents.vo.Contents;
 import egovframework.com.adm.contents.vo.ContentsMgr;
 import egovframework.com.adm.contents.vo.UnitInformation;
+import egovframework.com.adm.contents.vo.XbtSeq;
 import egovframework.com.adm.contents.vo.Xrayformation;
 import egovframework.com.adm.contents.vo.Language;
+import egovframework.com.adm.contents.vo.UnitGroup;
+import egovframework.com.adm.contents.vo.UnitImg;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.
@@ -30,19 +33,61 @@ import egovframework.com.adm.contents.vo.Language;
  */
 public interface ContentsService {
 	
-	public List<Language> getLanguageList(Language params);
+	public List<Language> selectLanguageList(Language params);
 	
-	public ContentsMgr getGroupList(Contents params);
+	public Language selectLanguage(Language params);
 	
-	public void updateGroup(Contents params);
+	public int insertLanguage(Language params);
 	
-	public int saveUnitImage(MultipartFile imgFile, Contents params) throws IOException;
+	public int updateLanguage(Language params);
 	
-	public List<UnitInformation> getInformationList(UnitInformation params);
+	public int deleteLanguage(Language params);
+	
+	public List<UnitGroup> selectUnitGroupList(UnitGroup params);
+	
+	public UnitGroup selectUnitGroup(UnitGroup params);
+	
+    public int insertUnitGroup(UnitGroup params);
+	
+	public int insertUnitGroupLanguage(Language params);
+	
+	public void updateUnitGroup(UnitGroup params);
+	
+	public void updateUnitGroupLanguage(Language params);
+	
+	public int deleteUnitGroup(UnitGroup params);
+	
+	public int insertUnitGroupImg(MultipartFile imgFile, UnitGroup params) throws IOException;
+	
+	public List<UnitImg> selectUnitList(UnitImg params);
+	
+	public UnitImg selectUnit(UnitImg params);
 	
 	public List<Xrayformation> getXrayInformationList(Xrayformation params);
 	
 	public List<Xrayformation> getXrayDetailList(Xrayformation params);
 	
 	public List<UnitInformation> getBagUnitInfoList(UnitInformation params);
+	
+	public XbtSeq selectXbtSeq(XbtSeq params);
+	
+	public String insertUnit(UnitImg params);
+	
+	public int updateUnit(UnitImg params);
+	
+	public int insertUnitGroupImg(UnitGroup params);
+
+	public int deleteUnit(UnitImg params);
+	
+	public int deleteUnitGroupImg(UnitGroup params);
+	
+	public void updateUnitImg(UnitImg params);
+    
+    public int insertUnitMaster(UnitImg params);
+    
+    public int insertUnitDetail(UnitImg params);
+
+    public int insertUnit3dDetail(UnitImg params);
+    
+	public int insertUnitImage(MultipartFile imgFile ,UnitImg params) throws IOException;
 }

@@ -5,15 +5,64 @@
 	<!-- 컨텐츠관리-->
 		
 	<!-- 언어셋확인 -->
-	<select id="getLanguageList" parameterType="egovframework.com.adm.contents.vo.Language" resultType="egovframework.com.adm.contents.vo.Language">
+	<select id="selectLanguageList" parameterType="egovframework.com.adm.contents.vo.Language" resultType="egovframework.com.adm.contents.vo.Language">
 		SELECT CODE_NO
 		, LANGUAGE_NAME
 		, LANGUAGE_CODE
 		, USE_YN
 		, INSERT_ID
-		, INSERT_DATE
-		FROM XTS_LANGUAGE_CODE
+		, date_format(insert_date , '%Y-%m-%d %T' )as  INSERT_DATE
+		FROM XBT_LANGUAGE_CODE_MASTER
 	</select>	
+
+	<!-- 언어셋상세 -->
+	<select id="selectLanguage" parameterType="egovframework.com.adm.contents.vo.Language" resultType="egovframework.com.adm.contents.vo.Language">
+		SELECT CODE_NO
+		, LANGUAGE_NAME
+		, LANGUAGE_CODE
+		, USE_YN
+		, INSERT_ID
+		, date_format(insert_date , '%Y-%m-%d %T' )as  INSERT_DATE
+		FROM XBT_LANGUAGE_CODE_MASTER
+		WHERE CODE_NO = #{codeNo}
+		
+	</select>	
+	
+	<!-- 언어셋수정 -->
+	<update id="updateLanguage" parameterType="egovframework.com.adm.contents.vo.Language" useGeneratedKeys="true" keyProperty="codeNo">	
+		UPDATE XBT_LANGUAGE_CODE_MASTER
+		SET 
+		LANGUAGE_NAME = #{languageName}
+		,LANGUAGE_CODE = #{languageCode}
+		,USE_YN = #{useYn}
+		,INSERT_ID = #{insertId}
+		,INSERT_DATE = now()		
+		WHERE CODE_NO = #{codeNo}
+	</update>	
+	
+	<!-- 언어셋등록 -->
+	<insert id="insertLanguage" parameterType="egovframework.com.adm.contents.vo.Language" useGeneratedKeys="true" keyProperty="codeNo">	
+		INSERT INTO XBT_LANGUAGE_CODE_MASTER(
+			LANGUAGE_NAME
+			,LANGUAGE_CODE
+			,USE_YN
+			,INSERT_ID
+			,INSERT_DATE
+		)VALUES(
+			#{languageName}
+			,#{languageCode}
+			,'Y'
+			,#{insertId}
+			,now()
+		)
+
+	</insert>
+	
+	<!-- 언어셋 삭제-->
+	<delete id="deleteLanguage" parameterType="egovframework.com.adm.contents.vo.Language">
+		DELETE FROM XBT_LANGUAGE_CODE_MASTER WHERE CODE_NO = #{codeNo}  
+	</delete>		
+		
 	
 	<!-- 그룹관리 
 	<select id="getContentsList" parameterType="egovframework.com.adm.contents.vo.Contents" resultType="egovMap" >
@@ -31,70 +80,198 @@
 			       UPD_DT,/*수정일*/
 			       UPD_ID,/*수정자*/
 			       PARENT_UNIT_GROUP_CD/*상위물품분류코드*/
-			FROM  XTS_UNIT_GROUP XUG 
-			INNER JOIN XTS_LANGUAGE_DETAIL XLC 
+			FROM  xbt_UNIT_GROUP XUG 
+			INNER JOIN xbt_LANGUAGE_DETAIL XLC 
 			ON XUG.UNIT_GROUP_CD = XLC.CODE_ID
 	</select>-->
 	
+	
+	
+	
 	<!-- 그룹관리 -->
-	<select id="getGroupList" parameterType="egovframework.com.adm.contents.vo.Contents" resultType="egovMap" >
-			SELECT UNIT_GROUP_NO, /*코드번호*/
-			       UNIT_GROUP_CD, /*물품코드분류*/
-			       CODE_NAME AS UNIT_NAME , /*물품분류명칭*/
+	<select id="selectUnitGroupList" parameterType="egovframework.com.adm.contents.vo.UnitGroup" resultType="egovframework.com.adm.contents.vo.UnitGroup" >
+			SELECT XUG.UNIT_GROUP_NO, /*코드번호*/
+			       XUG.UNIT_GROUP_CD, /*물품코드분류*/
+			       GROUP_NAME , /*물품분류명칭*/
+			       GROUP_DESC,/*물품분류설명*/
 			       ACTION_DIV,/*ACTION구분*/
-			       CODE_DESC AS UNIT_DESC,/*물품분류설명*/
+			       USE_YN,/*사용여부*/
 			       OPEN_YN,/*개봉여부*/
 			       PASS_YN,/*통과여부*/
-			       XLC.USE_YN,/*사용여부*/
-			       UNIT_IMG,/*물품이미지*/
-			       XLC.INSERT_DATE,/*등록일*/
-			       XLC.INSERT_ID,/*등록자*/
-			       XLC.UPDATE_DATE,/*수정일*/
-			       XLC.UPDATE_ID,/*수정자*/
-			       PARENT_UNIT_GROUP_CD/*상위물품분류코드*/
-			FROM  XTS_UNIT_GROUP XUG 
-			INNER JOIN XTS_LANGUAGE_DETAIL XLC 
-			ON XUG.UNIT_GROUP_CD = XLC.CODE_ID
-			WHERE XLC.LANGUAGE_CODE = #{languageCode}
+			       INSERT_DATE,/*등록일*/
+			       INSERT_ID,/*등록자*/
+			       UPDATE_DATE,/*수정일*/
+			       UPDATE_ID,/*수정자*/
+			       PARENT_UNIT_GROUP_CD,/*상위물품분류코드*/
+			       XUGI.IMG_FILE,
+			       LANGUAGE_CODE 
+			FROM XBT_UNIT_GROUP XUG LEFT JOIN XBT_UNIT_GROUP_IMG XUGI 
+			ON XUG.UNIT_GROUP_CD = XUGI.UNIT_GROUP_CD
+			AND XUG.LANGUAGE_CODE = #{languageCode}
+			ORDER BY XUG.UNIT_GROUP_CD ASC
 	</select>	
 	
+	
+	<!-- 그룹관리상세 -->
+	<select id="selectUnitGroup" parameterType="egovframework.com.adm.contents.vo.UnitGroup" resultType="egovframework.com.adm.contents.vo.UnitGroup" >
+			SELECT XUG.UNIT_GROUP_NO, /*코드번호*/
+			       XUG.UNIT_GROUP_CD, /*물품코드분류*/
+			       GROUP_NAME , /*물품분류명칭*/
+			       GROUP_DESC,/*물품분류설명*/
+			       ACTION_DIV,/*ACTION구분*/
+			       USE_YN,/*사용여부*/
+			       OPEN_YN,/*개봉여부*/
+			       PASS_YN,/*통과여부*/
+			       INSERT_DATE,/*등록일*/
+			       INSERT_ID,/*등록자*/
+			       UPDATE_DATE,/*수정일*/
+			       UPDATE_ID,/*수정자*/
+			       PARENT_UNIT_GROUP_CD,/*상위물품분류코드*/
+			       LANGUAGE_CODE,
+			       (SELECT IMG_FILE FROM XBT_UNIT_GROUP_IMG WHERE UNIT_GROUP_CD= XUG.UNIT_GROUP_CD) AS IMG_FILE 
+			FROM XBT_UNIT_GROUP XUG
+			WHERE XUG.LANGUAGE_CODE = #{languageCode}
+			AND XUG.UNIT_GROUP_CD = #{unitGroupCd}
+	</select>	
+		
+	
+	<!-- 그룹관리등록 -->
+	<!-- <insert id="insertUnitGroup" parameterType="egovframework.com.adm.contents.vo.UnitGroup" useGeneratedKeys="true" keyProperty="unitGroupNo">-->
+	<insert id="insertUnitGroup" parameterType="egovframework.com.adm.contents.vo.UnitGroup">	
+		INSERT INTO XBT_UNIT_GROUP(
+			UNIT_GROUP_CD,
+			GROUP_NAME,
+			GROUP_DESC,
+			OPEN_YN,
+			PASS_YN,
+			USE_YN,
+			PARENT_UNIT_GROUP_CD,
+			INSERT_DATE,
+			INSERT_ID,
+			ACTION_DIV,
+			LANGUAGE_CODE
+		)VALUES(
+			#{unitGroupCd}
+			,#{groupName}
+			,#{groupDesc}
+			,#{openYn}
+			,#{passYn}
+			,'Y'
+			,#{parentUnitGroupCd}
+			,now()
+			,#{insertId}
+			,#{actionDiv}
+			,#{languageCode}
+		)
+	</insert>	
+	
+		
+	<!-- 그룹관리이미지삭제 -->
+	<insert id="deleteUnitGroupImg" parameterType="egovframework.com.adm.contents.vo.UnitGroup">	
+		DELETE FROM XBT_UNIT_GROUP_IMG WHERE UNIT_GROUP_CD = #{unitGroupCd} 
+	</insert>		
+	
+	
 	<!-- 그룹관리수정 -->
-	<update id="updateGroup" parameterType="egovframework.com.adm.contents.vo.Contents" >	
-		UPDATE XTS_UNIT_GROUP SET 
+	<update id="updateUnitGroup" parameterType="egovframework.com.adm.contents.vo.UnitGroup" >	
+		UPDATE XBT_UNIT_GROUP SET 
 		USE_YN = #{useYn}
 		,ACTION_DIV = #{actionDiv}
-		WHERE UNIT_GROUP_CD = #{unitGroupNo}	
+		,OPEN_YN = #{openYn}
+		,PASS_YN = #{passYn}
+		,GROUP_NAME = #{groupName}
+		,GROUP_DESC = #{groupDesc}		
+		WHERE UNIT_GROUP_CD = #{unitGroupCd}
+		AND LANGUAGE_CODE = #{languageCode}
 	</update>
 	
 	<!-- 그룹관리수정 -->
-	<update id="updateGroupLanguage" parameterType="egovframework.com.adm.contents.vo.Contents" >
-		UPDATE XTS_LANGUAGE_DETAIL SET 
-		CODE_NAME = #{unitName}
-		,CODE_DESC = #{unitDesc}
-		WHERE CODE_ID = #{unitGroupNo} 
+	<update id="updateUnitGroupLanguage" parameterType="egovframework.com.adm.contents.vo.Language" >
+		UPDATE XBT_LANGUAGE_CODE_DETAIL SET 
+		CODE_NAME = #{codeName}
+		,CODE_DESC = #{codeDesc}
+		WHERE CODE_ID =  #{codeId} 
 		AND LANGUAGE_CODE = #{languageCode}		
 	</update>	
 
-	<!-- 이미지저장 -->
-	<update id="saveUnitImage" parameterType="egovframework.com.adm.contents.vo.Contents" >
-		UPDATE XTS_UNIT_GROUP SET UNIT_IMG = #{unitImg} 
-		WHERE UNIT_GROUP_NO = #{unitGroupNo}
-	</update>
+	<!-- 그룹관리 삭제-->
+	<delete id="deleteUnitGroup" parameterType="egovframework.com.adm.contents.vo.UnitGroup">
+		DELETE FROM XBT_UNIT_GROUP 
+		WHERE UNIT_GROUP_CD = #{unitGroupCd} 
+		AND LANGUAGE_CODE = #{languageCode}  
+	</delete>		
+
+	
+	<!-- 그룹관리 삭제-->
+	<delete id="deleteUnitGroupLanguage" parameterType="egovframework.com.adm.contents.vo.Language">
+		DELETE FROM XBT_LANGUAGE_CODE_DETAIL WHERE CODE_ID = #{codeId}  
+	</delete>		
+
+
+	<!--그룹 이미지저장 -->
+	<insert id="insertUnitGroupImg" parameterType="egovframework.com.adm.contents.vo.UnitGroup" >
+		INSERT INTO XBT_UNIT_GROUP_IMG(UNIT_GROUP_CD, IMG_FILE)VALUES(#{unitGroupCd}, #{imgFile})
+	</insert>
 	
 	<!-- 물품콘텐츠관리 정보관리 -->
-	<select id="getInformationList" parameterType="egovframework.com.adm.contents.vo.UnitInformation" resultType="egovframework.com.adm.contents.vo.UnitInformation" >	
-		SELECT 
+	<select id="selectUnitList" parameterType="egovframework.com.adm.contents.vo.UnitImg" resultType="egovframework.com.adm.contents.vo.UnitImg" >	
+		SELECT
 			UNIT_INFO_NO
+			, UNIT_SCAN_ID 
 			, UNIT_ID /*물품아이디*/
 			, UNIT_GROUP_CD/*뭎품그룹코드*/
-			, XLD.CODE_NAME AS UNIT_NAME /*물품명*/
-			, XLD.CODE_DESC AS UNIT_DESC /*물품설명*/
-			, XLD.USE_YN/*사용여부*/
-			, CASE WHEN XLD.USE_YN = 1 THEN '사용' ELSE '미사용' END AS USE_YN_NM
-		FROM XTS_UNIT_INFO XUI INNER JOIN XTS_LANGUAGE_DETAIL XLD 
-		ON XUI.UNIT_ID = XLD.CODE_ID
-		and XLD.LANGUAGE_CODE = #{languageCode}		
+			, (SELECT GROUP_NAME FROM XBT_UNIT_GRoup where UNIT_GROUP_CD = XUI.UNIT_GROUP_CD and LANGUAGE_CODE = #{languageCode}) as UNIT_GROUP_NAME /*뭎품그룹코드*/
+			, UNIT_NAME /*물품명*/
+			, UNIT_DESC /*물품설명*/
+			, USE_YN/*사용여부*/
+			, XUI.LANGUAGE_CODE
+		FROM XBT_UNIT_INFO XUI
+		WHERE XUI.LANGUAGE_CODE = #{languageCode}  		
 	</select>	
+	
+	
+	<!-- 물품콘텐츠관리 정보관리 -->
+	<select id="selectUnit" parameterType="egovframework.com.adm.contents.vo.UnitImg" resultType="egovframework.com.adm.contents.vo.UnitImg" >	
+		SELECT
+			UNIT_INFO_NO
+			, UNIT_SCAN_ID 
+			, UNIT_ID /*물품아이디*/
+			, UNIT_GROUP_CD/*뭎품그룹코드*/
+			, (SELECT GROUP_NAME FROM XBT_UNIT_GRoup where UNIT_GROUP_CD = XUI.UNIT_GROUP_CD and LANGUAGE_CODE = #{languageCode}) as UNIT_GROUP_NAME /*뭎품그룹코드*/
+			, UNIT_NAME /*물품명*/
+			, UNIT_DESC /*물품설명*/
+			, USE_YN/*사용여부*/
+			, XUI.LANGUAGE_CODE 
+			,(SELECT REAL_IMG FROM XBT_UNIT_IMG_INFO_MASTER WHERE XUI.UNIT_SCAN_ID = UNIT_SCAN_ID) AS REAL_IMG
+			,(SELECT FRONT_IMG FROM XBT_UNIT_IMG_INFO_MASTER WHERE XUI.UNIT_SCAN_ID = UNIT_SCAN_ID) AS FRONT_IMG
+			,(SELECT SIDE_IMG FROM XBT_UNIT_IMG_INFO_MASTER WHERE XUI.UNIT_SCAN_ID = UNIT_SCAN_ID) AS SIDE_IMG
+			,(SELECT THREED_IMG FROM XBT_UNIT_IMG_INFO_MASTER WHERE XUI.UNIT_SCAN_ID = UNIT_SCAN_ID) AS THREED_IMG			
+		FROM XBT_UNIT_INFO XUI
+		WHERE XUI.LANGUAGE_CODE = #{languageCode}
+		AND UNIT_SCAN_ID = #{unitScanId}  		
+	</select>		
+	
+	
+	<!-- 물품콘텐츠정보조회 -->
+	<update id="updateUnitBasicInfo" parameterType="egovframework.com.adm.contents.vo.UnitImg">	
+		INSERT INTO XBT_UNIT_IMG_INFO_MASTER (
+			UNIT_SCAN_ID,
+			UNIT_ID,
+			UNIT_GROUP_CD,
+			USE_YN,
+			INSERT_DATE,
+			update_DATE
+		) VALUES (
+			#{unitScanId}
+			,#{unitId}
+			,#{unitGroupCd}
+			,'Y'
+			,NOW()
+			,NOW()
+		)
+		ON DUPLICATE KEY UPDATE
+		    UNIT_SCAN_ID = #{unitScanId}    		
+	</update>		
 	
 	
 	
@@ -103,7 +280,7 @@
 			SELECT                                                  											
 			     A.BAG_SCAN_ID                 /*가방촬영ID*/
 			     , A.UNIT_ID                     /*물품ID*/        
-			     , (SELECT CODE_NAME FROM XTS_LANGUAGE_DETAIL XLD WHERE LANGUAGE_CODE='KOR' AND CODE_ID = A.UNIT_ID) AS UNIT_NAME                     /*물품ID*/        
+			     , (SELECT CODE_NAME FROM xbt_LANGUAGE_DETAIL XLD WHERE LANGUAGE_CODE='KOR' AND CODE_ID = A.UNIT_ID) AS UNIT_NAME                     /*물품ID*/        
 			     , C.OPEN_YN                     /*개봉여부*/        
 			     , C.PASS_YN                     /*통과여부*/        
 			     , C.ACTION_DIV                  /*ACTION구분*/        
@@ -117,7 +294,7 @@
 			     , A.INSERT_ID                      /*등록자*/        
 			     , A.UPDATE_DATE                      /*수정일시*/        
 			     , A.UPDATE_DATE                      /*수정자*/   
-			FROM XTS_BAG_INFO A INNER JOIN XTS_UNIT_INFO B INNER JOIN XTS_UNIT_GROUP C
+			FROM xbt_BAG_INFO A INNER JOIN xbt_UNIT_INFO B INNER JOIN xbt_UNIT_GROUP C
 			ON A.UNIT_ID=B.UNIT_ID
 			AND A.UNIT_ID=B.UNIT_ID
 			AND B.UNIT_GROUP_CD=C.UNIT_GROUP_CD 	             												 
@@ -130,8 +307,8 @@
      		A.BAG_SCAN_ID                 /*가방촬영ID*/        
 		     , A.SEQ                         /*순번*/        
 		     , A.UNIT_ID                     /*물품ID*/   
-		     , (SELECT CODE_NAME FROM XTS_LANGUAGE_DETAIL XLD WHERE LANGUAGE_CODE='KOR' AND CODE_ID = A.UNIT_ID) AS UNIT_NAME                     /*물품명*/
-		     , (SELECT CODE_DESC FROM XTS_LANGUAGE_DETAIL XLD WHERE LANGUAGE_CODE='KOR' AND CODE_ID = A.UNIT_ID) AS UNIT_DESC                     /*물품설명*/     
+		     , (SELECT CODE_NAME FROM xbt_LANGUAGE_DETAIL XLD WHERE LANGUAGE_CODE='KOR' AND CODE_ID = A.UNIT_ID) AS UNIT_NAME                     /*물품명*/
+		     , (SELECT CODE_DESC FROM xbt_LANGUAGE_DETAIL XLD WHERE LANGUAGE_CODE='KOR' AND CODE_ID = A.UNIT_ID) AS UNIT_DESC                     /*물품설명*/     
 		     , A.INSERT_DATE                      /*등록일시*/        
 		     , A.INSERT_ID                      /*등록자*/        
 		     , A.UPDATE_DATE                      /*수정일시*/        
@@ -139,7 +316,7 @@
     		 , C.ACTION_DIV                  /*ACTION구분*/
          	 , C.OPEN_YN					 /*개봉여부*/
     		 , C.PASS_YN					 /*통과여부*/
-		FROM XTS_BAG_CONST_UNIT A INNER JOIN XTS_UNIT_INFO B INNER JOIN XTS_UNIT_GROUP C
+		FROM xbt_BAG_CONST_UNIT A INNER JOIN xbt_UNIT_INFO B INNER JOIN xbt_UNIT_GROUP C
 		ON  A.UNIT_ID=B.UNIT_ID
       	AND B.UNIT_GROUP_CD=C.UNIT_GROUP_CD                                               												 
         AND A.BAG_SCAN_ID = #{bagScanId}		
@@ -150,17 +327,179 @@
 	<!-- 물품콘텐츠관리 정보관리 가방물품정보 -->
 	<select id="getBagUnitInfoList" parameterType="egovframework.com.adm.contents.vo.UnitInformation" resultType="egovframework.com.adm.contents.vo.UnitInformation" >	
 		SELECT 
-			UNIT_INFO_NO
+			UNIT_SCAN_ID
 			, UNIT_ID /*물품아이디*/
 			, UNIT_GROUP_CD/*뭎품그룹코드*/
 			, XLD.CODE_NAME AS UNIT_NAME /*물품명*/
 			, XLD.CODE_DESC AS UNIT_DESC /*물품설명*/
 			, XLD.USE_YN/*사용여부*/
-			, CASE WHEN XLD.USE_YN = 1 THEN '사용' ELSE '미사용' END AS USE_YN_NM
-		FROM XTS_UNIT_INFO XUI INNER JOIN XTS_LANGUAGE_DETAIL XLD 
+			, CASE WHEN XLD.USE_YN = 'Y' THEN '사용' ELSE '미사용' END AS USE_YN_NM
+		FROM xbt_UNIT_INFO XUI INNER JOIN xbt_LANGUAGE_DETAIL XLD 
 		ON XUI.UNIT_GROUP_CD = XLD.CODE_ID 
 		AND XLD.LANGUAGE_CODE = #{languageCode}		
 	</select>		
+	
+	
+	<!-- 단품시퀀스 -->
+	<select id="selectXbtSeq" parameterType="egovframework.com.adm.contents.vo.XbtSeq" resultType="egovframework.com.adm.contents.vo.XbtSeq" >	
+		<choose>
+			<when test='seqInfo == "G"'><!-- 단품그룹시퀀스 -->
+				SELECT concat('G', LPAD(cast(right(IFNULL(MAX(UNIT_GROUP_CD), '0'), 6) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_UNIT_GROUP
+			</when>		
+			<when test='seqInfo == "U"'><!-- 단품시퀀스 -->
+				SELECT concat('U', LPAD(cast(right(IFNULL(MAX(UNIT_ID), '0'), 6) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_UNIT_INFO
+			</when>
+			<when test='seqInfo == "X"'><!-- 가방xray시퀀스 -->
+				SELECT CAST(date_format(NOW(), 'X%y%m%d%h%i%s') as CHAR) AS seqId FROM DUAL
+			</when>
+			<when test='seqInfo == "UX"'><!-- 단품시퀀스 -->
+				SELECT CAST(date_format(NOW(), 'UX%y%m%d%h%i%s') as CHAR) AS seqId FROM DUAL
+			</when>			
+		</choose>				
+	</select>	
+	
+	
+	<!-- 단품기본정보등록 -->
+	<insert id="insertUnit" parameterType="egovframework.com.adm.contents.vo.UnitImg">	
+		INSERT INTO XBT_UNIT_INFO
+		(
+			UNIT_SCAN_ID
+			,UNIT_ID
+			,UNIT_GROUP_CD
+			,UNIT_NAME
+			,UNIT_DESC
+			,USE_YN
+			,STUDY_LVL
+			,LANGUAGE_CODE		
+			,INSERT_ID
+			,INSERT_DATE 
+		)VALUES(
+			#{unitScanId}
+			,#{unitId}
+			,#{unitGroupCd}
+			,#{unitName}
+			,#{unitDesc}
+			,#{useYn}
+			,#{studyLvl}
+			,#{languageCode}
+			,#{insertDate}
+			,now()
+		)
+	</insert>
+	
+	<!-- 단품기본정보수정 -->
+	<update id="updateUnit" parameterType="egovframework.com.adm.contents.vo.UnitImg">
+		UPDATE XBT_UNIT_INFO
+		SET 
+			UNIT_GROUP_CD=#{unitGroupCd},
+			UNIT_NAME=#{unitName},
+			UNIT_DESC=#{unitDesc},
+			STUDY_LVL=#{studyLvl},
+			USE_YN=#{useYn},
+			UPDATE_ID=#{updateId},
+			UPDATE_DATE=now()
+		WHERE UNIT_SCAN_ID = #{unitScanId}
+		AND LANGUAGE_CODE = #{languageCode}	
+	</update>		
+	
+	
+	<!-- 단품마스터등록 -->
+	<insert id="insertUnitMaster" parameterType="egovframework.com.adm.contents.vo.UnitImg">
+		INSERT INTO XBT_UNIT_IMG_INFO_MASTER (
+			UNIT_SCAN_ID
+			,UNIT_ID
+			,UNIT_GROUP_CD
+			,USE_YN
+			,REAL_IMG
+			,FRONT_IMG
+			,SIDE_IMG
+			,INSERT_DATE
+		) VALUES (
+			#{unitScanId}
+			,#{unitId}
+			,#{unitGroupCd}
+			,'Y'
+			,#{realImg}
+			,#{frontImg}
+			,#{sideImg}
+			,now()
+		)
+	</insert>	
+	
+	<!-- 그룹관리 삭제-->
+	<delete id="deleteUnit" parameterType="egovframework.com.adm.contents.vo.UnitImg">
+		DELETE FROM XBT_UNIT_INFO 
+		WHERE UNIT_SCAN_ID = #{unitScanId}
+		AND LANGUAGE_CODE = #{languageCode}  
+	</delete>		
+	
+	
+	<!-- 단품마스터이미지수정 -->
+	<update id="updateUnitImg1" parameterType="egovframework.com.adm.contents.vo.UnitImg">
+		UPDATE XBT_UNIT_IMG_INFO_MASTER
+		SET 
+			REAL_IMG=#{realImg},
+			FRONT_IMG=#{frontImg},
+			SIDE_IMG=#{sideImg},
+			UPDATE_DATE=now()
+		WHERE UNIT_SCAN_NO=#{unitScanNo}	
+	</update>		
+	
+	<!-- 단품디테일등록 -->
+	<insert id="insertUnitDetail" parameterType="egovframework.com.adm.contents.vo.UnitImg">		
+		INSERT INTO XBT_UNIT_IMG_INFO_DETAIL
+		(
+			UNIT_SCAN_ID
+			,UNIT_ID
+			,UNIT_GROUP_CD
+			,ANGLE
+			,INSERT_DATE
+		)
+		VALUES(
+			#{unitScanId}
+			,#{unitId}
+			,#{unitGroupCd}
+			,#{angle}
+			,now()
+		)
+	</insert>
+	
+	
+	<!-- 단품3d등록 -->
+	<insert id="insertUnit3dDetail" parameterType="egovframework.com.adm.contents.vo.UnitImg">		
+		INSERT INTO XBT_UNIT_3DIMG_INFO_DETAIL
+		(
+			UNIT_SCAN_NO
+			,UNIT_SCAN_ID
+			,UNIT_ID
+			,UNIT_GROUP_CD			
+			,INSERT_DATE
+		)VALUES(
+			#{unitScanId}
+			,#{unitId}
+			,#{unitGroupCd}			
+			,now()
+		)
+	</insert>	
+	
+	<!-- 단품 이미지 업데이트 -->
+	<update id="updateUnitImg" parameterType="egovframework.com.adm.contents.vo.UnitImg">
+		UPDATE XBT_UNIT_IMG_INFO_MASTER SET 
+		<choose>
+			<when test='imgType == "real"'>
+				REAL_IMG = #{realImg}
+			</when>
+			<when test='imgType == "front"'>
+				FRONT_IMG = #{frontImg}
+			</when>
+			<when test='imgType == "side"'>
+				SIDE_IMG = #{sideImg}
+			</when>			
+		</choose>				
+		,UPDATE_DATE = now()
+		WHERE UNIT_SCAN_ID = #{unitScanId}
+	
+	</update>	
 	
 			
 </mapper>

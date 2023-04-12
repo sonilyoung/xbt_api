@@ -1,4 +1,4 @@
-package egovframework.com.common.vo;
+package egovframework.com.adm.system.vo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,7 +8,7 @@ import egovframework.rte.psl.dataaccess.util.EgovMap;
 import lombok.Data;
 
 @Data
-public class Common implements Serializable {
+public class System implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -30,6 +30,6 @@ public class Common implements Serializable {
 	private String mainYn;/*메인그룹*/
 	private String parentsGroupId;/*부모그룹id*/
 	
-	List<Common> subList;//하위목록
+	List<System> subList;//하위목록
 	
 }

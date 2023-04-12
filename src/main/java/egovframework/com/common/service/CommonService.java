@@ -9,6 +9,7 @@ import egovframework.com.adm.contents.vo.Contents;
 import egovframework.com.adm.contents.vo.ContentsMgr;
 import egovframework.com.adm.contents.vo.Language;
 import egovframework.com.common.vo.Common;
+import egovframework.com.common.vo.CommonSystemMessage;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.
@@ -31,6 +32,16 @@ public interface CommonService {
 	
 	public List<Common> getCommonGroupList(Common params);
 	
-	public List<Common> getCommonList(Common params);
+	public List<Common> selectCommonList(Common params);
+	
+	public int insertCommonCode(Common params);
+	
+	public int insertCommonCodeDetail(Common params);
+	
+	public int updateCommonCode(Common params);
+	
+	public int deleteCommonCode(Common params);
+	
+	public CommonSystemMessage selectSystemMessage(CommonSystemMessage params);
 	
 }

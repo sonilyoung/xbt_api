@@ -24,12 +24,15 @@ import egovframework.com.adm.login.service.UserService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.common.service.CommonService;
 import egovframework.com.common.vo.Common;
+import egovframework.com.common.vo.CommonSystemMessage;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
+import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
+import egovframework.com.global.util.DateHelper;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -66,9 +69,9 @@ public class CommonController {
      * @param param
      * @return Company
      */
-    @PostMapping("/getCommonList.do")
+    @PostMapping("/selectCommonList.do")
     @ApiOperation(value = "공통코드", notes = "공통코드목록조회.")
-    public BaseResponse<List<Common>> getCommonList(HttpServletRequest request, @RequestBody Common params) {
+    public BaseResponse<List<Common>> selectCommonList(HttpServletRequest request, @RequestBody Common params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
@@ -76,13 +79,177 @@ public class CommonController {
 		
 		try {
 			//그룹관리조회
-	        return new BaseResponse<List<Common>>(commonService.getCommonList(params));
+	        return new BaseResponse<List<Common>>(commonService.selectCommonList(params));
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
     }    
     
+    
+    
+    /**
+     * 공통코드등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertCommonCode.do")
+    @ApiOperation(value = "공통코드", notes = "공통코드등록.")
+    public BaseResponse<Integer> insertCommonCode(HttpServletRequest request, @RequestBody Common params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		if(StringUtils.isEmpty(params.getParentsGroupId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "parentsGroupId" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getGroupId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "groupId" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getSortOrder())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "sortOrder" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getRemarks())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "remarks" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getCodeValue())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "codeValue" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getMainYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "mainYn" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getCodeName())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeName" + BaseApiMessage.REQUIRED.getMessage());
+		}
+		
+		
+		try {
+			//공통코드등록
+			params.setInsertId(login.getUserId());
+			int result = commonService.insertCommonCode(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * 공통코드수정
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/updateCommonCode.do")
+    @ApiOperation(value = "공통코드", notes = "공통코드수정.")
+    public BaseResponse<Integer> updateCommonCode(HttpServletRequest request, @RequestBody Common params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		if(StringUtils.isEmpty(params.getCodeId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeId" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		if(StringUtils.isEmpty(params.getParentsGroupId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "parentsGroupId" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getGroupId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "groupId" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getSortOrder())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "sortOrder" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getRemarks())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "remarks" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getCodeValue())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "codeValue" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getMainYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "mainYn" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getCodeName())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeName" + BaseApiMessage.REQUIRED.getMessage());
+		}
+		if(StringUtils.isEmpty(params.getUseYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UseYn" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+				
+		
+		try {
+			//공통코드등록
+			params.setUpdateId(login.getUserId());
+			int result = commonService.updateCommonCode(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * 공통코드삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteCommonCode.do")
+    @ApiOperation(value = "공통코드", notes = "공통코드삭제.")
+    public BaseResponse<Integer> deleteCommonCode(HttpServletRequest request, @RequestBody Common params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		if(StringUtils.isEmpty(params.getCodeId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeId" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		try {
+			//공통코드등록
+			int result = commonService.deleteCommonCode(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }      
 
 	    
 }

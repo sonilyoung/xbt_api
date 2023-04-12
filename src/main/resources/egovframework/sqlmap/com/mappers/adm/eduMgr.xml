@@ -15,7 +15,7 @@
               ,TA1.USE_YN                                                   /* 사용여부 */
               ,TA1.PARENT_PROC_GROUP_CD                                                          /* 상위과정분류코드 */
               ,TA1.TOP_PROC_GROUP_CD                                                             /* 최상위과정분류코드 */
-          FROM XTS_PROC_GROUP TA1                                                              /* XBT과정분류 Table */
+          FROM xbt_PROC_GROUP TA1                                                              /* XBT과정분류 Table */
          WHERE 1=1
 		<choose>
 			<when test='searchType == "1"'>
@@ -23,7 +23,7 @@
 	            AND TA1.TOP_PROC_GROUP_CD    = '*'                                                  /* 최상위과정분류코드 */			
 			</when>
 			<when test='searchType == "2"'>
-				AND TA1.TOP_PROC_GROUP_CD = #{procGroupCd}/* 상위과정분류코드 */
+				AND TA1.PARENT_PROC_GROUP_CD = #{procGroupCd}/* 상위과정분류코드 */
 			</when>
 			<when test='searchType == "1"'>
 				AND TA1.PARENT_PROC_GROUP_CD = #{procGroupCd}                                                  /* 상위과정분류코드 */	
@@ -40,14 +40,14 @@
             ,A.LARGE_GROUP_CD                                                                            /* 대분류코드 */
             ,A.MIDDLE_GROUP_CD                                                                           /* 중분류코드 */                                               
             ,A.SMALL_GROUP_CD                                                                            /* 소분류코드 */                                               
-            ,(SELECT PROC_GROUP_NM FROM XTS_PROC_GROUP WHERE PROC_GROUP_CD = A.LARGE_GROUP_CD) AS LARGE_GROUP_NM  /* 대분류명 */
-            ,(SELECT PROC_GROUP_NM FROM XTS_PROC_GROUP WHERE PROC_GROUP_CD = A.MIDDLE_GROUP_CD) AS MIDDLE_GROUP_NM  /* 중분류명 */                                               
-            ,(SELECT PROC_GROUP_NM FROM XTS_PROC_GROUP WHERE PROC_GROUP_CD = A.SMALL_GROUP_CD) AS SMALL_GROUP_NM  /* 소분류명 */                                                   
+            ,(SELECT PROC_GROUP_NM FROM xbt_PROC_GROUP WHERE PROC_GROUP_CD = A.LARGE_GROUP_CD) AS LARGE_GROUP_NM  /* 대분류명 */
+            ,(SELECT PROC_GROUP_NM FROM xbt_PROC_GROUP WHERE PROC_GROUP_CD = A.MIDDLE_GROUP_CD) AS MIDDLE_GROUP_NM  /* 중분류명 */                                               
+            ,(SELECT PROC_GROUP_NM FROM xbt_PROC_GROUP WHERE PROC_GROUP_CD = A.SMALL_GROUP_CD) AS SMALL_GROUP_NM  /* 소분류명 */                                                   
             ,A.INSERT_DATE                                                                                    /* 등록일시 */
             ,A.INSERT_ID                                                                                    /* 등록자 */
             ,A.UPDATE_DATE                                                                                    /* 수정일시 */
             ,A.UPDATE_ID                                                                                    /* 수정자 */
-       FROM XTS_PROC_GROUP_INFO A
+       FROM xbt_PROC_GROUP_INFO A
       ORDER BY A.PROC_GROUP_DTL_GROUP_CD                                                              /* 과정분류코드 */
 	</select>  	   
 	
@@ -75,7 +75,7 @@
 			,PROC_DC_CONTENT/*과정설명내용*/
 			,GRADE/*학점*/
 			,USE_YN/*XBT사용여부*/
-	    FROM XTS_PROC_INFO				
+	    FROM xbt_PROC_INFO				
 	</select>
 	
 	<!-- 교육과정관리-과정등록 상세조회-->  	 	
@@ -100,7 +100,7 @@
 			  ,T2.DECIP_LAST_TEST_EFFECT_CNT /* 판독최종평가실시횟수 */
 			  ,T2.THEORY_LAST_TEST_EFFECT_CNT /* 이론최종평가실시횟수 */
 			  ,T2.REPEATED_STUDYING_YN /* 반복학습여부 */			  
-		  FROM XTS_PROC_INFO T1 INNER JOIN XTS_PROC_CONF T2
+		  FROM xbt_PROC_INFO T1 INNER JOIN xbt_PROC_CONF T2
 		  ON T1.PROC_CD = T2.PROC_CD   
 		  WHERE T1.PROC_CD = #{procCd}   				
 	</select>	
@@ -122,9 +122,9 @@
 			  WHEN TA1.ENDING_PROCESS_END_YN='1' THEN '완료' 
 			  ELSE '' END
 			AS ENDING_PROCESS_END_STATUS/* 수료처리완료여부 */
-		  FROM XTS_PROC_BASELINE_INFO TA1                                                                                                              /* XBT과정차수정보 TABLE */
-              ,XTS_PROC_BASELINE_CONF TA2                                                                                                              /* XBT과정차수설정 TABLE */
-              ,XTS_PROC_INFO     TA3                                                                                                              /* XBT과정정보 TABLE */
+		  FROM xbt_PROC_BASELINE_INFO TA1                                                                                                              /* XBT과정차수정보 TABLE */
+              ,xbt_PROC_BASELINE_CONF TA2                                                                                                              /* XBT과정차수설정 TABLE */
+              ,xbt_PROC_INFO     TA3                                                                                                              /* XBT과정정보 TABLE */
          WHERE TA1.PROC_CD   = TA2.PROC_CD                                                                                                        /* 과정코드 */
            AND TA1.PROC_YEAR = TA2.PROC_YEAR                                                                                                      /* 과정년도 */
            AND TA1.PROC_SEQ  = TA2.PROC_SEQ                                                                                                       /* 과정차수 */
@@ -156,9 +156,9 @@
 			  ,TA2.BAN_PASS_FAIL_PROCESS                                                                                                          /* 금지통과불합격처리 */
 			  ,TA2.REPEATED_STUDYING_YN                                                                                                           /* 반복학습여부 */
 			  ,TA1.ENDING_PROCESS_END_YN                                                                      /* 수료처리완료여부 */
-		  FROM XTS_PROC_BASELINE_INFO TA1                                                                                                              /* XBT과정차수정보 TABLE */
-              ,XTS_PROC_BASELINE_CONF TA2                                                                                                              /* XBT과정차수설정 TABLE */
-              ,XTS_PROC_INFO     TA3                                                                                                              /* XBT과정정보 TABLE */
+		  FROM xbt_PROC_BASELINE_INFO TA1                                                                                                              /* XBT과정차수정보 TABLE */
+              ,xbt_PROC_BASELINE_CONF TA2                                                                                                              /* XBT과정차수설정 TABLE */
+              ,xbt_PROC_INFO     TA3                                                                                                              /* XBT과정정보 TABLE */
          WHERE TA1.PROC_CD   = TA2.PROC_CD                                                                                                        /* 과정코드 */
            AND TA1.PROC_YEAR = TA2.PROC_YEAR                                                                                                      /* 과정년도 */
            AND TA1.PROC_SEQ  = TA2.PROC_SEQ                                                                                                       /* 과정차수 */
@@ -176,8 +176,8 @@
 			  ,NVL(REAL_PRESCO,0) AS REAL_PRESCO                                                        /* 실기만점 */
 			  ,PATTERN_PLUS_SCORE                                                                       /* 패턴가중치 */			  
 			  ,PATTERN_FALL_SCORE                                                                       /* 패턴과락점수 */
-			  ,(SELECT PROC_NM FROM  XTS_PROC_INFO WHERE PROC_CD=T1.PROC_CD AND PROC_YEAR=T1.PROC_YEAR AND PROC_SEQ=T1.PROC_SEQ ) AS PROC_NM /* 과정명 */
-		  FROM XTS_PROC_BASELINE_PATTERN T1                                                                      /* 교육차수패턴 Table */
+			  ,(SELECT PROC_NM FROM  xbt_PROC_INFO WHERE PROC_CD=T1.PROC_CD AND PROC_YEAR=T1.PROC_YEAR AND PROC_SEQ=T1.PROC_SEQ ) AS PROC_NM /* 과정명 */
+		  FROM xbt_PROC_BASELINE_PATTERN T1                                                                      /* 교육차수패턴 Table */
 		 WHERE PROC_CD   = #{procCd}                                                                         /* 과정코드 */
 		   AND PROC_YEAR = #{procYear}                                                                      /* 과정년도 */
 		   AND PROC_SEQ  = #{procSeq}   
@@ -193,9 +193,9 @@
 			,TA1.PROC_YEAR /* 과정년도 */	
 			,TA2.PROC_SEQ/*차수*/
 			,TA3.PROC_NM /* 과정명 */
-		  FROM XTS_PROC_BASELINE_INFO TA1                                                                                                              /* XBT과정차수정보 Table */
-              ,XTS_PROC_BASELINE_CONF TA2                                                                                                              /* XBT과정차수설정 Table */
-              ,XTS_PROC_INFO     TA3                                                                                                              /* XBT과정정보 Table */
+		  FROM xbt_PROC_BASELINE_INFO TA1                                                                                                              /* XBT과정차수정보 Table */
+              ,xbt_PROC_BASELINE_CONF TA2                                                                                                              /* XBT과정차수설정 Table */
+              ,xbt_PROC_INFO     TA3                                                                                                              /* XBT과정정보 Table */
          WHERE TA1.PROC_CD   = TA2.PROC_CD                                                                                                        /* 과정코드 */
            AND TA1.PROC_YEAR = TA2.PROC_YEAR                                                                                                      /* 과정년도 */
            AND TA1.PROC_SEQ  = TA2.PROC_SEQ                                                                                                       /* 과정차수 */
@@ -209,7 +209,7 @@
 		T2.MENU_NO 
 		,FN_GET_LANGUAGECODE_NAME(T2.MENU_CD ,'KOR')    AS MENU_NM /* ACTION구분명 */
 		,T2.MENU_CD
-		FROM XTS_PROC_BASELINE_MENU_CONF T1 INNER JOIN XTS_STU_MENU_MAS T2
+		FROM xbt_PROC_BASELINE_MENU_CONF T1 INNER JOIN xbt_STU_MENU_MAS T2
 		ON T1.MENU_CD = T2.MENU_CD 
 	 	WHERE T1.PROC_CD   = #{procCd}                                                                         /* 과정코드 */
 		AND T1.PROC_YEAR = #{procYear}                                                                      /* 과정년도 */

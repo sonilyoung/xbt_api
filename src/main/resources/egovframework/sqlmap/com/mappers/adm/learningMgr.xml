@@ -21,7 +21,7 @@
 			     , A.UPDATE_DATE                      /*수정일시*/        
 			     , A.UPDATE_ID                      /*수정자*/        
 			     , A.SETEQ_QUESTION_CNT          /*출제문제수*/ 
-			FROM XTS_XRAY_EDU_MODULE_INFO A                                             								 
+			FROM xbt_XRAY_EDU_MODULE_INFO A                                             								 
 		ORDER BY A.XRAY_EDU_MODULE_ID     
 	</select>		
 	
@@ -33,7 +33,7 @@
           ,POINTS_STD_NM                                             /* 배점기준명칭 */
           ,POINTS_STD_DC                                             /* 배점기준설명 */
           ,USE_YN                                                    /* 사용여부 */              
-        FROM XTS_POINTS_STD_INFO                                       /* XBT배점기준정보 Table */
+        FROM xbt_POINTS_STD_INFO                                       /* XBT배점기준정보 Table */
 	    ORDER BY POINTS_STD_ID                                          /* 배점기준ID */			     
 	</select>     
 	   
@@ -47,7 +47,7 @@
 		   ,NVL(LIMIT_UNIT_SCORE,0)                    AS LIMIT_UNIT_SCORE /* 제한물품점수 */
 		   ,NVL(QUESTION_UNIT_SCORE,0)                 AS QUESTION_UNIT_SCORE /* 의심물품점수 */
 		   ,NVL(PASS_UNIT_SCORE,0)                     AS PASS_UNIT_SCORE /* 통과물품점수 */
-	     FROM XTS_POINTS_STD_DC t1                                                                                    
+	     FROM xbt_POINTS_STD_DC t1                                                                                    
 	</select>            			
 			
 			
@@ -65,8 +65,8 @@
 			  ,A.INSERT_DATE /* 등록일 */
 			  ,A.UPDATE_ID /* 수정자ID */
 			  ,A.UPDATE_DATE /* 수정일 */
-		  FROM XTS_EDU_TYPE_INFO A                                         /* XTS교육타입상세 TABLE */
-		  LEFT JOIN XTS_POINTS_STD_INFO B
+		  FROM xbt_EDU_TYPE_INFO A                                         /* XTS교육타입상세 TABLE */
+		  LEFT JOIN xbt_POINTS_STD_INFO B
 		  ON A.POINTS_STD_ID = B.POINTS_STD_ID 
 	</select>	
 				

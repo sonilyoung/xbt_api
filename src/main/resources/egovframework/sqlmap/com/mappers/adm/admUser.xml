@@ -29,7 +29,7 @@
 		     , UPD_DT                      /*수정일시*/        
 		     , DEL_YN                      /*삭제여부*/        
 		     , DEL_DT                      /*삭제일시*/        
-		FROM XTS_USER                                             								 
+		FROM XBT_USER                                             								 
 		WHERE USER_ID = #{userId}
 	</select>
 

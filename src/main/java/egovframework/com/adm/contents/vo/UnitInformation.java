@@ -7,11 +7,12 @@ import lombok.Data;
 @Data
 public class UnitInformation{
 
-	private Long unitInfoNo;/*정보관리no*/
+	private String unitScanId;/*정보관리Id*/
 	private String unitId; /*물품아이디*/
 	private String unitName; /*물품분류명칭*/
 	private String unitDesc; /*물품분류상세*/
 	private String unitGroupCd;/*물품그룹코드*/
+	private String unitGroupName;/*물품그룹코드*/
 	private String useYn;/*사용여부*/
 	private String useYnNm;/*사용여부*/
 	private String parentUnitGroupCd;/*상위물품분류코드*/

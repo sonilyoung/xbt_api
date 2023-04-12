@@ -20,6 +20,7 @@
 	        allowed-methods="GET, POST, PUT, DELETE, OPTIONS, PATCH" 
 	    	allow-credentials="true"/>
 	</mvc:cors>
+	
      
      <!-- Interceptors -->
 	<mvc:interceptors>

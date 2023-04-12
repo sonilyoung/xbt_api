@@ -48,7 +48,7 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
         		
         	} else {
         		
-        		throw new CustomBaseException(BaseResponseCode.INFORMATION_ERROR, new String[] {});
+        		throw new CustomBaseException(BaseResponseCode.NO_USERS, new String[] {});
         	}
 	        	
 		

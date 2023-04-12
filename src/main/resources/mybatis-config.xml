@@ -14,7 +14,7 @@
     	<!-- 컬럼명 대신 컬럼 라벨을 사용 --> 
     	<setting name="useColumnLabel" value="true"/> 
     	<!-- 생성키에 대한 JDBC 지원 허용 여부 --> 
-    	<setting name="useGeneratedKeys" value="false"/> 
+    	<setting name="useGeneratedKeys" value="true"/> 
     	<!-- 디폴트 Executor 설정(SIMPLE은 특별히 동작하는 것은 업음) --> 
     	<setting name="defaultExecutorType" value="SIMPLE"/> 
     	<!-- DB 응답 타임아웃 설정 --> 

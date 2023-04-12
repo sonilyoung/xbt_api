@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import egovframework.com.adm.contents.vo.ContentsMgr;
 import egovframework.com.adm.contents.vo.Language;
 import egovframework.com.common.dao.CommonDAO;
 import egovframework.com.common.vo.Common;
+import egovframework.com.common.vo.CommonSystemMessage;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import lombok.extern.log4j.Log4j2;
 
@@ -38,6 +40,7 @@ import lombok.extern.log4j.Log4j2;
  */
 @Log4j2
 @Service("commonService")
+@SuppressWarnings("unchecked")
 public class CommonServiceImpl implements CommonService {
 
     @Resource(name = "CommonDAO")
@@ -51,18 +54,52 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public List<Common> getCommonList(Common params) {
+	public List<Common> selectCommonList(Common params) {
 		// TODO Auto-generated method stub
 		
 		List<Common> mainList = (List<Common>) commonDAO.getCommonGroupList(params);
-		List<Common> resultList = null;
 		for(Common m : mainList) {
 			m.setLanguageCode(params.getLanguageCode());
-			List<Common> subList = (List<Common>) commonDAO.getCommonList(m);
+			List<Common> subList = (List<Common>) commonDAO.selectCommonList(m);
 			m.setSubList(subList);
 		}
 		
 		return mainList;
+	}
+
+	@Override
+	@Transactional
+	public int insertCommonCode(Common params) {
+		// TODO Auto-generated method stub
+		commonDAO.insertCommonCode(params);
+		int result = commonDAO.insertCommonCodeDetail(params);
+		return result;
+	}
+
+	@Override
+	public int insertCommonCodeDetail(Common params) {
+		// TODO Auto-generated method stub
+		return commonDAO.insertCommonCodeDetail(params);
+	}
+
+	@Override
+	public int updateCommonCode(Common params) {
+		// TODO Auto-generated method stub
+		return commonDAO.updateCommonCode(params);
+	}
+
+	@Override
+	public int deleteCommonCode(Common params) {
+		// TODO Auto-generated method stub
+		int result = commonDAO.deleteCommonCode(params);
+		commonDAO.deleteCommonCodeDetail(params);
+		return result; 
+	}
+
+	@Override
+	public CommonSystemMessage selectSystemMessage(CommonSystemMessage params) {
+		// TODO Auto-generated method stub
+		return commonDAO.selectSystemMessage(params);
 	}
 
 

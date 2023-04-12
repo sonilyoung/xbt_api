@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.adm.system.dao.SystemDAO">
+	
+	<!-- 공지사항 가져오기 -->
+	<select id="selectNoticeList" parameterType="egovframework.com.adm.system.vo.Notice" resultType="egovframework.com.adm.system.vo.Notice">
+		SELECT 
+			NOTICE_ID
+			, TITLE
+			, CONTENTS
+			, INSERT_ID
+			, INSERT_DATE
+			, UPDATE_ID
+			, UPDATE_DATE
+		FROM xbt_NOTICE
+	</select>	
+	
+	<!-- 공지사항 상세 -->
+	<select id="selectNotice" parameterType="egovframework.com.adm.system.vo.Notice" resultType="egovframework.com.adm.system.vo.Notice">
+		SELECT 
+			NOTICE_ID
+			, TITLE
+			, CONTENTS
+			, INSERT_ID
+			, INSERT_DATE
+			, UPDATE_ID
+			, UPDATE_DATE
+		FROM xbt_NOTICE
+		WHERE NOTICE_ID = #{noticeId}
+	</select>		
+	
+	<!-- 공지사항 등록 -->
+	<insert id="insertNotice" parameterType="egovframework.com.adm.system.vo.Notice">
+		INSERT INTO xbt_SYSTEM_MESSAGE
+		(
+			TITLE
+			, CONTENTS
+			, INSERT_ID
+			, INSERT_DATE
+			, UPDATE_ID
+			, UPDATE_DATE
+		)
+		VALUES(
+			,#{title}
+			,#{contents}
+			,#{insertId}
+			,now()
+		)	
+	</insert>	
+	
+	
+	<!-- 공지사항 수정 -->
+	<update id="updateNotice" parameterType="egovframework.com.adm.system.vo.Notice">	
+		UPDATE xbt_NOTICE
+		SET 
+			TITLE = #{title}
+			, CONTENTS = #{title}
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DATE = now()
+		WHERE NOTICE_ID = 0;
+
+	</update>	
+	
+	<!-- 공지사항 삭제-->
+	<delete id="deleteNotice" parameterType="egovframework.com.adm.system.vo.Notice">
+		DELETE FROM xbt_SYSTEM_MESSAGE WHERE NOTICE_ID = #{noticeId}  
+	</delete>	
+	
+</mapper>

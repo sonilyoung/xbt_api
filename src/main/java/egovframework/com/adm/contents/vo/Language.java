@@ -11,10 +11,14 @@ public class Language implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long codeNo; 
+	private String codeId; 
+	private String groupId;
 	private String languageName;
 	private String languageCode;
 	private String useYn;
 	private String insertId;
 	private String insertDate;
+	private String codeName;
+	private String codeDesc;
 	
 }

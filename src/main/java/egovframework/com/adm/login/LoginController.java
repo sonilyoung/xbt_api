@@ -141,7 +141,7 @@ public class LoginController {
         LOGGER.debug("=== cnt : "  + cnt + "====");
         	
         if(cnt == null) {
-        	throw new CustomBaseException(BaseResponseCode.INFORMATION_ERROR, new String[] {});
+        	throw new CustomBaseException(BaseResponseCode.NO_USERS, new String[] {});
         }
         
         return new BaseResponse<Long>(cnt);

@@ -5,9 +5,9 @@
 	<!-- 공통코드그룹 -->
 	<select id="getCommonGroupList" parameterType="egovframework.com.common.vo.Common" resultType="egovframework.com.common.vo.Common">
 		SELECT
-			XCC.CODE_ID AS CODE_NO 			
+			XCC.CODE_ID
+			,XLD.CODE_NO 			
 			,XCC.GROUP_ID
-			,XCC.CODE_ID
 			,XCC.CODE_VALUE
 			,XCC.SORT_ORDER			
 			,XLD.CODE_NAME
@@ -16,7 +16,7 @@
 			,XCC.INSERT_DATE
 			,XCC.UPDATE_ID
 			,XCC.UPDATE_DATE
-		FROM XTS_COMMON_CODE XCC  INNER JOIN XTS_COMMON_DETAIL XLD 
+		FROM XBT_COMMON_CODE_MASTER XCC  INNER JOIN XBT_COMMON_CODE_DETAIL XLD 
 		ON XCC.CODE_ID = XLD.CODE_ID
 		AND XCC.GROUP_ID = XLD.GROUP_ID
 		AND XCC.MAIN_YN = 'Y'  		
@@ -24,11 +24,11 @@
 	</select>		
 	
 	<!-- 공통코드목록 -->
-	<select id="getCommonList" parameterType="egovframework.com.common.vo.Common" resultType="egovframework.com.common.vo.Common">
+	<select id="selectCommonList" parameterType="egovframework.com.common.vo.Common" resultType="egovframework.com.common.vo.Common">
 		SELECT
-			XCC.CODE_ID AS CODE_NO 			
+			XCC.CODE_ID
+			,XLD.CODE_NO  			
 			,XCC.GROUP_ID
-			,XCC.CODE_ID
 			,XCC.CODE_VALUE
 			,XCC.SORT_ORDER			
 			,XLD.CODE_NAME
@@ -37,7 +37,7 @@
 			,XCC.INSERT_DATE
 			,XCC.UPDATE_ID
 			,XCC.UPDATE_DATE
-		FROM XTS_COMMON_CODE XCC  INNER JOIN XTS_COMMON_DETAIL XLD 
+		FROM XBT_COMMON_CODE_MASTER XCC  INNER JOIN XBT_COMMON_CODE_DETAIL XLD 
 		ON XCC.CODE_ID = XLD.CODE_ID
 		AND XCC.GROUP_ID = XLD.GROUP_ID
 		AND XCC.GROUP_ID = #{groupId} 
@@ -45,5 +45,123 @@
 		AND XLD.LANGUAGE_CODE = #{languageCode}
 	</select>	
 	
-
+	<!-- 공통코드등록 -->
+	<insert id="insertCommonCode" parameterType="egovframework.com.common.vo.Common" useGeneratedKeys="true" keyProperty="codeId">
+		INSERT INTO XBT_COMMON_CODE_MASTER
+		(
+			PARENTS_GROUP_ID
+			,GROUP_ID
+			,SORT_ORDER
+			,REMARKS
+			,USE_YN
+			,INSERT_ID
+			,INSERT_DATE
+			,CODE_VALUE
+			,MAIN_YN
+		)VALUES(
+			#{parentsGroupId}
+			,#{groupId}
+			,#{sortOrder}
+			,#{remarks}
+			,1
+			,#{insertId}
+			,now()
+			,#{codeValue}
+			,#{mainYn}
+		)
+	</insert>
+	
+	<!-- 공통코드 상세등록 -->
+	<insert id="insertCommonCodeDetail" parameterType="egovframework.com.common.vo.Common">
+		INSERT INTO XBT_COMMON_CODE_DETAIL
+		(
+			LANGUAGE_CODE
+			,GROUP_ID
+			,CODE_ID
+			,SORT_ORDER
+			,CODE_NAME
+			,REMARKS
+			,USE_YN
+			,INSERT_ID
+			,INSERT_DATE
+			,CODE_DESC
+		)
+		VALUES(
+			#{languageCode}
+			,#{groupId}
+			,#{codeId}
+			,#{sortOrder}
+			,#{codeName}
+			,#{remarks}
+			,'Y'
+			,#{insertId}
+			,now()
+			,#{codeDesc}
+		)	
+	</insert>
+	
+	<!-- 공통코드 수정 -->
+	<update id="updateCommonCode" parameterType="egovframework.com.common.vo.Common">	
+		UPDATE 
+			XBT_COMMON_CODE_DETAIL
+		SET 
+			LANGUAGE_CODE = #{languageCode}	
+			,GROUP_ID	= #{groupId}	
+			,CODE_ID	= #{codeId}	
+			,SORT_ORDER	= #{sortOrder}	
+			,CODE_NAME	= #{codeName}	
+			,REMARKS	= #{remarks}	
+			,USE_YN	= #{useYn}	
+			,UPDATE_ID	= #{updateId}	
+			,UPDATE_DATE	= now()	
+			,CODE_DESC	= #{codeDesc}	
+		WHERE CODE_ID = #{codeId}	
+	</update>
+	
+	<!-- 공통코드 삭제 -->
+	<delete id="deleteCommonCode" parameterType="egovframework.com.common.vo.Common">
+		DELETE FROM XBT_COMMON_CODE_MASTER WHERE CODE_ID = #{codeId}  
+	</delete>
+	
+	<delete id="deleteCommonCodeDetail" parameterType="egovframework.com.common.vo.Common">
+		DELETE FROM XBT_COMMON_CODE_DETAIL WHERE CODE_ID = #{codeId}  
+	</delete>
+	
+	
+	
+	<!-- API 공통메세지 가져오기 -->
+	<select id="selectSystemMessage" parameterType="egovframework.com.common.vo.CommonSystemMessage" resultType="egovframework.com.common.vo.CommonSystemMessage">
+		SELECT CODE_ID, CODE_VALUE, REMARKS, URL, USE_YN, LANGUAGE_CODE, MESSAGE_TYPE
+		FROM xbt_SYSTEM_MESSAGE
+		WHERE
+		URL = #{url} 
+		AND LANGUAGE_CODE= #{languageCode}
+		AND MESSAGE_TYPE = #{messageType}
+		AND USE_YN  = 'Y'	
+	</select>	
+	
+	<!-- API 공통메세지 등록 -->
+	<insert id="insertSystemMessage" parameterType="egovframework.com.common.vo.CommonSystemMessage">
+		INSERT INTO xbt_SYSTEM_MESSAGE
+		(
+			CODE_VALUE
+			, REMARKS
+			, URL
+			, USE_YN
+			, LANGUAGE_CODE
+		)
+		VALUES(
+			,#{codeValue}
+			,#{remarks}
+			,#{url}
+			,1
+			,#{languageCode}
+		)	
+	</insert>	
+	
+	<!-- API 공통메세지 삭제-->
+	<delete id="deleteSystemMessage" parameterType="egovframework.com.common.vo.CommonSystemMessage">
+		DELETE FROM xbt_SYSTEM_MESSAGE WHERE CODE_ID = #{codeId}  
+	</delete>	
+	
 </mapper>
