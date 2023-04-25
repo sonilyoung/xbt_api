@@ -2,14 +2,9 @@ package egovframework.com.adm.eduMgr.dao;
 
 import java.util.List;
 
-import egovframework.com.adm.eduMgr.vo.EduBaselineDetailProc;
-import egovframework.com.adm.eduMgr.vo.EduBaselineMenu;
-import egovframework.com.adm.eduMgr.vo.EduBaselineProc;
-import egovframework.com.adm.eduMgr.vo.EduBaselineSubProc;
-import egovframework.com.adm.eduMgr.vo.EduClass;
-import egovframework.com.adm.eduMgr.vo.EduGroupMgr;
-import egovframework.com.adm.eduMgr.vo.EduProc;
-import egovframework.com.adm.eduMgr.vo.EduProcDetail;
+import egovframework.com.adm.eduMgr.vo.Baseline;
+import egovframework.com.adm.eduMgr.vo.EduDate;
+import egovframework.com.adm.eduMgr.vo.Student;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
@@ -18,40 +13,52 @@ public class EduMgrDAO extends EgovAbstractMapper{
 	
 	private static final String Namespace = "egovframework.com.adm.eduMgr.dao.EduMgrDAO";
 	
-	public List<?> getEduGroupList(EduGroupMgr params) {
-		return (List<?>)selectList(Namespace + ".getEduGroupList", params);
+	public List<?> selectBaselineList(Baseline params) {
+		return (List<?>)selectList(Namespace + ".selectBaselineList", params);
 	}
 	
-	public List<?> getEduClassList(EduClass params) {
-		return (List<?>)selectList(Namespace + ".getEduClassList", params);
+	
+	public int insertBaseline(Baseline params) {
+		return insert(Namespace + ".insertBaseline", params);
+	}
+	
+	public int updateBaseline(Baseline params) {
+		return update(Namespace + ".updateBaseline", params);
 	}	
 	
-	public List<?> getEduProcList(EduProc params) {
-		return (List<?>)selectList(Namespace + ".getEduProcList", params);
+	public int deleteBaseline(Baseline params) {
+		return delete(Namespace + ".deleteBaseline", params);
+	}	
+
+	public Baseline selectBaseline(Baseline params) {
+		return selectOne(Namespace + ".selectBaseline", params);
 	}	
 	
-	public Object getEduProcDetail(EduProcDetail params) {
-		return selectOne(Namespace + ".getEduProcDetail", params);
+	
+	public List<?> selectBaselineStudentList(Student params) {
+		return (List<?>)selectList(Namespace + ".selectBaselineStudentList", params);
+	}
+	
+	public int insertBaselineStudent(Student params) {
+		return insert(Namespace + ".insertBaselineStudent", params);
+	}
+	
+	
+	public int deleteBaselineStudent(Student params) {
+		return delete(Namespace + ".deleteBaselineStudent", params);
 	}		
 	
-	public List<?> getEduBaselineList(EduBaselineProc params) {
-		return (List<?>)selectList(Namespace + ".getEduBaselineList", params);
+	public List<?> selectEduDateList(EduDate params) {
+		return (List<?>)selectList(Namespace + ".selectEduDateList", params);
 	}
 	
-	public Object getEduBaselineDetail(EduBaselineDetailProc params) {
-		return selectOne(Namespace + ".getEduBaselineDetail", params);
-	}	
-	
-	public List<?> getEduBaselineSubList(EduBaselineSubProc params) {
-		return (List<?>)selectList(Namespace + ".getEduBaselineSubList", params);
+	public int insertEduDate(EduDate params) {
+		return insert(Namespace + ".insertEduDate", params);
 	}
 	
-	public List<?> getEduBaselineMenuList(EduBaselineMenu params) {
-		return (List<?>)selectList(Namespace + ".getEduBaselineMenuList", params);
+	
+	public int deleteEduDate(EduDate params) {
+		return delete(Namespace + ".deleteEduDate", params);
 	}	
-	
-	public List<?> getEduBaselineMenuSubList(EduBaselineMenu params) {
-		return (List<?>)selectList(Namespace + ".getEduBaselineMenuSubList", params);
-	}		
-	
+
 }

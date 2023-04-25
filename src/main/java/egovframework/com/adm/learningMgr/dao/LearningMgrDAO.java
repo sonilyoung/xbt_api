@@ -18,9 +18,18 @@ public class LearningMgrDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectModuleList", params);
 	}
 	
+	public List<?> selectModuleQuestion(EduModule params) {
+		return (List<?>)selectList(Namespace + ".selectModuleQuestion", params);
+	}
+		
+	
 	public int insertModule(EduModule params) {
 		return insert(Namespace + ".insertModule", params);
 	}
+	
+	public int insertModuleQuestion(EduModule params) {
+		return insert(Namespace + ".insertModuleQuestion", params);
+	}	
 	
 	public int updateModule(EduModule params) {
 		return update(Namespace + ".updateModule", params);
@@ -28,9 +37,13 @@ public class LearningMgrDAO extends EgovAbstractMapper{
 	
 	public int deleteModule(EduModule params) {
 		return delete(Namespace + ".deleteModule", params);
-	}	
-
-	public Module selectModule(EduModule params) {
+	}
+	
+	public int deleteModuleQuestion(EduModule params) {
+		return delete(Namespace + ".deleteModuleQuestion", params);
+	}
+	
+	public EduModule selectModule(EduModule params) {
 		return selectOne(Namespace + ".selectModule", params);
 	}	
 	

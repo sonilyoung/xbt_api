@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import egovframework.com.adm.eduMgr.vo.EduBaselineProc;
+import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.api.edc.service.EgovXtsEdcApiService;
 import egovframework.com.api.edc.service.EgovXtsEdcPseudoFilterService;
 import egovframework.com.api.edc.service.EgovXtsEdcReinforcementService;
@@ -95,7 +95,7 @@ public class EgovXtsEdcApiController {
 	@RequestMapping(value = {"/reinforcement.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
     public  BaseResponse<JsonNode> aiReinforcement(HttpServletRequest request
-    		,@RequestBody EduBaselineProc params) throws Exception{		
+    		,@RequestBody Baseline params) throws Exception{		
 		JsonNode json = null;
 		ObjectMapper mapper = new ObjectMapper();
 		HashMap<String, Boolean> hash = new HashMap<String, Boolean>();

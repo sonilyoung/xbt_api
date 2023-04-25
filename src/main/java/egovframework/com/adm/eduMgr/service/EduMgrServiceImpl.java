@@ -7,14 +7,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.adm.eduMgr.dao.EduMgrDAO;
-import egovframework.com.adm.eduMgr.vo.EduBaselineDetailProc;
-import egovframework.com.adm.eduMgr.vo.EduBaselineMenu;
-import egovframework.com.adm.eduMgr.vo.EduBaselineProc;
-import egovframework.com.adm.eduMgr.vo.EduBaselineSubProc;
-import egovframework.com.adm.eduMgr.vo.EduClass;
-import egovframework.com.adm.eduMgr.vo.EduGroupMgr;
-import egovframework.com.adm.eduMgr.vo.EduProc;
-import egovframework.com.adm.eduMgr.vo.EduProcDetail;
+import egovframework.com.adm.eduMgr.vo.Baseline;
+import egovframework.com.adm.eduMgr.vo.EduDate;
+import egovframework.com.adm.eduMgr.vo.Student;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -45,67 +40,75 @@ public class EduMgrServiceImpl implements EduMgrService {
 
 
 	@Override
-	public List<EduGroupMgr> getEduGroupList(EduGroupMgr params) {
+	public List<Baseline> selectBaselineList(Baseline params) {
 		// TODO Auto-generated method stub
-		return (List<EduGroupMgr>) eduMgrDAO.getEduGroupList(params);
+		return (List<Baseline>) eduMgrDAO.selectBaselineList(params);
+	}
+	
+	@Override
+	public int insertBaseline(Baseline params) {
+		// TODO Auto-generated method stub
+		return eduMgrDAO.insertBaseline(params);
+	}
+
+	@Override
+	public int updateBaseline(Baseline params) {
+		// TODO Auto-generated method stub
+		return eduMgrDAO.updateBaseline(params);
+	}
+
+	@Override
+	public int deleteBaseline(Baseline params) {
+		// TODO Auto-generated method stub
+		return eduMgrDAO.deleteBaseline(params);
+	}
+
+	@Override
+	public Baseline selectBaseline(Baseline params) {
+		// TODO Auto-generated method stub
+		return eduMgrDAO.selectBaseline(params);
+	}
+	
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Student> selectBaselineStudentList(Student params) {
+		// TODO Auto-generated method stub
+		return (List<Student>)eduMgrDAO.selectBaselineStudentList(params);
+	}
+
+	@Override
+	public int insertBaselineStudent(Student params) {
+		// TODO Auto-generated method stub
+		return eduMgrDAO.insertBaselineStudent(params);
 	}
 
 
 	@Override
-	public List<EduClass> getEduClassList(EduClass params) {
+	public int deleteBaselineStudent(Student params) {
 		// TODO Auto-generated method stub
-		return (List<EduClass>) eduMgrDAO.getEduClassList(params);
+		return eduMgrDAO.deleteBaselineStudent(params);
+	}	
+		
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<EduDate> selectEduDateList(EduDate params) {
+		// TODO Auto-generated method stub
+		return (List<EduDate>)eduMgrDAO.selectEduDateList(params);
+	}
+
+	@Override
+	public int insertEduDate(EduDate params) {
+		// TODO Auto-generated method stub
+		return eduMgrDAO.insertEduDate(params);
 	}
 
 
 	@Override
-	public List<EduProc> getEduProcList(EduProc params) {
+	public int deleteEduDate(EduDate params) {
 		// TODO Auto-generated method stub
-		return (List<EduProc>) eduMgrDAO.getEduProcList(params);
+		return eduMgrDAO.deleteEduDate(params);
 	}
-
-
-	@Override
-	public EduProcDetail getEduProcDetail(EduProcDetail params) {
-		// TODO Auto-generated method stub
-		return (EduProcDetail) eduMgrDAO.getEduProcDetail(params);
-	}
-
-
-	@Override
-	public List<EduBaselineProc> getEduBaselineList(EduBaselineProc params) {
-		// TODO Auto-generated method stub
-		return (List<EduBaselineProc>) eduMgrDAO.getEduBaselineList(params);
-	}
-
-
-	@Override
-	public EduBaselineDetailProc getEduBaselineDetail(EduBaselineDetailProc params) {
-		// TODO Auto-generated method stub
-		return (EduBaselineDetailProc) eduMgrDAO.getEduBaselineDetail(params);
-	}
-
-
-	@Override
-	public List<EduBaselineSubProc> getEduBaselineSubList(EduBaselineSubProc params) {
-		// TODO Auto-generated method stub
-		return (List<EduBaselineSubProc>) eduMgrDAO.getEduBaselineSubList(params);
-	}
-
-
-	@Override
-	public List<EduBaselineMenu> getEduBaselineMenuList(EduBaselineMenu params) {
-		// TODO Auto-generated method stub
-		return (List<EduBaselineMenu>) eduMgrDAO.getEduBaselineMenuList(params);
-	}
-
-
-	@Override
-	public List<EduBaselineMenu> getEduBaselineMenuSubList(EduBaselineMenu params) {
-		// TODO Auto-generated method stub
-		return (List<EduBaselineMenu>) eduMgrDAO.getEduBaselineMenuSubList(params);
-	}
-
 
 
 }

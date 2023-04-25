@@ -28,13 +28,19 @@ public interface LearningMgrService {
 	
 	public List<EduModule> selectModuleList(EduModule params);
 	
+	public List<EduModule> selectModuleQuestion(EduModule params);
+	
 	public int insertModule(EduModule params);
+	
+	public int insertModuleQuestion(EduModule params);
 	
 	public int updateModule(EduModule params);
 	
 	public int deleteModule(EduModule params);
+	
+	public int deleteModuleQuestion(EduModule params);
 
-	public Module selectModule(EduModule params);	
+	public EduModule selectModule(EduModule params);	
 	
 	public List<XrayPoint> getXrayPointList(XrayPoint params);
 	

@@ -2,14 +2,9 @@ package egovframework.com.adm.eduMgr.service;
 
 import java.util.List;
 
-import egovframework.com.adm.eduMgr.vo.EduBaselineDetailProc;
-import egovframework.com.adm.eduMgr.vo.EduBaselineMenu;
-import egovframework.com.adm.eduMgr.vo.EduBaselineProc;
-import egovframework.com.adm.eduMgr.vo.EduBaselineSubProc;
-import egovframework.com.adm.eduMgr.vo.EduClass;
-import egovframework.com.adm.eduMgr.vo.EduGroupMgr;
-import egovframework.com.adm.eduMgr.vo.EduProc;
-import egovframework.com.adm.eduMgr.vo.EduProcDetail;
+import egovframework.com.adm.eduMgr.vo.Baseline;
+import egovframework.com.adm.eduMgr.vo.EduDate;
+import egovframework.com.adm.eduMgr.vo.Student;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.
@@ -30,23 +25,26 @@ import egovframework.com.adm.eduMgr.vo.EduProcDetail;
  */
 public interface EduMgrService {
 	
-	public List<EduGroupMgr> getEduGroupList(EduGroupMgr params);
+	public List<Baseline> selectBaselineList(Baseline params);
 	
-	public List<EduClass> getEduClassList(EduClass params);
+	public int insertBaseline(Baseline params);
 	
-	public List<EduProc> getEduProcList(EduProc params);
+	public int updateBaseline(Baseline params);
 	
-	public EduProcDetail getEduProcDetail(EduProcDetail params);
+	public int deleteBaseline(Baseline params);
+
+	public Baseline selectBaseline(Baseline params);	
 	
-	public List<EduBaselineProc> getEduBaselineList(EduBaselineProc params);
+	public List<Student> selectBaselineStudentList(Student params);
 	
-	public EduBaselineDetailProc getEduBaselineDetail(EduBaselineDetailProc params);
+	public int insertBaselineStudent(Student params);
 	
-	public List<EduBaselineSubProc> getEduBaselineSubList(EduBaselineSubProc params);
+	public int deleteBaselineStudent(Student params);	
 	
-	public List<EduBaselineMenu> getEduBaselineMenuList(EduBaselineMenu params);
+	public List<EduDate> selectEduDateList(EduDate params);
 	
-	public List<EduBaselineMenu> getEduBaselineMenuSubList(EduBaselineMenu params);
+	public int insertEduDate(EduDate params);
 	
+	public int deleteEduDate(EduDate params);
 	
 }

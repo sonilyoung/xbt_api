@@ -5,176 +5,209 @@
 	<!-- 학습관리-->
 	
 	<!-- XRAY 판독모듈 정보조회-->
-	<select id="getXrayModuleList" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" resultType="egovframework.com.adm.learningMgr.vo.EduModule" >	
-		<!--
-			SELECT MODULE_ID,
-			MODULE_NM,
-			MODULE_DESC,
-			GUN_CNT,
-			EXPLOSIVES_CNT,
-			LIVE_AMMUNITION_CNT,
-			SWORD_CNT,
-			WEAPON_CNT,
-			CAMOUFLAGE_WEAPON_CNT,
-			TOOL_LIFE_CNT,
-			FLAMMABILITY_CNT,
-			DANGER_MATERIALS_CNT,
-			LIQUID_GEL_CNT,
-			PASS_CNT,
-			STUDY_LVL,
-			SLIDE_SPEED,
-			MODULE_TYPE,
-			USE_YN,
-			QUESTION_CNT,
-			GUN_SCORE,
-			EXPLOSIVES_SCORE,
-			LIVE_AMMUNITION_SCORE,
-			SWORD_SCORE,
-			WEAPON_SCORE,
-			CAMOUFLAGE_WEAPON_SCORE,
-			TOOL_LIFE_SCORE,
-			FLAMMABILITY_SCORE,
-			DANGER_MATERIALS_SCORE,
-			LIQUID_GEL_SCORE,
-			PASS_SCORE,
-			TOTAL_SCORE,
-			INSERT_ID,
-			INSERT_DATE,
-			UPDATE_ID,
-			UPDATE_DATE
-		FROM XBT_MODULE_INFO
-		-->
-		
+	<select id="selectModuleList" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" resultType="egovframework.com.adm.learningMgr.vo.EduModule" >	
 		SELECT 
-			MODULE_ID,
-			MODULE_NM,
-			MODULE_DESC,
-			STUDY_LVL,
-			SLIDE_SPEED,
-			MODULE_TYPE,			
-			ACTION_DIV0_COUNT,
-			ACTION_DIV1_COUNT,
-			ACTION_DIV2_COUNT,
-			ACTION_DIV3_COUNT,
-			ACTION_DIV4_COUNT,
-			ACTION_DIV0_SCORE,
-			ACTION_DIV1_SCORE,
-			ACTION_DIV2_SCORE,
-			ACTION_DIV3_SCORE,
-			ACTION_DIV4_SCORE,
-			USE_YN,
-			QUESTION_CNT,
-			INSERT_ID,
-			INSERT_DATE,
-			UPDATE_ID,
-			UPDATE_DATE
-		FROM XBT_MODULE_INFO		
+			MODULE_ID
+			,MODULE_NM
+			,MODULE_DESC
+			,STUDY_LVL
+			,SLIDE_SPEED
+			,MODULE_TYPE
+			,USE_YN
+			,QUESTION_CNT
+			,GUN_SCORE
+			,EXPLOSIVES_SCORE
+			,LIVE_AMMUNITION_SCORE
+			,SWORD_SCORE
+			,WEAPON_SCORE
+			,CAMOUFLAGE_WEAPON_SCORE
+			,TOOL_LIFE_SCORE
+			,FLAMMABILITY_SCORE
+			,DANGER_MATERIALS_SCORE
+			,LIQUID_GEL_SCORE
+			,PASS_SCORE
+			,TOTAL_SCORE
+			,INSERT_ID
+			,INSERT_DATE
+			,UPDATE_ID
+			,UPDATE_DATE
+		FROM XBT_MODULE_INFO_MASTER
+				
 	</select>		
 	
 	<!-- 모듈 상세 -->
 	<select id="selectModule" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" resultType="egovframework.com.adm.learningMgr.vo.EduModule">
 		SELECT 
-			MODULE_ID,
-			MODULE_NM,
-			MODULE_DESC,
-			STUDY_LVL,
-			SLIDE_SPEED,
-			MODULE_TYPE,			
-			ACTION_DIV0_COUNT,
-			ACTION_DIV1_COUNT,
-			ACTION_DIV2_COUNT,
-			ACTION_DIV3_COUNT,
-			ACTION_DIV4_COUNT,
-			ACTION_DIV0_SCORE,
-			ACTION_DIV1_SCORE,
-			ACTION_DIV2_SCORE,
-			ACTION_DIV3_SCORE,
-			ACTION_DIV4_SCORE,
-			USE_YN,
-			QUESTION_CNT,
-			INSERT_ID,
-			INSERT_DATE,
-			UPDATE_ID,
-			UPDATE_DATE		
-		FROM XBT_MODULE_INFO
+			MODULE_ID
+			,MODULE_NM
+			,MODULE_DESC
+			,0 AS GUN_CNT
+			,0 AS EXPLOSIVES_CNT
+			,0 AS LIVE_AMMUNITION_CNT
+			,0 AS SWORD_CNT
+			,0 AS WEAPON_CNT
+			,0 AS CAMOUFLAGE_WEAPON_CNT
+			,0 AS TOOL_LIFE_CNT
+			,0 AS FLAMMABILITY_CNT
+			,0 AS DANGER_MATERIALS_CNT
+			,0 AS LIQUID_GEL_CNT
+			,0 AS PASS_CNT
+			,STUDY_LVL
+			,SLIDE_SPEED
+			,MODULE_TYPE
+			,USE_YN
+			,QUESTION_CNT
+			,GUN_SCORE
+			,EXPLOSIVES_SCORE
+			,LIVE_AMMUNITION_SCORE
+			,SWORD_SCORE
+			,WEAPON_SCORE
+			,CAMOUFLAGE_WEAPON_SCORE
+			,TOOL_LIFE_SCORE
+			,FLAMMABILITY_SCORE
+			,DANGER_MATERIALS_SCORE
+			,LIQUID_GEL_SCORE
+			,PASS_SCORE
+			,TOTAL_SCORE
+			,INSERT_ID
+			,INSERT_DATE
+			,UPDATE_ID
+			,UPDATE_DATE
+		FROM XBT_MODULE_INFO_MASTER
 		WHERE MODULE_ID = #{moduleId}	
 	</select>		
 	
 	<!-- 모듈 등록 -->
 	<insert id="insertModule" parameterType="egovframework.com.adm.learningMgr.vo.EduModule">
-		INSERT INTO XBT_MODULE_INFO(
-			MODULE_NM,
-			MODULE_DESC,
-			STUDY_LVL,
-			SLIDE_SPEED,
-			MODULE_TYPE,			
-			ACTION_DIV0_COUNT,
-			ACTION_DIV1_COUNT,
-			ACTION_DIV2_COUNT,
-			ACTION_DIV3_COUNT,
-			ACTION_DIV4_COUNT,
-			ACTION_DIV0_SCORE,
-			ACTION_DIV1_SCORE,
-			ACTION_DIV2_SCORE,
-			ACTION_DIV3_SCORE,
-			ACTION_DIV4_SCORE,
-			USE_YN,
-			QUESTION_CNT,
-			INSERT_ID,
-			INSERT_DATE,
+		INSERT INTO XBT_MODULE_INFO_MASTER(
+			MODULE_NM
+			,MODULE_DESC
+			,STUDY_LVL
+			,SLIDE_SPEED
+			,MODULE_TYPE
+			,USE_YN
+			,QUESTION_CNT
+			,GUN_SCORE
+			,EXPLOSIVES_SCORE
+			,LIVE_AMMUNITION_SCORE
+			,SWORD_SCORE
+			,WEAPON_SCORE
+			,CAMOUFLAGE_WEAPON_SCORE
+			,TOOL_LIFE_SCORE
+			,FLAMMABILITY_SCORE
+			,DANGER_MATERIALS_SCORE
+			,LIQUID_GEL_SCORE
+			,PASS_SCORE
+			,TOTAL_SCORE
+			,INSERT_ID
+			,INSERT_DATE
 		)VALUES(
 			#{moduleNm}
 			,#{moduleDesc}
 			,#{studyLvl}
 			,#{slideSpeed}
 			,#{moduleType}
-			,#{actionDiv0Count}
-			,#{actionDiv1Count}
-			,#{actionDiv2Count}
-			,#{actionDiv3Count}
-			,#{actionDiv4Count}
-			,#{actionDiv0Score}
-			,#{actionDiv1Score}
-			,#{actionDiv2Score}
-			,#{actionDiv3Score}
-			,#{actionDiv4Score}
 			,#{useYn}
 			,#{questionCnt}
+			,#{gunScore}
+			,#{explosivesScore}
+			,#{liveAmmunitionScore}
+			,#{swordScore}
+			,#{weaponScore}
+			,#{camouflageWeaponScore}
+			,#{toolLifeScore}
+			,#{flammabilityScore}
+			,#{dangerMaterialsScore}
+			,#{liquidGelScore}
+			,#{passScore}
+			,#{totalScore}
 			,#{insertId}
 			,now()
 		)
 	</insert>	
 	
+	<!-- 모듈문제목록 -->
+	<select id="selectModuleQuestion" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" resultType="egovframework.com.adm.learningMgr.vo.EduModule">
+		SELECT 
+			MODULE_DETAIL_ID
+			, MODULE_ID
+			, STUDY_LVL
+			, BAG_SCAN_ID
+			, UNIT_ID
+			, UNIT_GROUP_CD
+			, INSERT_ID
+			, INSERT_DATE
+		FROM XBT_MODULE_INFO_DETAIL
+		WHERE MODULE_ID = #{moduleId}	
+	</select>			
+	
+	<!-- 모듈 문제등록 -->
+	<insert id="insertModuleQuestion" parameterType="egovframework.com.adm.learningMgr.vo.EduModule">
+		INSERT INTO xbt_module_info_detail(
+			MODULE_ID
+			, STUDY_LVL
+			, BAG_SCAN_ID
+			, UNIT_ID
+			, UNIT_GROUP_CD
+			, INSERT_ID
+			, INSERT_DATE
+		)VALUES(
+			#{moduleId}
+			,#{studyLvl}
+			,#{bagScanId}
+			,#{unitId}
+			,#{unitGroupCd}
+			,#{insertId}
+			,now()
+		)
+	</insert>		
+	
 	
 	<!-- 모듈 수정 -->
 	<update id="updateModule" parameterType="egovframework.com.adm.learningMgr.vo.EduModule">	
-		UPDATE XBT_MODULE_INFO SET 
-			MODULE_NM = #{moduleNm},
-			MODULE_DESC = #{moduleDesc},
-			STUDY_LVL = #{studyLvl},
-			SLIDE_SPEED = #{slideSpeed},
-			MODULE_TYPE = #{moduleType},
-			ACTION_DIV0_COUNT = #{actionDiv0Count},
-			ACTION_DIV1_COUNT = #{actionDiv1Count},
-			ACTION_DIV2_COUNT = #{actionDiv2Count},
-			ACTION_DIV3_COUNT = #{actionDiv3Count},
-			ACTION_DIV4_COUNT = #{actionDiv4Count},
-			ACTION_DIV0_SCORE = #{actionDiv0Score},
-			ACTION_DIV1_SCORE = #{actionDiv1Score},
-			ACTION_DIV2_SCORE = #{actionDiv2Score},
-			ACTION_DIV3_SCORE = #{actionDiv3Score},
-			ACTION_DIV4_SCORE = #{actionDiv4Score},
-			USE_YN = #{useYn},
-			QUESTION_CNT = #{questionCnt},
-			UPDATE_ID = #{updateId},
-			UPDATE_DATE = now()
+		UPDATE 
+			XBT_MODULE_INFO_MASTER 
+		SET 
+			MODULE_NM = #{moduleNm}
+			, MODULE_DESC = #{moduleDesc}
+			, STUDY_LVL = #{studyLvl}
+			, SLIDE_SPEED = #{slideSpeed}
+			, MODULE_TYPE = #{moduleType}
+			, USE_YN = #{useYn}
+			, QUESTION_CNT = #{questionCnt}
+			, GUN_SCORE = #{gunScore}
+			, EXPLOSIVES_SCORE = #{explosivesScore}
+			, LIVE_AMMUNITION_SCORE = #{liveAmmunitionScore}
+			, SWORD_SCORE = #{swordScore}
+			, WEAPON_SCORE = #{weaponScore}
+			, CAMOUFLAGE_WEAPON_SCORE = #{camouflageWeaponScore}
+			, TOOL_LIFE_SCORE = #{toolLifeScore}
+			, FLAMMABILITY_SCORE = #{flammabilityScore}
+			, DANGER_MATERIALS_SCORE = #{dangerMaterialsScore}
+			, LIQUID_GEL_SCORE = #{liquidGelScore}
+			, PASS_SCORE = #{passScore}
+			, TOTAL_SCORE = #{totalScore}
+			, UPDATE_ID = #{gunScore}
+			, UPDATE_DATE = now()
 		WHERE MODULE_ID = #{moduleId}
+
 	</update>	
 	
 	<!-- 모듈 삭제-->
 	<delete id="deleteModule" parameterType="egovframework.com.adm.learningMgr.vo.EduModule">
-		DELETE FROM XBT_MODULE_INFO WHERE MODULE_ID =  #{moduleId}
+		DELETE FROM XBT_MODULE_INFO_MASTER WHERE MODULE_ID =  #{moduleId}
 	</delete>				
+			
+	<!-- 모듈 문제삭제-->
+	<delete id="deleteModuleQuestion" parameterType="egovframework.com.adm.learningMgr.vo.EduModule">
+		DELETE FROM XBT_MODULE_INFO_DETAIL WHERE MODULE_DETAIL_ID =  #{moduleDetailId}
+	</delete>				
+			
+			
+			
+			
+			
+			
 			
 			
 	<!-- XRAY 판독 배점관리 조회-->

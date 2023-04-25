@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import egovframework.com.adm.learningMgr.vo.XrayPointDetail;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.global.OfficeMessageSource;
+import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
@@ -56,14 +58,14 @@ public class LearningMgrController {
 	
 	
     /**
-     * 학습관리-xray판독모듈구성
+     * 학습관리-xray판독모듈목록
      * 
      * @param param
      * @return Company
      */
 	@ResponseBody
     @RequestMapping(value = {"/selectModuleList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
-    @ApiOperation(value = "학습관리-xray판독모듈구성", notes = "학습관리-xray판독모듈구성 조회한다.")
+    @ApiOperation(value = "학습관리-xray판독모듈목록", notes = "학습관리-xray판독모듈목록 조회한다.")
     public BaseResponse<List<EduModule>> selectModuleList(HttpServletRequest request
     		, @RequestBody EduModule params) {
     	Login login = loginService.getLoginInfo(request);
@@ -81,6 +83,292 @@ public class LearningMgrController {
         }
     }  	
 	
+	
+    /**
+     * 학습관리-xray판독모듈상세
+     * 
+     * @param param
+     * @return Company
+     */
+	@ResponseBody
+    @RequestMapping(value = {"/selectModule.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @ApiOperation(value = "학습관리-xray판독모듈구성", notes = "학습관리-xray판독모듈구성 조회한다.")
+    public BaseResponse<EduModule> selectModule(HttpServletRequest request
+    		, @RequestBody EduModule params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		
+		if(StringUtils.isEmpty(params.getModuleId())){				
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "ModuleId" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		try {
+			EduModule resultList = learningMgrService.selectModule(params);
+	        return new BaseResponse<EduModule>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }  	
+		
+    
+    /**
+     * 모듈등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertModule.do")
+    @ApiOperation(value = "모듈", notes = "모듈등록.")
+    public BaseResponse<Integer> insertModule(HttpServletRequest request, @RequestBody EduModule params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getModuleNm())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleNm" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getModuleDesc())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleDesc" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			//모듈등록
+			params.setInsertId(login.getUserId());
+			int result = learningMgrService.insertModule(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    /**
+     * 모듈수정
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/updateModule.do")
+    @ApiOperation(value = "모듈수정", notes = "모듈수정.")
+    public BaseResponse<Integer> updateModule(HttpServletRequest request, @RequestBody EduModule params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getModuleId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleId" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getStudyLvl())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "studyLvl" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getModuleType())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleType" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getSlideSpeed())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "slideSpeed" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getUseYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "useYn" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		if(StringUtils.isEmpty(params.getModuleNm())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleNm" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getModuleDesc())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleDesc" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			//모듈등록
+			params.setInsertId(login.getUserId());
+			int result = learningMgrService.updateModule(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }       
+    
+    
+    /**
+     * 모듈삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteModule.do")
+    @ApiOperation(value = "모듈삭제", notes = "모듈삭제.")
+    public BaseResponse<Integer> deleteModule(HttpServletRequest request, @RequestBody EduModule params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getModuleId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleId" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		try {
+			//모듈삭제
+			params.setInsertId(login.getUserId());
+			int result = learningMgrService.deleteModule(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    /**
+     * 모듈문제삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteModuleQuestion.do")
+    @ApiOperation(value = "모듈문제삭제", notes = "모듈문제삭제.")
+    public BaseResponse<Integer> deleteModuleQuestion(HttpServletRequest request, @RequestBody EduModule params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getModuleDetailId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleDetailId" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		try {
+			//모듈문제삭제
+			params.setInsertId(login.getUserId());
+			int result = learningMgrService.deleteModuleQuestion(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }      
+    	
+	
+	
+    /**
+     * 학습관리-xray판독모듈 문제목록 가져오기
+     * 
+     * @param param
+     * @return Company
+     */
+	@ResponseBody
+    @RequestMapping(value = {"/selectModuleQuestion.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @ApiOperation(value = "학습관리-xray판독모듈 문제목록 가져오기", notes = "학습관리-xray판독모듈 문제목록 가져오기")
+    public BaseResponse<List<EduModule>> selectModuleQuestion(HttpServletRequest request
+    		, @RequestBody EduModule params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getModuleId())){				
+			return new BaseResponse<List<EduModule>>(BaseResponseCode.PARAMS_ERROR, "ModuleId" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		try {
+			List<EduModule> resultList = learningMgrService.selectModuleQuestion(params);
+	        return new BaseResponse<List<EduModule>>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }     
+    
+    
+	
+		
+    
+    /**
+     * 모듈문제등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertModuleQuestion.do")
+    @ApiOperation(value = "모듈문제등록", notes = "모듈문제등록.")
+    public BaseResponse<Integer> insertModuleQuestion(HttpServletRequest request, @RequestBody EduModule params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getModuleId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleId" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getStudyLvl())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "StudyLvl" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		if(StringUtils.isEmpty(params.getBagScanId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getUnitId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UnitId" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		if(StringUtils.isEmpty(params.getUnitGroupCd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UnitGroupCd" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		try {
+			//모듈등록
+			params.setInsertId(login.getUserId());
+			int result = learningMgrService.insertModuleQuestion(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    	
 	
 	
     /**

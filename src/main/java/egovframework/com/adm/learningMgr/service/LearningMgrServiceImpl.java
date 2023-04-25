@@ -47,10 +47,23 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 	}
 
 	@Override
+	public List<EduModule> selectModuleQuestion(EduModule params) {
+		// TODO Auto-generated method stub
+		return (List<EduModule>) learningMgrDAO.selectModuleQuestion(params);
+	}
+	
+	
+	@Override
 	public int insertModule(EduModule params) {
 		// TODO Auto-generated method stub
-		return learningMgrDAO.insertModule(params);	}
-
+		return learningMgrDAO.insertModule(params);	
+	}
+	
+	@Override
+	public int insertModuleQuestion(EduModule params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.insertModuleQuestion(params);	
+	}	
 
 	@Override
 	public int updateModule(EduModule params) {
@@ -65,9 +78,14 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 		return learningMgrDAO.deleteModule(params);
 	}
 
-
 	@Override
-	public Module selectModule(EduModule params) {
+	public int deleteModuleQuestion(EduModule params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.deleteModuleQuestion(params);
+	}
+	
+	@Override
+	public EduModule selectModule(EduModule params) {
 		// TODO Auto-generated method stub
 		return learningMgrDAO.selectModule(params);
 	}	

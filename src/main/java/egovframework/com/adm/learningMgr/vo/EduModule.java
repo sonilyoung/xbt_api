@@ -5,29 +5,49 @@ import lombok.Data;
 @Data
 public class EduModule {
 	
-	private Long moduleId; //모듈아이디 
-	private String moduleNm; //모듈명
-	private String moduleDesc;//모듈설명
-	private String studyLvl;//학습레벨
-	private int slideSpeed;//슬라이드속도
-	private String moduleType;//모듈타입 (CUT / SLIDE)
-	private int actionDiv0Count;//개봉금지
-	private int actionDiv1Count;//금지
-	private int actionDiv2Count;//개봉제한
-	private int actionDiv3Count;//개봉통과
-	private int actionDiv4Count;//통과
-	private int actionDiv0Score;//개봉금지 점수
-	private int actionDiv1Score;//금지 점수
-	private int actionDiv2Score;//개봉제한 점수
-	private int actionDiv3Score;//개봉통과 점수
-	private int actionDiv4Score;//통과 점수
-	private String useYn;
+	private Long moduleId;
+	private String moduleNm;
+	private String moduleDesc;
+	private int gunCnt;
+	private int explosivesCnt;
+	private int liveAmmunitionCnt;
+	private int swordCnt;
+	private int weaponCnt;
+	private int camouflageWeaponCnt;
+	private int toolLifeCnt;
+	private int flammabilityCnt;
+	private int dangerMaterialsCnt;
+	private int liquidGelCnt;
+	private int passCnt;
+	private int studyLvl;
+	private int slideSpeed;
 	private int questionCnt;
+	private int gunScore;
+	private int explosivesScore;
+	private int liveAmmunitionScore;
+	private int swordScore;
+	private int weaponScore;
+	private int camouflageWeaponScore;
+	private int toolLifeScore;
+	private int flammabilityScore;
+	private int dangerMaterialsScore;
+	private int liquidGelScore;
+	private int passScore;
+	private int totalScore;
+	private String moduleType;
+	private String useYn;
 	private String insertId;
 	private String insertDate;
 	private String updateId;
 	private String updateDate;
 
+	private String bagScanId;
+	private String questionType;
+	private String unitId;
+	private String unitGroupCd;
+	private String actionDiv;
+	
+	private Long moduleDetailId;
 
 
 

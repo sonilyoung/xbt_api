@@ -8,23 +8,20 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.com.adm.eduMgr.service.EduMgrService;
-import egovframework.com.adm.eduMgr.vo.EduBaselineDetailProc;
-import egovframework.com.adm.eduMgr.vo.EduBaselineMenu;
-import egovframework.com.adm.eduMgr.vo.EduBaselineProc;
-import egovframework.com.adm.eduMgr.vo.EduBaselineSubProc;
-import egovframework.com.adm.eduMgr.vo.EduClass;
-import egovframework.com.adm.eduMgr.vo.EduGroupMgr;
-import egovframework.com.adm.eduMgr.vo.EduProc;
-import egovframework.com.adm.eduMgr.vo.EduProcDetail;
+import egovframework.com.adm.eduMgr.vo.Baseline;
+import egovframework.com.adm.eduMgr.vo.EduDate;
+import egovframework.com.adm.eduMgr.vo.Student;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.global.OfficeMessageSource;
+import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
@@ -57,225 +54,128 @@ public class EduMgrController {
     
     
     /**
-     * 교육과정관리 - 그룹관리 
+     * 차수목록조회 
      * 
      * @param param
      * @return Company
      */
-    @PostMapping("/getEduGroupList.do")
-    @ApiOperation(value = "교육과정관리-그룹관리", notes = "교육과정관리-그룹관리를 조회한다.")
-    public BaseResponse<List<EduGroupMgr>> getEduGroupList(HttpServletRequest request
-    		,@RequestBody EduGroupMgr params) {
+    @PostMapping("/selectBaselineList.do")
+    @ApiOperation(value = "차수목록조회", notes = "차수목록조회")
+    public BaseResponse<List<Baseline>> selectBaselineList(HttpServletRequest request
+    		,@RequestBody Baseline params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(params.getSearchType() == null || "".equals(params.getSearchType())){				
-			return new BaseResponse<List<EduGroupMgr>>(BaseResponseCode.PARAMS_ERROR, "searchType는 필수값입니다");	
-		}			
 		
 		try {
-			List<EduGroupMgr> resultList = eduMgrService.getEduGroupList(params);
-	        return new BaseResponse<List<EduGroupMgr>>(resultList);
+			List<Baseline> resultList = eduMgrService.selectBaselineList(params);
+	        return new BaseResponse<List<Baseline>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
     }    
         
-	  
-    
-    
     /**
-     * 교육과정관리 - 과정분류
+     * 차수상세
      * 
      * @param param
      * @return Company
      */
-    @PostMapping("/getEduClassList.do")
-    @ApiOperation(value = "교육과정관리-과정분류", notes = "교육과정관리-과정분류를 조회한다.")
-    public BaseResponse<List<EduClass>> getEduClassList(HttpServletRequest request
-    		,@RequestBody EduClass params) {
+    @PostMapping("/selectBaseline.do")
+    @ApiOperation(value = "차수상세", notes = "차수상세조회.")
+    public BaseResponse<Baseline> selectBaseline(HttpServletRequest request, @RequestBody Baseline params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<Baseline>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+		}			
 		
 		try {
-			List<EduClass> resultList = eduMgrService.getEduClassList(params);
-	        return new BaseResponse<List<EduClass>>(resultList);
-        } catch (Exception e) {
-        	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
-        }
-    }        
-    
-    /**
-     * 교육과정관리-과정등록 조회
-     * 
-     * @param param
-     * @return Company
-     */
-    @PostMapping("/getEduProcList.do")
-    @ApiOperation(value = "교육과정관리-과정등록", notes = "교육과정관리-과정등록 조회")
-    public BaseResponse<List<EduProc>> getEduProcList(HttpServletRequest request
-    		,@RequestBody EduProc params) {
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
-		}
-		
-		
-		try {
-			List<EduProc> resultList = eduMgrService.getEduProcList(params);
-	        return new BaseResponse<List<EduProc>>(resultList);
+			//차수조회
+	        return new BaseResponse<Baseline>(eduMgrService.selectBaseline(params));
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
     }    
+        
+    
+    
     
     /**
-     * 교육과정관리-과정등록 상세조회
+     * 차수등록
      * 
      * @param param
      * @return Company
      */
-    @PostMapping("/getEduProcDetail.do")
-    @ApiOperation(value = "교육과정관리-과정등록 상세", notes = "교육과정관리-과정등록 상세조회")
-    public BaseResponse<EduProcDetail> getEduProcDetail(HttpServletRequest request
-    		,@RequestBody EduProcDetail params) {
+    @PostMapping("/insertBaseline.do")
+    @ApiOperation(value = "차수", notes = "차수등록.")
+    public BaseResponse<Integer> insertBaseline(HttpServletRequest request, @RequestBody Baseline params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(params.getProcCd() ==null){				
-			return new BaseResponse<EduProcDetail>(BaseResponseCode.PARAMS_ERROR, "procCd는 필수값입니다");	
+
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getProcYear())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcYear" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
-		try {
-			EduProcDetail resultList = eduMgrService.getEduProcDetail(params);
-	        return new BaseResponse<EduProcDetail>(resultList);
-        } catch (Exception e) {
-        	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
-        }
-    }        
-    
-    
-    /**
-     * 교육차수관리-차수등록조회
-     * 
-     * @param param
-     * @return Company
-     */
-    @PostMapping("/getEduBaselineList.do")
-    @ApiOperation(value = "교육차수관리-차수등록", notes = "교육차수관리-차수등록조회")
-    public BaseResponse<List<EduBaselineProc>> getEduBaselineList(HttpServletRequest request
-    		,@RequestBody EduBaselineProc params) {
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		if(StringUtils.isEmpty(params.getProcSeq())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "procSeq" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
-		try {
-			List<EduBaselineProc> resultList = eduMgrService.getEduBaselineList(params);
-	        return new BaseResponse<List<EduBaselineProc>>(resultList);
-        } catch (Exception e) {
-        	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
-        }
-    }   
-    
-    
-    /**
-     * 교육차수관리-차수등록상세조회
-     * 
-     * @param param
-     * @return Company
-     */
-    @PostMapping("/getEduBaselineDetail.do")
-    @ApiOperation(value = "교육차수관리-차수등록상세", notes = "교육차수관리-차수등록상세조회")
-    public BaseResponse<EduBaselineDetailProc> getEduBaselineDetail(HttpServletRequest request
-    		,@RequestBody EduBaselineDetailProc params) {
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		if(StringUtils.isEmpty(params.getModuleId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleId" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
-		if(params.getProcCd() ==null){				
-			return new BaseResponse<EduBaselineDetailProc>(BaseResponseCode.PARAMS_ERROR, "procCd는 필수값입니다");	
-		}			
-		
-		try {
-			EduBaselineDetailProc resultList = eduMgrService.getEduBaselineDetail(params);
-	        return new BaseResponse<EduBaselineDetailProc>(resultList);
-        } catch (Exception e) {
-        	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
-        }
-    }   
-    
-    
-    /**
-     * 교육차수관리-차수등록상세 하위 조회
-     * 
-     * @param param
-     * @return Company
-     */
-    @PostMapping("/getEduBaselineSubList.do")
-    @ApiOperation(value = "교육차수관리-차수등록상세 하위", notes = "교육차수관리-차수등록상세 하위 조회")
-    public BaseResponse<List<EduBaselineSubProc>> getEduBaselineSubList(HttpServletRequest request
-    		,@RequestBody EduBaselineSubProc params) {
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		if(StringUtils.isEmpty(params.getEduStartDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "eduStartDate" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
-		if(params.getProcCd() ==null){				
-			return new BaseResponse<List<EduBaselineSubProc>>(BaseResponseCode.PARAMS_ERROR, "procCd는 필수값입니다");	
-		}			
+		if(StringUtils.isEmpty(params.getEduEndDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "eduEndDate" + BaseApiMessage.REQUIRED.getCode());
+		}		
 		
-		if(params.getProcYear() ==null){				
-			return new BaseResponse<List<EduBaselineSubProc>>(BaseResponseCode.PARAMS_ERROR, "procYear는 필수값입니다");	
-		}
 		
-		if(params.getProcSeq() ==null){				
-			return new BaseResponse<List<EduBaselineSubProc>>(BaseResponseCode.PARAMS_ERROR, "procSeq는 필수값입니다");	
+		if(StringUtils.isEmpty(params.getTotStudyDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "totStudyDate" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		
+		if(StringUtils.isEmpty(params.getLimitPersonCnt())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "limitPersonCnt" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getEndingStdScore())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "endingStdScore" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getEndingProcessEndYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "endingProcessEndYn" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
 		try {
-			List<EduBaselineSubProc> resultList = eduMgrService.getEduBaselineSubList(params);
-	        return new BaseResponse<List<EduBaselineSubProc>>(resultList);
-        } catch (Exception e) {
-        	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
-        }
-    }   
-    
-    
-    
-    /**
-     * 교육차수관리-차수별 메뉴관리조회
-     * 
-     * @param param
-     * @return Company
-     */
-    @PostMapping("/getEduBaselineMenuList.do")
-    @ApiOperation(value = "교육차수관리-차수별 메뉴관리", notes = "교육차수관리-차수별 메뉴관리조회")
-    public BaseResponse<List<EduBaselineMenu>> getEduBaselineMenuList(HttpServletRequest request
-    		,@RequestBody EduBaselineMenu params) {
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
-		}
-		
-		try {
-			List<EduBaselineMenu> resultList = eduMgrService.getEduBaselineMenuList(params);
-	        return new BaseResponse<List<EduBaselineMenu>>(resultList);
+			//차수등록
+			params.setInsertId(login.getUserId());
+			int result = eduMgrService.insertBaseline(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
@@ -285,41 +185,351 @@ public class EduMgrController {
     
     
     /**
-     * 교육차수관리-차수별 메뉴관리 하위조회
+     * 차수수정
      * 
      * @param param
      * @return Company
      */
-    @PostMapping("/getEduBaselineMenuSubList.do")
-    @ApiOperation(value = "교육차수관리-차수별 메뉴관리", notes = "교육차수관리-차수별 메뉴관리 하위조회")
-    public BaseResponse<List<EduBaselineMenu>> getEduBaselineMenuSubList(HttpServletRequest request
-    		,@RequestBody EduBaselineMenu params) {
+    @PostMapping("/updateBaseline.do")
+    @ApiOperation(value = "차수", notes = "차수수정.")
+    public BaseResponse<Integer> updateBaseline(HttpServletRequest request, @RequestBody Baseline params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(params.getProcCd() ==null){				
-			return new BaseResponse<List<EduBaselineMenu>>(BaseResponseCode.PARAMS_ERROR, "procCd는 필수값입니다");	
+
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
-		if(params.getProcYear() ==null){				
-			return new BaseResponse<List<EduBaselineMenu>>(BaseResponseCode.PARAMS_ERROR, "procYear는 필수값입니다");	
+		if(StringUtils.isEmpty(params.getProcYear())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcYear" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getProcSeq())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "procSeq" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
-		if(params.getProcSeq() ==null){				
-			return new BaseResponse<List<EduBaselineMenu>>(BaseResponseCode.PARAMS_ERROR, "procSeq는 필수값입니다");	
+		if(StringUtils.isEmpty(params.getModuleId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleId" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getEduStartDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "eduStartDate" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getEduEndDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "eduEndDate" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
+		
+		if(StringUtils.isEmpty(params.getTotStudyDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "totStudyDate" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		
+		if(StringUtils.isEmpty(params.getLimitPersonCnt())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "limitPersonCnt" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getEndingStdScore())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "endingStdScore" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getEndingProcessEndYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "endingProcessEndYn" + BaseApiMessage.REQUIRED.getCode());
+		}		
+				
+				
+		
 		try {
-			List<EduBaselineMenu> resultList = eduMgrService.getEduBaselineMenuSubList(params);
-	        return new BaseResponse<List<EduBaselineMenu>>(resultList);
+			//차수등록
+			params.setUpdateId(login.getUserId());
+			int result = eduMgrService.updateBaseline(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
-    }     
+    }    
     
     
     
+    /**
+     * 차수삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteBaseline.do")
+    @ApiOperation(value = "차수", notes = "차수삭제.")
+    public BaseResponse<Integer> deleteBaseline(HttpServletRequest request, @RequestBody Baseline params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			//차수삭제
+			int result = eduMgrService.deleteBaseline(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }
+    
+    
+    
+    
+    /**
+     * 교육생조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectBaselineStudentList.do")
+    @ApiOperation(value = "교육생", notes = "교육생목록조회.")
+    public BaseResponse<List<Student>> selectBaselineStudentList(HttpServletRequest request, @RequestBody Student params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			//교육생조회
+	        return new BaseResponse<List<Student>>(eduMgrService.selectBaselineStudentList(params));
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+  
+    
+    
+    /**
+     * 교육생등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertBaselineStudent.do")
+    @ApiOperation(value = "교육생", notes = "교육생등록.")
+    public BaseResponse<Integer> insertBaselineStudent(HttpServletRequest request, @RequestBody Student params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getProcYear())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcYear" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getProcSeq())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcSeq" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getProcNm())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcNm" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getCompNm())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CompNm" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getDeptCd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "DeptCd" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getDeptNm())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "DeptNm" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			//교육생등록
+			params.setInsertId(login.getUserId());
+			int result = eduMgrService.insertBaselineStudent(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+
+    /**
+     * 교육생삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteBaselineStudent.do")
+    @ApiOperation(value = "교육생", notes = "교육생삭제.")
+    public BaseResponse<Integer> deleteBaselineStudent(HttpServletRequest request, @RequestBody Student params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		try {
+			//교육생삭제
+			int result = eduMgrService.deleteBaselineStudent(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }        
+    
+    
+    
+    /**
+     * 교육일정조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectEduDateList.do")
+    @ApiOperation(value = "교육일정", notes = "교육일정목록조회.")
+    public BaseResponse<List<EduDate>> selectEduDateList(HttpServletRequest request, @RequestBody EduDate params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			//교육일정조회
+	        return new BaseResponse<List<EduDate>>(eduMgrService.selectEduDateList(params));
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+  
+    
+    
+    /**
+     * 교육일정등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertEduDate.do")
+    @ApiOperation(value = "교육일정", notes = "교육일정등록.")
+    public BaseResponse<Integer> insertEduDate(HttpServletRequest request, @RequestBody EduDate params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getProcNm())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcNm" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getModuleId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+				
+		if(StringUtils.isEmpty(params.getEduDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "EduDate" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		try {
+			//교육일정등록
+			params.setInsertId(login.getUserId());
+			int result = eduMgrService.insertEduDate(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+
+    /**
+     * 교육일정삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteEduDate.do")
+    @ApiOperation(value = "교육일정", notes = "교육일정삭제.")
+    public BaseResponse<Integer> deleteEduDate(HttpServletRequest request, @RequestBody EduDate params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getDayNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "DayNo" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		try {
+			//교육일정삭제
+			int result = eduMgrService.deleteEduDate(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
 }
