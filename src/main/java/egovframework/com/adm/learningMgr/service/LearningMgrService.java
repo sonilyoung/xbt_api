@@ -26,7 +26,15 @@ import egovframework.com.adm.learningMgr.vo.XrayPointDetail;
  */
 public interface LearningMgrService {
 	
-	public List<EduModule> getXrayModuleList(EduModule params);
+	public List<EduModule> selectModuleList(EduModule params);
+	
+	public int insertModule(EduModule params);
+	
+	public int updateModule(EduModule params);
+	
+	public int deleteModule(EduModule params);
+
+	public Module selectModule(EduModule params);	
 	
 	public List<XrayPoint> getXrayPointList(XrayPoint params);
 	

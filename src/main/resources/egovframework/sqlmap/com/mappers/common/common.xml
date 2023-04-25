@@ -47,7 +47,7 @@
 	
 	<!-- 공통코드등록 -->
 	<insert id="insertCommonCode" parameterType="egovframework.com.common.vo.Common" useGeneratedKeys="true" keyProperty="codeId">
-		INSERT INTO XBT_COMMON_CODE_MASTER
+		INSERT INTO XBT_COMMON_CODE
 		(
 			PARENTS_GROUP_ID
 			,GROUP_ID
@@ -73,7 +73,7 @@
 	
 	<!-- 공통코드 상세등록 -->
 	<insert id="insertCommonCodeDetail" parameterType="egovframework.com.common.vo.Common">
-		INSERT INTO XBT_COMMON_CODE_DETAIL
+		INSERT INTO XBT_COMMON_CODE
 		(
 			LANGUAGE_CODE
 			,GROUP_ID
@@ -103,7 +103,7 @@
 	<!-- 공통코드 수정 -->
 	<update id="updateCommonCode" parameterType="egovframework.com.common.vo.Common">	
 		UPDATE 
-			XBT_COMMON_CODE_DETAIL
+			XBT_COMMON_CODE
 		SET 
 			LANGUAGE_CODE = #{languageCode}	
 			,GROUP_ID	= #{groupId}	

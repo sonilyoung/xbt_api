@@ -62,9 +62,9 @@ public class LearningMgrController {
      * @return Company
      */
 	@ResponseBody
-    @RequestMapping(value = {"/getXrayModuleList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @RequestMapping(value = {"/selectModuleList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
     @ApiOperation(value = "학습관리-xray판독모듈구성", notes = "학습관리-xray판독모듈구성 조회한다.")
-    public BaseResponse<List<EduModule>> getXrayModuleList(HttpServletRequest request
+    public BaseResponse<List<EduModule>> selectModuleList(HttpServletRequest request
     		, @RequestBody EduModule params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
@@ -73,7 +73,7 @@ public class LearningMgrController {
 		
 		
 		try {
-			List<EduModule> resultList = learningMgrService.getXrayModuleList(params);
+			List<EduModule> resultList = learningMgrService.selectModuleList(params);
 	        return new BaseResponse<List<EduModule>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);

@@ -71,7 +71,7 @@ public class CommonServiceImpl implements CommonService {
 	@Transactional
 	public int insertCommonCode(Common params) {
 		// TODO Auto-generated method stub
-		commonDAO.insertCommonCode(params);
+		//commonDAO.insertCommonCode(params);
 		int result = commonDAO.insertCommonCodeDetail(params);
 		return result;
 	}

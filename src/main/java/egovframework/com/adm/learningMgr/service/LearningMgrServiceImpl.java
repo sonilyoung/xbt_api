@@ -41,11 +41,37 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 
 
 	@Override
-	public List<EduModule> getXrayModuleList(EduModule params) {
+	public List<EduModule> selectModuleList(EduModule params) {
 		// TODO Auto-generated method stub
-		return (List<EduModule>) learningMgrDAO.getXrayModuleList(params);
+		return (List<EduModule>) learningMgrDAO.selectModuleList(params);
 	}
 
+	@Override
+	public int insertModule(EduModule params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.insertModule(params);	}
+
+
+	@Override
+	public int updateModule(EduModule params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.updateModule(params);
+	}
+
+
+	@Override
+	public int deleteModule(EduModule params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.deleteModule(params);
+	}
+
+
+	@Override
+	public Module selectModule(EduModule params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.selectModule(params);
+	}	
+	
 
 	@Override
 	public List<XrayPoint> getXrayPointList(XrayPoint params) {
@@ -65,6 +91,7 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 		// TODO Auto-generated method stub
 		return (List<EduType>) learningMgrDAO.getEduTypeList(params);
 	}
+
 	
 
 }

@@ -75,6 +75,34 @@ public class SystemController {
         }
     }    
     
+    /**
+     * 공지사항상세
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectNotice.do")
+    @ApiOperation(value = "공지사항상세", notes = "공지사항상세조회.")
+    public BaseResponse<Notice> selectNotice(HttpServletRequest request, @RequestBody Notice params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getNoticeId())){				
+			return new BaseResponse<Notice>(BaseResponseCode.PARAMS_ERROR, "NoticeId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			//공지사항조회
+	        return new BaseResponse<Notice>(systemService.selectNotice(params));
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+        
+    
     
     
     /**
@@ -91,37 +119,13 @@ public class SystemController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getLanguageCode())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		CommonSystemMessage cm = new CommonSystemMessage();
-		cm.setUrl(request.getRequestURI());
-		cm.setMessageType(BaseApiMessage.REQUIRED.getCode());
-		cm.setLanguageCode(params.getLanguageCode());
-		cm = commonService.selectSystemMessage(cm);		
-/*		
-		if(StringUtils.isEmpty(params.getParentsGroupId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "parentsGroupId"+cm.getCodeValue());
-		}	
-		if(StringUtils.isEmpty(params.getGroupId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "groupId"+cm.getCodeValue());
-		}	
-		if(StringUtils.isEmpty(params.getSortOrder())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "sortOrder"+cm.getCodeValue());
-		}	
-		if(StringUtils.isEmpty(params.getRemarks())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "remarks"+cm.getCodeValue());
-		}	
-		if(StringUtils.isEmpty(params.getCodeValue())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "codeValue"+cm.getCodeValue());
-		}	
-		if(StringUtils.isEmpty(params.getMainYn())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "mainYn"+cm.getCodeValue());
-		}	
-		if(StringUtils.isEmpty(params.getCodeName())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeName"+cm.getCodeValue());
-		}*/
+		if(StringUtils.isEmpty(params.getTitle())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Title" + BaseApiMessage.REQUIRED.getCode());
+		}
 		
+		if(StringUtils.isEmpty(params.getContents())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Contents" + BaseApiMessage.REQUIRED.getCode());
+		}			
 		
 		try {
 			//공지사항등록
@@ -157,14 +161,17 @@ public class SystemController {
 		}
 		
 
-		if(StringUtils.isEmpty(params.getLanguageCode())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		CommonSystemMessage cm = new CommonSystemMessage();
-		cm.setUrl(request.getRequestURI());
-		cm.setMessageType(BaseApiMessage.REQUIRED.getCode());
-		cm.setLanguageCode(params.getLanguageCode());
-		cm = commonService.selectSystemMessage(cm);
+		if(StringUtils.isEmpty(params.getNoticeId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "NoticeId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getTitle())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Title" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getContents())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Contents" + BaseApiMessage.REQUIRED.getCode());
+		}			
 				
 		
 		try {
@@ -199,18 +206,9 @@ public class SystemController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getLanguageCode())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		CommonSystemMessage cm = new CommonSystemMessage();
-		cm.setUrl(request.getRequestURI());
-		cm.setMessageType(BaseApiMessage.REQUIRED.getCode());
-		cm.setLanguageCode(params.getLanguageCode());
-		cm = commonService.selectSystemMessage(cm);		
-		
 		if(StringUtils.isEmpty(params.getNoticeId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "noticeId"+cm.getCodeValue());
-		}		
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "NoticeId" + BaseApiMessage.REQUIRED.getCode());
+		}				
 		
 		try {
 			//공지사항삭제

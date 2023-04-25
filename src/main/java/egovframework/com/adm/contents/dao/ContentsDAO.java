@@ -2,17 +2,15 @@ package egovframework.com.adm.contents.dao;
 
 import java.util.List;
 
-import egovframework.com.adm.contents.vo.Contents;
-import egovframework.com.adm.contents.vo.UnitInformation;
-import egovframework.com.adm.contents.vo.XbtSeq;
-import egovframework.com.adm.contents.vo.Xrayformation;
-import egovframework.com.common.vo.Common;
 import egovframework.com.adm.contents.vo.Language;
 import egovframework.com.adm.contents.vo.UnitGroup;
 import egovframework.com.adm.contents.vo.UnitImg;
+import egovframework.com.adm.contents.vo.UnitInformation;
+import egovframework.com.adm.contents.vo.XbtSeq;
+import egovframework.com.adm.contents.vo.XrayContents;
+import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Mapper("ContentsDAO")
 public class ContentsDAO extends EgovAbstractMapper{
@@ -101,9 +99,14 @@ public class ContentsDAO extends EgovAbstractMapper{
 		return (long) insert(Namespace + ".insertUnit", params);
 	}
 	
-	public int updateUnitBasicInfo(UnitImg params) {
-		return update(Namespace + ".updateUnitBasicInfo", params);
+	public int insertUnitBasicInfo(UnitImg params) {
+		return insert(Namespace + ".insertUnitBasicInfo", params);
 	}	
+	
+	public int selectUnitBasicInfoCount(UnitImg params) {
+		return selectOne(Namespace + ".selectUnitBasicInfoCount", params);
+	}	
+		
 	
 	public int updateUnit(UnitImg params) {
 		return update(Namespace + ".updateUnit", params);
@@ -135,18 +138,65 @@ public class ContentsDAO extends EgovAbstractMapper{
     public int insertUnitImage(UnitImg params) {
     	return update(Namespace + ".insertUnitImage", params);
     }
-    
-    
 	
-	public List<?> getXrayInformationList(Xrayformation params) {
-		return (List<?>)selectList(Namespace + ".getXrayInformationList", params);
+	
+
+	
+
+	
+	public List<?> selectXrayContentsList(XrayContents params) {
+		return (List<?>)selectList(Namespace + ".selectXrayContentsList", params);
 	}
 	
-	public List<?> getXrayDetailList(Xrayformation params) {
-		return (List<?>)selectList(Namespace + ".getXrayDetailList", params);
+	public int insertXrayContents(XrayContents params) {
+		return insert(Namespace + ".insertXrayContents", params);
+	}
+	
+	public int updateXrayContents(XrayContents params) {
+		return update(Namespace + ".updateXrayContents", params);
 	}	
 	
-	public List<?> getBagUnitInfoList(UnitInformation params) {
-		return (List<?>)selectList(Namespace + ".getBagUnitInfoList", params);
-	}	    
+	public int deleteXrayContents(XrayContents params) {
+		return delete(Namespace + ".deleteXrayContents", params);
+	}	
+
+	public XrayImgContents selectXrayImgContents(XrayImgContents params) {
+		return selectOne(Namespace + ".selectXrayImgContents", params);
+	}	
+	
+	
+	public List<?> selectXrayUnitList(XrayContents params) {
+		return (List<?>)selectList(Namespace + ".selectXrayUnitList", params);
+	}		
+	
+	public int insertXrayUnit(XrayContents params) {
+		return insert(Namespace + ".insertXrayUnit", params);
+	}
+	
+	public int deleteAllXrayUnit(XrayContents params) {
+		return delete(Namespace + ".deleteAllXrayUnit", params);
+	}			
+	
+	public int deleteXrayUnit(XrayContents params) {
+		return delete(Namespace + ".deleteXrayUnit", params);
+	}		
+	
+	
+	
+	public List<?> selectUnitPopupList(UnitInformation params) {
+		return (List<?>)selectList(Namespace + ".selectUnitPopupList", params);
+	}	   
+	
+    public int updateXrayContentsImg(XrayImgContents params) {
+    	return update(Namespace + ".updateXrayContentsImg", params);
+    }
+		
+	public int selectXrayImgContentsCount(XrayImgContents params) {
+		return selectOne(Namespace + ".selectXrayImgContentsCount", params);
+	}	
+
+	public int insertXrayImgContents(XrayImgContents params) {
+		return insert(Namespace + ".insertXrayImgContents", params);
+	}	
+	
 }

@@ -5,19 +5,30 @@ import lombok.Data;
 @Data
 public class EduModule {
 	
-	private Long xrayEduModuleId;          /*x-ray교육모듈id*/        
-	private String xrayEduModuleNm;          /*x-ray교육모듈명칭*/        
-	private String xrayEduModuleDc;          /*x-ray교육모듈설명*/        
-	private String allCaseCnt;                /*전체건수*/        
-	private String supportRequestCaseCnt;    /*지원요청건수*/        
-	private String openLimitCaseCnt;         /*개봉제한건수*/        
-	private String openPassCaseCnt;          /*개봉통과건수*/        
-	private String passCaseCnt;               /*통과건수*/        
-	private String useYn;                      /*사용여부*/        
-	private String insertDt;                      /*등록일시*/        
-	private String insertId;                      /*등록자*/        
-	private String updateDt;                      /*수정일시*/        
-	private String updateId;                      /*수정자*/        
-	private String seteqQuestionCnt;          /*출제문제수*/ 
+	private Long moduleId; //모듈아이디 
+	private String moduleNm; //모듈명
+	private String moduleDesc;//모듈설명
+	private String studyLvl;//학습레벨
+	private int slideSpeed;//슬라이드속도
+	private String moduleType;//모듈타입 (CUT / SLIDE)
+	private int actionDiv0Count;//개봉금지
+	private int actionDiv1Count;//금지
+	private int actionDiv2Count;//개봉제한
+	private int actionDiv3Count;//개봉통과
+	private int actionDiv4Count;//통과
+	private int actionDiv0Score;//개봉금지 점수
+	private int actionDiv1Score;//금지 점수
+	private int actionDiv2Score;//개봉제한 점수
+	private int actionDiv3Score;//개봉통과 점수
+	private int actionDiv4Score;//통과 점수
+	private String useYn;
+	private int questionCnt;
+	private String insertId;
+	private String insertDate;
+	private String updateId;
+	private String updateDate;
+
+
+
 
 }

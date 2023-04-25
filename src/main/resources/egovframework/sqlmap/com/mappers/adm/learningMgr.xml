@@ -6,25 +6,176 @@
 	
 	<!-- XRAY 판독모듈 정보조회-->
 	<select id="getXrayModuleList" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" resultType="egovframework.com.adm.learningMgr.vo.EduModule" >	
-			SELECT                                                  											
-			      A.XRAY_EDU_MODULE_ID          /*X-ray교육모듈ID*/        
-			     , A.XRAY_EDU_MODULE_NM          /*X-ray교육모듈명칭*/        
-			     , A.XRAY_EDU_MODULE_DC          /*X-ray교육모듈설명*/        
-			     , A.ALL_CASE_CNT                /*전체건수*/        
-			     , A.SUPPORT_REQUEST_CASE_CNT    /*지원요청건수*/        
-			     , A.OPEN_LIMIT_CASE_CNT         /*개봉제한건수*/        
-			     , A.OPEN_PASS_CASE_CNT          /*개봉통과건수*/        
-			     , A.PASS_CASE_CNT               /*통과건수*/        
-			     , A.USE_YN                      /*사용여부*/        
-			     , A.INSERT_DATE                      /*등록일시*/        
-			     , A.INSERT_ID                      /*등록자*/        
-			     , A.UPDATE_DATE                      /*수정일시*/        
-			     , A.UPDATE_ID                      /*수정자*/        
-			     , A.SETEQ_QUESTION_CNT          /*출제문제수*/ 
-			FROM xbt_XRAY_EDU_MODULE_INFO A                                             								 
-		ORDER BY A.XRAY_EDU_MODULE_ID     
+		<!--
+			SELECT MODULE_ID,
+			MODULE_NM,
+			MODULE_DESC,
+			GUN_CNT,
+			EXPLOSIVES_CNT,
+			LIVE_AMMUNITION_CNT,
+			SWORD_CNT,
+			WEAPON_CNT,
+			CAMOUFLAGE_WEAPON_CNT,
+			TOOL_LIFE_CNT,
+			FLAMMABILITY_CNT,
+			DANGER_MATERIALS_CNT,
+			LIQUID_GEL_CNT,
+			PASS_CNT,
+			STUDY_LVL,
+			SLIDE_SPEED,
+			MODULE_TYPE,
+			USE_YN,
+			QUESTION_CNT,
+			GUN_SCORE,
+			EXPLOSIVES_SCORE,
+			LIVE_AMMUNITION_SCORE,
+			SWORD_SCORE,
+			WEAPON_SCORE,
+			CAMOUFLAGE_WEAPON_SCORE,
+			TOOL_LIFE_SCORE,
+			FLAMMABILITY_SCORE,
+			DANGER_MATERIALS_SCORE,
+			LIQUID_GEL_SCORE,
+			PASS_SCORE,
+			TOTAL_SCORE,
+			INSERT_ID,
+			INSERT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE
+		FROM XBT_MODULE_INFO
+		-->
+		
+		SELECT 
+			MODULE_ID,
+			MODULE_NM,
+			MODULE_DESC,
+			STUDY_LVL,
+			SLIDE_SPEED,
+			MODULE_TYPE,			
+			ACTION_DIV0_COUNT,
+			ACTION_DIV1_COUNT,
+			ACTION_DIV2_COUNT,
+			ACTION_DIV3_COUNT,
+			ACTION_DIV4_COUNT,
+			ACTION_DIV0_SCORE,
+			ACTION_DIV1_SCORE,
+			ACTION_DIV2_SCORE,
+			ACTION_DIV3_SCORE,
+			ACTION_DIV4_SCORE,
+			USE_YN,
+			QUESTION_CNT,
+			INSERT_ID,
+			INSERT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE
+		FROM XBT_MODULE_INFO		
 	</select>		
 	
+	<!-- 모듈 상세 -->
+	<select id="selectModule" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" resultType="egovframework.com.adm.learningMgr.vo.EduModule">
+		SELECT 
+			MODULE_ID,
+			MODULE_NM,
+			MODULE_DESC,
+			STUDY_LVL,
+			SLIDE_SPEED,
+			MODULE_TYPE,			
+			ACTION_DIV0_COUNT,
+			ACTION_DIV1_COUNT,
+			ACTION_DIV2_COUNT,
+			ACTION_DIV3_COUNT,
+			ACTION_DIV4_COUNT,
+			ACTION_DIV0_SCORE,
+			ACTION_DIV1_SCORE,
+			ACTION_DIV2_SCORE,
+			ACTION_DIV3_SCORE,
+			ACTION_DIV4_SCORE,
+			USE_YN,
+			QUESTION_CNT,
+			INSERT_ID,
+			INSERT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE		
+		FROM XBT_MODULE_INFO
+		WHERE MODULE_ID = #{moduleId}	
+	</select>		
+	
+	<!-- 모듈 등록 -->
+	<insert id="insertModule" parameterType="egovframework.com.adm.learningMgr.vo.EduModule">
+		INSERT INTO XBT_MODULE_INFO(
+			MODULE_NM,
+			MODULE_DESC,
+			STUDY_LVL,
+			SLIDE_SPEED,
+			MODULE_TYPE,			
+			ACTION_DIV0_COUNT,
+			ACTION_DIV1_COUNT,
+			ACTION_DIV2_COUNT,
+			ACTION_DIV3_COUNT,
+			ACTION_DIV4_COUNT,
+			ACTION_DIV0_SCORE,
+			ACTION_DIV1_SCORE,
+			ACTION_DIV2_SCORE,
+			ACTION_DIV3_SCORE,
+			ACTION_DIV4_SCORE,
+			USE_YN,
+			QUESTION_CNT,
+			INSERT_ID,
+			INSERT_DATE,
+		)VALUES(
+			#{moduleNm}
+			,#{moduleDesc}
+			,#{studyLvl}
+			,#{slideSpeed}
+			,#{moduleType}
+			,#{actionDiv0Count}
+			,#{actionDiv1Count}
+			,#{actionDiv2Count}
+			,#{actionDiv3Count}
+			,#{actionDiv4Count}
+			,#{actionDiv0Score}
+			,#{actionDiv1Score}
+			,#{actionDiv2Score}
+			,#{actionDiv3Score}
+			,#{actionDiv4Score}
+			,#{useYn}
+			,#{questionCnt}
+			,#{insertId}
+			,now()
+		)
+	</insert>	
+	
+	
+	<!-- 모듈 수정 -->
+	<update id="updateModule" parameterType="egovframework.com.adm.learningMgr.vo.EduModule">	
+		UPDATE XBT_MODULE_INFO SET 
+			MODULE_NM = #{moduleNm},
+			MODULE_DESC = #{moduleDesc},
+			STUDY_LVL = #{studyLvl},
+			SLIDE_SPEED = #{slideSpeed},
+			MODULE_TYPE = #{moduleType},
+			ACTION_DIV0_COUNT = #{actionDiv0Count},
+			ACTION_DIV1_COUNT = #{actionDiv1Count},
+			ACTION_DIV2_COUNT = #{actionDiv2Count},
+			ACTION_DIV3_COUNT = #{actionDiv3Count},
+			ACTION_DIV4_COUNT = #{actionDiv4Count},
+			ACTION_DIV0_SCORE = #{actionDiv0Score},
+			ACTION_DIV1_SCORE = #{actionDiv1Score},
+			ACTION_DIV2_SCORE = #{actionDiv2Score},
+			ACTION_DIV3_SCORE = #{actionDiv3Score},
+			ACTION_DIV4_SCORE = #{actionDiv4Score},
+			USE_YN = #{useYn},
+			QUESTION_CNT = #{questionCnt},
+			UPDATE_ID = #{updateId},
+			UPDATE_DATE = now()
+		WHERE MODULE_ID = #{moduleId}
+	</update>	
+	
+	<!-- 모듈 삭제-->
+	<delete id="deleteModule" parameterType="egovframework.com.adm.learningMgr.vo.EduModule">
+		DELETE FROM XBT_MODULE_INFO WHERE MODULE_ID =  #{moduleId}
+	</delete>				
+			
 			
 	<!-- XRAY 판독 배점관리 조회-->
 	<select id="getXrayPointList" parameterType="egovframework.com.adm.learningMgr.vo.XrayPoint" resultType="egovframework.com.adm.learningMgr.vo.XrayPoint" >			

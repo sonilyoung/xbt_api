@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import egovframework.com.adm.contents.vo.Contents;
 import egovframework.com.adm.contents.vo.ContentsMgr;
 import egovframework.com.adm.contents.vo.UnitInformation;
-import egovframework.com.adm.contents.vo.Xrayformation;
+import egovframework.com.adm.contents.vo.XrayContents;
 import egovframework.com.api.edc.vo.UnitImages;
 import egovframework.com.adm.contents.vo.Language;
 

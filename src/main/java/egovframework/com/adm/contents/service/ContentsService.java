@@ -5,14 +5,13 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import egovframework.com.adm.contents.vo.Contents;
-import egovframework.com.adm.contents.vo.ContentsMgr;
-import egovframework.com.adm.contents.vo.UnitInformation;
-import egovframework.com.adm.contents.vo.XbtSeq;
-import egovframework.com.adm.contents.vo.Xrayformation;
 import egovframework.com.adm.contents.vo.Language;
 import egovframework.com.adm.contents.vo.UnitGroup;
 import egovframework.com.adm.contents.vo.UnitImg;
+import egovframework.com.adm.contents.vo.UnitInformation;
+import egovframework.com.adm.contents.vo.XbtSeq;
+import egovframework.com.adm.contents.vo.XrayContents;
+import egovframework.com.adm.contents.vo.XrayImgContents;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.
@@ -63,11 +62,7 @@ public interface ContentsService {
 	
 	public UnitImg selectUnit(UnitImg params);
 	
-	public List<Xrayformation> getXrayInformationList(Xrayformation params);
-	
-	public List<Xrayformation> getXrayDetailList(Xrayformation params);
-	
-	public List<UnitInformation> getBagUnitInfoList(UnitInformation params);
+	public List<UnitInformation> selectUnitPopupList(UnitInformation params);
 	
 	public XbtSeq selectXbtSeq(XbtSeq params);
 	
@@ -90,4 +85,27 @@ public interface ContentsService {
     public int insertUnit3dDetail(UnitImg params);
     
 	public int insertUnitImage(MultipartFile imgFile ,UnitImg params) throws IOException;
+	
+	public List<XrayContents> selectXrayContentsList(XrayContents params);
+	
+	public int insertXrayContents(XrayContents params);
+	
+	public int updateXrayContents(XrayContents params);
+	
+	public int deleteXrayContents(XrayContents params);
+
+	public XrayImgContents selectXrayImgContents(XrayImgContents params);
+	
+	public List<XrayContents> selectXrayUnitList(XrayContents params);
+	
+	public int insertXrayUnit(XrayContents params);
+	
+	public int deleteAllXrayUnit(XrayContents params);
+	
+	public int deleteXrayUnit(XrayContents params);
+	
+	
+	public int updateXrayContentsImg(XrayImgContents params);
+		
+	
 }

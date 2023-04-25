@@ -8,7 +8,7 @@ package egovframework.com.global.http;
  */
 public enum BaseApiMessage {
 	REQUIRED(
-			"REQUIRED", "은(는) 필수값"
+			" Required", " 은(는) 필수값"
 	), INFORMATION_ERROR(
 			"9999", "입력 정보 없음");
 	

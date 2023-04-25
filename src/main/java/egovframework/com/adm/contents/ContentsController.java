@@ -14,25 +14,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.com.adm.contents.service.ContentsService;
-import egovframework.com.adm.contents.vo.Contents;
-import egovframework.com.adm.contents.vo.ContentsMgr;
-import egovframework.com.adm.contents.vo.UnitInformation;
-import egovframework.com.adm.contents.vo.Xrayformation;
 import egovframework.com.adm.contents.vo.Language;
 import egovframework.com.adm.contents.vo.UnitGroup;
 import egovframework.com.adm.contents.vo.UnitImg;
+import egovframework.com.adm.contents.vo.UnitInformation;
+import egovframework.com.adm.contents.vo.XrayContents;
+import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
-import egovframework.com.common.vo.Common;
-import egovframework.com.common.vo.CommonSystemMessage;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
@@ -633,9 +628,9 @@ public class ContentsController {
 	@ApiOperation(value = "단품 이미지 저장", notes = "단품 이미지 저장")
 	public BaseResponse<Integer> saveUnitImg(
 			HttpServletRequest request
-			,@RequestPart(value = "realImg", required = true) MultipartFile realImg
-			,@RequestPart(value = "frontImg", required = true) MultipartFile frontImg
-			,@RequestPart(value = "sideImg", required = true) MultipartFile sideImg
+			,@RequestPart(value = "realImg", required = false) MultipartFile realImg
+			,@RequestPart(value = "frontImg", required = false) MultipartFile frontImg
+			,@RequestPart(value = "sideImg", required = false) MultipartFile sideImg
 			,@RequestPart(value = "params", required = true )UnitImg params
 	) throws Exception{
 	
@@ -739,23 +734,159 @@ public class ContentsController {
      * @return Company
      */
 	@ResponseBody
-    @RequestMapping(value = {"/getXrayInformationList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @RequestMapping(value = {"/selectXrayContentsList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
     @ApiOperation(value = "xray콘텐츠관리-정보관리", notes = "xray콘텐츠관리-정보관리 조회한다.")
-    public BaseResponse<List<Xrayformation>> getXrayInformationList(HttpServletRequest request
-    		, @RequestBody Xrayformation params) {
+    public BaseResponse<List<XrayContents>> selectXrayContentsList(HttpServletRequest request
+    		, @RequestBody XrayContents params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
 		try {
-			List<Xrayformation> resultList = contentsService.getXrayInformationList(params);
-	        return new BaseResponse<List<Xrayformation>>(resultList);
+			List<XrayContents> resultList = contentsService.selectXrayContentsList(params);
+	        return new BaseResponse<List<XrayContents>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
     }  
+
+    
+    
+    
+    /**
+     * xray콘텐츠관리-정보관리등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertXrayContents.do")
+    @ApiOperation(value = "xray콘텐츠관리-정보관리", notes = "xray콘텐츠관리-정보관리등록.")
+    public BaseResponse<Integer> insertXrayContents(HttpServletRequest request, @RequestBody XrayContents params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		
+		if(StringUtils.isEmpty(params.getStudyLvl())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "StudyLvl" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		/*
+		if(StringUtils.isEmpty(params.getUnitId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UnitId" + BaseApiMessage.REQUIRED.getCode());
+		}					
+		
+		if(StringUtils.isEmpty(params.getUnitGroupCd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UnitGroupCd" + BaseApiMessage.REQUIRED.getCode());
+		}
+		*/	
+		
+		if(StringUtils.isEmpty(params.getUseYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UseYn" + BaseApiMessage.REQUIRED.getCode());
+		}			
+				
+		
+		try {
+			//xray콘텐츠관리-정보관리등록
+			params.setInsertId(login.getUserId());
+			int result = contentsService.insertXrayContents(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * xray콘텐츠관리-정보관리수정
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/updateXrayContents.do")
+    @ApiOperation(value = "xray콘텐츠관리-정보관리", notes = "xray콘텐츠관리-정보관리수정.")
+    public BaseResponse<Integer> updateXrayContents(HttpServletRequest request, @RequestBody XrayContents params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		/*
+		if(StringUtils.isEmpty(params.getXrayContentsId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "XrayContentsId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getTitle())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Title" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getContents())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Contents" + BaseApiMessage.REQUIRED.getCode());
+		}*/			
+				
+		
+		try {
+			//xray콘텐츠관리-정보관리등록
+			params.setUpdateId(login.getUserId());
+			int result = contentsService.updateXrayContents(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * xray콘텐츠관리-정보관리삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteXrayContents.do")
+    @ApiOperation(value = "xray콘텐츠관리-정보관리", notes = "xray콘텐츠관리-정보관리삭제.")
+    public BaseResponse<Integer> deleteXrayContents(HttpServletRequest request, @RequestBody XrayContents params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getBagScanIds())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		try {
+			//xray콘텐츠관리-정보관리삭제
+			int result = contentsService.deleteXrayContents(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }	
+	
 	
 	
     /**
@@ -765,28 +896,116 @@ public class ContentsController {
      * @return Company
      */
 	@ResponseBody
-    @RequestMapping(value = {"/getXrayDetailList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @RequestMapping(value = {"/selectXrayUnitList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
     @ApiOperation(value = "xray콘텐츠관리-상세목록", notes = "xray콘텐츠관리-상세목록 조회한다.")
-    public BaseResponse<List<Xrayformation>> getXrayDetailList(HttpServletRequest request
-    		, @RequestBody Xrayformation params) {
+    public BaseResponse<List<XrayContents>> selectXrayUnitList(HttpServletRequest request
+    		, @RequestBody XrayContents params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(params.getBagScanId() == null){				
-			return new BaseResponse<List<Xrayformation>>(BaseResponseCode.PARAMS_ERROR, "bagScanId" + BaseApiMessage.REQUIRED.getMessage());
+		if(StringUtils.isEmpty(params.getBagScanId())){				
+			return new BaseResponse<List<XrayContents>>(BaseResponseCode.PARAMS_ERROR, "bagScanId" + BaseApiMessage.REQUIRED.getMessage());
 		}	
 		
 		try {
-			List<Xrayformation> resultList = contentsService.getXrayDetailList(params);
-	        return new BaseResponse<List<Xrayformation>>(resultList);
+			List<XrayContents> resultList = contentsService.selectXrayUnitList(params);
+	        return new BaseResponse<List<XrayContents>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
-    }  
+    }  	
 	
+	
+	 /**
+     * xray콘텐츠관리-상세목록등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertXrayUnit.do")
+    @ApiOperation(value = "xray콘텐츠관리-상세목록 등록", notes = "xray콘텐츠관리-상세목록 등록.")
+    public BaseResponse<Integer> insertXrayUnit(HttpServletRequest request, @RequestBody XrayContents params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getBagScanId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getParamList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ParamList" + BaseApiMessage.REQUIRED.getCode());
+		}			
+				
+		
+		/*
+		if(StringUtils.isEmpty(params.getSeq())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Seq" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getUnitId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UnitId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getAnswerItem())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "AnswerItem" + BaseApiMessage.REQUIRED.getCode());
+		}*/			
+				
+		
+		try {
+			//xray콘텐츠관리-상세목록등록
+			params.setInsertId(login.getUserId());
+			int result = contentsService.insertXrayUnit(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+	
+	
+    /**
+     * xray콘텐츠관리-상세목록삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteXrayUnit.do")
+    @ApiOperation(value = "xray콘텐츠관리-상세목록", notes = "xray콘텐츠관리-상세목록삭제.")
+    public BaseResponse<Integer> deleteXrayUnit(HttpServletRequest request, @RequestBody XrayContents params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getBagContNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BagContNo" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		try {
+			//xray콘텐츠관리-상세목록삭제
+			int result = contentsService.deleteXrayUnit(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }		
 	
 	
     /**
@@ -796,32 +1015,518 @@ public class ContentsController {
      * @return Company
      */
 	@ResponseBody
-    @RequestMapping(value = {"/getBagUnitInfoList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @RequestMapping(value = {"/selectUnitPopupList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
     @ApiOperation(value = "가방물품정보", notes = "가방물품정보 조회한다.")
-    public BaseResponse<List<UnitInformation>> getBagUnitInfoList(HttpServletRequest request
+    public BaseResponse<List<UnitInformation>> selectUnitPopupList(HttpServletRequest request
     		, @RequestBody UnitInformation params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(params.getLanguageCode() == null || "".contentEquals(params.getLanguageCode())){				
-			return new BaseResponse<List<UnitInformation>>(BaseResponseCode.PARAMS_ERROR, "languageCode" + BaseApiMessage.REQUIRED.getMessage());
+		if(StringUtils.isEmpty(params.getLanguageCode())){
+			return new BaseResponse<List<UnitInformation>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
 		}	
 		
 		try {
-			List<UnitInformation> resultList = contentsService.getBagUnitInfoList(params);
+			List<UnitInformation> resultList = contentsService.selectUnitPopupList(params);
 	        return new BaseResponse<List<UnitInformation>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
     }  	
-	
-	
-	
-	
+	    
  	
+	
+	
+    /**
+     * xray콘텐츠관리-정보관리상세
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectXrayImgContents.do")
+    @ApiOperation(value = "xray콘텐츠관리-정보관리상세", notes = "xray콘텐츠관리-정보관리상세조회.")
+    public BaseResponse<XrayImgContents> selectXrayImgContents(HttpServletRequest request, @RequestBody XrayImgContents params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getBagScanId())){				
+			return new BaseResponse<XrayImgContents>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			//xray콘텐츠관리-정보관리조회
+	        return new BaseResponse<XrayImgContents>(contentsService.selectXrayImgContents(params));
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+        	
+	
+    /**
+     * xray 이미지 저장
+     * 
+     * @param param
+     * @return Company
+     */
+	@PostMapping(value="/updateXrayContentsImg.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	@ApiOperation(value = "xray 이미지 저장", notes = "xray 이미지 저장")
+	public BaseResponse<Integer> updateXrayContentsImg(
+			HttpServletRequest request
+			,@RequestPart(value = "imgReal", required = false) MultipartFile imgReal
+			,@RequestPart(value = "imgFront", required = false) MultipartFile imgFront
+			,@RequestPart(value = "imgSide", required = false) MultipartFile imgSide
+			,@RequestPart(value = "imgFrontCollar", required = false) MultipartFile imgFrontCollar
+			,@RequestPart(value = "imgFrontOrganism", required = false) MultipartFile imgFrontOrganism
+			,@RequestPart(value = "imgFrontCollarOutline", required = false) MultipartFile imgFrontCollarOutline
+			,@RequestPart(value = "imgFrontCollarReversal", required = false) MultipartFile imgFrontCollarReversal
+			,@RequestPart(value = "imgFrontCollarBwRate1", required = false) MultipartFile imgFrontCollarBwRate1
+			,@RequestPart(value = "imgFrontCollarBwRate2", required = false) MultipartFile imgFrontCollarBwRate2
+			,@RequestPart(value = "imgFrontCollarBwRate3", required = false) MultipartFile imgFrontCollarBwRate3
+			,@RequestPart(value = "imgFrontCollarBwRate4", required = false) MultipartFile imgFrontCollarBwRate4
+			,@RequestPart(value = "imgFrontCollarBwRate5", required = false) MultipartFile imgFrontCollarBwRate5
+			,@RequestPart(value = "imgFrontCollarBwRate6", required = false) MultipartFile imgFrontCollarBwRate6
+			,@RequestPart(value = "imgFrontBw", required = false) MultipartFile imgFrontBw
+			,@RequestPart(value = "imgFrontMinerals", required = false) MultipartFile imgFrontMinerals
+			,@RequestPart(value = "imgFrontBwOutline", required = false) MultipartFile imgFrontBwOutline
+			,@RequestPart(value = "imgFrontBwReversal", required = false) MultipartFile imgFrontBwReversal
+			,@RequestPart(value = "imgFrontBwBwRate1", required = false) MultipartFile imgFrontBwBwRate1
+			,@RequestPart(value = "imgFrontBwBwRate2", required = false) MultipartFile imgFrontBwBwRate2
+			,@RequestPart(value = "imgFrontBwBwRate3", required = false) MultipartFile imgFrontBwBwRate3
+			,@RequestPart(value = "imgFrontBwBwRate4", required = false) MultipartFile imgFrontBwBwRate4
+			,@RequestPart(value = "imgFrontBwBwRate5", required = false) MultipartFile imgFrontBwBwRate5
+			,@RequestPart(value = "imgFrontBwBwRate6", required = false) MultipartFile imgFrontBwBwRate6
+			,@RequestPart(value = "imgSideCollar", required = false) MultipartFile imgSideCollar
+			,@RequestPart(value = "imgSideOrganism", required = false) MultipartFile imgSideOrganism
+			,@RequestPart(value = "imgSideCollarOutline", required = false) MultipartFile imgSideCollarOutline
+			,@RequestPart(value = "imgSideCollarReversal", required = false) MultipartFile imgSideCollarReversal
+			,@RequestPart(value = "imgSideCollarBwRate1", required = false) MultipartFile imgSideCollarBwRate1
+			,@RequestPart(value = "imgSideCollarBwRate2", required = false) MultipartFile imgSideCollarBwRate2
+			,@RequestPart(value = "imgSideCollarBwRate3", required = false) MultipartFile imgSideCollarBwRate3
+			,@RequestPart(value = "imgSideCollarBwRate4", required = false) MultipartFile imgSideCollarBwRate4
+			,@RequestPart(value = "imgSideCollarBwRate5", required = false) MultipartFile imgSideCollarBwRate5
+			,@RequestPart(value = "imgSideCollarBwRate6", required = false) MultipartFile imgSideCollarBwRate6
+			,@RequestPart(value = "imgSideBw", required = false) MultipartFile imgSideBw
+			,@RequestPart(value = "imgSideMinerals", required = false) MultipartFile imgSideMinerals
+			,@RequestPart(value = "imgSideBwOutline", required = false) MultipartFile imgSideBwOutline
+			,@RequestPart(value = "imgSideBwReversal", required = false) MultipartFile imgSideBwReversal
+			,@RequestPart(value = "imgSideBwBwRate1", required = false) MultipartFile imgSideBwBwRate1
+			,@RequestPart(value = "imgSideBwBwRate2", required = false) MultipartFile imgSideBwBwRate2
+			,@RequestPart(value = "imgSideBwBwRate3", required = false) MultipartFile imgSideBwBwRate3
+			,@RequestPart(value = "imgSideBwBwRate4", required = false) MultipartFile imgSideBwBwRate4
+			,@RequestPart(value = "imgSideBwBwRate5", required = false) MultipartFile imgSideBwBwRate5
+			,@RequestPart(value = "imgSideBwBwRate6", required = false) MultipartFile imgSideBwBwRate6				
+			,@RequestPart(value = "params", required = true )XrayImgContents params
+	) throws Exception{
+	
+		//LinkedHashMap<String, String> result = new LinkedHashMap<String, String>();
+	    //MultipartFile imgFile = request.getFile("imgFile");
+	    
+		//임시주석처리
+    	/*Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}*/
+		
+		//MultipartFile realImg = mRequest.getFile("realImg");
+		//MultipartFile frontImg = mRequest.getFile("frontImg");
+		//MultipartFile sideImg = mRequest.getFile("sideImg");
+
+		if(imgReal != null){
+			params.setMimgReal(imgReal);
+			if(!ComUtils.imgExtentionCheck(imgReal)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}
+		
+		if(imgFront != null){
+			params.setMimgFront(imgFront);
+			if(!ComUtils.imgExtentionCheck(imgFront)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}
+		
+		if(imgSide != null){
+			params.setMimgSide(imgSide);
+			if(!ComUtils.imgExtentionCheck(imgSide)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+	
+		if(imgFrontCollar != null){
+			params.setMimgFrontCollar(imgFrontCollar);
+			if(!ComUtils.imgExtentionCheck(imgFrontCollar)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}
+		
+		if(imgFrontOrganism != null){
+			params.setMimgFrontOrganism(imgFrontOrganism);
+			if(!ComUtils.imgExtentionCheck(imgFrontOrganism)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		if(imgFrontCollarOutline != null){
+			params.setMimgFrontCollarOutline(imgFrontCollarOutline);
+			if(!ComUtils.imgExtentionCheck(imgFrontCollarOutline)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontCollarReversal != null){
+			params.setMimgFrontCollarReversal(imgFrontCollarReversal);
+			if(!ComUtils.imgExtentionCheck(imgFrontCollarReversal)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontCollarBwRate1 != null){
+			params.setMimgFrontCollarBwRate1(imgFrontCollarBwRate1);
+			if(!ComUtils.imgExtentionCheck(imgFrontCollarBwRate1)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontCollarBwRate2 != null){
+			params.setMimgFrontCollarBwRate2(imgFrontCollarBwRate2);
+			if(!ComUtils.imgExtentionCheck(imgFrontCollarBwRate2)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontCollarBwRate3 != null){
+			params.setMimgFrontCollarBwRate3(imgFrontCollarBwRate3);
+			if(!ComUtils.imgExtentionCheck(imgFrontCollarBwRate3)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontCollarBwRate4 != null){
+			params.setMimgFrontCollarBwRate4(imgFrontCollarBwRate4);
+			if(!ComUtils.imgExtentionCheck(imgFrontCollarBwRate4)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontCollarBwRate5 != null){
+			params.setMimgFrontCollarBwRate5(imgFrontCollarBwRate5);
+			if(!ComUtils.imgExtentionCheck(imgFrontCollarBwRate5)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontCollarBwRate6 != null){
+			params.setMimgFrontCollarBwRate6(imgFrontCollarBwRate6);
+			if(!ComUtils.imgExtentionCheck(imgFrontCollarBwRate6)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontBw != null){
+			params.setMimgFrontBw(imgFrontBw);
+			if(!ComUtils.imgExtentionCheck(imgFrontBw)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontMinerals != null){
+			params.setMimgFrontMinerals(imgFrontMinerals);
+			if(!ComUtils.imgExtentionCheck(imgFrontMinerals)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontBwOutline != null){
+			params.setMimgFrontBwOutline(imgFrontBwOutline);
+			if(!ComUtils.imgExtentionCheck(imgFrontBwOutline)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontBwReversal != null){
+			params.setMimgFrontBwReversal(imgFrontBwReversal);
+			if(!ComUtils.imgExtentionCheck(imgFrontBwReversal)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontBwBwRate1 != null){
+			params.setMimgFrontBwBwRate1(imgFrontBwBwRate1);
+			if(!ComUtils.imgExtentionCheck(imgFrontBwBwRate1)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+
+		
+		
+		if(imgFrontBwBwRate2 != null){
+			params.setMimgFrontBwBwRate2(imgFrontBwBwRate2);
+			if(!ComUtils.imgExtentionCheck(imgFrontBwBwRate2)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontBwBwRate3 != null){
+			params.setMimgFrontBwBwRate3(imgFrontBwBwRate3);
+			if(!ComUtils.imgExtentionCheck(imgFrontBwBwRate3)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontBwBwRate4 != null){
+			params.setMimgFrontBwBwRate4(imgFrontBwBwRate4);
+			if(!ComUtils.imgExtentionCheck(imgFrontBwBwRate4)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontBwBwRate5 != null){
+			params.setMimgFrontBwBwRate5(imgFrontBwBwRate5);
+			if(!ComUtils.imgExtentionCheck(imgFrontBwBwRate5)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgFrontBwBwRate6 != null){
+			params.setMimgFrontBw(imgFrontBwBwRate6);
+			if(!ComUtils.imgExtentionCheck(imgFrontBwBwRate6)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		if(imgSideCollar != null){
+			params.setMimgSideCollar(imgSideCollar);
+			if(!ComUtils.imgExtentionCheck(imgSideCollar)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}
+		
+		if(imgSideOrganism != null){
+			params.setMimgSideOrganism(imgSideOrganism);
+			if(!ComUtils.imgExtentionCheck(imgSideOrganism)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		if(imgSideCollarOutline != null){
+			params.setMimgSideCollarOutline(imgSideCollarOutline);
+			if(!ComUtils.imgExtentionCheck(imgSideCollarOutline)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideCollarReversal != null){
+			params.setMimgSideCollarReversal(imgSideCollarReversal);
+			if(!ComUtils.imgExtentionCheck(imgSideCollarReversal)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideCollarBwRate1 != null){
+			params.setMimgSideCollarBwRate1(imgSideCollarBwRate1);
+			if(!ComUtils.imgExtentionCheck(imgSideCollarBwRate1)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideCollarBwRate2 != null){
+			params.setMimgSideCollarBwRate2(imgSideCollarBwRate2);
+			if(!ComUtils.imgExtentionCheck(imgSideCollarBwRate2)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideCollarBwRate3 != null){
+			params.setMimgSideCollarBwRate3(imgSideCollarBwRate3);
+			if(!ComUtils.imgExtentionCheck(imgSideCollarBwRate3)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideCollarBwRate4 != null){
+			params.setMimgSideCollarBwRate4(imgSideCollarBwRate4);
+			if(!ComUtils.imgExtentionCheck(imgSideCollarBwRate4)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideCollarBwRate5 != null){
+			params.setMimgSideCollarBwRate5(imgSideCollarBwRate5);
+			if(!ComUtils.imgExtentionCheck(imgSideCollarBwRate5)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideCollarBwRate6 != null){
+			params.setMimgSideCollarBwRate6(imgSideCollarBwRate6);
+			if(!ComUtils.imgExtentionCheck(imgSideCollarBwRate6)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideBw != null){
+			params.setMimgSideBw(imgSideBw);
+			if(!ComUtils.imgExtentionCheck(imgSideBw)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideMinerals != null){
+			params.setMimgSideMinerals(imgSideMinerals);
+			if(!ComUtils.imgExtentionCheck(imgSideMinerals)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideBwOutline != null){
+			params.setMimgSideBwOutline(imgSideBwOutline);
+			if(!ComUtils.imgExtentionCheck(imgSideBwOutline)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideBwReversal != null){
+			params.setMimgSideBwReversal(imgSideBwReversal);
+			if(!ComUtils.imgExtentionCheck(imgSideBwReversal)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideBwBwRate1 != null){
+			params.setMimgSideBwBwRate1(imgSideBwBwRate1);
+			if(!ComUtils.imgExtentionCheck(imgSideBwBwRate1)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+
+		
+		
+		if(imgSideBwBwRate2 != null){
+			params.setMimgSideBwBwRate2(imgSideBwBwRate2);
+			if(!ComUtils.imgExtentionCheck(imgSideBwBwRate2)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideBwBwRate3 != null){
+			params.setMimgSideBwBwRate3(imgSideBwBwRate3);
+			if(!ComUtils.imgExtentionCheck(imgSideBwBwRate3)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideBwBwRate4 != null){
+			params.setMimgSideBwBwRate4(imgSideBwBwRate4);
+			if(!ComUtils.imgExtentionCheck(imgSideBwBwRate4)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideBwBwRate5 != null){
+			params.setMimgSideBwBwRate5(imgSideBwBwRate5);
+			if(!ComUtils.imgExtentionCheck(imgSideBwBwRate5)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}		
+		
+		
+		
+		if(imgSideBwBwRate6 != null){
+			params.setMimgSideBw(imgSideBwBwRate6);
+			if(!ComUtils.imgExtentionCheck(imgSideBwBwRate6)) {
+				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
+			}				
+		}				
+		
+		
+	
+		if(StringUtils.isEmpty(params.getBagScanId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "getUnitScanId" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+	    try { 
+	    	//params.setInsertId(login.getFirstLogin());
+	    	params.setUpdateId("admin");
+	    	contentsService.updateXrayContentsImg(params);
+			return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+	    }catch(Exception e) {
+	       LOGGER.error("error:", e);
+	       throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+	    } 
+	    
+	    
+	}	   		
 	
 	    
 }

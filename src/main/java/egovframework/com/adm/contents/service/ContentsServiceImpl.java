@@ -7,18 +7,18 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.com.adm.contents.dao.ContentsDAO;
-import egovframework.com.adm.contents.vo.ContentsMgr;
 import egovframework.com.adm.contents.vo.Language;
 import egovframework.com.adm.contents.vo.UnitGroup;
 import egovframework.com.adm.contents.vo.UnitImg;
 import egovframework.com.adm.contents.vo.UnitInformation;
 import egovframework.com.adm.contents.vo.XbtSeq;
-import egovframework.com.adm.contents.vo.Xrayformation;
+import egovframework.com.adm.contents.vo.XrayContents;
+import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.common.vo.SeqGroupCode;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -169,22 +169,12 @@ public class ContentsServiceImpl implements ContentsService {
 		return contentsDAO.selectUnit(params);
 	}
 
-	@Override
-	public List<Xrayformation> getXrayInformationList(Xrayformation params) {
-		// TODO Auto-generated method stub
-		return (List<Xrayformation>) contentsDAO.getXrayInformationList(params);
-	}
+
 
 	@Override
-	public List<Xrayformation> getXrayDetailList(Xrayformation params) {
+	public List<UnitInformation> selectUnitPopupList(UnitInformation params) {
 		// TODO Auto-generated method stub
-		return (List<Xrayformation>) contentsDAO.getXrayDetailList(params);
-	}
-
-	@Override
-	public List<UnitInformation> getBagUnitInfoList(UnitInformation params) {
-		// TODO Auto-generated method stub
-		return (List<UnitInformation>) contentsDAO.getBagUnitInfoList(params);
+		return (List<UnitInformation>) contentsDAO.selectUnitPopupList(params);
 	}
 	
 
@@ -229,7 +219,7 @@ public class ContentsServiceImpl implements ContentsService {
 		params.setUnitScanId(unitScanId.getSeqId());
 		
 		contentsDAO.insertUnit(params);
-		contentsDAO.updateUnitBasicInfo(params);
+		//contentsDAO.insertUnitBasicInfo(params);
 		
 		//insertUnitMaster(params);
 		//insertUnitDetail(params);
@@ -244,6 +234,11 @@ public class ContentsServiceImpl implements ContentsService {
 	@Transactional
 	public void updateUnitImg(UnitImg params) {
 		// TODO Auto-generated method stub
+		
+		if(contentsDAO.selectUnitBasicInfoCount(params) <= 0) {
+			contentsDAO.insertUnitBasicInfo(params);	
+		}
+		
 		if(params.getFrontmImg()!=null) {
 			try {
 				params.setImgType("front");
@@ -361,6 +356,492 @@ public class ContentsServiceImpl implements ContentsService {
 
 
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<XrayContents> selectXrayContentsList(XrayContents params) {
+		// TODO Auto-generated method stub
+		return (List<XrayContents>)contentsDAO.selectXrayContentsList(params);
+	}
+
+	@Override
+	public int insertXrayContents(XrayContents params) {
+		// TODO Auto-generated method stub
+		
+		XbtSeq seq = new XbtSeq();
+		seq.setSeqInfo(SeqGroupCode.XBT_BAG_ID.getCode());
+		XbtSeq unitId = selectXbtSeq(seq);
+		params.setBagScanId(unitId.getSeqId());		
+		//params.setSeq("1");
+		//params.setAnswerItem("Y");
+		//return contentsDAO.insertXrayUnit(params);
+		return contentsDAO.insertXrayContents(params);
+	}
+
+	@Override
+	public int updateXrayContents(XrayContents params) {
+		// TODO Auto-generated method stub
+		
+		for(XrayContents x : params.getParamList()) {
+			x.setUpdateId(params.getUpdateId());
+			contentsDAO.updateXrayContents(x);
+		}
+		
+		return 1; 
+	}
+
+	@Override
+	public int deleteXrayContents(XrayContents params) {
+		// TODO Auto-generated method stub
+		
+		if(!StringUtils.isEmpty(params.getBagScanIds())){
+			for(int i=0; i<params.getBagScanIds().length; i++) {
+				params.setBagScanId(params.getBagScanIds()[i]);
+				contentsDAO.deleteAllXrayUnit(params);
+				contentsDAO.deleteXrayContents(params);						
+			}
+		}
+		return 1;
+	}
+
+	@Override
+	public XrayImgContents selectXrayImgContents(XrayImgContents params) {
+		// TODO Auto-generated method stub
+		return contentsDAO.selectXrayImgContents(params);
+	}
+	
+	@Override
+	public List<XrayContents> selectXrayUnitList(XrayContents params) {
+		// TODO Auto-generated method stub
+		return (List<XrayContents>) contentsDAO.selectXrayUnitList(params);
+	}	
+
+	@Override
+	public int insertXrayUnit(XrayContents params) {
+		// TODO Auto-generated method stub
+		
+		contentsDAO.deleteAllXrayUnit(params);
+		
+		if(params.getParamList().size() > 0) {
+			for(XrayContents p : params.getParamList()) {
+				p.setBagScanId(params.getBagScanId());
+				contentsDAO.insertXrayUnit(p);
+			}
+		}
+		
+		return 1;
+	}
+	
+	@Override
+	public int deleteAllXrayUnit(XrayContents params) {
+		// TODO Auto-generated method stub
+		return contentsDAO.deleteAllXrayUnit(params);
+	}		
+
+	@Override
+	public int deleteXrayUnit(XrayContents params) {
+		// TODO Auto-generated method stub
+		return contentsDAO.deleteXrayUnit(params);
+	}
+
+	@Override
+	public int updateXrayContentsImg(XrayImgContents params) {
+		// TODO Auto-generated method stub
+		
+		if(contentsDAO.selectXrayImgContentsCount(params) <= 0) {
+			contentsDAO.insertXrayImgContents(params);	
+		}
+				
+		if(params.getMimgReal()!=null) {
+			try {
+				params.setImgReal(params.getMimgReal().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(params.getMimgSide()!=null) {
+			try {
+				params.setImgSide(params.getMimgSide().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(params.getMimgFront()!=null) {
+			try {
+				params.setImgFront(params.getMimgFront().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+
+		if(params.getMimgFrontCollar()!=null) {
+			try {
+				params.setImgFrontCollar(params.getMimgFrontCollar().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	
+		if(params.getMimgFrontOrganism()!=null) {
+			try {
+				params.setImgFrontOrganism(params.getMimgFrontOrganism().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+		
+		if(params.getMimgFrontCollarOutline()!=null) {
+			try {
+				params.setImgFrontCollarOutline(params.getMimgFrontCollarOutline().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontCollarReversal()!=null) {
+			try {
+				params.setImgFrontCollarReversal(params.getMimgFrontCollarReversal().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontCollarBwRate1()!=null) {
+			try {
+				params.setImgFrontCollarBwRate1(params.getMimgFrontCollarBwRate1().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontCollarBwRate2()!=null) {
+			try {
+				params.setImgFrontCollarBwRate2(params.getMimgFrontCollarBwRate2().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontCollarBwRate3()!=null) {
+			try {
+				params.setImgFrontCollarBwRate3(params.getMimgFrontCollarBwRate3().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontCollarBwRate4()!=null) {
+			try {
+				params.setImgFrontCollarBwRate4(params.getMimgFrontCollarBwRate4().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontCollarBwRate5()!=null) {
+			try {
+				params.setImgFrontCollarBwRate5(params.getMimgFrontCollarBwRate5().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontCollarBwRate6()!=null) {
+			try {
+				params.setImgFrontCollarBwRate6(params.getMimgFrontCollarBwRate6().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontBw()!=null) {
+			try {
+				params.setImgFrontBw(params.getMimgFrontBw().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontMinerals()!=null) {
+			try {
+				params.setImgFrontMinerals(params.getMimgFrontMinerals().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontBwOutline()!=null) {
+			try {
+				params.setImgFrontOrganism(params.getMimgFrontBwOutline().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontBwReversal()!=null) {
+			try {
+				params.setImgFrontBwReversal(params.getMimgFrontBwReversal().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}			
+		
+		
+		if(params.getMimgFrontBwBwRate1()!=null) {
+			try {
+				params.setImgFrontBwBwRate1(params.getMimgFrontBwBwRate1().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontBwBwRate2()!=null) {
+			try {
+				params.setImgFrontBwBwRate2(params.getMimgFrontBwBwRate2().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontBwBwRate3()!=null) {
+			try {
+				params.setImgFrontBwBwRate3(params.getMimgFrontBwBwRate3().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontBwBwRate4()!=null) {
+			try {
+				params.setImgFrontBwBwRate4(params.getMimgFrontBwBwRate4().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontBwBwRate5()!=null) {
+			try {
+				params.setImgFrontBwBwRate5(params.getMimgFrontBwBwRate5().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgFrontBwBwRate6()!=null) {
+			try {
+				params.setImgFrontBwBwRate6(params.getMimgFrontBwBwRate6().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideCollar()!=null) {
+			try {
+				params.setImgSideCollar(params.getMimgSideCollar().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	
+		if(params.getMimgSideOrganism()!=null) {
+			try {
+				params.setImgSideOrganism(params.getMimgSideOrganism().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+		
+		if(params.getMimgSideCollarOutline()!=null) {
+			try {
+				params.setImgSideCollarOutline(params.getMimgSideCollarOutline().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideCollarReversal()!=null) {
+			try {
+				params.setImgSideCollarReversal(params.getMimgSideCollarReversal().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideCollarBwRate1()!=null) {
+			try {
+				params.setImgSideCollarBwRate1(params.getMimgSideCollarBwRate1().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideCollarBwRate2()!=null) {
+			try {
+				params.setImgSideCollarBwRate2(params.getMimgSideCollarBwRate2().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideCollarBwRate3()!=null) {
+			try {
+				params.setImgSideCollarBwRate3(params.getMimgSideCollarBwRate3().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideCollarBwRate4()!=null) {
+			try {
+				params.setImgSideCollarBwRate4(params.getMimgSideCollarBwRate4().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideCollarBwRate5()!=null) {
+			try {
+				params.setImgSideCollarBwRate5(params.getMimgSideCollarBwRate5().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideCollarBwRate6()!=null) {
+			try {
+				params.setImgSideCollarBwRate6(params.getMimgSideCollarBwRate6().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideBw()!=null) {
+			try {
+				params.setImgSideBw(params.getMimgSideBw().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideMinerals()!=null) {
+			try {
+				params.setImgSideMinerals(params.getMimgSideMinerals().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideBwOutline()!=null) {
+			try {
+				params.setImgSideOrganism(params.getMimgSideBwOutline().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideBwReversal()!=null) {
+			try {
+				params.setImgSideBwReversal(params.getMimgSideBwReversal().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}			
+		
+		
+		if(params.getMimgSideBwBwRate1()!=null) {
+			try {
+				params.setImgSideBwBwRate1(params.getMimgSideBwBwRate1().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideBwBwRate2()!=null) {
+			try {
+				params.setImgSideBwBwRate2(params.getMimgSideBwBwRate2().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideBwBwRate3()!=null) {
+			try {
+				params.setImgSideBwBwRate3(params.getMimgSideBwBwRate3().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideBwBwRate4()!=null) {
+			try {
+				params.setImgSideBwBwRate4(params.getMimgSideBwBwRate4().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideBwBwRate5()!=null) {
+			try {
+				params.setImgSideBwBwRate5(params.getMimgSideBwBwRate5().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+		
+		if(params.getMimgSideBwBwRate6()!=null) {
+			try {
+				params.setImgSideBwBwRate6(params.getMimgSideBwBwRate6().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}			
+		
+		return contentsDAO.updateXrayContentsImg(params);
+	}	
 	
 
 }

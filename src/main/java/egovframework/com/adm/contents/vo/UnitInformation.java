@@ -21,6 +21,10 @@ public class UnitInformation{
 	private String updateDate;/*수정일*/
 	private String updateId;/*수정자*/
 	private String languageCode;/*언어셋*/
+	private String openYn;
+	private String passYn;
+	private String actionDiv;
+	
 	
 	List<UnitInformation> updateList;//수정목록
 }

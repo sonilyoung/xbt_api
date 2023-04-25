@@ -253,7 +253,7 @@
 	
 	
 	<!-- 물품콘텐츠정보조회 -->
-	<update id="updateUnitBasicInfo" parameterType="egovframework.com.adm.contents.vo.UnitImg">	
+	<insert id="insertUnitBasicInfo" parameterType="egovframework.com.adm.contents.vo.UnitImg">	
 		INSERT INTO XBT_UNIT_IMG_INFO_MASTER (
 			UNIT_SCAN_ID,
 			UNIT_ID,
@@ -269,74 +269,274 @@
 			,NOW()
 			,NOW()
 		)
-		ON DUPLICATE KEY UPDATE
-		    UNIT_SCAN_ID = #{unitScanId}    		
-	</update>		
+	</insert>		
+	
+	<!-- 물품콘텐츠정보조회 -->
+	<select id="selectUnitBasicInfoCount" parameterType="egovframework.com.adm.contents.vo.UnitImg" resultType="int">	
+		SELECT COUNT(*) FROM  XBT_UNIT_IMG_INFO_MASTER WHERE UNIT_SCAN_ID = #{unitScanId}
+	</select>		
 	
 	
 	
 	<!-- xray콘텐츠관리-정보관리 -->
-	<select id="getXrayInformationList" parameterType="egovframework.com.adm.contents.vo.Xrayformation" resultType="egovframework.com.adm.contents.vo.Xrayformation" >	
-			SELECT                                                  											
-			     A.BAG_SCAN_ID                 /*가방촬영ID*/
-			     , A.UNIT_ID                     /*물품ID*/        
-			     , (SELECT CODE_NAME FROM xbt_LANGUAGE_DETAIL XLD WHERE LANGUAGE_CODE='KOR' AND CODE_ID = A.UNIT_ID) AS UNIT_NAME                     /*물품ID*/        
-			     , C.OPEN_YN                     /*개봉여부*/        
-			     , C.PASS_YN                     /*통과여부*/        
-			     , C.ACTION_DIV                  /*ACTION구분*/        
-			     , A.STUDY_LVL                   /*학습레벨*/        
-			     , A.USE_YN                      /*사용여부*/        
-			     , A.FRONT_USE_YN                /*정면사용여부*/        
-			     , A.SIDE_USE_YN                 /*측면사용여부*/        
-			     , A.DECIP_MACHINE_CD            /*판독기기코드*/        
-			     , A.DUPLEX_YN                   /*양방향여부*/        
-			     , A.INSERT_DATE                      /*등록일시*/        
-			     , A.INSERT_ID                      /*등록자*/        
-			     , A.UPDATE_DATE                      /*수정일시*/        
-			     , A.UPDATE_DATE                      /*수정자*/   
-			FROM xbt_BAG_INFO A INNER JOIN xbt_UNIT_INFO B INNER JOIN xbt_UNIT_GROUP C
-			ON A.UNIT_ID=B.UNIT_ID
-			AND A.UNIT_ID=B.UNIT_ID
-			AND B.UNIT_GROUP_CD=C.UNIT_GROUP_CD 	             												 
-		ORDER BY BAG_SCAN_ID	  	
+	<select id="selectXrayContentsList" parameterType="egovframework.com.adm.contents.vo.XrayContents" resultType="egovframework.com.adm.contents.vo.XrayContents" >	
+		SELECT 
+			T1.BAG_SCAN_NO,
+			T1.BAG_SCAN_ID,
+			T1.UNIT_ID,/*정답물품아이디*/
+			T2.UNIT_NAME,/*정답물품명*/
+			T3.OPEN_YN,/*개봉여부*/
+			T3.PASS_YN,/*통과여부*/
+			FN_CODE_NAME('0005', T3.ACTION_DIV, 'kor') AS ACTION_DIV ,/*액션구분*/
+			T1.STUDY_LVL, /*학습레벨*/
+			T1.USE_YN ,/*사용여부*/
+			T1.INSERT_ID, 
+			T1.INSERT_DATE 
+		FROM XBT_BAG_INFO T1 
+		LEFT JOIN XBT_UNIT_INFO T2 ON T1.UNIT_ID = T2.UNIT_ID
+		LEFT JOIN XBT_UNIT_GROUP T3 ON T2.UNIT_GROUP_CD = T3.UNIT_GROUP_CD  		 	
 	</select>
 	
-	<!-- xray콘텐츠관리-상세목록 -->
-	<select id="getXrayDetailList" parameterType="egovframework.com.adm.contents.vo.Xrayformation" resultType="egovframework.com.adm.contents.vo.Xrayformation" >
+	
+	<!-- xray콘텐츠관리-정보관리상세이미지-->
+	<select id="selectXrayImgContents" parameterType="egovframework.com.adm.contents.vo.XrayImgContents" resultType="egovframework.com.adm.contents.vo.XrayImgContents" >	
+		SELECT 
+			T1.BAG_SCAN_NO,
+			T1.BAG_SCAN_ID,
+			T1.USE_YN,
+			T2.IMG_REAL,
+			T2.IMG_FRONT,
+			T2.IMG_SIDE,
+			T2.IMG_FRONT_COLLAR,
+			T2.IMG_FRONT_ORGANISM,
+			T2.IMG_FRONT_COLLAR_OUTLINE,
+			T2.IMG_FRONT_COLLAR_REVERSAL,
+			T2.IMG_FRONT_COLLAR_BW_RATE_1,
+			T2.IMG_FRONT_COLLAR_BW_RATE_2,
+			T2.IMG_FRONT_COLLAR_BW_RATE_3,
+			T2.IMG_FRONT_COLLAR_BW_RATE_4,
+			T2.IMG_FRONT_COLLAR_BW_RATE_5,
+			T2.IMG_FRONT_COLLAR_BW_RATE_6,
+			T2.IMG_FRONT_BW,
+			T2.IMG_FRONT_MINERALS,
+			T2.IMG_FRONT_BW_OUTLINE,
+			T2.IMG_FRONT_BW_REVERSAL,
+			T2.IMG_FRONT_BW_BW_RATE_1,
+			T2.IMG_FRONT_BW_BW_RATE_2,
+			T2.IMG_FRONT_BW_BW_RATE_3,
+			T2.IMG_FRONT_BW_BW_RATE_4,
+			T2.IMG_FRONT_BW_BW_RATE_5,
+			T2.IMG_FRONT_BW_BW_RATE_6,
+			T2.IMG_SIDE_COLLAR,
+			T2.IMG_SIDE_ORGANISM,
+			T2.IMG_SIDE_COLLAR_OUTLINE,
+			T2.IMG_SIDE_COLLAR_REVERSAL,
+			T2.IMG_SIDE_COLLAR_BW_RATE_1,
+			T2.IMG_SIDE_COLLAR_BW_RATE_2,
+			T2.IMG_SIDE_COLLAR_BW_RATE_3,
+			T2.IMG_SIDE_COLLAR_BW_RATE_4,
+			T2.IMG_SIDE_COLLAR_BW_RATE_5,
+			T2.IMG_SIDE_COLLAR_BW_RATE_6,
+			T2.IMG_SIDE_BW,
+			T2.IMG_SIDE_MINERALS,
+			T2.IMG_SIDE_BW_OUTLINE,
+			T2.IMG_SIDE_BW_REVERSAL,
+			T2.IMG_SIDE_BW_BW_RATE_1,
+			T2.IMG_SIDE_BW_BW_RATE_2,
+			T2.IMG_SIDE_BW_BW_RATE_3,
+			T2.IMG_SIDE_BW_BW_RATE_4,
+			T2.IMG_SIDE_BW_BW_RATE_5,
+			T2.IMG_SIDE_BW_BW_RATE_6							
+		FROM XBT_BAG_INFO T1 
+		INNER JOIN XBT_BAG_IMG_INFO T2 ON T1.BAG_SCAN_ID = T2.BAG_SCAN_ID
+		AND T1.BAG_SCAN_ID = #{bagScanId}		 	
+	</select>
+		
+	<!-- xray콘텐츠관리-정보관리상세이미지-->
+	<select id="selectXrayImgContentsCount" parameterType="egovframework.com.adm.contents.vo.XrayContents" resultType="int">	
+		SELECT COUNT(*) FROM  XBT_BAG_IMG_INFO WHERE BAG_SCAN_ID = #{bagScanId}
+	</select>			
+	
+	<!-- xray가방 이미지등록 -->
+	<insert id="insertXrayImgContents" parameterType="egovframework.com.adm.contents.vo.XrayContents">	
+		INSERT INTO XBT_BAG_IMG_INFO(
+			BAG_SCAN_ID
+			,STUDY_LVL
+			,INSERT_DATE
+		)VALUES(
+			#{bagScanId}
+			,1
+			,now()
+		)
+	</insert>			
+		
+	<!-- xray가방 등록 -->
+	<insert id="insertXrayContents" parameterType="egovframework.com.adm.contents.vo.XrayContents">
+		INSERT INTO XBT_BAG_INFO(
+			BAG_SCAN_ID,
+			STUDY_LVL,
+			UNIT_ID,
+			UNIT_GROUP_CD,
+			USE_YN,
+			INSERT_DATE,
+			INSERT_ID
+		)VALUES(
+			#{bagScanId}
+			,#{studyLvl}
+			,#{unitId}
+			,#{unitGroupCd}
+			,'Y'
+			,now()
+			,#{insertId}
+		)
+	</insert>	
+	
+	
+	<!-- xray가방 수정 -->
+	<update id="updateXrayContents" parameterType="egovframework.com.adm.contents.vo.XrayContents">	
+		UPDATE XBT_BAG_INFO
+		SET 
+			STUDY_LVL = #{studyLvl}
+			, USE_YN = #{useYn}
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DATE = now()
+		WHERE BAG_SCAN_ID = #{bagScanId}
+
+	</update>	
+	
+	<!-- xray가방 삭제-->
+	<delete id="deleteXrayContents" parameterType="egovframework.com.adm.contents.vo.XrayContents">
+		DELETE FROM XBT_BAG_INFO WHERE BAG_SCAN_ID = #{bagScanId}  
+	</delete>
+	
+	
+	
+	<!-- xray가방 수정 -->
+	<update id="updateXrayContentsImg"  parameterType="egovframework.com.adm.contents.vo.XrayImgContents">
+		UPDATE XBT_BAG_IMG_INFO SET
+			STUDY_LVL	=	1	
+			,IMG_REAL	=	#{imgReal}
+			,IMG_FRONT	=	#{imgFront}
+			,IMG_SIDE	=	#{imgSide}	
+			,IMG_FRONT_COLLAR	=	#{imgFrontCollar}	
+			,IMG_FRONT_ORGANISM	=	#{imgFrontOrganism}	
+			,IMG_FRONT_COLLAR_OUTLINE	=	#{imgFrontCollarOutline}	
+			,IMG_FRONT_COLLAR_REVERSAL	=	#{imgFrontCollarReversal}	
+			,IMG_FRONT_COLLAR_BW_RATE_1	=	#{imgFrontCollarBwRate1}	
+			,IMG_FRONT_COLLAR_BW_RATE_2	=	#{imgFrontCollarBwRate2}	
+			,IMG_FRONT_COLLAR_BW_RATE_3	=	#{imgFrontCollarBwRate3}	
+			,IMG_FRONT_COLLAR_BW_RATE_4	=	#{imgFrontCollarBwRate4}	
+			,IMG_FRONT_COLLAR_BW_RATE_5	=	#{imgFrontCollarBwRate5}	
+			,IMG_FRONT_COLLAR_BW_RATE_6	=	#{imgFrontCollarBwRate6}	
+			,IMG_FRONT_BW	=	#{imgFrontBw}	
+			,IMG_FRONT_MINERALS	=	#{imgFrontMinerals}	
+			,IMG_FRONT_BW_OUTLINE	=	#{imgFrontBwOutline}	
+			,IMG_FRONT_BW_REVERSAL	=	#{imgFrontBwReversal}	
+			,IMG_FRONT_BW_BW_RATE_1	=	#{imgFrontBwBwRate1}	
+			,IMG_FRONT_BW_BW_RATE_2	=	#{imgFrontBwBwRate2}	
+			,IMG_FRONT_BW_BW_RATE_3	=	#{imgFrontBwBwRate3}	
+			,IMG_FRONT_BW_BW_RATE_4	=	#{imgFrontBwBwRate4}	
+			,IMG_FRONT_BW_BW_RATE_5	=	#{imgFrontBwBwRate5}	
+			,IMG_FRONT_BW_BW_RATE_6	=	#{imgFrontBwBwRate6}	
+			,IMG_SIDE_COLLAR	=	#{imgSideCollar}	
+			,IMG_SIDE_ORGANISM	=	#{imgSideOrganism}	
+			,IMG_SIDE_COLLAR_OUTLINE	=	#{imgSideCollarOutline}	
+			,IMG_SIDE_COLLAR_REVERSAL	=	#{imgSideCollarReversal}	
+			,IMG_SIDE_COLLAR_BW_RATE_1	=	#{imgSideCollarBwRate1}	
+			,IMG_SIDE_COLLAR_BW_RATE_2	=	#{imgSideCollarBwRate2}	
+			,IMG_SIDE_COLLAR_BW_RATE_3	=	#{imgSideCollarBwRate3}	
+			,IMG_SIDE_COLLAR_BW_RATE_4	=	#{imgSideCollarBwRate4}	
+			,IMG_SIDE_COLLAR_BW_RATE_5	=	#{imgSideCollarBwRate5}	
+			,IMG_SIDE_COLLAR_BW_RATE_6	=	#{imgSideCollarBwRate6}	
+			,IMG_SIDE_BW	=	#{imgSideBw}	
+			,IMG_SIDE_MINERALS	=	#{imgSideMinerals}	
+			,IMG_SIDE_BW_OUTLINE	=	#{imgSideBwOutline}	
+			,IMG_SIDE_BW_REVERSAL	=	#{imgSideBwReversal}	
+			,IMG_SIDE_BW_BW_RATE_1	=	#{imgSideBwBwRate1}	
+			,IMG_SIDE_BW_BW_RATE_2	=	#{imgSideBwBwRate2}	
+			,IMG_SIDE_BW_BW_RATE_3	=	#{imgSideBwBwRate3}	
+			,IMG_SIDE_BW_BW_RATE_4	=	#{imgSideBwBwRate4}	
+			,IMG_SIDE_BW_BW_RATE_5	=	#{imgSideBwBwRate5}	
+			,IMG_SIDE_BW_BW_RATE_6	=	#{imgSideBwBwRate6}			
+			,UPDATE_DATE	=	now()	
+		WHERE BAG_SCAN_ID = #{bagScanId}
+	</update>
+	
+	
+	
+	<!-- xray콘텐츠관리-하위목록-가방에포함된 아이템 -->
+	<select id="selectXrayUnitList" parameterType="egovframework.com.adm.contents.vo.XrayContents" resultType="egovframework.com.adm.contents.vo.XrayContents" >
          SELECT                                       											
      		A.BAG_SCAN_ID                 /*가방촬영ID*/        
 		     , A.SEQ                         /*순번*/        
 		     , A.UNIT_ID                     /*물품ID*/   
-		     , (SELECT CODE_NAME FROM xbt_LANGUAGE_DETAIL XLD WHERE LANGUAGE_CODE='KOR' AND CODE_ID = A.UNIT_ID) AS UNIT_NAME                     /*물품명*/
-		     , (SELECT CODE_DESC FROM xbt_LANGUAGE_DETAIL XLD WHERE LANGUAGE_CODE='KOR' AND CODE_ID = A.UNIT_ID) AS UNIT_DESC                     /*물품설명*/     
+		     , B.UNIT_NAME                     /*물품명*/
+		     , B.UNIT_DESC                     /*물품설명*/     
 		     , A.INSERT_DATE                      /*등록일시*/        
 		     , A.INSERT_ID                      /*등록자*/        
-		     , A.UPDATE_DATE                      /*수정일시*/        
-		     , A.UPDATE_ID                      /*수정자*/
+		     , A.INSERT_DATE					/*수정일*/   
     		 , C.ACTION_DIV                  /*ACTION구분*/
          	 , C.OPEN_YN					 /*개봉여부*/
     		 , C.PASS_YN					 /*통과여부*/
+    		 , A.ANSWER_ITEM /*정답여부*/
 		FROM xbt_BAG_CONST_UNIT A INNER JOIN xbt_UNIT_INFO B INNER JOIN xbt_UNIT_GROUP C
 		ON  A.UNIT_ID=B.UNIT_ID
       	AND B.UNIT_GROUP_CD=C.UNIT_GROUP_CD                                               												 
         AND A.BAG_SCAN_ID = #{bagScanId}		
+        ORDER BY BAG_SCAN_ID DESC
 	</select>
+	
+	<!-- xray가방 물품등록 -->
+	<insert id="insertXrayUnit" parameterType="egovframework.com.adm.contents.vo.XrayContents">
+		INSERT INTO XBT_BAG_CONST_UNIT(
+			BAG_SCAN_ID,
+			SEQ,
+			UNIT_ID,
+			ANSWER_ITEM,
+			INSERT_DATE,
+			INSERT_ID
+		)VALUES(
+			#{bagScanId}
+			,#{seq}
+			,#{unitId}
+			,#{answerItem}
+			,now()
+			,#{insertId}
+		)
+	</insert>
+	
+	
+	<!-- xray가방 물품 전체삭제-->
+	<delete id="deleteAllXrayUnit" parameterType="egovframework.com.adm.contents.vo.XrayContents">
+		DELETE FROM XBT_BAG_CONST_UNIT WHERE BAG_SCAN_ID = #{bagScanId}  
+	</delete>		
+	
+	<!-- xray가방 물품삭제-->
+	<delete id="deleteXrayUnit" parameterType="egovframework.com.adm.contents.vo.XrayContents">
+		DELETE FROM XBT_BAG_CONST_UNIT WHERE BAG_CONST_NO = #{bagContNo}  
+	</delete>	
+	
+	
+	
+		
 	
 	
 	
 	<!-- 물품콘텐츠관리 정보관리 가방물품정보 -->
-	<select id="getBagUnitInfoList" parameterType="egovframework.com.adm.contents.vo.UnitInformation" resultType="egovframework.com.adm.contents.vo.UnitInformation" >	
+	<select id="selectUnitPopupList" parameterType="egovframework.com.adm.contents.vo.UnitInformation" resultType="egovframework.com.adm.contents.vo.UnitInformation" >	
 		SELECT 
-			UNIT_SCAN_ID
-			, UNIT_ID /*물품아이디*/
-			, UNIT_GROUP_CD/*뭎품그룹코드*/
-			, XLD.CODE_NAME AS UNIT_NAME /*물품명*/
-			, XLD.CODE_DESC AS UNIT_DESC /*물품설명*/
-			, XLD.USE_YN/*사용여부*/
-			, CASE WHEN XLD.USE_YN = 'Y' THEN '사용' ELSE '미사용' END AS USE_YN_NM
-		FROM xbt_UNIT_INFO XUI INNER JOIN xbt_LANGUAGE_DETAIL XLD 
-		ON XUI.UNIT_GROUP_CD = XLD.CODE_ID 
-		AND XLD.LANGUAGE_CODE = #{languageCode}		
+			T1.UNIT_SCAN_ID
+			, T1.UNIT_ID /*물품아이디*/
+			, T1.UNIT_GROUP_CD/*뭎품그룹코드*/
+			, T1.UNIT_NAME /*물품명*/
+			, T1.UNIT_DESC /*물품설명*/
+			, T1.USE_YN/*사용여부*/
+			, T2.OPEN_YN 
+			, T2.PASS_YN 
+			, FN_CODE_NAME('0005', T2.ACTION_DIV,'KOR') AS actionDiv 
+		FROM XBT_UNIT_INFO T1 JOIN XBT_UNIT_GROUP T2
+		ON T1.UNIT_GROUP_CD = T2.UNIT_GROUP_CD 
+		WHERE T1.LANGUAGE_CODE = #{languageCode}
 	</select>		
 	
 	
@@ -352,9 +552,11 @@
 			<when test='seqInfo == "X"'><!-- 가방xray시퀀스 -->
 				SELECT CAST(date_format(NOW(), 'X%y%m%d%h%i%s') as CHAR) AS seqId FROM DUAL
 			</when>
-			<when test='seqInfo == "UX"'><!-- 단품시퀀스 -->
+			<!-- 
+			<when test='seqInfo == "UX"'>단품시퀀스 
 				SELECT CAST(date_format(NOW(), 'UX%y%m%d%h%i%s') as CHAR) AS seqId FROM DUAL
 			</when>			
+			-->
 		</choose>				
 	</select>	
 	

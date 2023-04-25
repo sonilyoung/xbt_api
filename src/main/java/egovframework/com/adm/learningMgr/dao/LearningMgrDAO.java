@@ -14,9 +14,27 @@ public class LearningMgrDAO extends EgovAbstractMapper{
 	
 	private static final String Namespace = "egovframework.com.adm.learningMgr.dao.LearningMgrDAO";
 	
-	public List<?> getXrayModuleList(EduModule params) {
-		return (List<?>)selectList(Namespace + ".getXrayModuleList", params);
+	public List<?> selectModuleList(EduModule params) {
+		return (List<?>)selectList(Namespace + ".selectModuleList", params);
 	}
+	
+	public int insertModule(EduModule params) {
+		return insert(Namespace + ".insertModule", params);
+	}
+	
+	public int updateModule(EduModule params) {
+		return update(Namespace + ".updateModule", params);
+	}	
+	
+	public int deleteModule(EduModule params) {
+		return delete(Namespace + ".deleteModule", params);
+	}	
+
+	public Module selectModule(EduModule params) {
+		return selectOne(Namespace + ".selectModule", params);
+	}	
+	
+	
 
 	public List<?> getXrayPointList(XrayPoint params) {
 		return (List<?>)selectList(Namespace + ".getXrayPointList", params);
