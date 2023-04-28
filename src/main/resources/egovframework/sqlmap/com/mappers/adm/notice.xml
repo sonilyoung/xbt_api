@@ -12,6 +12,7 @@
 			, INSERT_DATE
 			, UPDATE_ID
 			, UPDATE_DATE
+			, LANGUAGE_CODE
 		FROM xbt_NOTICE
 	</select>	
 	
@@ -25,24 +26,26 @@
 			, INSERT_DATE
 			, UPDATE_ID
 			, UPDATE_DATE
-		FROM xbt_NOTICE
+			, LANGUAGE_CODE
+		FROM XBT_NOTICE
 		WHERE NOTICE_ID = #{noticeId}
 	</select>		
 	
 	<!-- 공지사항 등록 -->
 	<insert id="insertNotice" parameterType="egovframework.com.adm.system.vo.Notice">
-		INSERT INTO xbt_SYSTEM_MESSAGE
+		INSERT INTO XBT_NOTICE
 		(
 			TITLE
 			, CONTENTS
+			, LANGUAGE_CODE
 			, INSERT_ID
 			, INSERT_DATE
-			, UPDATE_ID
-			, UPDATE_DATE
+			
 		)
 		VALUES(
-			,#{title}
+			#{title}
 			,#{contents}
+			,#{languageCode}
 			,#{insertId}
 			,now()
 		)	
@@ -51,19 +54,20 @@
 	
 	<!-- 공지사항 수정 -->
 	<update id="updateNotice" parameterType="egovframework.com.adm.system.vo.Notice">	
-		UPDATE xbt_NOTICE
+		UPDATE XBT_NOTICE
 		SET 
 			TITLE = #{title}
 			, CONTENTS = #{title}
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DATE = now()
-		WHERE NOTICE_ID = 0;
+		WHERE NOTICE_ID = #{noticeId}
+		AND LANGUAGE_CODE = #{languageCode}
 
 	</update>	
 	
 	<!-- 공지사항 삭제-->
 	<delete id="deleteNotice" parameterType="egovframework.com.adm.system.vo.Notice">
-		DELETE FROM xbt_SYSTEM_MESSAGE WHERE NOTICE_ID = #{noticeId}  
+		DELETE FROM XBT_NOTICE WHERE NOTICE_ID = #{noticeId} AND LANGUAGE_CODE = #{languageCode}  
 	</delete>	
 	
 </mapper>

@@ -125,13 +125,6 @@ public class LoginController {
                     new String[] {"companyName", "회사명"});
         }
         
-        if (!StringUtils.hasText(parameter.getRegistNo())) {
-            throw new CustomBaseException(BaseResponseCode.INPUT_CHECK_ERROR,
-                    new String[] {"registNo", "사업자등록번호"});
-        }else{
-        	parameter.setRegistNo(parameter.getRegistNo().replaceAll("-", ""));
-        }
-        
         if (!StringUtils.hasText(parameter.getManagerName())) {
             throw new CustomBaseException(BaseResponseCode.INPUT_CHECK_ERROR,
                     new String[] {"managerName", "담당자명"});

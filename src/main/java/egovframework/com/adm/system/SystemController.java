@@ -66,6 +66,10 @@ public class SystemController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<List<Notice>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
 		try {
 			//공지사항조회
 	        return new BaseResponse<List<Notice>>(systemService.selectNoticeList(params));
@@ -91,6 +95,10 @@ public class SystemController {
 		
 		if(StringUtils.isEmpty(params.getNoticeId())){				
 			return new BaseResponse<Notice>(BaseResponseCode.PARAMS_ERROR, "NoticeId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<Notice>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
 		try {
@@ -126,6 +134,12 @@ public class SystemController {
 		if(StringUtils.isEmpty(params.getContents())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Contents" + BaseApiMessage.REQUIRED.getCode());
 		}			
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		
 		
 		try {
 			//공지사항등록
@@ -172,6 +186,10 @@ public class SystemController {
 		if(StringUtils.isEmpty(params.getContents())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Contents" + BaseApiMessage.REQUIRED.getCode());
 		}			
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
+		}			
 				
 		
 		try {
@@ -209,6 +227,10 @@ public class SystemController {
 		if(StringUtils.isEmpty(params.getNoticeId())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "NoticeId" + BaseApiMessage.REQUIRED.getCode());
 		}				
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
+		}			
 		
 		try {
 			//공지사항삭제

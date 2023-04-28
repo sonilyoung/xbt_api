@@ -1,10 +1,34 @@
 
 package egovframework.com.stu.login;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import egovframework.com.adm.login.service.LoginService;
+import egovframework.com.adm.login.service.UserService;
+import egovframework.com.adm.login.vo.Login;
+import egovframework.com.adm.login.vo.LoginRequest;
+import egovframework.com.adm.login.vo.User;
+import egovframework.com.cmm.vo.TokenResponse;
+import egovframework.com.global.OfficeMessageSource;
+import egovframework.com.global.exception.CustomBaseException;
+import egovframework.com.global.http.BaseResponse;
+import egovframework.com.global.http.BaseResponseCode;
+import egovframework.com.global.http.exception.BaseException;
+import egovframework.com.stu.login.service.LoginStuService;
+import egovframework.com.stu.login.vo.StuLogin;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 /**
  * 일반 로그인, 인증서 로그인을 처리하는 컨트롤러 클래스
@@ -32,16 +56,15 @@ import io.swagger.annotations.Api;
 @Api(tags = "Login Management API")
 public class StuLoginController {
 
-	/*
     private static final Logger LOGGER = LoggerFactory.getLogger(StuLoginController.class);
 
     private OfficeMessageSource officeMessageSource;
 
     @Autowired
-    private StuLoginService loginService;
+    private LoginStuService loginStuService;
     
     @Autowired
-    private StuUserService userService;
+    private UserService userService;
 
     @PostMapping("/login.do")
     @ApiOperation(value = "Login by loginId", notes = "This function returns the token of the user.")
@@ -56,7 +79,7 @@ public class StuLoginController {
             throw new CustomBaseException(BaseResponseCode.INPUT_CHECK_ERROR,
                     new String[] {"loginPw", "로그인 암호"});
         }
-        String token = loginService.createToken(request, loginRequest);
+        String token = loginStuService.createToken(request, loginRequest);
         if (token == null) {
             throw new CustomBaseException(BaseResponseCode.AUTH_ERROR, "");
         }
@@ -69,6 +92,26 @@ public class StuLoginController {
         
         return new BaseResponse<TokenResponse>(new TokenResponse(token, "bearer"));
     }
+    
+    
+    /**
+     * 로그인 정보 조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/getLoginInfo.do")
+    @ApiOperation(value = "getLoginInfo information", notes = "get login information")
+    public BaseResponse<StuLogin> getLoginInfo(HttpServletRequest request) {
+    	
+		try {
+			StuLogin login = loginStuService.getLoginInfo(request);
+	        return new BaseResponse<StuLogin>(login);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+        	throw new BaseException(BaseResponseCode.AUTH_FAIL);
+        }
+    }      
     
     @PostMapping("/login/passwd/reset.do")
     @ApiOperation(value = "User Confirmation", notes = "This function checks the user's information to make sure that it is a registered user.")
@@ -84,13 +127,6 @@ public class StuLoginController {
                     new String[] {"companyName", "회사명"});
         }
         
-        if (!StringUtils.hasText(parameter.getRegistNo())) {
-            throw new CustomBaseException(BaseResponseCode.INPUT_CHECK_ERROR,
-                    new String[] {"registNo", "사업자등록번호"});
-        }else{
-        	parameter.setRegistNo(parameter.getRegistNo().replaceAll("-", ""));
-        }
-        
         if (!StringUtils.hasText(parameter.getManagerName())) {
             throw new CustomBaseException(BaseResponseCode.INPUT_CHECK_ERROR,
                     new String[] {"managerName", "담당자명"});
@@ -100,9 +136,7 @@ public class StuLoginController {
         LOGGER.debug("=== cnt : "  + cnt + "====");
         	
         if(cnt == null) {
-        	throw new CustomBaseException(BaseResponseCode.INFORMATION_ERROR, new String[] {});
-        } else {
-        	 userService.resetPwd(parameter);
+        	throw new CustomBaseException(BaseResponseCode.NO_USERS, new String[] {});
         }
         
         return new BaseResponse<Long>(cnt);
@@ -137,6 +171,4 @@ public class StuLoginController {
         
         return new BaseResponse<Boolean>(true);
     }
-    
-    */
 }
