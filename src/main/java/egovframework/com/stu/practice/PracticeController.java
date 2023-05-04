@@ -36,6 +36,8 @@ import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.global.util.ComUtils;
+import egovframework.com.stu.practice.service.PracticeService;
+import egovframework.com.stu.practice.vo.Practice;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -49,7 +51,7 @@ import io.swagger.annotations.ApiOperation;
  *
  */
 @RestController
-@RequestMapping("/adm/practice")
+@RequestMapping("/stu/practice")
 @Api(tags = "Login Management API")
 public class PracticeController {
 
@@ -62,6 +64,142 @@ public class PracticeController {
     
     @Autowired
     private ContentsService contentsService;
+  
     
+    @Autowired
+    private PracticeService practiceService;    
+
+    /**
+     * 반입금지물품목록조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectUnitGroupList.do")
+    @ApiOperation(value = "반입금지물품목록조회", notes = "반입금지물품목록조회")
+    public BaseResponse<List<UnitGroup>> selectUnitGroupList(HttpServletRequest request, @RequestBody UnitGroup params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(params.getLanguageCode() == null || "".contentEquals(params.getLanguageCode())){				
+			return new BaseResponse<List<UnitGroup>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		
+		try {
+			//그룹관리조회
+			List<UnitGroup> resultList = contentsService.selectUnitGroupList(params);
+	        return new BaseResponse<List<UnitGroup>>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }        
+    
+    
+    /**
+     * 담품정보목록조회
+     * 
+     * @param param
+     * @return Company
+     */
+	@ResponseBody
+    @RequestMapping(value = {"/selectUnitList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @ApiOperation(value = "담품정보목록조회", notes = "담품정보목록조회")
+    public BaseResponse<List<Practice>> selectUnitList(HttpServletRequest request
+    		, @RequestBody Practice params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(params.getUnitGroupCd() == null || "".contentEquals(params.getUnitGroupCd())){				
+			return new BaseResponse<List<Practice>>(BaseResponseCode.PARAMS_ERROR, "UnitGroupCd" + BaseApiMessage.REQUIRED.getMessage());
+		}			
+		
+		if(params.getLanguageCode() == null || "".contentEquals(params.getLanguageCode())){				
+			return new BaseResponse<List<Practice>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		
+		try {
+			List<Practice> resultList = practiceService.selectUnitList(params);
+	        return new BaseResponse<List<Practice>>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }       
+    
+    
+    /**
+     * 물품연습 물품상세조회
+     * 
+     * @param param
+     * @return Company
+     */
+	@ResponseBody
+    @RequestMapping(value = {"/selectUnit.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @ApiOperation(value = "물품연습 물품상세조회", notes = "물품연습 물품상세조회")
+    public BaseResponse<Practice> selectUnit(HttpServletRequest request
+    		, @RequestBody Practice params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(params.getUnitScanId() == null || "".contentEquals(params.getUnitScanId())){				
+			return new BaseResponse<Practice>(BaseResponseCode.PARAMS_ERROR, "UnitScanId" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		if(params.getLanguageCode() == null || "".contentEquals(params.getLanguageCode())){				
+			return new BaseResponse<Practice>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		
+		try {
+			Practice result = practiceService.selectUnit(params);
+	        return new BaseResponse<Practice>(result);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }   	
+
+	
+    
+    /**
+     * 물품연습 이미지목록조회
+     * 
+     * @param param
+     * @return Company
+     */
+	@ResponseBody
+    @RequestMapping(value = {"/selectPracticeImgList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @ApiOperation(value = "물품연습 이미지목록조회", notes = "물품연습 이미지목록조회")
+    public BaseResponse<Practice> selectPracticeImgList(HttpServletRequest request
+    		, @RequestBody Practice params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(params.getUnitScanId() == null || "".contentEquals(params.getUnitScanId())){				
+			return new BaseResponse<Practice>(BaseResponseCode.PARAMS_ERROR, "UnitScanId" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		if(params.getLanguageCode() == null || "".contentEquals(params.getLanguageCode())){				
+			return new BaseResponse<Practice>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		
+		try {
+			Practice result = practiceService.selectUnit(params);
+	        return new BaseResponse<Practice>(result);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }   	
+	
+            
     	    
 }

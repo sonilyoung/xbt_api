@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="egovframework.com.stu.login.dao.UserStuManageDAO">
+<mapper namespace="egovframework.com.stu.main.dao.MainDAO">
 	
 	
 	
@@ -8,6 +8,7 @@
 	<select id="selectScheduleList" parameterType="egovframework.com.stu.main.vo.Schedule" resultType="egovframework.com.stu.main.vo.Schedule">
 		SELECT 
 				T1.MENU_NO,
+				T1.MENU_URL,
 				T1.P_MENU_CD,
 				T2.MENU_CD,
 				T1.MENU_NAME,
@@ -22,6 +23,7 @@
 		UNION ALL 
 		SELECT 
 				T1.MENU_NO,
+				T1.MENU_URL,
 				T1.P_MENU_CD,
 				T2.MENU_CD,
 				T1.MENU_NAME,
@@ -31,7 +33,7 @@
 				T1.MENU_ORDER
 		FROM XBT_STU_MENU_MASTER T1 INNER JOIN XBT_STU_MENU_DETAIL T2
 		on T1.MENU_NO = T2.MENU_CD
-		where t2.LANGUAGE_CODE =  #{languageCode}
+		where T2.LANGUAGE_CODE =  #{languageCode}
 		AND P_MENU_CD = #{pMenuCd}
 		AND T2.MENU_CD IN (
  			SELECT MENU_CD FROM XBT_BASELINE_EDU_DATE WHERE USER_ID = #{userId} AND EDU_DATE = DATE_FORMAT(now(),'%Y%m%d')

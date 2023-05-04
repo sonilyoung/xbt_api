@@ -550,7 +550,7 @@
 				SELECT concat('U', LPAD(cast(right(IFNULL(MAX(UNIT_ID), '0'), 6) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_UNIT_INFO
 			</when>
 			<when test='seqInfo == "X"'><!-- 가방xray시퀀스 -->
-				SELECT CAST(date_format(NOW(), 'X%y%m%d%h%i%s') as CHAR) AS seqId FROM DUAL
+				SELECT concat('X', LPAD(cast(right(IFNULL(MAX(BAG_SCAN_ID), '0'), 6) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_BAG_INFO
 			</when>
 			<!-- 
 			<when test='seqInfo == "UX"'>단품시퀀스 

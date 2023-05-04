@@ -1,6 +1,9 @@
 
 package egovframework.com.test;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,17 +41,56 @@ import egovframework.com.global.http.exception.BaseException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import egovframework.com.global.util.FileReader;
 
 /**
  * 테스트
  */
 @RestController
-@RequestMapping("/test")
+//@RequestMapping("/")
 public class TestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
 
     private OfficeMessageSource officeMessageSource;
+    
+    
+    
+    @GetMapping("/index.do")
+    @ApiOperation(value = "test", notes = "test")
+    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public BaseResponse<Integer> index(HttpServletRequest request
+    		,@RequestParam(required = false) String params) {
+    	
+    	return new BaseResponse<Integer>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage());
+    }    
+    
+    @GetMapping("/fileList.do")
+    @ApiOperation(value = "test", notes = "test")
+    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public BaseResponse<Integer> fileList(HttpServletRequest request
+    		,@RequestParam(required = false) String params) throws IOException {
+    	
+    	String scanId = "X00241";
+        String strDirPath = "D:/KINAC16/kabangset01/"+scanId; 
+        File[] fileList = null;
+		fileList = FileReader.ListFile( strDirPath );
+			
+        byte[] fileByte;/*이미지*/
+        
+        //결과
+        System.out.println("result count : " + fileList.length);
+        
+        //byte변환
+        for( int i = 0; i < fileList.length; i++ ) { 
+        	System.out.println("result : "+fileList[i]);
+        	fileByte = Files.readAllBytes(fileList[i].toPath());
+        	System.out.println("fileByte : "+fileByte);
+        }        	
+    	
+    	return new BaseResponse<Integer>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage());
+    }        
+    
     
     @GetMapping("/arrange_level.do")
     @ApiOperation(value = "test api", notes = "test api.")

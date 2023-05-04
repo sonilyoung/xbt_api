@@ -124,19 +124,35 @@ public class MainController {
      */
     @PostMapping("/selectScheduleList.do")
     @ApiOperation(value = "일정목록", notes = "일정목록조회.")
-    public BaseResponse<List<Schedule>> selectScheduleList(HttpServletRequest request, @RequestBody Schedule params) {
+    public BaseResponse<Schedule> selectScheduleList(HttpServletRequest request, @RequestBody Schedule params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
-			return new BaseResponse<List<Schedule>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<Schedule>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
 		}				
 		
 		try {
 			//일정조회
-	        return new BaseResponse<List<Schedule>>(mainService.selectScheduleList(params));
+			
+			params.setUserId(login.getUserId());
+			params.setPMenuCd("1");
+			List<Schedule> menu1 = mainService.selectScheduleList(params);
+			params.setPMenuCd("2");
+			List<Schedule> menu2 = mainService.selectScheduleList(params);
+			params.setPMenuCd("3");
+			List<Schedule> menu3 = mainService.selectScheduleList(params);
+			params.setPMenuCd("4");
+			List<Schedule> menu4 = mainService.selectScheduleList(params);
+			
+			Schedule result = new Schedule();
+			result.setMenu1(menu1);
+			result.setMenu2(menu2);
+			result.setMenu3(menu3);
+			result.setMenu4(menu4);
+	        return new BaseResponse<Schedule>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());

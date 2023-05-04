@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.stu.practice.dao.PracticeDAO">
+	
+	<!-- 물품연습 물품명칭조회  -->
+	<select id="selectUnitList" parameterType="egovframework.com.stu.practice.vo.Practice" resultType="egovframework.com.stu.practice.vo.Practice">
+		SELECT
+			UNIT_INFO_NO
+			, UNIT_SCAN_ID 
+			, UNIT_ID /*물품아이디*/
+			, UNIT_GROUP_CD/*뭎품그룹코드*/
+			, UNIT_NAME /*물품명*/
+		FROM XBT_UNIT_INFO XUI
+		WHERE XUI.LANGUAGE_CODE = #{languageCode}
+		AND UNIT_GROUP_CD = #{unitGroupCd}  			
+	</select>
+	
+	<!-- 물품연습 물품상세조회  -->
+	<select id="selectUnit" parameterType="egovframework.com.stu.practice.vo.Practice" resultType="egovframework.com.stu.practice.vo.Practice">
+		SELECT
+			UNIT_INFO_NO
+			, UNIT_SCAN_ID 
+			, UNIT_ID /*물품아이디*/
+			, UNIT_GROUP_CD/*뭎품그룹코드*/
+			, (SELECT GROUP_NAME FROM XBT_UNIT_GROUP WHERE UNIT_GROUP_CD = XUI.UNIT_GROUP_CD and LANGUAGE_CODE = #{languageCode}) as UNIT_GROUP_NAME /*뭎품그룹코드*/
+			, UNIT_NAME /*물품명*/
+		FROM XBT_UNIT_INFO XUI
+		WHERE XUI.LANGUAGE_CODE = #{languageCode}
+		AND UNIT_SCAN_ID = #{unitScanId}  		
+	</select>
+</mapper>

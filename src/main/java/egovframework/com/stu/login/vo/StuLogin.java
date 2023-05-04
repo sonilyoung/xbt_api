@@ -27,5 +27,9 @@ public class StuLogin {
 	private String updateId;
 	private String updateDate;
 	private String position;
+	private String procCd;
+	private String procYear;
+	private String procSeq;
+	private String moduleId;
 
 }

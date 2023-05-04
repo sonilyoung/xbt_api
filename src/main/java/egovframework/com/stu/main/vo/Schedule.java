@@ -1,5 +1,7 @@
 package egovframework.com.stu.main.vo;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -15,6 +17,12 @@ public class Schedule {
 	private String useYn;
 	private String menuOrder;
 	private String languageCode;
+	private String userId;
+	
+	private List<Schedule> menu1;
+	private List<Schedule> menu2;
+	private List<Schedule> menu3;
+	private List<Schedule> menu4;
 
 
 
