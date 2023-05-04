@@ -78,7 +78,7 @@ public class TestController {
 			
         byte[] fileByte;/*이미지*/
         
-        //결과
+        //결과유기물
         System.out.println("result count : " + fileList.length);
         
         //byte변환
