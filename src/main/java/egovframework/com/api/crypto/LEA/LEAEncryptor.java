@@ -18,7 +18,7 @@ import egovframework.com.api.crypto.LEA.symm.LEA;
  * jaehong hwang	   2022. 06. 20.     
  */
 @Service
-@PropertySource("classpath:egovframework/properties/global-variable.properties")
+@PropertySource("classpath:globals.properties")
 public class LEAEncryptor{
 	
 	/**

@@ -34,6 +34,7 @@ import egovframework.com.cmm.vo.TokenResponse;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
+import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.exception.CustomBaseException;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
@@ -70,9 +71,10 @@ public class TestController {
     @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
     public BaseResponse<Integer> fileList(HttpServletRequest request
     		,@RequestParam(required = false) String params) throws IOException {
+    	String xrayPath = GlobalsProperties.getProperty("xray.img.path");
     	
     	String scanId = "X00241";
-        String strDirPath = "D:/KINAC16/kabangset01/"+scanId; 
+        String strDirPath = xrayPath+scanId; 
         File[] fileList = null;
 		fileList = FileReader.ListFile( strDirPath );
 			

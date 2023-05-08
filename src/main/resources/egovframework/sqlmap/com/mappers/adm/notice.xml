@@ -13,7 +13,7 @@
 			, UPDATE_ID
 			, UPDATE_DATE
 			, LANGUAGE_CODE
-		FROM xbt_NOTICE
+		FROM XBT_NOTICE
 	</select>	
 	
 	<!-- 공지사항 상세 -->

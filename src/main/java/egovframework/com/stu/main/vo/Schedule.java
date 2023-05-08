@@ -18,6 +18,9 @@ public class Schedule {
 	private String menuOrder;
 	private String languageCode;
 	private String userId;
+	private String moduleId;
+	private String moduleType;
+	private String eduType;
 	
 	private List<Schedule> menu1;
 	private List<Schedule> menu2;

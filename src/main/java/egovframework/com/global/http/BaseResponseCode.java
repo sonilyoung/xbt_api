@@ -27,6 +27,14 @@ public enum BaseResponseCode {
 			"0800", "데이터가 없습니다."
 	), INPUT_CHECK_ERROR(
 			"0900", "입력값 무결성 오류"
+	), BASELINE_DATA(
+			"0901", "차수정보가 없습니다."			
+	), EDU_DATA(
+			"0902", "교육정보가 없습니다."		
+	), MODULE_DATA(
+			"0903", "모듈정보가 없습니다."
+	), LEARNINGPROBLEM_DATA(
+			"0904", "등록학습문제가 없습니다."			
 	), PARAMS_ERROR(
 	        "1000", "파라미터 오류"	        
 	), EXTENSION_ERROR(

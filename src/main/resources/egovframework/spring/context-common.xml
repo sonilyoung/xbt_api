@@ -6,7 +6,8 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 	
-	<util:properties id="properties" location="classpath:egovframework/properties/global-variable.properties" ></util:properties>
+	<!-- <util:properties id="properties" location="classpath:egovframework/properties/globals.properties" ></util:properties> -->
+	<util:properties id="properties" location="classpath:globals.properties" ></util:properties>
 	
     <context:component-scan base-package="egovframework.com">
        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
