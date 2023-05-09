@@ -115,7 +115,7 @@ public class LearningServiceImpl implements LearningService {
     	String xrayPath = GlobalsProperties.getProperty("xray.img.path");
     	
     	String scanId = params.getBagScanId();
-        String strDirPath = xrayPath+scanId; 
+        String strDirPath = xrayPath+File.separator+scanId; 
         File[] fileList = null;
 		fileList = FileReader.ListFile( strDirPath );
 			
@@ -235,6 +235,24 @@ public class LearningServiceImpl implements LearningService {
 	public int updateLeanAnswer(Learning params) {
 		// TODO Auto-generated method stub
 		return learningDAO.updateLeanAnswer(params);
+	}
+
+	@Override
+	public int insertLearningResult(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.insertLearningResult(params);
+	}
+
+	@Override
+	public Learning selectLeaningSum(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectLeaningSum(params);
+	}
+
+	@Override
+	public int updateLearningResult(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.updateLearningResult(params);
 	}
 
 

@@ -1,10 +1,14 @@
 package egovframework.com.stu.evaluation.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import egovframework.com.stu.evaluation.dao.EvaluationDAO;
+import egovframework.com.stu.learning.vo.Learning;
+import egovframework.com.stu.learning.vo.LearningProblem;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -33,6 +37,65 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Resource(name = "EvaluationDAO")
 	private EvaluationDAO evaluationDAO;
 
+
+	@Override
+	public int selectEvaluationProblemsCount(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return evaluationDAO.selectEvaluationProblemsCount(params);
+	}
+
+	@Override
+	public int insertEvaluationProblems(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return evaluationDAO.insertEvaluationProblems(params);
+	}
 	
+	
+	@Override
+	public int updateEvaluationProblems(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return evaluationDAO.updateEvaluationProblems(params);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<LearningProblem> selectEvaluationProblemsList(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return (List<LearningProblem>) evaluationDAO.selectEvaluationProblemsList(params);
+	}
+
+	
+	@Override
+	public Learning selectEvaluationAnswer(Learning params) {
+		// TODO Auto-generated method stub
+		return evaluationDAO.selectEvaluationAnswer(params);
+	}	
+
+	@Override
+	public int updateEvaluationAnswer(Learning params) {
+		// TODO Auto-generated method stub
+		return evaluationDAO.updateEvaluationAnswer(params);
+	}
+
+	@Override
+	public int insertEvaluationResult(Learning params) {
+		// TODO Auto-generated method stub
+		return evaluationDAO.insertEvaluationResult(params);
+	}
+
+	@Override
+	public Learning selectEvaluationSum(Learning params) {
+		// TODO Auto-generated method stub
+		return evaluationDAO.selectEvaluationSum(params);
+	}
+
+	@Override
+	public int updateEvaluationResult(Learning params) {
+		// TODO Auto-generated method stub
+		return evaluationDAO.updateEvaluationResult(params);
+	}
+
+
+		
 
 }

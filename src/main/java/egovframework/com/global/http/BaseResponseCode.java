@@ -51,6 +51,14 @@ public enum BaseResponseCode {
 			"0403", "인증된 사용자가 아닙니다."
 	), STOP_ID(
 	        "7000", "계정이 중지되었습니다."
+	), DATA_IS_NULL_LAERNPROBLEMS(
+	        "LEARN_NODATA", "학습문제가 없습니다."
+	), DATA_IS_NULL_EVALPROBLEMS(
+	        "EVALUATION_NODATA", "평가문제가 없습니다."
+	), PASS(
+	        "pass", "합격"
+	), FAIL(
+	        "fail", "불합격"	        
 	), UNKONWN_ERROR(
 	        "9999", "내부 오류가 발생");			
 	

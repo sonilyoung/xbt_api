@@ -3,10 +3,41 @@
 <mapper namespace="egovframework.com.stu.main.dao.MainDAO">
 	
 	
+	<!-- 메인사용자정보 -->
+	<select id="selectBaselineUserInfo" parameterType="egovframework.com.stu.main.vo.UserStInfo" resultType="egovframework.com.stu.main.vo.UserStInfo">
+		SELECT
+			T1.STUDENT_NO,
+			T1.PROC_CD,
+			T1.PROC_YEAR,
+			T1.PROC_SEQ,
+			T1.MODULE_ID,	
+			T2.MODULE_NM,	
+			T1.USER_ID,
+			T1.USER_NM,
+			T1.PROC_NM,
+			T1.COMP_NM,
+			T1.DEPT_CD,
+			T1.DEPT_NM,
+			T1.GAIN_SCORE,
+			T1.PASS_YN,
+			T1.ENDING_PROCESS_DATE,
+			T1.EDU_START_DATE,
+			T1.EDU_END_DATE,
+			T1.ENDING_YN,
+			T1.INSERT_DATE,
+			T1.INSERT_ID,
+			T1.UPDATE_DATE,
+			T1.UPDATE_ID
+		FROM
+			XBT_BASELINE_STUDENT_INFO T1 INNER JOIN XBT_MODULE_INFO_MASTER T2
+			ON T1.USER_ID = #{userId} 
+			AND T1.MODULE_ID = T2.MODULE_ID 
+	</select>	
+	
 	
 	<!-- 일정목록 메뉴목록정보 -->
 	<select id="selectScheduleList" parameterType="egovframework.com.stu.main.vo.Schedule" resultType="egovframework.com.stu.main.vo.Schedule">
-		SELECT 
+		<!-- SELECT 
 				T1.MENU_NO,
 				T1.MENU_URL,
 				T1.P_MENU_CD,
@@ -23,7 +54,7 @@
 		ON T1.MENU_NO = T2.MENU_CD
 		WHERE T2.LANGUAGE_CODE =  #{languageCode}
 		AND P_MENU_CD = #{pMenuCd} AND MENU_LEVEL = '0'
-		UNION ALL 
+		UNION ALL  -->
 		SELECT 
 				T1.MENU_NO,
 				T1.MENU_URL,

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.adm.learningMgr.dao.LearningMgrDAO;
 import egovframework.com.stu.main.dao.MainDAO;
 import egovframework.com.stu.main.vo.Schedule;
+import egovframework.com.stu.main.vo.UserStInfo;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -37,6 +38,11 @@ public class MainServiceImpl implements MainService {
     @Resource(name = "MainDAO")
 	private MainDAO mainDAO;
 
+	@Override
+	public UserStInfo selectBaselineUserInfo(UserStInfo params) {
+		// TODO Auto-generated method stub
+		return mainDAO.selectBaselineUserInfo(params);
+	}
 
     @Override
 	@SuppressWarnings("unchecked")
@@ -44,6 +50,8 @@ public class MainServiceImpl implements MainService {
 		// TODO Auto-generated method stub
 		return (List<Schedule>)mainDAO.selectScheduleList(params);
 	}
+
+
 	
 
 }

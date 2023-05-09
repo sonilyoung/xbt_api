@@ -16,7 +16,7 @@
 		AND T1.PROC_YEAR = T2.PROC_YEAR 
 		AND T1.PROC_SEQ = T2.PROC_SEQ 
 		AND T2.USER_ID = #{userId}
-		AND NOW() BETWEEN EDU_START_DATE AND EDU_END_DATE		 
+		AND NOW() BETWEEN T1.EDU_START_DATE AND T1.EDU_END_DATE		 
 	</select>	
 	
 	<!-- 사용자교육정보가져오기 -->
@@ -48,7 +48,8 @@
 			TIME_LIMIT ,
 			STUDY_LVL ,
 			MODULE_TYPE ,
-			SLIDE_SPEED 
+			SLIDE_SPEED ,
+			PASS_SCORE
 		FROM XBT_MODULE_INFO_MASTER
 		WHERE MODULE_ID = 
 		(
@@ -156,7 +157,7 @@
 	<!-- 학습정답선택-->
 	<update id="updateLeanAnswer" parameterType="egovframework.com.stu.learning.vo.Learning">	
 		UPDATE 
-			XBT_BASELINE_LEARNING 
+			XBT_STU_LEARNING_PROGRESSING 
 		SET 
 			USER_ACTION_DIV = #{userActionDiv},
 			GAIN_SCORE = #{gainScore}
@@ -166,5 +167,59 @@
 		AND USER_ID = #{userId}
 		AND BAG_SCAN_ID = #{bagScanId}
 	</update>		
+	
+	<!-- 결과 등록 -->
+	<insert id="insertLearningResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
+		INSERT INTO XBT_BASELINE_LEARNING(
+			PROC_CD,
+			PROC_YEAR,
+			PROC_SEQ,
+			USER_ID,
+			TEST_DATE,
+			STUDY_LVL,
+			MODULE_ID,
+			END_YN,
+			INSERT_DATE
+		)VALUES(
+			#{procCd},
+			#{procYear},
+			#{procSeq},
+			#{userId},
+			now(),
+			#{studyLvl},
+			#{moduleId},
+			'Y',
+			now()
+		)
+	</insert>
+	
+	
+	<!-- 학습종료점수합산 -->
+	<select id="selectLeaningSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
+		SELECT SUM(GAIN_SCORE) AS gainScore 
+		FROM XBT_STU_LEARNING_PROGRESSING 
+		WHERE 
+		MODULE_ID = #{moduleId} 
+		AND PROC_CD = #{procCd}  
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+		AND END_YN = 'N'
+	</select>		
+	
+	
+	<!-- 학습정답선택-->
+	<update id="updateLearningResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
+		UPDATE 
+			XBT_BASELINE_LEARNING 
+		SET 
+			GAIN_SCORE = #{gainScore},
+			PASS_YN = #{passYn}
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+	</update>		
+				
 	
 </mapper>

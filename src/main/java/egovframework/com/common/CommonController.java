@@ -1,6 +1,7 @@
 
 package egovframework.com.common;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import egovframework.com.adm.contents.vo.Language;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.service.UserService;
 import egovframework.com.adm.login.vo.Login;
+import egovframework.com.adm.system.vo.Notice;
 import egovframework.com.common.service.CommonService;
 import egovframework.com.common.vo.Common;
 import egovframework.com.common.vo.CommonSystemMessage;
@@ -49,7 +51,7 @@ import org.springframework.util.StringUtils;
  *
  */
 @RestController
-@RequestMapping("/adm/common")
+@RequestMapping("/common")
 @Api(tags = "Login Management API")
 public class CommonController {
 
@@ -62,6 +64,42 @@ public class CommonController {
     
     @Autowired
     private CommonService commonService;
+    
+    
+    /**
+     * 화면ui다국어처리
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectLanguageApply.do")
+    @ApiOperation(value = "화면ui다국어처리", notes = "화면ui다국어처리")
+    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public BaseResponse<HashMap<String, Object>> selectLanguageApply(HttpServletRequest request, @RequestBody Common params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getGroupId())){				
+			return new BaseResponse<HashMap<String, Object>>(BaseResponseCode.PARAMS_ERROR, "GroupId" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<HashMap<String, Object>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			//다국어처리조회
+			HashMap<String, Object> languageApply = new HashMap<String, Object>();
+			languageApply.put("massgetest", "test");
+	        return new BaseResponse<HashMap<String, Object>>(languageApply);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }        
+        
     
     /**
      * 그룹관리조회

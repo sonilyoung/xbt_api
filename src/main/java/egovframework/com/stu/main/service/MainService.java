@@ -3,6 +3,7 @@ package egovframework.com.stu.main.service;
 import java.util.List;
 
 import egovframework.com.stu.main.vo.Schedule;
+import egovframework.com.stu.main.vo.UserStInfo;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.
@@ -23,7 +24,8 @@ import egovframework.com.stu.main.vo.Schedule;
  */
 public interface MainService {
 	
-
+	public UserStInfo selectBaselineUserInfo(UserStInfo params);
+	
 	public List<Schedule> selectScheduleList(Schedule params);
 
 }

@@ -53,6 +53,18 @@ public class LearningDAO extends EgovAbstractMapper{
 	
 	public int updateLeanAnswer(Learning params) {
 		return update(Namespace + ".updateLeanAnswer", params);
+	}	
+	
+	
+	public int insertLearningResult(Learning params) {
+		return insert(Namespace + ".insertLearningResult", params);
 	}		
-		
+	
+	public Learning selectLeaningSum(Learning params) {
+		return selectOne(Namespace + ".selectLeaningSum", params);
+	}		
+	
+	public int updateLearningResult(Learning params) {
+		return update(Namespace + ".updateLearningResult", params);
+	}		
 }

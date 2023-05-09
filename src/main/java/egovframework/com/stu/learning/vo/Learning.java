@@ -8,6 +8,7 @@ import lombok.Data;
 public class Learning{
 	private Long procCd;
 	private String userId;
+	private String userName;
 	private String procYear;
 	private String procSeq;
 	private String eduStartDate;
@@ -27,10 +28,15 @@ public class Learning{
 	private String actionDivName;
 	private String moduleNm;
 	private String answer;
+	private String passYn;
 	private double gainScore;
 	private int questionCnt;
 	private int timeLimit;
-	private int slideSpeed;	
+	private int slideSpeed;
+	private int passScore;
+	private int userAverage;
+	private int rightCnt;
+	private int wrongCnt;
 	
 	private List<LearningProblem> learningProblemList; 
 }

@@ -1,17 +1,9 @@
 package egovframework.com.stu.evaluation.service;
 
-import java.io.IOException;
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import egovframework.com.adm.contents.vo.Language;
-import egovframework.com.adm.contents.vo.UnitGroup;
-import egovframework.com.adm.contents.vo.UnitImg;
-import egovframework.com.adm.contents.vo.UnitInformation;
-import egovframework.com.adm.contents.vo.XbtSeq;
-import egovframework.com.adm.contents.vo.XrayContents;
-import egovframework.com.adm.contents.vo.XrayImgContents;
+import egovframework.com.stu.learning.vo.Learning;
+import egovframework.com.stu.learning.vo.LearningProblem;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.
@@ -31,8 +23,24 @@ import egovframework.com.adm.contents.vo.XrayImgContents;
  *      </pre>
  */
 public interface EvaluationService {
-	
 
+	public int selectEvaluationProblemsCount(LearningProblem params);
+	
+	public int insertEvaluationProblems(LearningProblem params);
+	
+	public int updateEvaluationProblems(LearningProblem params);
+	
+	public List<LearningProblem> selectEvaluationProblemsList(LearningProblem params);
+	
+	public Learning selectEvaluationAnswer(Learning params);
+	
+	public int updateEvaluationAnswer(Learning params);
+	
+	public int insertEvaluationResult(Learning params);
+	
+	public Learning selectEvaluationSum(Learning params);
+	
+	public int updateEvaluationResult(Learning params);
 		
 	
 }

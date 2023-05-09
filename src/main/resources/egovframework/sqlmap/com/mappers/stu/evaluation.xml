@@ -1,8 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="egovframework.com.stu.main.dao.MainDAO">
+<mapper namespace="egovframework.com.stu.evaluation.dao.EvaluationDAO">
 	
 	
+	<!-- 등록된평가문제 체크 -->
+	<select id="selectEvaluationProblemsCount" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="int">
+		SELECT 
+			COUNT(PROGRESS_NO) 
+		FROM XBT_STU_EVALUATION_PROGRESSING
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+	</select>
 	
+	<!-- 평가문제 등록 -->
+	<insert id="insertEvaluationProblems" parameterType="egovframework.com.stu.learning.vo.LearningProblem">
+		INSERT INTO XBT_STU_EVALUATION_PROGRESSING(
+		MODULE_ID, 
+		PROC_CD, 
+		PROC_YEAR, 
+		PROC_SEQ, 
+		USER_ID,
+		BAG_SCAN_ID, 
+		ACTION_DIV, 
+		INSERT_DATE)
+		SELECT 
+			MODULE_ID,
+			#{procCd},
+			#{procYear},
+			#{procSeq},
+			#{userId},
+			BAG_SCAN_ID ,
+			ACTION_DIV ,
+			NOW()
+		FROM XBT_MODULE_INFO_DETAIL WHERE MODULE_ID  = #{moduleId}
+	</insert>		
+	
+	
+	<!-- 평가문제 초기화-->
+	<update id="updateEvaluationProblems" parameterType="egovframework.com.stu.learning.vo.LearningProblem">	
+		UPDATE 
+			XBT_BASELINE_EVALUATION 
+		SET END_YN = 'N'
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+	</update>		
+	
+	<!-- 평가문제출제목록가져오기 -->
+	<select id="selectEvaluationProblemsList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
+		SELECT 
+			MODULE_ID, 
+			PROC_CD, 
+			PROC_YEAR, 
+			PROC_SEQ, 
+			USER_ID,
+			BAG_SCAN_ID, 
+			ACTION_DIV, 
+			INSERT_DATE
+		FROM XBT_STU_EVALUATION_PROGRESSING 
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+		AND END_YN = 'N'
+	</select>	
+	
+	<!-- 평가정답확인 -->
+	<select id="selectEvaluationAnswer" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
+		SELECT ACTION_DIV = #{userActionDiv} as answer 
+		FROM XBT_STU_EVALUATION_PROGRESSING 
+		WHERE 
+		MODULE_ID = #{moduleId} 
+		and PROC_CD = #{procCd}  
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+		AND BAG_SCAN_ID = #{bagScanId}
+		AND END_YN = 'N'
+	</select>		
+	
+	
+	<!-- 평가정답선택-->
+	<update id="updateEvaluationAnswer" parameterType="egovframework.com.stu.learning.vo.Learning">	
+		UPDATE 
+			XBT_STU_EVALUATION_PROGRESSING 
+		SET 
+			USER_ACTION_DIV = #{userActionDiv},
+			GAIN_SCORE = #{gainScore}
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+		AND BAG_SCAN_ID = #{bagScanId}
+	</update>		
+	
+	<!-- 결과 등록 -->
+	<insert id="insertEvaluationResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
+		INSERT INTO XBT_BASELINE_EVALUATION(
+			PROC_CD,
+			PROC_YEAR,
+			PROC_SEQ,
+			USER_ID,
+			TEST_DATE,
+			STUDY_LVL,
+			MODULE_ID,
+			END_YN,
+			INSERT_DATE
+		)VALUES(
+			#{procCd},
+			#{procYear},
+			#{procSeq},
+			#{userId},
+			now(),
+			#{studyLvl},
+			#{moduleId},
+			'Y',
+			now()
+		)
+	</insert>
+	
+	
+	<!-- 평가종료점수합산 -->
+	<select id="selectEvaluationSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
+		SELECT SUM(GAIN_SCORE) AS gainScore 
+		FROM XBT_STU_EVALUATION_PROGRESSING 
+		WHERE 
+		MODULE_ID = #{moduleId} 
+		AND PROC_CD = #{procCd}  
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+		AND END_YN = 'N'
+	</select>		
+	
+	
+	<!-- 평가정답선택-->
+	<update id="updateEvaluationResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
+		UPDATE 
+			XBT_BASELINE_EVALUATION 
+		SET 
+			GAIN_SCORE = #{gainScore},
+			PASS_YN = #{passYn}
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+	</update>		
+					
 
 </mapper>

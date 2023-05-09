@@ -61,7 +61,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @RequestMapping("/stu/learning")
-@Api(tags = "Login Management API")
+@Api(tags = "learning Management API")
 public class LearningController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LearningController.class);
@@ -110,8 +110,10 @@ public class LearningController {
 			if(moduleInfoData == null) {
 				return new BaseResponse<Learning>(BaseResponseCode.MODULE_DATA, BaseResponseCode.MODULE_DATA.getMessage());
 			}
-			
+			moduleInfoData.setUserId(login.getUserId());
+			moduleInfoData.setUserName(login.getUserNm());
 			LearningProblem lpParams = new LearningProblem();
+			lpParams.setUserId(login.getUserId());
 			lpParams.setModuleId(moduleInfoData.getModuleId());
 			lpParams.setProcCd(baselineData.getProcCd());
 			lpParams.setProcYear(baselineData.getProcYear());
@@ -132,7 +134,12 @@ public class LearningController {
 			}
 			
 			
-			List<LearningProblem> resultList = learningService.selectLearnProblemsList(lpParams); 			
+			List<LearningProblem> resultList = learningService.selectLearnProblemsList(lpParams);
+			
+			if(resultList == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS, BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS.getMessage());
+			}			
+			
 			moduleInfoData.setLearningProblemList(resultList);
 			
 			return new BaseResponse<Learning>(moduleInfoData);
@@ -252,18 +259,11 @@ public class LearningController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
+		params.setUserId(login.getUserId());
+		
 		if(StringUtils.isEmpty(params.getEduType())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "EduType" + BaseApiMessage.REQUIRED.getMessage());
 		}		
-		if(StringUtils.isEmpty(params.getProcCd())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getMessage());
-		}
-		if(StringUtils.isEmpty(params.getProcYear())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcYear" + BaseApiMessage.REQUIRED.getMessage());
-		}
-		if(StringUtils.isEmpty(params.getProcSeq())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcSeq" + BaseApiMessage.REQUIRED.getMessage());
-		}
 		if(StringUtils.isEmpty(params.getBagScanId())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getMessage());
 		}
@@ -272,12 +272,33 @@ public class LearningController {
 		}		
 		
 		try {
-			params.setUserId(login.getUserId());
+			
+			Learning baselineData = learningService.selectBaseline(params);
+			if(baselineData == null) {
+				return new BaseResponse<Integer>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
+			}
+			
+			params.setProcCd(baselineData.getProcCd()); 
+			Learning learningData = learningService.selectLearning(params);
+			if(learningData == null) {
+				return new BaseResponse<Integer>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
+			}
+			
+			Learning moduleInfoData = learningService.selectModuleInfo(params);
+			if(moduleInfoData == null) {
+				return new BaseResponse<Integer>(BaseResponseCode.MODULE_DATA, BaseResponseCode.MODULE_DATA.getMessage());
+			}			
+			
+			params.setModuleId(moduleInfoData.getModuleId());
+			params.setProcCd(baselineData.getProcCd());
+			params.setProcYear(baselineData.getProcYear());
+			params.setProcSeq(baselineData.getProcSeq());	
 			
 			Learning answer = learningService.selectLearnAnswer(params);
-			Learning moduleInfoData = learningService.selectModuleInfo(params);
 			if("1".equals(answer.getAnswer())) {//정답
-				params.setGainScore(Math.round(moduleInfoData.getQuestionCnt()/100));
+				double result = 100/(double)moduleInfoData.getQuestionCnt();
+				result = Math.round(result*1000)/1000.0; 
+				params.setGainScore(result);
 			}else {//오답
 				params.setGainScore(0);
 			}
@@ -288,6 +309,74 @@ public class LearningController {
 			}else {
 				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
 			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }          
+    
+    
+    /**
+     * 학습종료
+     * 
+     * @param param
+     * @return Company
+    */  
+    @PostMapping("/endLeaning.do")
+    @ApiOperation(value = "학습종료", notes = "학습종료")
+    public BaseResponse<Learning> endLeaning(HttpServletRequest request, @RequestBody Learning params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		params.setUserId(login.getUserId());
+		
+		if(StringUtils.isEmpty(params.getEduType())){				
+			return new BaseResponse<Learning>(BaseResponseCode.PARAMS_ERROR, "EduType" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		
+		try {
+			Learning baselineData = learningService.selectBaseline(params);
+			if(baselineData == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
+			}
+			
+			params.setProcCd(baselineData.getProcCd()); 
+			Learning learningData = learningService.selectLearning(params);
+			if(learningData == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
+			}
+			
+			Learning moduleInfoData = learningService.selectModuleInfo(params);
+			if(moduleInfoData == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.MODULE_DATA, BaseResponseCode.MODULE_DATA.getMessage());
+			}			
+			
+			params.setModuleId(moduleInfoData.getModuleId());
+			params.setProcCd(baselineData.getProcCd());
+			params.setProcYear(baselineData.getProcYear());
+			params.setProcSeq(baselineData.getProcSeq());
+			params.setStudyLvl(moduleInfoData.getStudyLvl());
+			params.setPassScore(moduleInfoData.getPassScore());
+			params.setQuestionCnt(moduleInfoData.getQuestionCnt());
+			params.setWrongCnt(moduleInfoData.getQuestionCnt());
+			params.setRightCnt(moduleInfoData.getQuestionCnt());
+			
+			learningService.insertLearningResult(params);
+			Learning gainScore = learningService.selectLeaningSum(params);
+			params.setGainScore(gainScore.getGainScore());
+			if(gainScore.getGainScore()>=Double.valueOf(moduleInfoData.getPassScore())) {//통과
+				params.setPassYn("Y");
+			}else {//과락
+				params.setPassYn("N");
+			}
+			
+			learningService.updateLearningResult(params);
+			
+			//학습자평균가져오기
+			
+			return new BaseResponse<Learning>(params);
+			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
