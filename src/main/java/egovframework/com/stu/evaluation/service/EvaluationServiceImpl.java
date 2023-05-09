@@ -95,6 +95,12 @@ public class EvaluationServiceImpl implements EvaluationService {
 		return evaluationDAO.updateEvaluationResult(params);
 	}
 
+	@Override
+	public Learning selectEvaluationResultCount(Learning params) {
+		// TODO Auto-generated method stub
+		return evaluationDAO.selectEvaluationResultCount(params);
+	}
+
 
 		
 

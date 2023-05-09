@@ -29,6 +29,7 @@ public class Learning{
 	private String moduleNm;
 	private String answer;
 	private String passYn;
+	private String endYn;
 	private double gainScore;
 	private int questionCnt;
 	private int timeLimit;

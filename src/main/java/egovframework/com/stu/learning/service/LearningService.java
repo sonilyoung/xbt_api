@@ -55,11 +55,16 @@ public interface LearningService {
 	
 	public Learning selectLearnAnswer(Learning params);
 	
-	public int updateLeanAnswer(Learning params);
+	public int updateLearningAnswer(Learning params);
+	
+	public int updateLearningEnd(Learning params);
 	
 	public int insertLearningResult(Learning params);
 	
 	public Learning selectLeaningSum(Learning params);
 	
+	public Learning selectLearningResultCount(Learning params);
+	
 	public int updateLearningResult(Learning params);
+	
 }

@@ -73,7 +73,7 @@ public class MainController {
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
-		
+		params.setUserId(login.getUserId());
 		try {
 			//공지사항조회
 	        return new BaseResponse<UserStInfo>(mainService.selectBaselineUserInfo(params));

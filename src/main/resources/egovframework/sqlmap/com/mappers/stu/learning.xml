@@ -129,14 +129,15 @@
 			PROC_SEQ, 
 			USER_ID,
 			BAG_SCAN_ID, 
-			ACTION_DIV, 
+			ACTION_DIV,
+			USER_ACTION_DIV,  
 			INSERT_DATE
 		FROM XBT_STU_LEARNING_PROGRESSING 
 		WHERE PROC_CD = #{procCd} 
 		AND PROC_YEAR = #{procYear} 
 		AND PROC_SEQ = #{procSeq}
 		AND USER_ID = #{userId}
-		AND END_YN = 'N'
+		AND END_YN = #{endYn}
 	</select>	
 	
 	<!-- 학습정답확인 -->
@@ -155,7 +156,7 @@
 	
 	
 	<!-- 학습정답선택-->
-	<update id="updateLeanAnswer" parameterType="egovframework.com.stu.learning.vo.Learning">	
+	<update id="updateLearningAnswer" parameterType="egovframework.com.stu.learning.vo.Learning">	
 		UPDATE 
 			XBT_STU_LEARNING_PROGRESSING 
 		SET 
@@ -166,7 +167,20 @@
 		AND PROC_SEQ = #{procSeq}
 		AND USER_ID = #{userId}
 		AND BAG_SCAN_ID = #{bagScanId}
-	</update>		
+	</update>
+	
+	<!-- 학습문제종료-->
+	<update id="updateLearningEnd" parameterType="egovframework.com.stu.learning.vo.Learning">	
+		UPDATE 
+			XBT_STU_LEARNING_PROGRESSING 
+		SET 
+			END_YN = #{endYn}
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+		AND BAG_SCAN_ID = #{bagScanId}
+	</update>	
 	
 	<!-- 결과 등록 -->
 	<insert id="insertLearningResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
@@ -207,6 +221,21 @@
 		AND END_YN = 'N'
 	</select>		
 	
+	<!-- 학습종료 틀린갯수 맞은갯수 확인 -->
+	<select id="selectLearningResultCount" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
+		SELECT
+			COUNT(*)AS questionCnt,
+			COUNT(CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 1 END) AS rightCnt,
+			COUNT(CASE WHEN ACTION_DIV != USER_ACTION_DIV || USER_ACTION_DIV IS NULL THEN 1 END) AS wrongCnt	
+		FROM
+			XBT_STU_LEARNING_PROGRESSING
+		WHERE 
+		MODULE_ID = #{moduleId} 
+		AND PROC_CD = #{procCd}  
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+	</select>		
 	
 	<!-- 학습정답선택-->
 	<update id="updateLearningResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
@@ -214,7 +243,9 @@
 			XBT_BASELINE_LEARNING 
 		SET 
 			GAIN_SCORE = #{gainScore},
-			PASS_YN = #{passYn}
+			PASS_YN = #{passYn},
+			RIGHT_CNT = #{rightCnt},
+			WRONG_CNT = #{wrongCnt}
 		WHERE PROC_CD = #{procCd} 
 		AND PROC_YEAR = #{procYear} 
 		AND PROC_SEQ = #{procSeq}

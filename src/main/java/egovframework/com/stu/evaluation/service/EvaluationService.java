@@ -40,6 +40,8 @@ public interface EvaluationService {
 	
 	public Learning selectEvaluationSum(Learning params);
 	
+	public Learning selectEvaluationResultCount(Learning params);
+	
 	public int updateEvaluationResult(Learning params);
 		
 	

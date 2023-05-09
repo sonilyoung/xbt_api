@@ -45,7 +45,13 @@ public class EvaluationDAO extends EgovAbstractMapper{
 	
 	public Learning selectEvaluationSum(Learning params) {
 		return selectOne(Namespace + ".selectEvaluationSum", params);
+	}
+	
+	
+	public Learning selectEvaluationResultCount(Learning params) {
+		return selectOne(Namespace + ".selectEvaluationResultCount", params);
 	}		
+		
 	
 	public int updateEvaluationResult(Learning params) {
 		return update(Namespace + ".updateEvaluationResult", params);

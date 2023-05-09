@@ -232,11 +232,18 @@ public class LearningServiceImpl implements LearningService {
 	}	
 
 	@Override
-	public int updateLeanAnswer(Learning params) {
+	public int updateLearningAnswer(Learning params) {
 		// TODO Auto-generated method stub
-		return learningDAO.updateLeanAnswer(params);
+		return learningDAO.updateLearningAnswer(params);
 	}
 
+	@Override
+	public int updateLearningEnd(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.updateLearningEnd(params);
+	}
+	
+	
 	@Override
 	public int insertLearningResult(Learning params) {
 		// TODO Auto-generated method stub
@@ -253,6 +260,12 @@ public class LearningServiceImpl implements LearningService {
 	public int updateLearningResult(Learning params) {
 		// TODO Auto-generated method stub
 		return learningDAO.updateLearningResult(params);
+	}
+
+	@Override
+	public Learning selectLearningResultCount(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectLearningResultCount(params);
 	}
 
 

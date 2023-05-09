@@ -1,9 +1,6 @@
 
 package egovframework.com.stu.learning;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,38 +8,19 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import egovframework.com.adm.contents.service.ContentsService;
-import egovframework.com.adm.contents.vo.Language;
-import egovframework.com.adm.contents.vo.UnitGroup;
-import egovframework.com.adm.contents.vo.UnitImg;
-import egovframework.com.adm.contents.vo.UnitInformation;
-import egovframework.com.adm.contents.vo.XrayContents;
-import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.global.OfficeMessageSource;
-import egovframework.com.global.annotation.SkipAuth;
-import egovframework.com.global.authorization.SkipAuthLevel;
-import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
-import egovframework.com.global.util.ComUtils;
-import egovframework.com.global.util.FileReader;
 import egovframework.com.stu.learning.service.LearningService;
 import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningImg;
@@ -133,7 +111,7 @@ public class LearningController {
 				learningService.insertLearningProblems(lpParams);				
 			}
 			
-			
+			lpParams.setEndYn("N");
 			List<LearningProblem> resultList = learningService.selectLearnProblemsList(lpParams);
 			
 			if(resultList == null) {
@@ -251,9 +229,9 @@ public class LearningController {
      * @param param
      * @return Company
     */  
-    @PostMapping("/updateLeanAnswer.do")
+    @PostMapping("/updateLearningAnswer.do")
     @ApiOperation(value = "학습정답선택", notes = "학습정답선택")
-    public BaseResponse<Integer> updateLeanAnswer(HttpServletRequest request, @RequestBody Learning params) {
+    public BaseResponse<Integer> updateLearningAnswer(HttpServletRequest request, @RequestBody Learning params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
@@ -303,7 +281,7 @@ public class LearningController {
 				params.setGainScore(0);
 			}
 			
-			int result = learningService.updateLeanAnswer(params); 
+			int result = learningService.updateLearningAnswer(params); 
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
 			}else {
@@ -322,9 +300,9 @@ public class LearningController {
      * @param param
      * @return Company
     */  
-    @PostMapping("/endLeaning.do")
+    @PostMapping("/endLearning.do")
     @ApiOperation(value = "학습종료", notes = "학습종료")
-    public BaseResponse<Learning> endLeaning(HttpServletRequest request, @RequestBody Learning params) {
+    public BaseResponse<Learning> endLearning(HttpServletRequest request, @RequestBody Learning params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
@@ -358,9 +336,6 @@ public class LearningController {
 			params.setProcSeq(baselineData.getProcSeq());
 			params.setStudyLvl(moduleInfoData.getStudyLvl());
 			params.setPassScore(moduleInfoData.getPassScore());
-			params.setQuestionCnt(moduleInfoData.getQuestionCnt());
-			params.setWrongCnt(moduleInfoData.getQuestionCnt());
-			params.setRightCnt(moduleInfoData.getQuestionCnt());
 			
 			learningService.insertLearningResult(params);
 			Learning gainScore = learningService.selectLeaningSum(params);
@@ -371,6 +346,17 @@ public class LearningController {
 				params.setPassYn("N");
 			}
 			
+			//학습종료 틀린갯수 맞은갯수 확인 
+			Learning resultCnt = learningService.selectLeaningSum(params);
+			params.setQuestionCnt(resultCnt.getQuestionCnt());
+			params.setWrongCnt(resultCnt.getWrongCnt());
+			params.setRightCnt(resultCnt.getRightCnt());		
+			
+			//문제종료처리
+			params.setEndYn("Y");
+			learningService.updateLearningEnd(params);
+			
+			//결과데이터저장
 			learningService.updateLearningResult(params);
 			
 			//학습자평균가져오기
@@ -383,4 +369,71 @@ public class LearningController {
         }
     }          
     	    
+    
+    
+    
+    /**
+     * 사용자학습완료정보
+     * 
+     * @param param
+     * @return Company
+    */  
+    @PostMapping("/selectLearningComplete.do")
+    @ApiOperation(value = "사용자학습완료정보", notes = "사용자학습완료정보")
+    public BaseResponse<Learning> selectLearningComplete(HttpServletRequest request, @RequestBody Learning params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		params.setUserId(login.getUserId());
+		if(StringUtils.isEmpty(params.getEduType())){				
+			return new BaseResponse<Learning>(BaseResponseCode.PARAMS_ERROR, "EduType" + BaseApiMessage.REQUIRED.getMessage());
+		}			
+		
+		try {
+			Learning baselineData = learningService.selectBaseline(params);
+			if(baselineData == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
+			}
+			
+			params.setProcCd(baselineData.getProcCd()); 
+			Learning learningData = learningService.selectLearning(params);
+			if(learningData == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
+			}
+			
+			Learning moduleInfoData = learningService.selectModuleInfo(params);
+			if(moduleInfoData == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.MODULE_DATA, BaseResponseCode.MODULE_DATA.getMessage());
+			}
+			moduleInfoData.setUserId(login.getUserId());
+			moduleInfoData.setUserName(login.getUserNm());
+			LearningProblem lpParams = new LearningProblem();
+			lpParams.setUserId(login.getUserId());
+			lpParams.setModuleId(moduleInfoData.getModuleId());
+			lpParams.setProcCd(baselineData.getProcCd());
+			lpParams.setProcYear(baselineData.getProcYear());
+			lpParams.setProcSeq(baselineData.getProcSeq());			
+			List<LearningProblem> problems = learningService.selectLearningProblems(lpParams);	
+			if(problems == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.LEARNINGPROBLEM_DATA, BaseResponseCode.LEARNINGPROBLEM_DATA.getMessage());
+			}				
+			
+			lpParams.setEndYn("Y");
+			List<LearningProblem> resultList = learningService.selectLearnProblemsList(lpParams);
+			
+			if(resultList == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS, BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS.getMessage());
+			}			
+			
+			moduleInfoData.setLearningProblemList(resultList);
+			
+			return new BaseResponse<Learning>(moduleInfoData);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+           
 }

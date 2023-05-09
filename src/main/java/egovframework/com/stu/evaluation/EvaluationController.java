@@ -249,9 +249,6 @@ public class EvaluationController {
 			params.setProcSeq(baselineData.getProcSeq());
 			params.setStudyLvl(moduleInfoData.getStudyLvl());
 			params.setPassScore(moduleInfoData.getPassScore());
-			params.setQuestionCnt(moduleInfoData.getQuestionCnt());
-			params.setWrongCnt(moduleInfoData.getQuestionCnt());
-			params.setRightCnt(moduleInfoData.getQuestionCnt());
 			
 			evaluationService.insertEvaluationResult(params);
 			Learning gainScore = evaluationService.selectEvaluationSum(params);
@@ -261,6 +258,12 @@ public class EvaluationController {
 			}else {//과락
 				params.setPassYn("N");
 			}
+			
+			//학습종료 틀린갯수 맞은갯수 확인 
+			Learning resultCnt = evaluationService.selectEvaluationResultCount(params);
+			params.setQuestionCnt(resultCnt.getQuestionCnt());
+			params.setWrongCnt(resultCnt.getWrongCnt());
+			params.setRightCnt(resultCnt.getRightCnt());				
 			
 			evaluationService.updateEvaluationResult(params);
 			

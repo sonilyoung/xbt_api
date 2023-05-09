@@ -134,7 +134,23 @@
 		AND PROC_SEQ = #{procSeq}
 		AND USER_ID = #{userId}
 		AND END_YN = 'N'
-	</select>		
+	</select>	
+	
+	<!-- 학습종료 틀린갯수 맞은갯수 확인 -->
+	<select id="selectEvaluationResultCount" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
+		SELECT
+			COUNT(*)AS questionCnt,
+			COUNT(CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 1 END) AS rightCnt,
+			COUNT(CASE WHEN ACTION_DIV != USER_ACTION_DIV || USER_ACTION_DIV IS NULL THEN 1 END) AS wrongCnt	
+		FROM
+			XBT_STU_EVALUATION_PROGRESSING
+		WHERE 
+		MODULE_ID = #{moduleId} 
+		AND PROC_CD = #{procCd}  
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+	</select>			
 	
 	
 	<!-- 평가정답선택-->
@@ -143,7 +159,9 @@
 			XBT_BASELINE_EVALUATION 
 		SET 
 			GAIN_SCORE = #{gainScore},
-			PASS_YN = #{passYn}
+			PASS_YN = #{passYn},
+			RIGHT_CNT = #{rightCnt},
+			WRONG_CNT = #{wrongCnt}			
 		WHERE PROC_CD = #{procCd} 
 		AND PROC_YEAR = #{procYear} 
 		AND PROC_SEQ = #{procSeq}

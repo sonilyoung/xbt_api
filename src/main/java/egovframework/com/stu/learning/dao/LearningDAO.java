@@ -43,6 +43,10 @@ public class LearningDAO extends EgovAbstractMapper{
 		return update(Namespace + ".updateLearningProblems", params);
 	}		
 	
+	public int updateLearningEnd(Learning params) {
+		return update(Namespace + ".updateLearningEnd", params);
+	}	
+	
 	public List<?> selectLearnProblemsList(LearningProblem params) {
 		return (List<?>)selectList(Namespace + ".selectLearningProblems", params);
 	}
@@ -51,8 +55,8 @@ public class LearningDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectLearnAnswer", params);
 	}		
 	
-	public int updateLeanAnswer(Learning params) {
-		return update(Namespace + ".updateLeanAnswer", params);
+	public int updateLearningAnswer(Learning params) {
+		return update(Namespace + ".updateLearningAnswer", params);
 	}	
 	
 	
@@ -66,5 +70,9 @@ public class LearningDAO extends EgovAbstractMapper{
 	
 	public int updateLearningResult(Learning params) {
 		return update(Namespace + ".updateLearningResult", params);
+	}		
+	
+	public Learning selectLearningResultCount(Learning params) {
+		return selectOne(Namespace + ".selectLearningResultCount", params);
 	}		
 }
