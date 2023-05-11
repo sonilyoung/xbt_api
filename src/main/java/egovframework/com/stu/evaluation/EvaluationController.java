@@ -101,6 +101,7 @@ public class EvaluationController {
 			lpParams.setProcCd(baselineData.getProcCd());
 			lpParams.setProcYear(baselineData.getProcYear());
 			lpParams.setProcSeq(baselineData.getProcSeq());			
+			lpParams.setQuestionCnt(moduleInfoData.getQuestionCnt());
 			
 			//평가문제가져오기
 			List<LearningProblem> problems = learningService.selectLearningProblems(lpParams);	
@@ -108,25 +109,32 @@ public class EvaluationController {
 				return new BaseResponse<Learning>(BaseResponseCode.LEARNINGPROBLEM_DATA, BaseResponseCode.LEARNINGPROBLEM_DATA.getMessage());
 			}				
 			
+			//시도횟수
+			LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);	
+			lpParams.setTrySeq(maxKey.getTrySeq());			
+			
 			//등록된평가문제 체크
+			//lpParams.setEndYn("N");
 			int problemsCnt = evaluationService.selectEvaluationProblemsCount(lpParams);
 			
-			if(problemsCnt > 0) {
-				evaluationService.updateEvaluationProblems(lpParams);
-			}else {
+			//시도횟수
+			//LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);			
+			if(problemsCnt <= 0) {
 				//문제등록
-				evaluationService.insertEvaluationProblems(lpParams);
-			}
-			
+				lpParams.setTrySeq(maxKey.getTrySeq());
+				moduleInfoData.setTrySeq(maxKey.getTrySeq());			
+				evaluationService.insertEvaluationProblems(lpParams);				
+			}else {
+				moduleInfoData.setTrySeq(maxKey.getTrySeq());
+			}			
 			
 			List<LearningProblem> resultList = evaluationService.selectEvaluationProblemsList(lpParams);
 			
 			if(resultList == null) {
 				return new BaseResponse<Learning>(BaseResponseCode.DATA_IS_NULL_EVALPROBLEMS, BaseResponseCode.DATA_IS_NULL_EVALPROBLEMS.getMessage());
 			}					
-			
-			moduleInfoData.setLearningProblemList(resultList);
-			
+			List<LearningProblem> result = learningService.selectLeaningImgList(resultList);
+			moduleInfoData.setLearningProblemList(result);
 			return new BaseResponse<Learning>(moduleInfoData);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
@@ -184,6 +192,15 @@ public class EvaluationController {
 			params.setProcCd(baselineData.getProcCd());
 			params.setProcYear(baselineData.getProcYear());
 			params.setProcSeq(baselineData.getProcSeq());	
+			
+			//시도횟수
+			LearningProblem lpParams = new LearningProblem();
+			lpParams.setProcCd(params.getProcCd());
+			lpParams.setProcYear(params.getProcYear());
+			lpParams.setProcSeq(params.getProcSeq());
+			lpParams.setUserId(params.getUserId());
+			LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);			
+			params.setTrySeq(maxKey.getTrySeq());			
 			
 			Learning answer = evaluationService.selectEvaluationAnswer(params);
 			if("1".equals(answer.getAnswer())) {//정답
@@ -250,6 +267,16 @@ public class EvaluationController {
 			params.setStudyLvl(moduleInfoData.getStudyLvl());
 			params.setPassScore(moduleInfoData.getPassScore());
 			
+			//시도횟수
+			LearningProblem lpParams = new LearningProblem();
+			lpParams.setProcCd(params.getProcCd());
+			lpParams.setProcYear(params.getProcYear());
+			lpParams.setProcSeq(params.getProcSeq());
+			lpParams.setUserId(params.getUserId());
+			LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);
+			params.setTrySeq(maxKey.getTrySeq());				
+			
+			//평가종료데이터등록
 			evaluationService.insertEvaluationResult(params);
 			Learning gainScore = evaluationService.selectEvaluationSum(params);
 			params.setGainScore(gainScore.getGainScore());

@@ -14,6 +14,7 @@ import egovframework.com.adm.contents.vo.XrayContents;
 import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningImg;
+import egovframework.com.stu.learning.vo.LearningMainImg;
 import egovframework.com.stu.learning.vo.LearningProblem;
 
 /**
@@ -51,7 +52,15 @@ public interface LearningService {
 	
 	public List<LearningProblem> selectLearnProblemsList(LearningProblem params);
 	
-	public LearningImg selectLeaningImgList(LearningImg params);
+	public List<LearningProblem> selectLearnProblemsResultList(LearningProblem params);
+	
+	public List<LearningProblem> selectLearnProblemsResult(LearningProblem params);
+	
+	public List<LearningProblem> selectLeaningImgList(List<LearningProblem> params);
+	
+	public LearningImg selectLeaningImg(LearningImg params);
+	
+	public LearningMainImg selectCommonLearningImg(LearningImg params);
 	
 	public Learning selectLearnAnswer(Learning params);
 	
@@ -66,5 +75,7 @@ public interface LearningService {
 	public Learning selectLearningResultCount(Learning params);
 	
 	public int updateLearningResult(Learning params);
+	
+	public LearningProblem selectLearningProblemsMaxkey(LearningProblem params);
 	
 }

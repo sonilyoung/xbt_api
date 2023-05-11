@@ -2,7 +2,7 @@ package egovframework.com.stu.practice.service;
 
 import java.util.List;
 
-import egovframework.com.stu.main.vo.Schedule;
+import egovframework.com.stu.practice.vo.UnitGroup;
 import egovframework.com.stu.practice.vo.Practice;
 
 /**
@@ -23,8 +23,11 @@ import egovframework.com.stu.practice.vo.Practice;
  *      </pre>
  */
 public interface PracticeService {
-	
 
+	public UnitGroup selectUnitGroupAnswer(UnitGroup params);
+	
+	public List<UnitGroup> selectUnitGroupList(UnitGroup params);
+	
 	public List<Practice> selectUnitList(Practice params);
 	
 	public Practice selectUnit(Practice params);

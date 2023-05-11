@@ -30,6 +30,7 @@ public class Learning{
 	private String answer;
 	private String passYn;
 	private String endYn;
+	private String languageCode;
 	private double gainScore;
 	private int questionCnt;
 	private int timeLimit;
@@ -38,6 +39,7 @@ public class Learning{
 	private int userAverage;
 	private int rightCnt;
 	private int wrongCnt;
+	private int trySeq;
 	
 	private List<LearningProblem> learningProblemList; 
 }

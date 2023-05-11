@@ -57,4 +57,8 @@ public class EvaluationDAO extends EgovAbstractMapper{
 		return update(Namespace + ".updateEvaluationResult", params);
 	}		
 	
+	public LearningProblem selectEvaluationProblemsMaxkey(LearningProblem params) {
+		return selectOne(Namespace + ".selectEvaluationProblemsMaxkey", params);
+	}		
+	
 }

@@ -2,6 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.com.stu.practice.dao.PracticeDAO">
 	
+	<!-- 반입금지물품목록팝업 -->
+	<select id="selectUnitGroupList" parameterType="egovframework.com.stu.practice.vo.UnitGroup" resultType="egovframework.com.stu.practice.vo.UnitGroup">
+		SELECT
+			UNIT_GROUP_NO 
+			,UNIT_GROUP_CD 
+			,GROUP_NAME 
+			,GROUP_DESC 
+			,ACTION_DIV 
+			,(SELECT CODE_NAME FROM XBT_COMMON_CODE T1 WHERE T1.GROUP_ID = 'actionDiv' 
+				AND T1.CODE_VALUE = ACTION_DIV AND T1.USE_YN = 'Y' AND LANGUAGE_CODE = 'KOR')AS actionDivName
+			,UNIT_IMG
+			,LANGUAGE_CODE 
+		FROM
+			XBT_UNIT_GROUP
+		WHERE
+			LANGUAGE_CODE = #{languageCode}
+	</select>	
+	
+	<!-- 반입금지물품정답조회 -->
+	<select id="selectUnitGroupAnswer" parameterType="egovframework.com.stu.practice.vo.UnitGroup" resultType="egovframework.com.stu.practice.vo.UnitGroup">
+		SELECT
+			CASE WHEN ACTION_DIV = #{userActionDiv} THEN 'Y' ELSE 'N' END AS answerYn
+		FROM
+			XBT_UNIT_GROUP
+		WHERE
+			LANGUAGE_CODE = #{languageCode}
+			AND UNIT_GROUP_CD = #{unitGroupCd}
+	</select>		
+	
 	<!-- 물품연습 물품명칭조회  -->
 	<select id="selectUnitList" parameterType="egovframework.com.stu.practice.vo.Practice" resultType="egovframework.com.stu.practice.vo.Practice">
 		SELECT
