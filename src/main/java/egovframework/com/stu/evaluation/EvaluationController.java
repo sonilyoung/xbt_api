@@ -106,11 +106,11 @@ public class EvaluationController {
 			//평가문제가져오기
 			List<LearningProblem> problems = learningService.selectLearningProblems(lpParams);	
 			if(problems == null) {
-				return new BaseResponse<Learning>(BaseResponseCode.LEARNINGPROBLEM_DATA, BaseResponseCode.LEARNINGPROBLEM_DATA.getMessage());
+				return new BaseResponse<Learning>(BaseResponseCode.EVALUATIONPROBLEM_DATA, BaseResponseCode.LEARNINGPROBLEM_DATA.getMessage());
 			}				
 			
 			//시도횟수
-			LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);	
+			LearningProblem maxKey = evaluationService.selectEvaluationProblemsMaxkey(lpParams);	
 			lpParams.setTrySeq(maxKey.getTrySeq());			
 			
 			//등록된평가문제 체크
@@ -199,7 +199,7 @@ public class EvaluationController {
 			lpParams.setProcYear(params.getProcYear());
 			lpParams.setProcSeq(params.getProcSeq());
 			lpParams.setUserId(params.getUserId());
-			LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);			
+			LearningProblem maxKey = evaluationService.selectEvaluationProblemsMaxkey(lpParams);			
 			params.setTrySeq(maxKey.getTrySeq());			
 			
 			Learning answer = evaluationService.selectEvaluationAnswer(params);
@@ -273,11 +273,17 @@ public class EvaluationController {
 			lpParams.setProcYear(params.getProcYear());
 			lpParams.setProcSeq(params.getProcSeq());
 			lpParams.setUserId(params.getUserId());
-			LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);
+			LearningProblem maxKey = evaluationService.selectEvaluationProblemsMaxkey(lpParams); 
 			params.setTrySeq(maxKey.getTrySeq());				
 			
+			//평가종료데이터확인
+			int baselineCnt = evaluationService.selectEvaluationBaselineResultCount(params);
+			
 			//평가종료데이터등록
-			evaluationService.insertEvaluationResult(params);
+			if(baselineCnt <= 0) {
+				evaluationService.insertEvaluationResult(params);				
+			}			
+			
 			Learning gainScore = evaluationService.selectEvaluationSum(params);
 			params.setGainScore(gainScore.getGainScore());
 			if(gainScore.getGainScore()>=Double.valueOf(moduleInfoData.getPassScore())) {//통과

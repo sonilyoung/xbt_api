@@ -35,6 +35,10 @@ public enum BaseResponseCode {
 			"0903", "모듈정보가 없습니다."
 	), LEARNINGPROBLEM_DATA(
 			"0904", "등록학습문제가 없습니다."			
+	), WRONGANSWERPROBLEM_DATA(
+			"0905", "등록된 오답문제가 없습니다."	
+	), EVALUATIONPROBLEM_DATA(
+			"0906", "등록된 오답문제가 없습니다."				
 	), PARAMS_ERROR(
 	        "1000", "파라미터 오류"	        
 	), EXTENSION_ERROR(

@@ -12,6 +12,7 @@ public class Practice {
 	private String unitId;//담품아이디
 	private String unitGroupCd;//그룹코드
 	private String unitGroupName;//그룹명
+	private String actionDivName;//개봉통과여부
 	private String useYn;//사용여부
 	private byte[] realImg;//실사
 	private byte[] frontImg;//정면이미지

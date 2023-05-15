@@ -3,6 +3,7 @@ package egovframework.com.stu.main.service;
 import java.util.List;
 
 import egovframework.com.stu.main.vo.Schedule;
+import egovframework.com.stu.main.vo.Statistics;
 import egovframework.com.stu.main.vo.UserStInfo;
 
 /**
@@ -27,5 +28,9 @@ public interface MainService {
 	public UserStInfo selectBaselineUserInfo(UserStInfo params);
 	
 	public List<Schedule> selectScheduleList(Schedule params);
+	
+	public List<Statistics> selectStatisticsTitleList(Statistics params);
+	
+	public List<Statistics> selectStatisticsContensList(Statistics params);
 
 }

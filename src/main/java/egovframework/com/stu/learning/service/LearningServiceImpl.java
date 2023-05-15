@@ -132,7 +132,6 @@ public class LearningServiceImpl implements LearningService {
     	String xrayPath = GlobalsProperties.getProperty("xray.img.path");
     	List<LearningProblem> result = new ArrayList<LearningProblem>();
     	for(LearningProblem p : pList) {
-    		LearningMainImg param = new LearningMainImg();
     		String scanId = p.getBagScanId();	
             String strDirPath = xrayPath+File.separator+scanId; 
             File[] fileList = null;
@@ -141,7 +140,11 @@ public class LearningServiceImpl implements LearningService {
             byte[] fileByte;/*이미지*/
             
             //결과유기물
-            //System.out.println("result count : " + fileList.length);
+            //////System.out.println("result count : " + fileList.length);
+            
+            if(fileList==null) {
+            	return result;
+            }            
             
             //byte변환
             LearningImg params = new LearningImg();
@@ -185,7 +188,11 @@ public class LearningServiceImpl implements LearningService {
         byte[] fileByte;/*이미지*/
         
         //결과유기물
-        System.out.println("result count : " + fileList.length);
+        ////System.out.println("result count : " + fileList.length);
+        
+        if(fileList==null) {
+        	return params;
+        }        
         
         //byte변환
         for( int i = 0; i < fileList.length; i++ ) { 
@@ -290,6 +297,251 @@ public class LearningServiceImpl implements LearningService {
 	}	
 	
 	@Override
+	public LearningImg selectPracticeImg(LearningImg params) {
+		// TODO Auto-generated method stub
+		
+    	String xrayPath = GlobalsProperties.getProperty("xray.unitImg.path");
+    	
+    	String scanId = params.getBagScanId();
+        String strDirPath = xrayPath+File.separator+scanId; 
+        File[] fileList = null;
+		fileList = FileReader.ListFile( strDirPath );
+			
+        byte[] fileByte;/*이미지*/
+        
+        //결과유기물
+        ////System.out.println("result count : " + fileList.length);
+        
+        if(fileList==null) {
+        	return params;
+        }
+        
+        //byte변환
+        for( int i = 0; i < fileList.length; i++ ) { 
+        	System.out.println("result : "+fileList[i]);
+        	try {
+        		fileByte = Files.readAllBytes(fileList[i].toPath());
+        		//System.out.println("fileByte : "+fileByte);
+        		
+        		if("101".equals(params.getCommand()) && fileList[i].getName().contains("101")) {//정면
+        			params.setImgFrontColor(fileByte);break;
+        		}else if("102".equals(params.getCommand()) && fileList[i].getName().contains("102")) {
+        			params.setImgFrontColorMineral(fileByte);break;
+        		}else if("103".equals(params.getCommand()) && fileList[i].getName().contains("103")) {
+        			params.setImgFrontColorOrganism(fileByte);break;
+        		}else if("104".equals(params.getCommand()) && fileList[i].getName().contains("104")) {
+        			params.setImgFrontColorReversal(fileByte);break;
+        		}else if("105".equals(params.getCommand()) && fileList[i].getName().contains("105")) {
+        			params.setImgFrontColorBwRate1(fileByte);break;
+        		}else if("106".equals(params.getCommand()) && fileList[i].getName().contains("106")) {
+        			params.setImgFrontColorBwRate2(fileByte);break;
+        		}else if("107".equals(params.getCommand()) && fileList[i].getName().contains("107")) {
+        			params.setImgFrontColorBwRate3(fileByte);break;
+        		}else if("108".equals(params.getCommand()) && fileList[i].getName().contains("108")) {
+        			params.setImgFrontColorBwRate4(fileByte);break;
+        		}else if("109".equals(params.getCommand()) && fileList[i].getName().contains("109")) {
+        			params.setImgFrontColorBwRate5(fileByte);break;
+        		}else if("110".equals(params.getCommand()) && fileList[i].getName().contains("110")) {
+        			params.setImgFrontColorBwRate6(fileByte);break;
+        		}else if("111".equals(params.getCommand()) && fileList[i].getName().contains("111")) {
+        			params.setImgFrontBw(fileByte);break;
+        		}else if("112".equals(params.getCommand()) && fileList[i].getName().contains("112")) {
+        			params.setImgFrontBwMineral(fileByte);break;
+        		}else if("113".equals(params.getCommand()) && fileList[i].getName().contains("113")) {
+        			params.setImgFrontBwOrganism(fileByte);break;
+        		}else if("114".equals(params.getCommand()) && fileList[i].getName().contains("114")) {
+        			params.setImgFrontBwReversal(fileByte);break;
+        		}else if("115".equals(params.getCommand()) && fileList[i].getName().contains("115")) {
+        			params.setImgFrontBwBwRate1(fileByte);break;
+        		}else if("116".equals(params.getCommand()) && fileList[i].getName().contains("116")) {
+        			params.setImgFrontBwBwRate2(fileByte);break;
+        		}else if("117".equals(params.getCommand()) && fileList[i].getName().contains("117")) {
+        			params.setImgFrontBwBwRate3(fileByte);break;
+        		}else if("118".equals(params.getCommand()) && fileList[i].getName().contains("118")) {
+        			params.setImgFrontBwBwRate4(fileByte);break;
+        		}else if("119".equals(params.getCommand()) && fileList[i].getName().contains("119")) {
+        			params.setImgFrontBwBwRate5(fileByte);break;
+        		}else if("120".equals(params.getCommand()) && fileList[i].getName().contains("120")) {
+        			params.setImgFrontBwBwRate6(fileByte);break;
+        		}else if("201".equals(params.getCommand()) && fileList[i].getName().contains("201")) {//측면
+        			params.setImgSideColor(fileByte);break;
+        		}else if("202".equals(params.getCommand()) && fileList[i].getName().contains("202")) {
+        			params.setImgSideColorMineral(fileByte);break;
+        		}else if("203".equals(params.getCommand()) && fileList[i].getName().contains("203")) {
+        			params.setImgSideColorOrganism(fileByte);break;
+        		}else if("204".equals(params.getCommand()) && fileList[i].getName().contains("204")) {
+        			params.setImgSideColorReversal(fileByte);break;
+        		}else if("205".equals(params.getCommand()) && fileList[i].getName().contains("205")) {
+        			params.setImgSideColorBwRate1(fileByte);break;
+        		}else if("206".equals(params.getCommand()) && fileList[i].getName().contains("206")) {
+        			params.setImgSideColorBwRate1(fileByte);break;
+        		}else if("207".equals(params.getCommand()) && fileList[i].getName().contains("207")) {
+        			params.setImgSideColorBwRate1(fileByte);break;
+        		}else if("208".equals(params.getCommand()) && fileList[i].getName().contains("208")) {
+        			params.setImgSideColorBwRate1(fileByte);break;
+        		}else if("209".equals(params.getCommand()) && fileList[i].getName().contains("209")) {
+        			params.setImgSideColorBwRate1(fileByte);break;
+        		}else if("210".equals(params.getCommand()) && fileList[i].getName().contains("210")) {
+        			params.setImgSideColorBwRate1(fileByte);break;
+        		}else if("211".equals(params.getCommand()) && fileList[i].getName().contains("211")) {
+        			params.setImgSideBw(fileByte);break;
+        		}else if("212".equals(params.getCommand()) && fileList[i].getName().contains("212")) {
+        			params.setImgSideBwMinerals(fileByte);break;
+        		}else if("213".equals(params.getCommand()) && fileList[i].getName().contains("213")) {
+        			params.setImgSideBwOrganism(fileByte);break;
+        		}else if("214".equals(params.getCommand()) && fileList[i].getName().contains("214")) {
+        			params.setImgSideBwReversal(fileByte);break;
+        		}else if("215".equals(params.getCommand()) && fileList[i].getName().contains("215")) {
+        			params.setImgSideBwBwRate1(fileByte);break;
+        		}else if("216".equals(params.getCommand()) && fileList[i].getName().contains("216")) {
+        			params.setImgSideBwBwRate2(fileByte);break;
+        		}else if("217".equals(params.getCommand()) && fileList[i].getName().contains("217")) {
+        			params.setImgSideBwBwRate3(fileByte);break;
+        		}else if("218".equals(params.getCommand()) && fileList[i].getName().contains("218")) {
+        			params.setImgSideBwBwRate4(fileByte);break;
+        		}else if("219".equals(params.getCommand()) && fileList[i].getName().contains("219")) {
+        			params.setImgSideBwBwRate5(fileByte);break;
+        		}else if("220".equals(params.getCommand()) && fileList[i].getName().contains("220")) {
+        			params.setImgSideBwBwRate6(fileByte);break;
+        		}else if("401".equals(params.getCommand()) && fileList[i].getName().contains("401")) {//실사이미지
+        			params.setImgReal(fileByte);break;
+        		}
+        		
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        
+        
+		return params;
+	}		
+	
+	@Override
+	public LearningImg selectThreedAngle(LearningImg params) {
+		// TODO Auto-generated method stub
+		
+    	String xrayPath = GlobalsProperties.getProperty("xray.unitImg.path");
+    	
+    	String scanId = params.getUnitId();
+        String strDirPath = xrayPath+File.separator+scanId; 
+        File[] fileList = null;
+		fileList = FileReader.ListFile( strDirPath );
+			
+        byte[] fileByte;/*이미지*/
+        
+        //결과유기물
+        ////System.out.println("result count : " + fileList.length);
+        
+        if(fileList==null) {
+        	return params;
+        }        
+        
+        //byte변환
+        for( int i = 0; i < fileList.length; i++ ) { 
+        	System.out.println("result : "+fileList[i]);
+        	try {
+        		fileByte = Files.readAllBytes(fileList[i].toPath());
+        		//System.out.println("fileByte : "+fileByte);
+        		
+        		if("101".equals(params.getCommand()) && fileList[i].getName().contains("101")) {//정면
+        			params.setImgFrontColor(fileByte);break;
+        		}else if("102".equals(params.getCommand()) && fileList[i].getName().contains("102")) {
+        			params.setImgFrontColorMineral(fileByte);break;
+        		}else if("103".equals(params.getCommand()) && fileList[i].getName().contains("103")) {
+        			params.setImgFrontColorOrganism(fileByte);break;
+        		}else if("104".equals(params.getCommand()) && fileList[i].getName().contains("104")) {
+        			params.setImgFrontColorReversal(fileByte);break;
+        		}else if("105".equals(params.getCommand()) && fileList[i].getName().contains("105")) {
+        			params.setImgFrontColorBwRate1(fileByte);break;
+        		}else if("106".equals(params.getCommand()) && fileList[i].getName().contains("106")) {
+        			params.setImgFrontColorBwRate2(fileByte);break;
+        		}else if("107".equals(params.getCommand()) && fileList[i].getName().contains("107")) {
+        			params.setImgFrontColorBwRate3(fileByte);break;
+        		}else if("108".equals(params.getCommand()) && fileList[i].getName().contains("108")) {
+        			params.setImgFrontColorBwRate4(fileByte);break;
+        		}else if("109".equals(params.getCommand()) && fileList[i].getName().contains("109")) {
+        			params.setImgFrontColorBwRate5(fileByte);break;
+        		}else if("110".equals(params.getCommand()) && fileList[i].getName().contains("110")) {
+        			params.setImgFrontColorBwRate6(fileByte);break;
+        		}else if("111".equals(params.getCommand()) && fileList[i].getName().contains("111")) {
+        			params.setImgFrontBw(fileByte);break;
+        		}else if("112".equals(params.getCommand()) && fileList[i].getName().contains("112")) {
+        			params.setImgFrontBwMineral(fileByte);break;
+        		}else if("113".equals(params.getCommand()) && fileList[i].getName().contains("113")) {
+        			params.setImgFrontBwOrganism(fileByte);break;
+        		}else if("114".equals(params.getCommand()) && fileList[i].getName().contains("114")) {
+        			params.setImgFrontBwReversal(fileByte);break;
+        		}else if("115".equals(params.getCommand()) && fileList[i].getName().contains("115")) {
+        			params.setImgFrontBwBwRate1(fileByte);break;
+        		}else if("116".equals(params.getCommand()) && fileList[i].getName().contains("116")) {
+        			params.setImgFrontBwBwRate2(fileByte);break;
+        		}else if("117".equals(params.getCommand()) && fileList[i].getName().contains("117")) {
+        			params.setImgFrontBwBwRate3(fileByte);break;
+        		}else if("118".equals(params.getCommand()) && fileList[i].getName().contains("118")) {
+        			params.setImgFrontBwBwRate4(fileByte);break;
+        		}else if("119".equals(params.getCommand()) && fileList[i].getName().contains("119")) {
+        			params.setImgFrontBwBwRate5(fileByte);break;
+        		}else if("120".equals(params.getCommand()) && fileList[i].getName().contains("120")) {
+        			params.setImgFrontBwBwRate6(fileByte);break;
+        		}else if("201".equals(params.getCommand()) && fileList[i].getName().contains("201")) {//측면
+        			params.setImgSideColor(fileByte);break;
+        		}else if("202".equals(params.getCommand()) && fileList[i].getName().contains("202")) {
+        			params.setImgSideColorMineral(fileByte);break;
+        		}else if("203".equals(params.getCommand()) && fileList[i].getName().contains("203")) {
+        			params.setImgSideColorOrganism(fileByte);break;
+        		}else if("204".equals(params.getCommand()) && fileList[i].getName().contains("204")) {
+        			params.setImgSideColorReversal(fileByte);break;
+        		}else if("205".equals(params.getCommand()) && fileList[i].getName().contains("205")) {
+        			params.setImgSideColorBwRate1(fileByte);break;
+        		}else if("206".equals(params.getCommand()) && fileList[i].getName().contains("206")) {
+        			params.setImgSideColorBwRate1(fileByte);break;
+        		}else if("207".equals(params.getCommand()) && fileList[i].getName().contains("207")) {
+        			params.setImgSideColorBwRate1(fileByte);break;
+        		}else if("208".equals(params.getCommand()) && fileList[i].getName().contains("208")) {
+        			params.setImgSideColorBwRate1(fileByte);break;
+        		}else if("209".equals(params.getCommand()) && fileList[i].getName().contains("209")) {
+        			params.setImgSideColorBwRate1(fileByte);break;
+        		}else if("210".equals(params.getCommand()) && fileList[i].getName().contains("210")) {
+        			params.setImgSideColorBwRate1(fileByte);break;
+        		}else if("211".equals(params.getCommand()) && fileList[i].getName().contains("211")) {
+        			params.setImgSideBw(fileByte);break;
+        		}else if("212".equals(params.getCommand()) && fileList[i].getName().contains("212")) {
+        			params.setImgSideBwMinerals(fileByte);break;
+        		}else if("213".equals(params.getCommand()) && fileList[i].getName().contains("213")) {
+        			params.setImgSideBwOrganism(fileByte);break;
+        		}else if("214".equals(params.getCommand()) && fileList[i].getName().contains("214")) {
+        			params.setImgSideBwReversal(fileByte);break;
+        		}else if("215".equals(params.getCommand()) && fileList[i].getName().contains("215")) {
+        			params.setImgSideBwBwRate1(fileByte);break;
+        		}else if("216".equals(params.getCommand()) && fileList[i].getName().contains("216")) {
+        			params.setImgSideBwBwRate2(fileByte);break;
+        		}else if("217".equals(params.getCommand()) && fileList[i].getName().contains("217")) {
+        			params.setImgSideBwBwRate3(fileByte);break;
+        		}else if("218".equals(params.getCommand()) && fileList[i].getName().contains("218")) {
+        			params.setImgSideBwBwRate4(fileByte);break;
+        		}else if("219".equals(params.getCommand()) && fileList[i].getName().contains("219")) {
+        			params.setImgSideBwBwRate5(fileByte);break;
+        		}else if("220".equals(params.getCommand()) && fileList[i].getName().contains("220")) {
+        			params.setImgSideBwBwRate6(fileByte);break;
+        		}else if("401".equals(params.getCommand()) && fileList[i].getName().contains("401")) {//실사이미지
+        			params.setImgReal(fileByte);break;
+        		}
+        		
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        
+        
+		return params;
+	}		
+	
+	
+	@Override
 	public LearningMainImg selectCommonLearningImg(LearningImg params) {
 		// TODO Auto-generated method stub
 		LearningMainImg result = new LearningMainImg();
@@ -303,7 +555,11 @@ public class LearningServiceImpl implements LearningService {
         byte[] fileByte;/*이미지*/
         
         //결과유기물
-        System.out.println("result count : " + fileList.length);
+        ////System.out.println("result count : " + fileList.length);
+        
+        if(fileList==null) {
+        	return result;
+        }
         
         //byte변환
         for( int i = 0; i < fileList.length; i++ ) { 
@@ -330,6 +586,53 @@ public class LearningServiceImpl implements LearningService {
 		return result;
 	}
 	
+	
+	@Override
+	public LearningMainImg selectCommonPracticeImg(LearningImg params) {
+		// TODO Auto-generated method stub
+		LearningMainImg result = new LearningMainImg();
+    	String xrayPath = GlobalsProperties.getProperty("xray.unitImg.path");
+    	
+    	String scanId = params.getUnitId();
+        String strDirPath = xrayPath+File.separator+scanId; 
+        File[] fileList = null;
+		fileList = FileReader.ListFile( strDirPath );
+			
+        byte[] fileByte;/*이미지*/
+        
+        //결과유기물
+        ////System.out.println("result count : " + fileList.length);
+        
+        if(fileList==null) {
+        	return result;
+        }
+        
+        //byte변환
+        for( int i = 0; i < fileList.length; i++ ) { 
+        	//System.out.println("result : "+fileList[i]);
+        	try {
+        		fileByte = Files.readAllBytes(fileList[i].toPath());
+        		//System.out.println("fileByte : "+fileByte);
+        		
+        		if(fileList[i].getName().contains("B")) {//정면
+        			result.setImgFront(fileByte);
+        		}else if(fileList[i].getName().contains("C")) {//측면
+        			result.setImgSide(fileByte);
+        		}else if(fileList[i].getName().contains("R")) {//실사이미지
+        			result.setImgReal(fileByte);
+        		}else if(fileList[i].getName().contains("3D")) {//3D
+        			result.setImgThreed(fileByte);
+        		}
+        		
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        
+        
+		return result;
+	}	
 	
 	
 	@Override
@@ -380,8 +683,102 @@ public class LearningServiceImpl implements LearningService {
 		// TODO Auto-generated method stub
 		return learningDAO.selectLearningProblemsMaxkey(params);
 	}
+	
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<LearningProblem> selectWrongAnswerProblems(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return (List<LearningProblem>)learningDAO.selectWrongAnswerProblems(params);
+	}
+	
+	@Override
+	public LearningProblem selectWrongAnswerProblemsMaxkey(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectWrongAnswerProblemsMaxkey(params);
+	}	
 
+	@Override
+	public int selectWrongAnswerProblemsCount(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectWrongAnswerProblemsCount(params);
+	}
 
+	@Override
+	public int insertWrongAnswerProblems(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return learningDAO.insertWrongAnswerProblems(params);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<LearningProblem> selectWrongAnswerProblemsList(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return (List<LearningProblem>) learningDAO.selectWrongAnswerProblemsList(params);
+	}	
+	
+	@Override
+	public Learning selectWrongAnswer(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectWrongAnswer(params);
+	}	
 
+	@Override
+	public int updateWrongAnswer(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.updateWrongAnswer(params);
+	}
+
+	
+	@Override
+	public int updateWrongAnswerEnd(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.updateWrongAnswerEnd(params);
+	}
+	
+	
+	@Override
+	public int insertWrongAnswerResult(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.insertWrongAnswerResult(params);
+	}
+
+	@Override
+	public Learning selectWrongAnswerSum(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectWrongAnswerSum(params);
+	}
+
+	@Override
+	public int updateWrongAnswerResult(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.updateWrongAnswerResult(params);
+	}
+
+	@Override
+	public Learning selectWrongAnswerResultCount(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectWrongAnswerResultCount(params);
+	}	
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<LearningProblem> selectWrongAnswerProblemsResultList(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return (List<LearningProblem>) learningDAO.selectWrongAnswerProblemsResultList(params);
+	}
+
+	@Override
+	public int selectLearningBaselineResultCount(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectLearningBaselineResultCount(params);
+	}	
+		
+	
+	@Override
+	public int selectWrongAnswerBaselineResultCount(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectWrongAnswerBaselineResultCount(params);
+	}	
 	
 }

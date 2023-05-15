@@ -107,6 +107,12 @@ public class EvaluationServiceImpl implements EvaluationService {
 		return evaluationDAO.selectEvaluationProblemsMaxkey(params);
 	}
 
+	@Override
+	public int selectEvaluationBaselineResultCount(Learning params) {
+		// TODO Auto-generated method stub
+		return evaluationDAO.selectEvaluationBaselineResultCount(params);
+	}
+
 
 		
 

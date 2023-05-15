@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.adm.learningMgr.dao.LearningMgrDAO;
 import egovframework.com.stu.main.dao.MainDAO;
 import egovframework.com.stu.main.vo.Schedule;
+import egovframework.com.stu.main.vo.Statistics;
 import egovframework.com.stu.main.vo.UserStInfo;
 import lombok.extern.log4j.Log4j2;
 
@@ -49,6 +50,18 @@ public class MainServiceImpl implements MainService {
 	public List<Schedule> selectScheduleList(Schedule params) {
 		// TODO Auto-generated method stub
 		return (List<Schedule>)mainDAO.selectScheduleList(params);
+	}
+
+	@Override
+	public List<Statistics> selectStatisticsTitleList(Statistics params) {
+		// TODO Auto-generated method stub
+		return (List<Statistics>)mainDAO.selectStatisticsTitleList(params);
+	}
+
+	@Override
+	public List<Statistics> selectStatisticsContensList(Statistics params) {
+		// TODO Auto-generated method stub
+		return (List<Statistics>)mainDAO.selectStatisticsContensList(params);
 	}
 
 

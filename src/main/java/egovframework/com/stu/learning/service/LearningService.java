@@ -62,6 +62,12 @@ public interface LearningService {
 	
 	public LearningMainImg selectCommonLearningImg(LearningImg params);
 	
+	public LearningMainImg selectCommonPracticeImg(LearningImg params);
+	
+	public LearningImg selectPracticeImg(LearningImg params);
+	
+	public LearningImg selectThreedAngle(LearningImg params);
+	
 	public Learning selectLearnAnswer(Learning params);
 	
 	public int updateLearningAnswer(Learning params);
@@ -77,5 +83,36 @@ public interface LearningService {
 	public int updateLearningResult(Learning params);
 	
 	public LearningProblem selectLearningProblemsMaxkey(LearningProblem params);
+	
+	public List<LearningProblem> selectWrongAnswerProblems(LearningProblem params);
+	
+	public LearningProblem selectWrongAnswerProblemsMaxkey(LearningProblem params);
+	
+	public int selectWrongAnswerProblemsCount(LearningProblem params);
+	
+	public int insertWrongAnswerProblems(LearningProblem params);
+	
+	public List<LearningProblem> selectWrongAnswerProblemsList(LearningProblem params);
+	
+	public Learning selectWrongAnswer(Learning params);
+	
+	public int updateWrongAnswer(Learning params);
+	
+	
+	public int updateWrongAnswerEnd(Learning params);
+	
+	public int insertWrongAnswerResult(Learning params);
+	
+	public Learning selectWrongAnswerSum(Learning params);
+	
+	public Learning selectWrongAnswerResultCount(Learning params);
+	
+	public int updateWrongAnswerResult(Learning params);
+		
+	public List<LearningProblem> selectWrongAnswerProblemsResultList(LearningProblem params);
+	
+	public int selectLearningBaselineResultCount(Learning params);
+	
+	public int selectWrongAnswerBaselineResultCount(Learning params);
 	
 }

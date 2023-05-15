@@ -13,5 +13,6 @@ public class LearningMainImg{
 	private byte[] imgReal;//실사
 	private byte[] imgFront;//정면
 	private byte[] imgSide;//측면
+	private byte[] imgThreed;//측면
 	
 }

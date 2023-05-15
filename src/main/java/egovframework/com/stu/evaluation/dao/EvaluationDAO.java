@@ -61,4 +61,10 @@ public class EvaluationDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectEvaluationProblemsMaxkey", params);
 	}		
 	
+	
+	public int selectEvaluationBaselineResultCount(Learning params) {
+		return selectOne(Namespace + ".selectEvaluationBaselineResultCount", params);
+	}
+				
+	
 }

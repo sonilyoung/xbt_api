@@ -6,6 +6,8 @@ import lombok.Data;
 public class LearningImg{
 	private Long bagScanNo;
 	private String bagScanId;
+	private String unitScanId;
+	private String unitId;
 	private String command;
 	private int studyLvl;
 	//private byte[] imgReal;
@@ -13,6 +15,8 @@ public class LearningImg{
 	private byte[] imgReal;//실사
 	private byte[] imgFront;//정면
 	private byte[] imgSide;//측면
+	private byte[] imgThreed;//3d이미지
+	private byte[] imgThreedAngle;//각조조절된3d이미지
 	
 	private byte[] imgFrontColor; //정면컬러 101
 	private byte[] imgFrontColorMineral;//정면무기물 102

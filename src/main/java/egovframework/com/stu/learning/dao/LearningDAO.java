@@ -86,5 +86,66 @@ public class LearningDAO extends EgovAbstractMapper{
 	
 	public LearningProblem selectLearningProblemsMaxkey(LearningProblem params) {
 		return selectOne(Namespace + ".selectLearningProblemsMaxkey", params);
+	}
+	
+	public List<?> selectWrongAnswerProblems(LearningProblem params) {
+		return (List<?>)selectList(Namespace + ".selectWrongAnswerProblems", params);
+	}
+	
+	public LearningProblem selectWrongAnswerProblemsMaxkey(LearningProblem params) {
+		return selectOne(Namespace + ".selectWrongAnswerProblemsMaxkey", params);
 	}	
+	
+	public int selectWrongAnswerProblemsCount(LearningProblem params) {
+		return selectOne(Namespace + ".selectWrongAnswerProblemsCount", params);
+	}
+		
+	public int insertWrongAnswerProblems(LearningProblem params) {
+		return insert(Namespace + ".insertWrongAnswerProblems", params);
+	}	
+	
+	public List<?> selectWrongAnswerProblemsList(LearningProblem params) {
+		return (List<?>)selectList(Namespace + ".selectWrongAnswerProblemsList", params);
+	}	
+		
+	public Learning selectWrongAnswer(Learning params) {
+		return selectOne(Namespace + ".selectWrongAnswer", params);
+	}		
+	
+	public int updateWrongAnswer(Learning params) {
+		return update(Namespace + ".updateWrongAnswer", params);
+	}		
+	
+	public int insertWrongAnswerResult(Learning params) {
+		return insert(Namespace + ".insertWrongAnswerResult", params);
+	}		
+	
+	public Learning selectWrongAnswerSum(Learning params) {
+		return selectOne(Namespace + ".selectWrongAnswerSum", params);
+	}		
+	
+	public int updateWrongAnswerResult(Learning params) {
+		return update(Namespace + ".updateWrongAnswerResult", params);
+	}		
+	
+	public Learning selectWrongAnswerResultCount(Learning params) {
+		return selectOne(Namespace + ".selectWrongAnswerResultCount", params);
+	}	
+	
+	public int updateWrongAnswerEnd(Learning params) {
+		return update(Namespace + ".updateWrongAnswerEnd", params);
+	}	
+		
+	public List<?> selectWrongAnswerProblemsResultList(LearningProblem params) {
+		return (List<?>)selectList(Namespace + ".selectWrongAnswerProblemsResultList", params);
+	}		
+	
+	public int selectLearningBaselineResultCount(Learning params) {
+		return selectOne(Namespace + ".selectLearningBaselineResultCount", params);
+	}
+			
+	public int selectWrongAnswerBaselineResultCount(Learning params) {
+		return selectOne(Namespace + ".selectWrongAnswerBaselineResultCount", params);
+	}
+	
 }

@@ -16,7 +16,7 @@
 	</select>
 	
 	<!-- 등록된학습문제 횟수확인 -->
-	<select id="selectEvaluationProblemsMaxkey" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="int">
+	<select id="selectEvaluationProblemsMaxkey" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">
 		SELECT 
 			IFNULL(MAX(TRY_SEQ), 0) AS trySeq
 		FROM XBT_STU_EVALUATION_PROGRESSING
@@ -34,6 +34,7 @@
 		PROC_YEAR, 
 		PROC_SEQ,
 		TRY_SEQ, 
+		STUDY_LVL,
 		USER_ID,
 		BAG_SCAN_ID, 
 		ACTION_DIV, 
@@ -44,6 +45,7 @@
 			#{procYear},
 			#{procSeq},
 			#{trySeq},
+			#{studyLvl},
 			#{userId},
 			BAG_SCAN_ID ,
 			ACTION_DIV ,
@@ -88,7 +90,8 @@
 	
 	<!-- 평가정답확인 -->
 	<select id="selectEvaluationAnswer" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
-		SELECT ACTION_DIV = #{userActionDiv} as answer 
+		SELECT 
+			MAX(ACTION_DIV = #{userActionDiv}) as answer  
 		FROM XBT_STU_EVALUATION_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 
@@ -160,7 +163,7 @@
 		AND END_YN = 'N'
 	</select>	
 	
-	<!-- 학습종료 틀린갯수 맞은갯수 확인 -->
+	<!-- 평가종료 틀린갯수 맞은갯수 확인 -->
 	<select id="selectEvaluationResultCount" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT
 			COUNT(*)AS questionCnt,
@@ -177,6 +180,16 @@
 		AND USER_ID = #{userId}
 	</select>			
 	
+	<!-- 평가종료 결과데이터 확인-->
+	<select id="selectEvaluationBaselineResultCount" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="int">	
+		SELECT COUNT(*) 
+		FROM XBT_BASELINE_EVALUATION
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}	
+	</select>	
 	
 	<!-- 평가정답선택-->
 	<update id="updateEvaluationResult" parameterType="egovframework.com.stu.learning.vo.Learning">	

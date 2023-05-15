@@ -65,9 +65,9 @@
 				T1.MENU_LEVEL,
 				T1.USE_YN,
 				T1.MENU_ORDER,
-				(SELECT MODULE_ID FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T2.MENU_CD) AS MODULE_ID,
-				(SELECT MODULE_TYPE FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T2.MENU_CD) AS MODULE_TYPE,
-				(SELECT EDU_TYPE FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T2.MENU_CD) AS EDU_TYPE	
+				(SELECT MAX(MODULE_ID) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T2.MENU_CD) AS MODULE_ID,
+				(SELECT MAX(MODULE_TYPE) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T2.MENU_CD) AS MODULE_TYPE,
+				(SELECT MAX(EDU_TYPE) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T2.MENU_CD) AS EDU_TYPE						
 		FROM XBT_STU_MENU_MASTER T1 INNER JOIN XBT_STU_MENU_DETAIL T2
 		on T1.MENU_NO = T2.MENU_CD
 		where T2.LANGUAGE_CODE =  #{languageCode}
@@ -80,4 +80,22 @@
 
 	
 
+	<!-- 교육정보통계타이틀 -->
+	<select id="selectStatisticsTitleList" parameterType="egovframework.com.stu.main.vo.Statistics" resultType="egovframework.com.stu.main.vo.Statistics">
+		SELECT 
+			PROC_YEAR , PROC_SEQ , STUDY_LVL 
+		FROM XBT_BASELINE_LEARNING
+		WHERE USER_ID = #{userId}
+		GROUP BY MODULE_ID, PROC_CD , PROC_YEAR , PROC_SEQ, STUDY_LVL  
+	</select>
+
+	<!-- 교육정보통계데이터 -->
+	<select id="selectStatisticsContensList" parameterType="egovframework.com.stu.main.vo.Statistics" resultType="egovframework.com.stu.main.vo.Statistics">
+		SELECT 
+			PROC_YEAR , PROC_SEQ , STUDY_LVL , TRY_SEQ ,SUM(GAIN_SCORE) AS GAINSCORE
+		FROM XBT_BASELINE_LEARNING
+		WHERE USER_ID = #{userId}
+		GROUP BY MODULE_ID, PROC_CD , PROC_YEAR , PROC_SEQ, TRY_SEQ 
+		ORDER BY STUDY_LVL 	
+	</select>	
 </mapper>

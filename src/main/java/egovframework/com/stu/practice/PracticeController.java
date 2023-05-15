@@ -120,14 +120,14 @@ public class PracticeController {
     
     
     /**
-     * 담품정보목록조회
+     * 물품연습 담품정보목록조회
      * 
      * @param param
      * @return Company
      */
 	@ResponseBody
     @RequestMapping(value = {"/selectUnitList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
-    @ApiOperation(value = "담품정보목록조회", notes = "담품정보목록조회")
+    @ApiOperation(value = "물품연습 담품정보목록조회", notes = "물품연습 담품정보목록조회")
     public BaseResponse<List<Practice>> selectUnitList(HttpServletRequest request
     		, @RequestBody Practice params) {
     	Login login = loginService.getLoginInfo(request);
@@ -169,8 +169,8 @@ public class PracticeController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getUnitScanId())){				
-			return new BaseResponse<Practice>(BaseResponseCode.PARAMS_ERROR, "UnitScanId" + BaseApiMessage.REQUIRED.getMessage());
+		if(StringUtils.isEmpty(params.getUnitId())){				
+			return new BaseResponse<Practice>(BaseResponseCode.PARAMS_ERROR, "UnitId" + BaseApiMessage.REQUIRED.getMessage());
 		}		
 		
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
@@ -186,40 +186,7 @@ public class PracticeController {
         }
     }   	
 
-	
-    
-    /**
-     * 물품연습 이미지목록조회
-     * 
-     * @param param
-     * @return Company
-     */
-	@ResponseBody
-    @RequestMapping(value = {"/selectPracticeImgList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
-    @ApiOperation(value = "물품연습 이미지목록조회", notes = "물품연습 이미지목록조회")
-    public BaseResponse<Practice> selectPracticeImgList(HttpServletRequest request
-    		, @RequestBody Practice params) {
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
-		}
-		
-		if(StringUtils.isEmpty(params.getUnitScanId())){				
-			return new BaseResponse<Practice>(BaseResponseCode.PARAMS_ERROR, "UnitScanId" + BaseApiMessage.REQUIRED.getMessage());
-		}		
-		
-		if(StringUtils.isEmpty(params.getLanguageCode())){				
-			return new BaseResponse<Practice>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
-		}	
-		
-		try {
-			Practice result = practiceService.selectUnit(params);
-	        return new BaseResponse<Practice>(result);
-        } catch (Exception e) {
-        	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
-        }
-    }   	
+  	
 	
             
     	    

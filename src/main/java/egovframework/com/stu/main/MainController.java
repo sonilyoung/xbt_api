@@ -1,9 +1,7 @@
 
 package egovframework.com.stu.main;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,14 +19,13 @@ import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.system.service.SystemService;
 import egovframework.com.adm.system.vo.Notice;
 import egovframework.com.global.OfficeMessageSource;
-import egovframework.com.global.annotation.SkipAuth;
-import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.stu.main.service.MainService;
 import egovframework.com.stu.main.vo.Schedule;
+import egovframework.com.stu.main.vo.Statistics;
 import egovframework.com.stu.main.vo.UserStInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -186,5 +183,44 @@ public class MainController {
         }
     }   
 	    
+    
+	/**
+     * 통계조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectStatisticsList.do")
+    @ApiOperation(value = "통계조회", notes = "통계조회.")
+    public BaseResponse<Statistics> selectStatisticsList(HttpServletRequest request, @RequestBody Statistics params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<Statistics>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		if(StringUtils.isEmpty(params.getType())){				
+			return new BaseResponse<Statistics>(BaseResponseCode.PARAMS_ERROR, "Type" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		try {
+			//일정조회
+			params.setUserId(login.getUserId());
+			
+			List<Statistics> titleList = mainService.selectStatisticsTitleList(params);
+			List<Statistics> dataList = mainService.selectStatisticsContensList(params);
+			
+			Statistics result = new Statistics();
+			result.setTitleList(titleList);
+			result.setDataList(dataList);
+	        return new BaseResponse<Statistics>(result);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }       
            
 }

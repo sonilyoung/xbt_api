@@ -4,6 +4,7 @@ import java.util.List;
 
 import egovframework.com.adm.userMgr.vo.UserInfo;
 import egovframework.com.stu.main.vo.Schedule;
+import egovframework.com.stu.main.vo.Statistics;
 import egovframework.com.stu.main.vo.UserStInfo;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -20,5 +21,13 @@ public class MainDAO extends EgovAbstractMapper{
 	
 	public List<?> selectScheduleList(Schedule params) {
 		return (List<?>)selectList(Namespace + ".selectScheduleList", params);
+	}			
+	
+	public List<?> selectStatisticsTitleList(Statistics params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsTitleList", params);
+	}
+	
+	public List<?> selectStatisticsContensList(Statistics params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsContensList", params);
 	}			
 }
