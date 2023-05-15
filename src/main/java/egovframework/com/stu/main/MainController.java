@@ -1,6 +1,7 @@
 
 package egovframework.com.stu.main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -213,10 +214,67 @@ public class MainController {
 			List<Statistics> titleList = mainService.selectStatisticsTitleList(params);
 			List<Statistics> dataList = mainService.selectStatisticsContensList(params);
 			
-			Statistics result = new Statistics();
-			result.setTitleList(titleList);
-			result.setDataList(dataList);
-	        return new BaseResponse<Statistics>(result);
+			if(titleList!=null) {
+				String [] categorys = new String[titleList.size()];
+				int i = 0;
+				for(Statistics s : titleList) {
+					categorys[i] = s.getProcYear() + " level" + String.valueOf(s.getStudyLvl()) + " "+s.getTrySeq(); 
+					i++;
+				}
+				params.setCategories(categorys);
+			}
+			
+			if(dataList!=null) {
+				List<Integer> level1 = new ArrayList<Integer>();
+				List<Integer> level2 = new ArrayList<Integer>();
+				List<Integer>level3 = new ArrayList<Integer>();
+				List<Integer>level4 = new ArrayList<Integer>();
+				List<Integer>level5 = new ArrayList<Integer>();
+				
+				int i = 0;
+				for(Statistics s : dataList) {
+					if(s.getStudyLvl()==1) {
+						level1.add(s.getGainScore()); 
+						level2.add(0);
+						level3.add(0);
+						level4.add(0);
+						level5.add(0);
+					}else if(s.getStudyLvl()==2){
+						level2.add(s.getGainScore()); 
+						level1.add(0);
+						level3.add(0);
+						level4.add(0);
+						level5.add(0);
+					}else if(s.getStudyLvl()==3){
+						level3.add(s.getGainScore()); 
+						level1.add(0);
+						level2.add(0);
+						level4.add(0);
+						level5.add(0);
+					}else if(s.getStudyLvl()==4){
+						level4.add(s.getGainScore()); 
+						level1.add(0);
+						level2.add(0);
+						level3.add(0);
+						level5.add(0);
+					}else if(s.getStudyLvl()==5){
+						level5.add(s.getGainScore()); 
+						level1.add(0);
+						level2.add(0);
+						level3.add(0);
+						level4.add(0);
+					}
+					
+					i++;
+				}
+				params.setLevel1(level1);				
+				params.setLevel2(level2);				
+				params.setLevel3(level3);				
+				params.setLevel4(level4);				
+				params.setLevel5(level5);				
+			}
+						
+	        return new BaseResponse<Statistics>(params);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());

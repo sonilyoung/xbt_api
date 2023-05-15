@@ -25,7 +25,11 @@ public class Statistics {
 	private String type;
 	private String languageCode;
 
-	List<Statistics> titleList;
-	List<Statistics> dataList;
+	private String[] categories;	
+	private List<Integer> level1;
+	private List<Integer> level2;
+	private List<Integer> level3;
+	private List<Integer> level4;
+	private List<Integer> level5;
 
 }

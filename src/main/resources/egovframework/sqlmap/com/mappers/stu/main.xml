@@ -83,10 +83,11 @@
 	<!-- 교육정보통계타이틀 -->
 	<select id="selectStatisticsTitleList" parameterType="egovframework.com.stu.main.vo.Statistics" resultType="egovframework.com.stu.main.vo.Statistics">
 		SELECT 
-			PROC_YEAR , PROC_SEQ , STUDY_LVL 
+			PROC_YEAR , PROC_SEQ , STUDY_LVL ,TRY_SEQ
 		FROM XBT_BASELINE_LEARNING
 		WHERE USER_ID = #{userId}
-		GROUP BY MODULE_ID, PROC_CD , PROC_YEAR , PROC_SEQ, STUDY_LVL  
+		GROUP BY MODULE_ID, PROC_CD , PROC_YEAR , PROC_SEQ, STUDY_LVL,TRY_SEQ
+		order by STUDY_LVL , TRY_SEQ 
 	</select>
 
 	<!-- 교육정보통계데이터 -->
@@ -96,6 +97,6 @@
 		FROM XBT_BASELINE_LEARNING
 		WHERE USER_ID = #{userId}
 		GROUP BY MODULE_ID, PROC_CD , PROC_YEAR , PROC_SEQ, TRY_SEQ 
-		ORDER BY STUDY_LVL 	
+		ORDER BY STUDY_LVL, TRY_SEQ
 	</select>	
 </mapper>
