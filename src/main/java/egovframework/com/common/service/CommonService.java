@@ -47,4 +47,6 @@ public interface CommonService {
 	
 	public int deleteLanguageApply(Common params);
 	
+	public int updateLanguageApply(Common params);
+	
 }

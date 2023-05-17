@@ -131,7 +131,7 @@
 	
 	<!-- API 공통메세지 가져오기 -->
 	<select id="selectLanguageApplyList" parameterType="egovframework.com.common.vo.Common" resultType="egovframework.com.common.vo.Common">
-		SELECT GROUP_ID ,CODE_NAME, CODE_VALUE, CODE_DESC ,USE_YN, LANGUAGE_CODE
+		SELECT CODE_NO, GROUP_ID ,CODE_NAME, CODE_VALUE, CODE_DESC ,USE_YN, LANGUAGE_CODE, SORT_ORDER
 		FROM XBT_SYSTEM_CODE
 		WHERE
 		LANGUAGE_CODE= #{languageCode}
@@ -146,11 +146,11 @@
 	
 	<!-- API 공통메세지 가져오기 -->
 	<select id="selectLanguageApply" parameterType="egovframework.com.common.vo.Common" resultType="egovframework.com.common.vo.Common">
-		SELECT GROUP_ID ,CODE_NAME, CODE_VALUE, CODE_DESC , USE_YN, LANGUAGE_CODE
+		SELECT CODE_NO, GROUP_ID ,CODE_NAME, CODE_VALUE, CODE_DESC , USE_YN, LANGUAGE_CODE, SORT_ORDER
 		FROM XBT_SYSTEM_CODE
 		WHERE
 		GROUP_ID = #{groupId} 
-		AND CODE_ID = #{codeId}
+		AND CODE_NAME = #{codeName} 
 		AND LANGUAGE_CODE= #{languageCode}
 		AND USE_YN  = 'Y'	
 	</select>		
@@ -181,6 +181,21 @@
 			,#{codeDesc}
 		)	
 	</insert>	
+	
+	<!-- 공통코드 수정 -->
+	<update id="updateLanguageApply" parameterType="egovframework.com.common.vo.Common">	
+		UPDATE 
+			XBT_SYSTEM_CODE
+		SET 
+			LANGUAGE_CODE = #{languageCode}	
+			,GROUP_ID	= #{groupId}	
+			,CODE_DESC	= #{codeDesc}	
+			,CODE_NAME	= #{codeName}	
+			,SORT_ORDER	= #{sortOrder}	
+			,UPDATE_ID	= #{updateId}	
+			,UPDATE_DATE	= now()	
+		WHERE CODE_NO = #{codeNo}	
+	</update>	
 	
 	<!-- API 공통메세지 삭제-->
 	<delete id="deleteLanguageApply" parameterType="egovframework.com.common.vo.Common">

@@ -93,10 +93,12 @@ public class CommonController {
 			if(result!=null) {
 				for(Common c : result) {
 					HashMap<String, Object> languageApply = new HashMap<String, Object>();
+					languageApply.put("codeNo", c.getCodeNo());//구분
 					languageApply.put("codeDesc", c.getCodeDesc());//구분
 					languageApply.put("groupId", c.getGroupId());//구분코드
 					languageApply.put("codeName", c.getCodeName());//메세지코드
 					languageApply.put(c.getCodeName(), c.getCodeValue());//메세지
+					languageApply.put("sortOrder", c.getSortOrder());//메세지
 					resultMessage.add(languageApply);
 				}
 			}
@@ -122,9 +124,13 @@ public class CommonController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getCodeId())){				
-			return new BaseResponse<HashMap<String, Object>>(BaseResponseCode.PARAMS_ERROR, "CodeId" + BaseApiMessage.REQUIRED.getCode());
-		}				
+		if(StringUtils.isEmpty(params.getGroupId())){				
+			return new BaseResponse<HashMap<String, Object>>(BaseResponseCode.PARAMS_ERROR, "GroupId" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getCodeName())){				
+			return new BaseResponse<HashMap<String, Object>>(BaseResponseCode.PARAMS_ERROR, "CodeName" + BaseApiMessage.REQUIRED.getCode());
+		}			
 		
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
 			return new BaseResponse<HashMap<String, Object>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
@@ -132,9 +138,17 @@ public class CommonController {
 		
 		try {
 			//다국어처리조회
+			Common result = commonService.selectLanguageApply(params);
 			HashMap<String, Object> languageApply = new HashMap<String, Object>();
-			languageApply.put("massgetest", "test");
-	        return new BaseResponse<HashMap<String, Object>>(languageApply);
+			if(result!=null) {
+				languageApply.put("codeNo", result.getCodeNo());//구분
+				languageApply.put("codeDesc", result.getCodeDesc());//구분
+				languageApply.put("groupId", result.getGroupId());//구분코드
+				languageApply.put("codeName", result.getCodeName());//메세지코드
+				languageApply.put("codeValue", result.getCodeValue());//메세지
+				languageApply.put("sortOrder", result.getSortOrder());//메세지
+			}
+			return new BaseResponse<HashMap<String, Object>>(languageApply);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
@@ -191,7 +205,60 @@ public class CommonController {
         }
     }    
     
-
+    /**
+     * 다국어처리등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/updateLanguageApply.do")
+    @ApiOperation(value = "다국어처리", notes = "다국어처리수정.")
+    public BaseResponse<Integer> updateLanguageApply(HttpServletRequest request, @RequestBody Common params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		
+		if(StringUtils.isEmpty(params.getCodeNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeNo" + BaseApiMessage.REQUIRED.getMessage());
+		}			
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		if(StringUtils.isEmpty(params.getGroupId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "GroupId" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getCodeName())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeName" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		if(StringUtils.isEmpty(params.getCodeValue())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeValue" + BaseApiMessage.REQUIRED.getMessage());
+		}
+		if(StringUtils.isEmpty(params.getSortOrder())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "SortOrder" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		
+		try {
+			//다국어처리등록
+			params.setInsertId(login.getUserId());
+			int result = commonService.updateLanguageApply(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
     
     /**
      * 다국어처리삭제

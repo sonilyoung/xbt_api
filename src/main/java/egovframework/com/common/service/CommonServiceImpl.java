@@ -120,6 +120,10 @@ public class CommonServiceImpl implements CommonService {
 		return commonDAO.deleteLanguageApply(params);
 	}
 
-
+	@Override
+	public int updateLanguageApply(Common params) {
+		// TODO Auto-generated method stub
+		return commonDAO.updateLanguageApply(params);
+	}
 
 }
