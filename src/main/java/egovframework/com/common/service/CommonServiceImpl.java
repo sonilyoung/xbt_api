@@ -1,22 +1,16 @@
 package egovframework.com.common.service;
 
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import egovframework.com.adm.contents.dao.ContentsDAO;
-import egovframework.com.adm.contents.vo.Contents;
-import egovframework.com.adm.contents.vo.ContentsMgr;
-import egovframework.com.adm.contents.vo.Language;
 import egovframework.com.common.dao.CommonDAO;
 import egovframework.com.common.vo.Common;
 import egovframework.com.common.vo.CommonSystemMessage;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -100,6 +94,30 @@ public class CommonServiceImpl implements CommonService {
 	public CommonSystemMessage selectSystemMessage(CommonSystemMessage params) {
 		// TODO Auto-generated method stub
 		return commonDAO.selectSystemMessage(params);
+	}
+
+	@Override
+	public List<Common> selectLanguageApplyList(Common params) {
+		// TODO Auto-generated method stub
+		return (List<Common>) commonDAO.selectLanguageApplyList(params);
+	}
+
+	@Override
+	public Common selectLanguageApply(Common params) {
+		// TODO Auto-generated method stub
+		return commonDAO.selectLanguageApply(params);
+	}
+
+	@Override
+	public int insertLanguageApply(Common params) {
+		// TODO Auto-generated method stub
+		return commonDAO.insertLanguageApply(params);
+	}
+
+	@Override
+	public int deleteLanguageApply(Common params) {
+		// TODO Auto-generated method stub
+		return commonDAO.deleteLanguageApply(params);
 	}
 
 

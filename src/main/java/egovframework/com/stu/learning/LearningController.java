@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
+import egovframework.com.common.service.XbtImageService;
+import egovframework.com.common.vo.LearningImg;
+import egovframework.com.common.vo.LearningMainImg;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
@@ -23,8 +26,6 @@ import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.stu.learning.service.LearningService;
 import egovframework.com.stu.learning.vo.Learning;
-import egovframework.com.stu.learning.vo.LearningImg;
-import egovframework.com.stu.learning.vo.LearningMainImg;
 import egovframework.com.stu.learning.vo.LearningProblem;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -52,6 +53,9 @@ public class LearningController {
     
     @Autowired
     private LearningService learningService;
+    
+    @Autowired
+    private XbtImageService xbtImageService;        
     
     
     /**
@@ -129,7 +133,7 @@ public class LearningController {
 			}			
 			
 
-			List<LearningProblem> result = learningService.selectLeaningImgList(resultList); 
+			List<LearningProblem> result = xbtImageService.selectLeaningImgList(resultList); 
 			moduleInfoData.setLearningProblemList(result);
 			return new BaseResponse<Learning>(moduleInfoData);
         } catch (Exception e) {
@@ -256,7 +260,7 @@ public class LearningController {
 			}	
 
 
-			List<LearningProblem> result = learningService.selectLeaningImgList(problems); 
+			List<LearningProblem> result = xbtImageService.selectLeaningImgList(problems); 
 			return new BaseResponse<List<LearningProblem>>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
@@ -283,7 +287,7 @@ public class LearningController {
 		}
 		
 		try {
-			LearningMainImg result = learningService.selectCommonLearningImg(params); 
+			LearningMainImg result = xbtImageService.selectCommonLearningImg(params); 
 			return new BaseResponse<LearningMainImg>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
@@ -314,7 +318,7 @@ public class LearningController {
 		}		
 		
 		try {
-			LearningImg result = learningService.selectLeaningImg(params); 
+			LearningImg result = xbtImageService.selectLeaningImg(params); 
 			return new BaseResponse<LearningImg>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
@@ -342,7 +346,7 @@ public class LearningController {
 		}
 		
 		try {
-			LearningMainImg result = learningService.selectCommonPracticeImg(params); 
+			LearningMainImg result = xbtImageService.selectCommonPracticeImg(params); 
 			return new BaseResponse<LearningMainImg>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
@@ -375,7 +379,7 @@ public class LearningController {
 		}		
 		
 		try {
-			LearningImg result = learningService.selectPracticeImg(params); 
+			LearningImg result = xbtImageService.selectPracticeImg(params); 
 			return new BaseResponse<LearningImg>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
@@ -408,7 +412,7 @@ public class LearningController {
 		}		
 		
 		try {
-			LearningImg result = learningService.selectLeaningImg(params); 
+			LearningImg result = xbtImageService.selectLeaningImg(params); 
 			return new BaseResponse<LearningImg>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
@@ -796,7 +800,7 @@ public class LearningController {
 			}			
 			
 
-			List<LearningProblem> result = learningService.selectLeaningImgList(resultList); 
+			List<LearningProblem> result = xbtImageService.selectLeaningImgList(resultList); 
 			moduleInfoData.setLearningProblemList(result);
 			return new BaseResponse<Learning>(moduleInfoData);
         } catch (Exception e) {

@@ -17,6 +17,7 @@ public class XrayContents{
 	private String openYn;
 	private String passYn;
 	private String actionDiv;                  /*action구분*/
+	private String actionDivName;                  /*action구분*/
 	private String useYn;
 	
 	private Long bagContNo;
@@ -27,6 +28,7 @@ public class XrayContents{
 	private String insertId;
 	private String updateDate;
 	private String updateId;	
+	private String languageCode;	
 	
 	private List<XrayContents> paramList;
 	

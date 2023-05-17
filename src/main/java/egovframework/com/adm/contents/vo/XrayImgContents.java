@@ -1,9 +1,8 @@
 package egovframework.com.adm.contents.vo;
 
-import java.util.List;
-
 import org.springframework.web.multipart.MultipartFile;
 
+import egovframework.com.common.vo.LearningImg;
 import lombok.Data;
 
 @Data
@@ -102,5 +101,7 @@ public class XrayImgContents{
 	private String insertId;
 	private String insertDate;
 	private String updateId;	
-	private String updateDate;	
+	private String updateDate;
+	
+	private LearningImg resultImg;
 }

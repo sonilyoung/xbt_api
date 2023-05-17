@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
+import egovframework.com.common.service.XbtImageService;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
@@ -24,7 +25,6 @@ import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.stu.evaluation.service.EvaluationService;
 import egovframework.com.stu.learning.service.LearningService;
 import egovframework.com.stu.learning.vo.Learning;
-import egovframework.com.stu.learning.vo.LearningImg;
 import egovframework.com.stu.learning.vo.LearningProblem;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -56,6 +56,9 @@ public class EvaluationController {
     
     @Autowired
     private EvaluationService evaluationService;
+    
+    @Autowired
+    private XbtImageService xbtImageService;        
     
     
     /**
@@ -133,7 +136,7 @@ public class EvaluationController {
 			if(resultList == null) {
 				return new BaseResponse<Learning>(BaseResponseCode.DATA_IS_NULL_EVALPROBLEMS, BaseResponseCode.DATA_IS_NULL_EVALPROBLEMS.getMessage());
 			}					
-			List<LearningProblem> result = learningService.selectLeaningImgList(resultList);
+			List<LearningProblem> result = xbtImageService.selectLeaningImgList(resultList);
 			moduleInfoData.setLearningProblemList(result);
 			return new BaseResponse<Learning>(moduleInfoData);
         } catch (Exception e) {

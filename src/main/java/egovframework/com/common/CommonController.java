@@ -1,6 +1,7 @@
 
 package egovframework.com.common;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -72,17 +73,57 @@ public class CommonController {
      * @param param
      * @return Company
      */
-    @PostMapping("/selectLanguageApply.do")
+    @PostMapping("/selectLanguageApplyList.do")
     @ApiOperation(value = "화면ui다국어처리", notes = "화면ui다국어처리")
     @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public BaseResponse<List<HashMap<String, Object>>> selectLanguageApplyList(HttpServletRequest request, @RequestBody Common params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<List<HashMap<String, Object>>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			//다국어처리조회
+			List<Common> result = commonService.selectLanguageApplyList(params);
+			List<HashMap<String, Object>> resultMessage = new ArrayList<HashMap<String, Object>>(); 
+			if(result!=null) {
+				for(Common c : result) {
+					HashMap<String, Object> languageApply = new HashMap<String, Object>();
+					languageApply.put("codeDesc", c.getCodeDesc());//구분
+					languageApply.put("groupId", c.getGroupId());//구분코드
+					languageApply.put("codeName", c.getCodeName());//메세지코드
+					languageApply.put(c.getCodeName(), c.getCodeValue());//메세지
+					resultMessage.add(languageApply);
+				}
+			}
+	        return new BaseResponse<List<HashMap<String, Object>>>(resultMessage);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }        
+    
+    
+    /**
+     * 화면ui다국어처리상세
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectLanguageApply.do")
+    @ApiOperation(value = "다국어처리상세", notes = "다국어처리상세")
     public BaseResponse<HashMap<String, Object>> selectLanguageApply(HttpServletRequest request, @RequestBody Common params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getGroupId())){				
-			return new BaseResponse<HashMap<String, Object>>(BaseResponseCode.PARAMS_ERROR, "GroupId" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getCodeId())){				
+			return new BaseResponse<HashMap<String, Object>>(BaseResponseCode.PARAMS_ERROR, "CodeId" + BaseApiMessage.REQUIRED.getCode());
 		}				
 		
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
@@ -98,7 +139,96 @@ public class CommonController {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
-    }        
+    }       
+    
+    
+    /**
+     * 다국어처리등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertLanguageApply.do")
+    @ApiOperation(value = "다국어처리", notes = "다국어처리등록.")
+    public BaseResponse<Integer> insertLanguageApply(HttpServletRequest request, @RequestBody Common params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		if(StringUtils.isEmpty(params.getGroupId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "GroupId" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		if(StringUtils.isEmpty(params.getCodeName())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeName" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		if(StringUtils.isEmpty(params.getCodeValue())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeValue" + BaseApiMessage.REQUIRED.getMessage());
+		}
+		if(StringUtils.isEmpty(params.getSortOrder())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "SortOrder" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		
+		try {
+			//다국어처리등록
+			params.setInsertId(login.getUserId());
+			int result = commonService.insertLanguageApply(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+
+    
+    /**
+     * 다국어처리삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteLanguageApply.do")
+    @ApiOperation(value = "다국어처리", notes = "다국어처리삭제.")
+    public BaseResponse<Integer> deleteLanguageApply(HttpServletRequest request, @RequestBody Common params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		if(StringUtils.isEmpty(params.getCodeNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeNo" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		try {
+			//다국어처리등록
+			int result = commonService.deleteLanguageApply(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }          
         
     
     /**

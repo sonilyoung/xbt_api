@@ -5,7 +5,7 @@
 	
 	<!-- 단건 엠폴시스템 이미지 저장 및 업데이트-->
 	<update id="saveEmpUnitImage" parameterType="egovframework.com.api.edc.vo.UnitImages" >
-		INSERT INTO xbt_UNIT_IMG_INFO				
+		INSERT INTO XBT_UNIT_IMG_INFO				
 			SET UNIT_SCAN_ID    	= #{unitScanId} 		                //물품촬영id
 				,UNIT_ID			= #{unitId}		                    //물품id
 				,IMG_TYPE			= #{imgType}		                    //이미지유형

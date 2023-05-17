@@ -1,14 +1,12 @@
 package egovframework.com.common.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
-import egovframework.com.adm.contents.vo.Contents;
-import egovframework.com.adm.contents.vo.Language;
 import egovframework.com.common.vo.Common;
 import egovframework.com.common.vo.CommonSystemMessage;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Mapper("CommonDAO")
 public class CommonDAO extends EgovAbstractMapper{
@@ -47,6 +45,25 @@ public class CommonDAO extends EgovAbstractMapper{
 		// TODO Auto-generated method stub
 		return selectOne(Namespace + ".selectSystemMessage", params);
 	}	
+	
+	public List<?> selectLanguageApplyList(Common params) {
+		return (List<?>)selectList(Namespace + ".selectLanguageApplyList", params);
+	}
+	
+	public Common selectLanguageApply(Common params) {
+		return selectOne(Namespace + ".selectLanguageApply", params);
+	}	
+	
+	public int insertLanguageApply(Common params) {
+		return insert(Namespace + ".insertLanguageApply", params);
+	}
+		
+	public int deleteLanguageApply(Common params) {
+		return delete(Namespace + ".deleteLanguageApply", params);
+	}	
+	
+	
+	
 	
 	
 

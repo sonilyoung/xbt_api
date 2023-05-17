@@ -1,20 +1,8 @@
 package egovframework.com.stu.learning.service;
 
-import java.io.IOException;
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import egovframework.com.adm.contents.vo.Language;
-import egovframework.com.adm.contents.vo.UnitGroup;
-import egovframework.com.adm.contents.vo.UnitImg;
-import egovframework.com.adm.contents.vo.UnitInformation;
-import egovframework.com.adm.contents.vo.XbtSeq;
-import egovframework.com.adm.contents.vo.XrayContents;
-import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.stu.learning.vo.Learning;
-import egovframework.com.stu.learning.vo.LearningImg;
-import egovframework.com.stu.learning.vo.LearningMainImg;
 import egovframework.com.stu.learning.vo.LearningProblem;
 
 /**
@@ -55,18 +43,6 @@ public interface LearningService {
 	public List<LearningProblem> selectLearnProblemsResultList(LearningProblem params);
 	
 	public List<LearningProblem> selectLearnProblemsResult(LearningProblem params);
-	
-	public List<LearningProblem> selectLeaningImgList(List<LearningProblem> params);
-	
-	public LearningImg selectLeaningImg(LearningImg params);
-	
-	public LearningMainImg selectCommonLearningImg(LearningImg params);
-	
-	public LearningMainImg selectCommonPracticeImg(LearningImg params);
-	
-	public LearningImg selectPracticeImg(LearningImg params);
-	
-	public LearningImg selectThreedAngle(LearningImg params);
 	
 	public Learning selectLearnAnswer(Learning params);
 	

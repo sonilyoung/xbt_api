@@ -28,6 +28,8 @@ import egovframework.com.stu.main.service.MainService;
 import egovframework.com.stu.main.vo.Schedule;
 import egovframework.com.stu.main.vo.Statistics;
 import egovframework.com.stu.main.vo.UserStInfo;
+import egovframework.com.stu.practice.service.PracticeService;
+import egovframework.com.stu.practice.vo.UnitGroup;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -57,6 +59,9 @@ public class MainController {
     
     @Autowired
     private MainService mainService; 
+    
+    @Autowired
+    private PracticeService practiceService;      
     
     /**
      * 사용자정보조회
@@ -211,69 +216,139 @@ public class MainController {
 			//일정조회
 			params.setUserId(login.getUserId());
 			
-			List<Statistics> titleList = mainService.selectStatisticsTitleList(params);
-			List<Statistics> dataList = mainService.selectStatisticsContensList(params);
-			
-			if(titleList!=null) {
-				String [] categorys = new String[titleList.size()];
-				int i = 0;
-				for(Statistics s : titleList) {
-					categorys[i] = s.getProcYear() + " level" + String.valueOf(s.getStudyLvl()) + " "+s.getTrySeq(); 
-					i++;
-				}
-				params.setCategories(categorys);
-			}
-			
-			if(dataList!=null) {
-				List<Integer> level1 = new ArrayList<Integer>();
-				List<Integer> level2 = new ArrayList<Integer>();
-				List<Integer>level3 = new ArrayList<Integer>();
-				List<Integer>level4 = new ArrayList<Integer>();
-				List<Integer>level5 = new ArrayList<Integer>();
+			if("1".equals(params.getType())){//학습점수조회
+				List<Statistics> titleList = mainService.selectStatisticsTitleList(params);
+				List<Statistics> dataList = mainService.selectStatisticsContensList(params);
 				
-				int i = 0;
-				for(Statistics s : dataList) {
-					if(s.getStudyLvl()==1) {
-						level1.add(s.getGainScore()); 
-						level2.add(0);
-						level3.add(0);
-						level4.add(0);
-						level5.add(0);
-					}else if(s.getStudyLvl()==2){
-						level2.add(s.getGainScore()); 
-						level1.add(0);
-						level3.add(0);
-						level4.add(0);
-						level5.add(0);
-					}else if(s.getStudyLvl()==3){
-						level3.add(s.getGainScore()); 
-						level1.add(0);
-						level2.add(0);
-						level4.add(0);
-						level5.add(0);
-					}else if(s.getStudyLvl()==4){
-						level4.add(s.getGainScore()); 
-						level1.add(0);
-						level2.add(0);
-						level3.add(0);
-						level5.add(0);
-					}else if(s.getStudyLvl()==5){
-						level5.add(s.getGainScore()); 
-						level1.add(0);
-						level2.add(0);
-						level3.add(0);
-						level4.add(0);
+				if(titleList!=null) {
+					String [] categorys = new String[titleList.size()];
+					int i = 0;
+					for(Statistics s : titleList) {
+						categorys[i] = s.getProcYear() + " level" + String.valueOf(s.getStudyLvl()) + " "+s.getTrySeq(); 
+						i++;
 					}
+					params.setCategories(categorys);
+				}
+				
+				if(dataList!=null) {
+					List<Integer> level1 = new ArrayList<Integer>();
+					List<Integer> level2 = new ArrayList<Integer>();
+					List<Integer>level3 = new ArrayList<Integer>();
+					List<Integer>level4 = new ArrayList<Integer>();
+					List<Integer>level5 = new ArrayList<Integer>();
 					
+					int i = 0;
+					for(Statistics s : dataList) {
+						if(s.getStudyLvl()==1) {
+							level1.add(s.getGainScore()); 
+							level2.add(0);
+							level3.add(0);
+							level4.add(0);
+							level5.add(0);
+						}else if(s.getStudyLvl()==2){
+							level2.add(s.getGainScore()); 
+							level1.add(0);
+							level3.add(0);
+							level4.add(0);
+							level5.add(0);
+						}else if(s.getStudyLvl()==3){
+							level3.add(s.getGainScore()); 
+							level1.add(0);
+							level2.add(0);
+							level4.add(0);
+							level5.add(0);
+						}else if(s.getStudyLvl()==4){
+							level4.add(s.getGainScore()); 
+							level1.add(0);
+							level2.add(0);
+							level3.add(0);
+							level5.add(0);
+						}else if(s.getStudyLvl()==5){
+							level5.add(s.getGainScore()); 
+							level1.add(0);
+							level2.add(0);
+							level3.add(0);
+							level4.add(0);
+						}
+						i++;
+					}
+					params.setLevel1(level1);				
+					params.setLevel2(level2);				
+					params.setLevel3(level3);				
+					params.setLevel4(level4);				
+					params.setLevel5(level5);				
+				}				
+			}else if("2".equals(params.getType())) {//교육평가조회
+				List<Statistics> titleList = mainService.selectStatisticsTitleList(params);
+				params.setEduEvaluationList(titleList);
+			}else {//오답조회
+				List<Statistics> dataList = mainService.selectStatisticsWrongAnswerContentsList(params);
+				
+				//총건수
+				List<Integer>totalCnt = new ArrayList<Integer>();				
+				//평균
+				List<Integer> averageCnt = new ArrayList<Integer>();
+				//오답
+				List<Integer> wrongAnswerCnt = new ArrayList<Integer>();
+				
+			
+				//총건수
+				totalCnt.add(dataList.get(0).getFirearms());
+				totalCnt.add(dataList.get(0).getExplosives());
+				totalCnt.add(dataList.get(0).getAmmunitions());
+				totalCnt.add(dataList.get(0).getKnife());
+				totalCnt.add(dataList.get(0).getGeneralWeapons());
+				totalCnt.add(dataList.get(0).getGastrointestinalWeapons());
+				totalCnt.add(dataList.get(0).getToolssuppliesCategory());
+				totalCnt.add(dataList.get(0).getFlammableSubstances());
+				totalCnt.add(dataList.get(0).getDangerSubstance());
+				totalCnt.add(dataList.get(0).getLiquid());
+				totalCnt.add(dataList.get(0).getPass());
+				
+				//평균
+				averageCnt.add(dataList.get(1).getFirearms());
+				averageCnt.add(dataList.get(1).getExplosives());
+				averageCnt.add(dataList.get(1).getAmmunitions());
+				averageCnt.add(dataList.get(1).getKnife());
+				averageCnt.add(dataList.get(1).getGeneralWeapons());
+				averageCnt.add(dataList.get(1).getGastrointestinalWeapons());
+				averageCnt.add(dataList.get(1).getToolssuppliesCategory());
+				averageCnt.add(dataList.get(1).getFlammableSubstances());
+				averageCnt.add(dataList.get(1).getDangerSubstance());
+				averageCnt.add(dataList.get(1).getLiquid());
+				averageCnt.add(dataList.get(1).getPass());				
+				
+				//개인오답
+				wrongAnswerCnt.add(dataList.get(2).getFirearms());
+				wrongAnswerCnt.add(dataList.get(2).getExplosives());
+				wrongAnswerCnt.add(dataList.get(2).getAmmunitions());
+				wrongAnswerCnt.add(dataList.get(2).getKnife());
+				wrongAnswerCnt.add(dataList.get(2).getGeneralWeapons());
+				wrongAnswerCnt.add(dataList.get(2).getGastrointestinalWeapons());
+				wrongAnswerCnt.add(dataList.get(2).getToolssuppliesCategory());
+				wrongAnswerCnt.add(dataList.get(2).getFlammableSubstances());
+				wrongAnswerCnt.add(dataList.get(2).getDangerSubstance());
+				wrongAnswerCnt.add(dataList.get(2).getLiquid());
+				wrongAnswerCnt.add(dataList.get(2).getPass());				
+					
+				params.setTotalCnt(totalCnt);
+				params.setAverageCnt(averageCnt);
+				params.setWrongAnswerCnt(wrongAnswerCnt);
+
+				//그룹관리조회
+				UnitGroup ug = new UnitGroup();
+				ug.setLanguageCode(params.getLanguageCode());
+				List<UnitGroup> groupList = practiceService.selectUnitGroupList(ug);
+				
+				String [] categorys = new String[groupList.size()];
+				int i = 0;
+				for(UnitGroup s : groupList) {
+					categorys[i] = s.getGroupName(); 
 					i++;
 				}
-				params.setLevel1(level1);				
-				params.setLevel2(level2);				
-				params.setLevel3(level3);				
-				params.setLevel4(level4);				
-				params.setLevel5(level5);				
+				params.setCategories(categorys);				
 			}
-						
+			
 	        return new BaseResponse<Statistics>(params);
         } catch (Exception e) {
         	LOGGER.error("error:", e);

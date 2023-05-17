@@ -1,4 +1,4 @@
-package egovframework.com.stu.learning.vo;
+package egovframework.com.common.vo;
 
 import java.util.List;
 

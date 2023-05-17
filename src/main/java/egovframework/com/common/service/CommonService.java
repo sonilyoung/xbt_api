@@ -1,13 +1,8 @@
 package egovframework.com.common.service;
 
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import egovframework.com.adm.contents.vo.Contents;
-import egovframework.com.adm.contents.vo.ContentsMgr;
-import egovframework.com.adm.contents.vo.Language;
 import egovframework.com.common.vo.Common;
 import egovframework.com.common.vo.CommonSystemMessage;
 
@@ -43,5 +38,13 @@ public interface CommonService {
 	public int deleteCommonCode(Common params);
 	
 	public CommonSystemMessage selectSystemMessage(CommonSystemMessage params);
+	
+	List<Common> selectLanguageApplyList(Common params);
+	
+	Common selectLanguageApply(Common params);
+	
+	public int insertLanguageApply(Common params);
+	
+	public int deleteLanguageApply(Common params);
 	
 }

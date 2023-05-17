@@ -63,6 +63,12 @@ public class MainServiceImpl implements MainService {
 		// TODO Auto-generated method stub
 		return (List<Statistics>)mainDAO.selectStatisticsContensList(params);
 	}
+	
+	@Override
+	public List<Statistics> selectStatisticsWrongAnswerContentsList(Statistics params) {
+		// TODO Auto-generated method stub
+		return (List<Statistics>)mainDAO.selectStatisticsWrongAnswerContentsList(params);
+	}
 
 
 	

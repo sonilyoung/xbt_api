@@ -105,7 +105,7 @@
 			       PARENT_UNIT_GROUP_CD,/*상위물품분류코드*/
 			       XUGI.IMG_FILE,
 			       LANGUAGE_CODE 
-			FROM XBT_UNIT_GROUP XUG LEFT JOIN XBT_UNIT_GROUP_IMG XUGI 
+			FROM XBT_UNIT_GROUP XUG INNER JOIN XBT_UNIT_GROUP_IMG XUGI 
 			ON XUG.UNIT_GROUP_CD = XUGI.UNIT_GROUP_CD
 			AND XUG.LANGUAGE_CODE = #{languageCode}
 			ORDER BY XUG.UNIT_GROUP_CD ASC
@@ -220,7 +220,7 @@
 			, UNIT_SCAN_ID 
 			, UNIT_ID /*물품아이디*/
 			, UNIT_GROUP_CD/*뭎품그룹코드*/
-			, (SELECT GROUP_NAME FROM XBT_UNIT_GRoup where UNIT_GROUP_CD = XUI.UNIT_GROUP_CD and LANGUAGE_CODE = #{languageCode}) as UNIT_GROUP_NAME /*뭎품그룹코드*/
+			, (SELECT GROUP_NAME FROM XBT_UNIT_GROUP where UNIT_GROUP_CD = XUI.UNIT_GROUP_CD and LANGUAGE_CODE = #{languageCode}) as UNIT_GROUP_NAME /*뭎품그룹코드*/
 			, UNIT_NAME /*물품명*/
 			, UNIT_DESC /*물품설명*/
 			, USE_YN/*사용여부*/
@@ -237,7 +237,7 @@
 			, UNIT_SCAN_ID 
 			, UNIT_ID /*물품아이디*/
 			, UNIT_GROUP_CD/*뭎품그룹코드*/
-			, (SELECT GROUP_NAME FROM XBT_UNIT_GRoup where UNIT_GROUP_CD = XUI.UNIT_GROUP_CD and LANGUAGE_CODE = #{languageCode}) as UNIT_GROUP_NAME /*뭎품그룹코드*/
+			, (SELECT GROUP_NAME FROM XBT_UNIT_GROUP where UNIT_GROUP_CD = XUI.UNIT_GROUP_CD and LANGUAGE_CODE = #{languageCode}) as UNIT_GROUP_NAME /*뭎품그룹코드*/
 			, UNIT_NAME /*물품명*/
 			, UNIT_DESC /*물품설명*/
 			, USE_YN/*사용여부*/
@@ -248,7 +248,7 @@
 			,(SELECT THREED_IMG FROM XBT_UNIT_IMG_INFO_MASTER WHERE XUI.UNIT_SCAN_ID = UNIT_SCAN_ID) AS THREED_IMG			
 		FROM XBT_UNIT_INFO XUI
 		WHERE XUI.LANGUAGE_CODE = #{languageCode}
-		AND UNIT_SCAN_ID = #{unitScanId}  		
+		AND UNIT_ID = #{unitId}  		
 	</select>		
 	
 	
@@ -284,17 +284,19 @@
 			T1.BAG_SCAN_NO,
 			T1.BAG_SCAN_ID,
 			T1.UNIT_ID,/*정답물품아이디*/
-			T2.UNIT_NAME,/*정답물품명*/
+			(SELECT UNIT_NAME FROM XBT_UNIT_INFO WHERE UNIT_ID = T1.UNIT_ID) as unitName,/*정답물품명*/
 			T3.OPEN_YN,/*개봉여부*/
 			T3.PASS_YN,/*통과여부*/
-			FN_CODE_NAME('0005', T3.ACTION_DIV, 'kor') AS ACTION_DIV ,/*액션구분*/
+			T3.ACTION_DIV,
+			T3.ACTION_DIV_NAME,
 			T1.STUDY_LVL, /*학습레벨*/
 			T1.USE_YN ,/*사용여부*/
 			T1.INSERT_ID, 
 			T1.INSERT_DATE 
-		FROM XBT_BAG_INFO T1 
-		LEFT JOIN XBT_UNIT_INFO T2 ON T1.UNIT_ID = T2.UNIT_ID
-		LEFT JOIN XBT_UNIT_GROUP T3 ON T2.UNIT_GROUP_CD = T3.UNIT_GROUP_CD  		 	
+		FROM XBT_BAG_INFO T1 LEFT JOIN XBT_UNIT_GROUP T3 ON
+		T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD
+		AND T3.LANGUAGE_CODE = 'kor'	
+		ORDER BY BAG_SCAN_ID ASC		  		 	
 	</select>
 	
 	
@@ -479,7 +481,7 @@
          	 , C.OPEN_YN					 /*개봉여부*/
     		 , C.PASS_YN					 /*통과여부*/
     		 , A.ANSWER_ITEM /*정답여부*/
-		FROM xbt_BAG_CONST_UNIT A INNER JOIN xbt_UNIT_INFO B INNER JOIN xbt_UNIT_GROUP C
+		FROM XBT_BAG_CONST_UNIT A INNER JOIN XBT_UNIT_INFO B INNER JOIN XBT_UNIT_GROUP C
 		ON  A.UNIT_ID=B.UNIT_ID
       	AND B.UNIT_GROUP_CD=C.UNIT_GROUP_CD                                               												 
         AND A.BAG_SCAN_ID = #{bagScanId}		
@@ -600,7 +602,7 @@
 			USE_YN=#{useYn},
 			UPDATE_ID=#{updateId},
 			UPDATE_DATE=now()
-		WHERE UNIT_SCAN_ID = #{unitScanId}
+		WHERE UNIT_ID = #{unitId}
 		AND LANGUAGE_CODE = #{languageCode}	
 	</update>		
 	
@@ -631,7 +633,7 @@
 	<!-- 그룹관리 삭제-->
 	<delete id="deleteUnit" parameterType="egovframework.com.adm.contents.vo.UnitImg">
 		DELETE FROM XBT_UNIT_INFO 
-		WHERE UNIT_SCAN_ID = #{unitScanId}
+		WHERE UNIT_ID = #{unitId}
 		AND LANGUAGE_CODE = #{languageCode}  
 	</delete>		
 	

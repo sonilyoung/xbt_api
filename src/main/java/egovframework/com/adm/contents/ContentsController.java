@@ -28,6 +28,9 @@ import egovframework.com.adm.contents.vo.XrayContents;
 import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
+import egovframework.com.common.service.XbtImageService;
+import egovframework.com.common.vo.LearningImg;
+import egovframework.com.common.vo.LearningMainImg;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
@@ -36,6 +39,7 @@ import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.global.util.ComUtils;
+import egovframework.com.stu.main.vo.Statistics;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -62,6 +66,10 @@ public class ContentsController {
     
     @Autowired
     private ContentsService contentsService;
+
+    @Autowired
+    private XbtImageService xbtImageService;
+    
     
     
     /**
@@ -513,12 +521,24 @@ public class ContentsController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
+		if(StringUtils.isEmpty(params.getUnitId())){				
+			return new BaseResponse<UnitImg>(BaseResponseCode.PARAMS_ERROR, "UnitId" + BaseApiMessage.REQUIRED.getCode());
+		}						
+		
 		if(params.getLanguageCode() == null || "".contentEquals(params.getLanguageCode())){				
 			return new BaseResponse<UnitImg>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
 		}	
 		
 		try {
 			UnitImg result = contentsService.selectUnit(params);
+			
+			LearningImg li = new LearningImg();
+			li.setUnitId(params.getUnitId());
+			LearningMainImg resultImg = xbtImageService.selectCommonPracticeImg(li);
+			result.setFrontImg(resultImg.getImgFront()); 
+			result.setSideImg(resultImg.getImgSide());
+			result.setRealImg(resultImg.getImgReal());
+			
 	        return new BaseResponse<UnitImg>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
@@ -590,8 +610,8 @@ public class ContentsController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}	   
 		
-		if(StringUtils.isEmpty(params.getUnitGroupCd())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UnitGroupCd" + BaseApiMessage.REQUIRED.getMessage());
+		if(StringUtils.isEmpty(params.getUnitId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "getUnitId" + BaseApiMessage.REQUIRED.getMessage());
 		}		
 		
 		
@@ -667,8 +687,8 @@ public class ContentsController {
 			}				
 		}
 	
-		if(StringUtils.isEmpty(params.getUnitScanId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "getUnitScanId" + BaseApiMessage.REQUIRED.getMessage());
+		if(StringUtils.isEmpty(params.getUnitId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UnitId" + BaseApiMessage.REQUIRED.getMessage());
 		}		
 		
 	    try { 
@@ -702,8 +722,8 @@ public class ContentsController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getUnitScanId())){			
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UnitScanId" + BaseApiMessage.REQUIRED.getMessage());
+		if(StringUtils.isEmpty(params.getUnitId())){			
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UnitId" + BaseApiMessage.REQUIRED.getMessage());
 		}
 		
 		if(StringUtils.isEmpty(params.getLanguageCode())){
@@ -1060,7 +1080,13 @@ public class ContentsController {
 		
 		try {
 			//xray콘텐츠관리-정보관리조회
-	        return new BaseResponse<XrayImgContents>(contentsService.selectXrayImgContents(params));
+			//XrayImgContents result = contentsService.selectXrayImgContents(params);
+			
+			LearningImg li = new LearningImg();
+			li.setBagScanId(params.getBagScanId());
+			LearningImg resultImg = xbtImageService.selectAdmAllBagImg(li);
+			params.setResultImg(resultImg);
+	        return new BaseResponse<XrayImgContents>(params);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
