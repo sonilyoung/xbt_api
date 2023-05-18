@@ -141,6 +141,7 @@
 			</when>		
 		</choose>		 
 		AND USE_YN  = 'Y'	
+		GROUP BY GROUP_ID, CODE_NO ,CODE_NAME, CODE_VALUE, CODE_DESC ,USE_YN, LANGUAGE_CODE, SORT_ORDER
 	</select>	
 	
 	

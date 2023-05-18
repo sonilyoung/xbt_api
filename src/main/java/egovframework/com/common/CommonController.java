@@ -10,24 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import egovframework.com.adm.contents.service.ContentsService;
-import egovframework.com.adm.contents.vo.Contents;
-import egovframework.com.adm.contents.vo.ContentsMgr;
-import egovframework.com.adm.contents.vo.Language;
 import egovframework.com.adm.login.service.LoginService;
-import egovframework.com.adm.login.service.UserService;
 import egovframework.com.adm.login.vo.Login;
-import egovframework.com.adm.system.vo.Notice;
 import egovframework.com.common.service.CommonService;
 import egovframework.com.common.vo.Common;
-import egovframework.com.common.vo.CommonSystemMessage;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
@@ -35,12 +27,8 @@ import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
-import egovframework.com.global.util.DateHelper;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.http.MediaType;
-import org.springframework.util.StringUtils;
 
 /**
  * 컨텐츠 컨트롤러 클래스
@@ -68,6 +56,41 @@ public class CommonController {
     
     
     /**
+     * 교육생화면 ui다국어처리
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectLanguageApplyInfo.do")
+    @ApiOperation(value = "교육생화면 ui다국어처리", notes = "교육생화면 ui다국어처리")
+    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public BaseResponse<HashMap<String, Object>> selectLanguageApplyInfo(HttpServletRequest request, @RequestBody Common params) {
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<HashMap<String, Object>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			//다국어처리조회
+			List<Common> result = commonService.selectLanguageApplyList(params);
+			HashMap<String, Object> languageApply = new HashMap<String, Object>();
+			if(result!=null) {
+				for(Common c : result) {
+					languageApply.put("groupId", c.getGroupId());//구분코드
+					languageApply.put(c.getCodeName(), c.getCodeValue());//메세지
+					languageApply.put("languageCode", c.getLanguageCode());// 언어코드
+				}
+			}
+	        return new BaseResponse<HashMap<String, Object>>(languageApply);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }        
+      
+    
+    
+    /**
      * 화면ui다국어처리
      * 
      * @param param
@@ -75,7 +98,6 @@ public class CommonController {
      */
     @PostMapping("/selectLanguageApplyList.do")
     @ApiOperation(value = "화면ui다국어처리", notes = "화면ui다국어처리")
-    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
     public BaseResponse<List<HashMap<String, Object>>> selectLanguageApplyList(HttpServletRequest request, @RequestBody Common params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
@@ -98,7 +120,8 @@ public class CommonController {
 					languageApply.put("groupId", c.getGroupId());//구분코드
 					languageApply.put("codeName", c.getCodeName());//메세지코드
 					languageApply.put(c.getCodeName(), c.getCodeValue());//메세지
-					languageApply.put("sortOrder", c.getSortOrder());//메세지
+					languageApply.put("sortOrder", c.getSortOrder());//메세지 순서
+					languageApply.put("languageCode", c.getLanguageCode());// 언어코드
 					resultMessage.add(languageApply);
 				}
 			}
@@ -146,7 +169,8 @@ public class CommonController {
 				languageApply.put("groupId", result.getGroupId());//구분코드
 				languageApply.put("codeName", result.getCodeName());//메세지코드
 				languageApply.put("codeValue", result.getCodeValue());//메세지
-				languageApply.put("sortOrder", result.getSortOrder());//메세지
+				languageApply.put("sortOrder", result.getSortOrder());//메세지순서
+				languageApply.put("languageCode", result.getLanguageCode());// 언어코드
 			}
 			return new BaseResponse<HashMap<String, Object>>(languageApply);
         } catch (Exception e) {
