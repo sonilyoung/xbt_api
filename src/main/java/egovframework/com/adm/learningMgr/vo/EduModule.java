@@ -34,6 +34,7 @@ public class EduModule {
 	private int liquidGelScore;
 	private int passScore;
 	private int totalScore;
+	private int timeLimit;
 	private String moduleType;
 	private String useYn;
 	private String insertId;

@@ -448,6 +448,7 @@ public class ContentsController {
        		&& !fileExtension.toUpperCase().equals("GIF")
        		&& !fileExtension.toUpperCase().equals("JPEG")
        		&& !fileExtension.toUpperCase().equals("PNG")
+       		&& !fileExtension.toUpperCase().equals("SVG")
         ) {
         	return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
         }		

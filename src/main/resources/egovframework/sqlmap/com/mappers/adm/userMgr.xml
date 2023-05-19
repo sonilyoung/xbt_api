@@ -16,7 +16,7 @@
                , '' AS USER_PHOTO								 /*교육생사진(조회 속도를 위해 조회하지 않음 입력을 위해 빈칸 처리)*/
                , A.AUTH_CD                     /*권한코드*/        
                , K.AUTH_NM	                 /*권한코드이름*/
-               , FN_GET_COMCODE_NAME('0003', A.COMPANY ,'kor') as COMPANY	                 /*회사*/
+               , FN_GET_COMCODE_NAME('0003', A.COMPANY ,'kr') as COMPANY	                 /*회사*/
                , A.DEPT                        /*부서*/    
                , A.POSITION	                 /*직급*/
                , A.TRAINING_DIV                /*교육구분*/

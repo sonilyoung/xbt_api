@@ -13,6 +13,7 @@
 			,STUDY_LVL
 			,SLIDE_SPEED
 			,MODULE_TYPE
+			,TIME_LIMIT
 			,USE_YN
 			,QUESTION_CNT
 			,GUN_SCORE
@@ -52,6 +53,7 @@
 			,0 AS DANGER_MATERIALS_CNT
 			,0 AS LIQUID_GEL_CNT
 			,0 AS PASS_CNT
+			,TIME_LIMIT
 			,STUDY_LVL
 			,SLIDE_SPEED
 			,MODULE_TYPE
@@ -85,6 +87,7 @@
 			,STUDY_LVL
 			,SLIDE_SPEED
 			,MODULE_TYPE
+			,TIME_LIMIT
 			,USE_YN
 			,QUESTION_CNT
 			,GUN_SCORE
@@ -107,6 +110,7 @@
 			,#{studyLvl}
 			,#{slideSpeed}
 			,#{moduleType}
+			,#{timeLimit}
 			,#{useYn}
 			,#{questionCnt}
 			,#{gunScore}
@@ -174,6 +178,7 @@
 			, SLIDE_SPEED = #{slideSpeed}
 			, MODULE_TYPE = #{moduleType}
 			, USE_YN = #{useYn}
+			, TIME_LIMIT = #{timeLimit}
 			, QUESTION_CNT = #{questionCnt}
 			, GUN_SCORE = #{gunScore}
 			, EXPLOSIVES_SCORE = #{explosivesScore}
@@ -226,7 +231,7 @@
          SELECT 
 		    POINTS_STD_ID /* 배점기준ID */
            ,ACTION_DIV                     AS ACTION_DIV /* ACTION구분 */
-		   ,FN_GET_COMCODE_NAME('0002', ACTION_DIV ,'kor')    AS ACTION_NM /* ACTION구분명 */
+		   ,FN_GET_COMCODE_NAME('0002', ACTION_DIV ,'kr')    AS ACTION_NM /* ACTION구분명 */
 		   ,NVL(BAN_UNIT_SCORE,0)                      AS BAN_UNIT_SCORE /* 금지물품점수 */
 		   ,NVL(LIMIT_UNIT_SCORE,0)                    AS LIMIT_UNIT_SCORE /* 제한물품점수 */
 		   ,NVL(QUESTION_UNIT_SCORE,0)                 AS QUESTION_UNIT_SCORE /* 의심물품점수 */
