@@ -116,7 +116,6 @@ public class XbtImageServiceImpl implements XbtImageService {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
         		//System.out.println("fileByte : "+fileByte);
         		
-        		//정면 위험물일경우 301/401 그외는 101
         		if("101".equals(params.getCommand()) && fileList[i].getName().contains("101")) {//정면
         			params.setImgFrontColor(fileByte);break;
         		}else if("102".equals(params.getCommand()) && fileList[i].getName().contains("102")) {
@@ -157,7 +156,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         			params.setImgFrontBwBwRate5(fileByte);break;
         		}else if("120".equals(params.getCommand()) && fileList[i].getName().contains("120")) {
         			params.setImgFrontBwBwRate6(fileByte);break;
-        		}else if("201".equals(params.getCommand()) && fileList[i].getName().contains("201")) {//측면위험물 302/402 그외 201
+        		}else if("201".equals(params.getCommand()) && fileList[i].getName().contains("201")) {//측면
         			params.setImgSideColor(fileByte);break;
         		}else if("202".equals(params.getCommand()) && fileList[i].getName().contains("202")) {
         			params.setImgSideColorMineral(fileByte);break;
@@ -197,11 +196,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         			params.setImgSideBwBwRate5(fileByte);break;
         		}else if("220".equals(params.getCommand()) && fileList[i].getName().contains("220")) {
         			params.setImgSideBwBwRate6(fileByte);break;
-        		}else if(
-        		"401".equals(params.getCommand()) && fileList[i].getName().contains("303")
-        		||"401".equals(params.getCommand()) && fileList[i].getName().contains("403")
-        		||"401".equals(params.getCommand()) && fileList[i].getName().contains("401")
-        		) {//실사이미지
+        		}else if("401".equals(params.getCommand()) && fileList[i].getName().contains("401")) {//실사이미지
         			params.setImgReal(fileByte);break;
         		}
         		
@@ -323,11 +318,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         			params.setImgSideBwBwRate5(fileByte);break;
         		}else if("220".equals(params.getCommand()) && fileList[i].getName().contains("220")) {
         			params.setImgSideBwBwRate6(fileByte);break;
-        		}else if(
-        		"401".equals(params.getCommand()) && fileList[i].getName().contains("303")
-        		||"401".equals(params.getCommand()) && fileList[i].getName().contains("403")
-        		||"401".equals(params.getCommand()) && fileList[i].getName().contains("401")
-        		) {//실사이미지
+        		}else if("401".equals(params.getCommand()) && fileList[i].getName().contains("401")) {//실사이미지
         			params.setImgReal(fileByte);break;
         		}
         		
@@ -450,11 +441,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         			params.setImgSideBwBwRate5(fileByte);break;
         		}else if("220".equals(params.getCommand()) && fileList[i].getName().contains("220")) {
         			params.setImgSideBwBwRate6(fileByte);break;
-        		}else if(
-        		"401".equals(params.getCommand()) && fileList[i].getName().contains("303")
-        		||"401".equals(params.getCommand()) && fileList[i].getName().contains("403")
-        		||"401".equals(params.getCommand()) && fileList[i].getName().contains("401")
-        		) {//실사이미지
+        		}else if("401".equals(params.getCommand()) && fileList[i].getName().contains("401")) {//실사이미지
         			params.setImgReal(fileByte);break;
         		}
         		
@@ -501,11 +488,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         			result.setImgFront(fileByte);
         		}else if(fileList[i].getName().contains("201")) {//측면
         			result.setImgSide(fileByte);
-        		}else if(
-        			fileList[i].getName().contains("303")
-        			||fileList[i].getName().contains("403")
-        			||fileList[i].getName().contains("401")
-        		) {//실사이미지
+        		}else if(fileList[i].getName().contains("401")) {//실사이미지
         			result.setImgReal(fileByte);
         		}
         		
@@ -666,8 +649,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         			params.setImgSideBwBwRate5(fileByte);
         		}else if(fileList[i].getName().contains("220")) {
         			params.setImgSideBwBwRate6(fileByte);
-        		}else if(fileList[i].getName().contains("303")||fileList[i].getName().contains("403")||fileList[i].getName().contains("401") ){
-        			//실사이미지
+        		}else if(fileList[i].getName().contains("401")) {//실사이미지
         			params.setImgReal(fileByte);
         		}
 			} catch (IOException e) {
@@ -778,7 +760,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         			params.setImgSideBwBwRate5(fileByte);
         		}else if(fileList[i].getName().contains("220")) {
         			params.setImgSideBwBwRate6(fileByte);
-        		}else if(fileList[i].getName().contains("303")||fileList[i].getName().contains("403")||fileList[i].getName().contains("401") ){
+        		}else if(fileList[i].getName().contains("401")) {//실사이미지
         			params.setImgReal(fileByte);
         		}
 			} catch (IOException e) {

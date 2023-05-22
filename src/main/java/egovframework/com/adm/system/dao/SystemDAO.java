@@ -2,6 +2,7 @@ package egovframework.com.adm.system.dao;
 
 import java.util.List;
 
+import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.system.vo.Notice;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -31,7 +32,25 @@ public class SystemDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectNotice", params);
 	}	
 
-		
+	public List<?> selectMenuList(Menu params) {
+		return (List<?>)selectList(Namespace + ".selectMenuList", params);
+	}
+	
+	public int insertMenu(Menu params) {
+		return insert(Namespace + ".insertMenu", params);
+	}
+	
+	public int updateMenu(Menu params) {
+		return update(Namespace + ".updateMenu", params);
+	}	
+	
+	public int deleteMenu(Menu params) {
+		return delete(Namespace + ".deleteMenu", params);
+	}	
+
+	public Menu selectMenu(Menu params) {
+		return selectOne(Namespace + ".selectMenu", params);
+	}			
 	
 
 }

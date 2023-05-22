@@ -61,13 +61,11 @@
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DATE = now()
 		WHERE NOTICE_ID = #{noticeId}
-		AND LANGUAGE_CODE = #{languageCode}
-
 	</update>	
 	
 	<!-- 공지사항 삭제-->
 	<delete id="deleteNotice" parameterType="egovframework.com.adm.system.vo.Notice">
-		DELETE FROM XBT_NOTICE WHERE NOTICE_ID = #{noticeId} AND LANGUAGE_CODE = #{languageCode}  
+		DELETE FROM XBT_NOTICE WHERE NOTICE_ID = #{noticeId}  
 	</delete>	
 	
 </mapper>

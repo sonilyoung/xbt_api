@@ -101,10 +101,6 @@ public class MainController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getLanguageCode())){				
-			return new BaseResponse<List<Notice>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
 		try {
 			//공지사항조회
 	        return new BaseResponse<List<Notice>>(systemService.selectNoticeList(params));
@@ -130,10 +126,6 @@ public class MainController {
 		
 		if(StringUtils.isEmpty(params.getNoticeId())){				
 			return new BaseResponse<Notice>(BaseResponseCode.PARAMS_ERROR, "NoticeId" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
-		if(StringUtils.isEmpty(params.getLanguageCode())){				
-			return new BaseResponse<Notice>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
 		try {

@@ -9,11 +9,13 @@
          
 		SELECT PROC_CD
 			,PROC_YEAR
-			,PROC_SEQ
-			,MODULE_ID
+			,PROC_SEQ 
 			,EDU_START_DATE
 			,EDU_END_DATE
 			,TOT_STUDY_DATE
+			,STUDY_LVL
+			,TIMESTAMPDIFF(DAY, EDU_START_DATE , EDU_END_DATE) AS TOT_TIME_DIFF
+			,TIMESTAMPDIFF(DAY, EDU_START_DATE , CURDATE()) AS TIME_DIFF			
 			,LIMIT_PERSON_CNT
 			,ENDING_STD_SCORE
 			,ENDING_PROCESS_END_YN
@@ -44,11 +46,13 @@
 	<select id="selectBaseline" parameterType="egovframework.com.adm.eduMgr.vo.Baseline" resultType="egovframework.com.adm.eduMgr.vo.Baseline">
 		SELECT PROC_CD
 			,PROC_YEAR
-			,PROC_SEQ
-			,MODULE_ID
+			,PROC_SEQ 
 			,EDU_START_DATE
 			,EDU_END_DATE
 			,TOT_STUDY_DATE
+			,STUDY_LVL
+			,TIMESTAMPDIFF(DAY, EDU_START_DATE , EDU_END_DATE) AS TOT_TIME_DIFF
+			,TIMESTAMPDIFF(DAY, EDU_START_DATE , CURDATE()) AS TIME_DIFF			
 			,LIMIT_PERSON_CNT
 			,ENDING_STD_SCORE
 			,ENDING_PROCESS_END_YN
@@ -65,27 +69,25 @@
 		INSERT INTO XBT_BASELINE(
 			PROC_YEAR,
 			PROC_SEQ,
-			MODULE_ID,
 			EDU_START_DATE,
 			EDU_END_DATE,
 			TOT_STUDY_DATE,
+			STUDY_LVL,
 			LIMIT_PERSON_CNT,
 			ENDING_STD_SCORE,
 			ENDING_PROCESS_END_YN,
 			INSERT_DATE,
-			INSERT_ID,
-			UPDATE_DATE,
-			UPDATE_ID
+			INSERT_ID
 		)VALUES(
-			#{procYear}
+			 DATE_FORMAT(NOW(),'%Y')
 			,#{procSeq}
-			,#{moduleId}
 			,#{eduStartDate}
 			,#{eduEndDate}
 			,#{totStudyDate}
+			,#{studyLvl}
 			,#{limitPersonCnt}
 			,#{endingStdScore}
-			,#{endingProcessEndYn}
+			,'N'
 			,now()
 			,#{insertId}
 		)
@@ -105,6 +107,7 @@
 			LIMIT_PERSON_CNT = #{limitPersonCnt},
 			ENDING_STD_SCORE = #{endingStdScore},
 			ENDING_PROCESS_END_YN = #{endingProcessEndYn},
+			STUDY_LVL = #{studyLvl},
 			UPDATE_DATE = #{insertId},
 			UPDATE_ID = now()
 		WHERE PROC_CD = #{procCd}
@@ -112,7 +115,7 @@
 	
 	<!-- 차수 삭제-->
 	<delete id="deleteBaseline" parameterType="egovframework.com.adm.eduMgr.vo.Baseline">
-		DELETE FROM XBT_BASELINE WHERE MODULE_ID = #{ModuleId}  
+		DELETE FROM XBT_BASELINE WHERE PROC_CD = #{procCd}
 	</delete>	
 	
 	<!-- 교육생목로조회 -->

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.adm.system.dao.SystemDAO">
+	
+	<!-- 메뉴 가져오기 -->
+	<select id="selectMenuList" parameterType="egovframework.com.adm.system.vo.Menu" resultType="egovframework.com.adm.system.vo.Menu">
+		SELECT 
+				T1.MENU_NO,
+				T1.MENU_URL,
+				T1.P_MENU_CD,
+				T1.MENU_CD,
+				T1.MENU_NAME,
+				T1.MENU_URL,
+				T1.MENU_LEVEL,
+				T1.MENU_TYPE,
+				T1.USE_YN,
+				T1.MENU_ORDER,
+				T1.LANGUAGE_CODE,
+				(SELECT MAX(MODULE_ID) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T1.MENU_CD) AS MODULE_ID,
+				(SELECT MAX(MODULE_TYPE) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T1.MENU_CD) AS MODULE_TYPE,
+				(SELECT MAX(EDU_TYPE) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T1.MENU_CD) AS EDU_TYPE						
+		FROM XBT_STU_MENU T1 
+		WHERE T1.LANGUAGE_CODE =  #{languageCode}
+	</select>	
+	
+	<!-- 메뉴 상세 -->
+	<select id="selectMenu" parameterType="egovframework.com.adm.system.vo.Menu" resultType="egovframework.com.adm.system.vo.Menu">
+		SELECT 
+				T1.MENU_NO,
+				T1.MENU_URL,
+				T1.P_MENU_CD,
+				T1.MENU_CD,
+				T1.MENU_NAME,
+				T1.MENU_URL,
+				T1.MENU_LEVEL,
+				T1.MENU_TYPE,
+				T1.USE_YN,
+				T1.MENU_ORDER,
+				T1.LANGUAGE_CODE,
+				(SELECT MAX(MODULE_ID) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T1.MENU_CD) AS MODULE_ID,
+				(SELECT MAX(MODULE_TYPE) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T1.MENU_CD) AS MODULE_TYPE,
+				(SELECT MAX(EDU_TYPE) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T1.MENU_CD) AS EDU_TYPE						
+		FROM XBT_STU_MENU T1 
+		WHERE T1.LANGUAGE_CODE =  #{languageCode}
+		AND T1.MENU_CD = #{menuCd}		
+	</select>		
+	
+	<!-- 메뉴 등록 -->
+	<insert id="insertMenu" parameterType="egovframework.com.adm.system.vo.Menu">
+		INSERT	INTO XBT_STU_MENU(
+			P_MENU_CD,
+			MENU_CD,
+			MENU_NAME,
+			MENU_URL,
+			MENU_LEVEL,
+			USE_YN,
+			MENU_ORDER,
+			LANGUAGE_CODE,
+			MENU_TYPE,
+			INSERT_ID,
+			INSERT_DATE
+		)VALUES(
+			#{pmenuCd}
+			,#{menuCd}
+			,#{menuName}
+			,#{menuUrl}
+			,'1'
+			,'Y'
+			,#{menuOrder}
+			,#{languageCode}
+			,#{menuType}
+			,#{insertId}
+			,now()
+		)
+
+	</insert>	
+	
+	
+	<!-- 메뉴 수정 -->
+	<update id="updateMenu" parameterType="egovframework.com.adm.system.vo.Menu">	
+		UPDATE XBT_STU_MENU
+		SET 
+			P_MENU_CD = #{pmenuCd}
+			, MENU_CD = #{menuCd}
+			, MENU_NAME = #{menuName}
+			, USE_YN = #{useYn}
+			, MENU_ORDER = #{menuOrder}
+			, MENU_TYPE = #{menuType}
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DATE = now()
+		WHERE MENU_CD = #{menuCd}
+		AND LANGUAGE_CODE = #{languageCode}
+
+	</update>	
+	
+	<!-- 메뉴 삭제-->
+	<delete id="deleteMenu" parameterType="egovframework.com.adm.system.vo.Menu">
+		DELETE FROM XBT_STU_MENU 
+		WHERE MENU_CD = #{menuCd}
+		AND LANGUAGE_CODE = #{languageCode}
+	</delete>	
+	
+</mapper>

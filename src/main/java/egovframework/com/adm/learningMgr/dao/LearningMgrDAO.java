@@ -46,8 +46,6 @@ public class LearningMgrDAO extends EgovAbstractMapper{
 	public EduModule selectModule(EduModule params) {
 		return selectOne(Namespace + ".selectModule", params);
 	}	
-	
-	
 
 	public List<?> getXrayPointList(XrayPoint params) {
 		return (List<?>)selectList(Namespace + ".getXrayPointList", params);
@@ -60,4 +58,12 @@ public class LearningMgrDAO extends EgovAbstractMapper{
 	public List<?> getEduTypeList(EduType params) {
 		return (List<?>)selectList(Namespace + ".getEduTypeList", params);
 	}			
+	
+	public EduModule selectXrayModuleContents(EduModule params) {
+		return selectOne(Namespace + ".selectXrayModuleContents", params);
+	}		
+	
+	public List<?> selectModuleXrayPopList(EduModule params) {
+		return (List<?>)selectList(Namespace + ".selectModuleXrayPopList", params);
+	}	
 }

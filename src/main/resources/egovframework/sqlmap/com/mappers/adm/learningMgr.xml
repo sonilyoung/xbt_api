@@ -32,6 +32,7 @@
 			,INSERT_DATE
 			,UPDATE_ID
 			,UPDATE_DATE
+			,MENU_CD
 		FROM XBT_MODULE_INFO_MASTER
 				
 	</select>		
@@ -75,12 +76,13 @@
 			,INSERT_DATE
 			,UPDATE_ID
 			,UPDATE_DATE
+			,MENU_CD
 		FROM XBT_MODULE_INFO_MASTER
 		WHERE MODULE_ID = #{moduleId}	
 	</select>		
 	
 	<!-- 모듈 등록 -->
-	<insert id="insertModule" parameterType="egovframework.com.adm.learningMgr.vo.EduModule">
+	<insert id="insertModule" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" useGeneratedKeys="true" keyProperty="moduleId">
 		INSERT INTO XBT_MODULE_INFO_MASTER(
 			MODULE_NM
 			,MODULE_DESC
@@ -104,6 +106,7 @@
 			,TOTAL_SCORE
 			,INSERT_ID
 			,INSERT_DATE
+			,MENU_CD
 		)VALUES(
 			#{moduleNm}
 			,#{moduleDesc}
@@ -127,23 +130,55 @@
 			,#{totalScore}
 			,#{insertId}
 			,now()
+			,#{menuCd}
 		)
 	</insert>	
 	
 	<!-- 모듈문제목록 -->
 	<select id="selectModuleQuestion" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" resultType="egovframework.com.adm.learningMgr.vo.EduModule">
 		SELECT 
-			MODULE_DETAIL_ID
-			, MODULE_ID
-			, STUDY_LVL
-			, BAG_SCAN_ID
-			, UNIT_ID
-			, UNIT_GROUP_CD
-			, INSERT_ID
-			, INSERT_DATE
-		FROM XBT_MODULE_INFO_DETAIL
-		WHERE MODULE_ID = #{moduleId}	
-	</select>			
+			T1.MODULE_DETAIL_ID
+			, T1.MODULE_ID
+			, T1.STUDY_LVL
+			, T1.BAG_SCAN_ID
+			, T1.UNIT_ID
+			, T1.UNIT_GROUP_CD
+			, T2.GROUP_NAME 
+			, T1.ACTION_DIV 
+			, T1.ACTION_DIV_NAME 			
+			, T1.INSERT_ID
+			, T1.INSERT_DATE
+		FROM XBT_MODULE_INFO_DETAIL T1 LEFT JOIN XBT_UNIT_GROUP T2
+		ON T1.UNIT_GROUP_CD = T2.UNIT_GROUP_CD 
+		WHERE T1.MODULE_ID = #{moduleId}	
+	</select>		
+	
+	
+	<!--  학습관리-xray판독모듈의 등록할 문제가져오기 -->
+	<select id="selectModuleXrayPopList" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" resultType="egovframework.com.adm.learningMgr.vo.EduModule" >	
+		SELECT 
+			T1.BAG_SCAN_NO,
+			T1.BAG_SCAN_ID,
+			T1.UNIT_ID,/*정답물품아이디*/
+			(SELECT UNIT_NAME FROM XBT_UNIT_INFO WHERE UNIT_ID = T1.UNIT_ID) as unitName,/*정답물품명*/
+			T3.OPEN_YN,/*개봉여부*/
+			T3.PASS_YN,/*통과여부*/
+			T3.UNIT_GROUP_CD ,
+			T3.GROUP_NAME ,			
+			T3.ACTION_DIV,
+			T3.ACTION_DIV_NAME,
+			T1.STUDY_LVL, /*학습레벨*/
+			T1.USE_YN ,/*사용여부*/
+			T1.INSERT_ID, 
+			T1.INSERT_DATE 
+		FROM XBT_BAG_INFO T1 INNER JOIN XBT_UNIT_GROUP T3 ON
+		T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD
+		AND T3.LANGUAGE_CODE = 'kr'	
+		AND T1.ACTION_DIV IS NOT NULL
+		ORDER BY BAG_SCAN_ID ASC		  		 	
+	</select>
+	
+			
 	
 	<!-- 모듈 문제등록 -->
 	<insert id="insertModuleQuestion" parameterType="egovframework.com.adm.learningMgr.vo.EduModule">
@@ -153,6 +188,8 @@
 			, BAG_SCAN_ID
 			, UNIT_ID
 			, UNIT_GROUP_CD
+			, ACTION_DIV
+			, ACTION_DIV_NAME
 			, INSERT_ID
 			, INSERT_DATE
 		)VALUES(
@@ -161,11 +198,36 @@
 			,#{bagScanId}
 			,#{unitId}
 			,#{unitGroupCd}
+			,#{actionDiv}
+			,#{actionDivName}
 			,#{insertId}
 			,now()
 		)
 	</insert>		
 	
+	<!-- 모듈 문제등록 단건조회 (등록전확인)-->
+	<select id="selectXrayModuleContents" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" resultType="egovframework.com.adm.learningMgr.vo.EduModule" >	
+		SELECT 
+			T1.BAG_SCAN_NO,
+			T1.BAG_SCAN_ID,
+			T1.UNIT_ID,/*정답물품아이디*/
+			(SELECT UNIT_NAME FROM XBT_UNIT_INFO WHERE UNIT_ID = T1.UNIT_ID) as unitName,/*정답물품명*/
+			T3.OPEN_YN,/*개봉여부*/
+			T3.PASS_YN,/*통과여부*/
+			T3.UNIT_GROUP_CD,
+			T3.GROUP_NAME,
+			T3.ACTION_DIV,
+			T3.ACTION_DIV_NAME,
+			T1.STUDY_LVL, /*학습레벨*/
+			T1.USE_YN ,/*사용여부*/
+			T1.INSERT_ID, 
+			T1.INSERT_DATE 
+		FROM XBT_BAG_INFO T1 INNER JOIN XBT_UNIT_GROUP T3 ON
+		T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD
+		AND T3.LANGUAGE_CODE = 'kr'
+		AND T1.BAG_SCAN_ID = #{bagScanId}	
+	</select>
+		
 	
 	<!-- 모듈 수정 -->
 	<update id="updateModule" parameterType="egovframework.com.adm.learningMgr.vo.EduModule">	
@@ -194,6 +256,7 @@
 			, TOTAL_SCORE = #{totalScore}
 			, UPDATE_ID = #{gunScore}
 			, UPDATE_DATE = now()
+			, MENU_CD = #{menuCd}
 		WHERE MODULE_ID = #{moduleId}
 
 	</update>	
@@ -205,13 +268,8 @@
 			
 	<!-- 모듈 문제삭제-->
 	<delete id="deleteModuleQuestion" parameterType="egovframework.com.adm.learningMgr.vo.EduModule">
-		DELETE FROM XBT_MODULE_INFO_DETAIL WHERE MODULE_DETAIL_ID =  #{moduleDetailId}
+		DELETE FROM XBT_MODULE_INFO_DETAIL WHERE MODULE_ID =  #{moduleId}
 	</delete>				
-			
-			
-			
-			
-			
 			
 			
 			

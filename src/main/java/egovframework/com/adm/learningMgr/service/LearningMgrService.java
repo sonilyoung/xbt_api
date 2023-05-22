@@ -47,4 +47,8 @@ public interface LearningMgrService {
 	public List<XrayPointDetail> getXrayPointDetailList(XrayPointDetail params);
 	
 	public List<EduType> getEduTypeList(EduType params);
+	
+	public EduModule selectXrayModuleContents(EduModule params);
+	
+	public List<EduModule> selectModuleXrayPopList(EduModule params);
 }

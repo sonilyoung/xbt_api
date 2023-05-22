@@ -129,6 +129,10 @@ public class LearningMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
+		if(StringUtils.isEmpty(params.getBagList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BagList" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
 		if(StringUtils.isEmpty(params.getModuleNm())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleNm" + BaseApiMessage.REQUIRED.getCode());
 		}
@@ -315,6 +319,36 @@ public class LearningMgrController {
         }
     }     
     
+	
+	
+    /**
+     * 학습관리-xray판독모듈의 등록할 문제가져오기
+     * 
+     * @param param
+     * @return Company
+     */
+	@ResponseBody
+    @RequestMapping(value = {"/selectModuleXrayPopList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @ApiOperation(value = "학습관리-xray판독모듈의 등록할 문제가져오기", notes = "학습관리-xray판독모듈의 등록할 문제가져오기")
+    public BaseResponse<List<EduModule>> selectModuleXrayPopList(HttpServletRequest request
+    		, @RequestBody EduModule params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		
+		try {
+			List<EduModule> resultList = learningMgrService.selectModuleXrayPopList(params);
+	        return new BaseResponse<List<EduModule>>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }     
+    
+    
+		
     
 	
 		

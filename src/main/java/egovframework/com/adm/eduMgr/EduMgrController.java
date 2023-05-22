@@ -121,15 +121,7 @@ public class EduMgrController {
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
-		
 
-		if(StringUtils.isEmpty(params.getProcCd())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getProcYear())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcYear" + BaseApiMessage.REQUIRED.getCode());
-		}			
 		
 		if(StringUtils.isEmpty(params.getProcSeq())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "procSeq" + BaseApiMessage.REQUIRED.getCode());
@@ -150,7 +142,11 @@ public class EduMgrController {
 		
 		if(StringUtils.isEmpty(params.getTotStudyDate())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "totStudyDate" + BaseApiMessage.REQUIRED.getCode());
-		}		
+		}	
+		
+		if(StringUtils.isEmpty(params.getStudyLvl())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "studyLvl" + BaseApiMessage.REQUIRED.getCode());
+		}				
 		
 		
 		if(StringUtils.isEmpty(params.getLimitPersonCnt())){				
@@ -161,9 +157,9 @@ public class EduMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "endingStdScore" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
-		if(StringUtils.isEmpty(params.getEndingProcessEndYn())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "endingProcessEndYn" + BaseApiMessage.REQUIRED.getCode());
-		}		
+		if(StringUtils.isEmpty(params.getUserIds())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userIds" + BaseApiMessage.REQUIRED.getCode());
+		}				
 		
 		try {
 			//차수등록

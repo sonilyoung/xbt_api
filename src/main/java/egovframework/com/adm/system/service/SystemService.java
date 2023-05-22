@@ -2,8 +2,8 @@ package egovframework.com.adm.system.service;
 
 import java.util.List;
 
+import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.system.vo.Notice;
-import egovframework.com.common.vo.Common;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.
@@ -34,4 +34,14 @@ public interface SystemService {
 
 	public Notice selectNotice(Notice params);
 	
+	
+	public List<Menu> selectMenuList(Menu params);
+	
+	public int insertMenu(Menu params);
+	
+	public int updateMenu(Menu params);
+	
+	public int deleteMenu(Menu params);
+
+	public Menu selectMenu(Menu params);	
 }

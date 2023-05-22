@@ -3,6 +3,7 @@ package egovframework.com.adm.learningMgr.service;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
@@ -54,9 +55,21 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 	
 	
 	@Override
+	@Transactional
 	public int insertModule(EduModule params) {
 		// TODO Auto-generated method stub
-		return learningMgrDAO.insertModule(params);	
+		int result = learningMgrDAO.insertModule(params);
+		if(params.getBagList()!=null) {
+			for(String p : params.getBagList()) {
+				EduModule dp = new EduModule();
+				dp.setBagScanId(p);
+				EduModule bagInfo = learningMgrDAO.selectXrayModuleContents(dp);
+				bagInfo.setModuleId(params.getModuleId());
+				bagInfo.setInsertId(params.getInsertId());
+				learningMgrDAO.insertModuleQuestion(bagInfo);
+			}
+		}
+		return result;	
 	}
 	
 	@Override
@@ -68,14 +81,29 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 	@Override
 	public int updateModule(EduModule params) {
 		// TODO Auto-generated method stub
-		return learningMgrDAO.updateModule(params);
+		int result = learningMgrDAO.updateModule(params);
+		
+		if(params.getBagList()!=null) {
+			learningMgrDAO.deleteModuleQuestion(params);
+			for(String p : params.getBagList()) {
+				EduModule dp = new EduModule();
+				dp.setBagScanId(p);
+				EduModule bagInfo = learningMgrDAO.selectXrayModuleContents(dp);
+				bagInfo.setInsertId(params.getInsertId());
+				bagInfo.setModuleId(params.getModuleId());
+				learningMgrDAO.insertModuleQuestion(bagInfo);
+			}
+		}		
+		return result;
 	}
 
 
 	@Override
 	public int deleteModule(EduModule params) {
 		// TODO Auto-generated method stub
-		return learningMgrDAO.deleteModule(params);
+		int result = learningMgrDAO.deleteModule(params);
+		learningMgrDAO.deleteModuleQuestion(params);
+		return result;
 	}
 
 	@Override
@@ -110,6 +138,17 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 		return (List<EduType>) learningMgrDAO.getEduTypeList(params);
 	}
 
+	@Override
+	public EduModule selectXrayModuleContents(EduModule params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.selectXrayModuleContents(params);
+	}
+
+	@Override
+	public List<EduModule> selectModuleXrayPopList(EduModule params) {
+		// TODO Auto-generated method stub
+		return (List<EduModule>) learningMgrDAO.selectModuleXrayPopList(params);
+	}
 	
 
 }

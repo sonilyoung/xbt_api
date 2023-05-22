@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.adm.system.dao.SystemDAO;
+import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.system.vo.Notice;
 import lombok.extern.log4j.Log4j2;
 
@@ -67,6 +68,37 @@ public class SystemServiceImpl implements SystemService {
 		return systemDAO.selectNotice(params);
 	}
     
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Menu> selectMenuList(Menu params) {
+		// TODO Auto-generated method stub
+		return (List<Menu>)systemDAO.selectMenuList(params);
+	}
+
+	@Override
+	public int insertMenu(Menu params) {
+		// TODO Auto-generated method stub
+		return systemDAO.insertMenu(params);
+	}
+
+	@Override
+	public int updateMenu(Menu params) {
+		// TODO Auto-generated method stub
+		return systemDAO.updateMenu(params);
+	}
+
+	@Override
+	public int deleteMenu(Menu params) {
+		// TODO Auto-generated method stub
+		return systemDAO.deleteMenu(params);
+	}
+
+	@Override
+	public Menu selectMenu(Menu params) {
+		// TODO Auto-generated method stub
+		return systemDAO.selectMenu(params);
+	}	
 
 
 }

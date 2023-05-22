@@ -10,13 +10,19 @@ public class Baseline {
 	private Long moduleId;
 	private String eduStartDate;
 	private String eduEndDate;
-	private String totStudyDate;
+	private int totStudyDate;
 	private int limitPersonCnt;
 	private int endingStdScore;
-	private String endingProcessEndYn;
+	private int endingProcessEndYn;
+	private int totTimeDiff;
+	private int studyLvl;
+	private String timeDiff;
 	private String insertDate;
 	private String insertId;
 	private String updateDate;
 	private String updateId;
+	
+	
+	private String[] userIds;
 
 }
