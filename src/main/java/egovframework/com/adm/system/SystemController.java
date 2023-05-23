@@ -436,5 +436,29 @@ public class SystemController {
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
     }          
+    
+    
+    /**
+     * 모듈적용메뉴가져오기
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectModuleMenuList.do")
+    @ApiOperation(value = "모듈적용메뉴가져오기", notes = "모듈적용메뉴가져오기.")
+    public BaseResponse<List<Menu>> selectModuleMenuList(HttpServletRequest request, @RequestBody Menu params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			//메뉴조회
+	        return new BaseResponse<List<Menu>>(systemService.selectModuleMenuList(params));
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }     
 	    
 }

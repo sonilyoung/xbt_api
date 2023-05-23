@@ -139,7 +139,37 @@ public class LearningMgrController {
 		
 		if(StringUtils.isEmpty(params.getModuleDesc())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleDesc" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getStudyLvl())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "StudyLvl" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getSlideSpeed())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "slideSpeed" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getModuleType())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleType" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getUseYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "useYn" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		if(StringUtils.isEmpty(params.getQuestionCnt())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "questionCnt" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		if(StringUtils.isEmpty(params.getModuleDesc())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleDesc" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getMenuCd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getCode());
 		}			
+		
+		
 		
 		try {
 			//모듈등록

@@ -21,7 +21,6 @@ public class Schedule {
 	private String moduleId;
 	private String moduleType;
 	private String eduType;
-	private String menuMessage;
 	private String menuFlag;
 	
 	private List<Schedule> menu1;

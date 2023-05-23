@@ -76,8 +76,8 @@ public class EvaluationController {
 		}
 		
 		params.setUserId(login.getUserId());
-		if(StringUtils.isEmpty(params.getEduType())){				
-			return new BaseResponse<Learning>(BaseResponseCode.PARAMS_ERROR, "EduType" + BaseApiMessage.REQUIRED.getMessage());
+		if(StringUtils.isEmpty(params.getMenuCd())){				
+			return new BaseResponse<Learning>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getMessage());
 		}			
 		
 		try {
@@ -87,7 +87,7 @@ public class EvaluationController {
 			}
 			
 			params.setProcCd(baselineData.getProcCd()); 
-			Learning learningData = learningService.selectLearning(params);
+			List<Learning> learningData = learningService.selectLearning(params);
 			if(learningData == null) {
 				return new BaseResponse<Learning>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
 			}
@@ -163,8 +163,8 @@ public class EvaluationController {
 		
 		params.setUserId(login.getUserId());
 		
-		if(StringUtils.isEmpty(params.getEduType())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "EduType" + BaseApiMessage.REQUIRED.getMessage());
+		if(StringUtils.isEmpty(params.getMenuCd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getMessage());
 		}		
 		if(StringUtils.isEmpty(params.getBagScanId())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getMessage());
@@ -181,7 +181,7 @@ public class EvaluationController {
 			}
 			
 			params.setProcCd(baselineData.getProcCd()); 
-			Learning learningData = learningService.selectLearning(params);
+			List<Learning> learningData = learningService.selectLearning(params);
 			if(learningData == null) {
 				return new BaseResponse<Integer>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
 			}
@@ -242,8 +242,8 @@ public class EvaluationController {
 		}
 		params.setUserId(login.getUserId());
 		
-		if(StringUtils.isEmpty(params.getEduType())){				
-			return new BaseResponse<Learning>(BaseResponseCode.PARAMS_ERROR, "EduType" + BaseApiMessage.REQUIRED.getMessage());
+		if(StringUtils.isEmpty(params.getMenuCd())){				
+			return new BaseResponse<Learning>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getMessage());
 		}	
 		
 		try {
@@ -253,7 +253,7 @@ public class EvaluationController {
 			}
 			
 			params.setProcCd(baselineData.getProcCd()); 
-			Learning learningData = learningService.selectLearning(params);
+			List<Learning> learningData = learningService.selectLearning(params);
 			if(learningData == null) {
 				return new BaseResponse<Learning>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
 			}

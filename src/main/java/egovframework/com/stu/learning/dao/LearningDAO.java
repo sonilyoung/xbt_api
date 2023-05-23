@@ -17,8 +17,8 @@ public class LearningDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectBaseline", params);
 	}	
 
-	public Learning selectLearning(Learning params) {
-		return selectOne(Namespace + ".selectLearning", params);
+	public List<?> selectLearning(Learning params) {
+		return (List<?>)selectList(Namespace + ".selectLearning", params);
 	}	
 	
 	public Learning selectModuleInfo(Learning params) {

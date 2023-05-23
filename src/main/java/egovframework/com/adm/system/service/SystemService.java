@@ -44,4 +44,8 @@ public interface SystemService {
 	public int deleteMenu(Menu params);
 
 	public Menu selectMenu(Menu params);	
+	
+	
+	public List<Menu> selectModuleMenuList(Menu params);
+		
 }

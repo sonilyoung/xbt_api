@@ -33,8 +33,8 @@
 			USER_ID ,
 			EDU_DATE 
 		FROM XBT_BASELINE_EDU_DATE 
-		WHERE MODULE_ID IS NOT NULL 
-		AND EDU_TYPE = #{eduType} 
+		WHERE  
+		MENU_CD = #{menuCd} 
 		AND USER_ID = #{userId} 
 		AND PROC_CD = #{procCd}
 	</select>
@@ -55,8 +55,8 @@
 		(
 			SELECT MODULE_ID  
 			FROM XBT_BASELINE_EDU_DATE 
-			WHERE MODULE_ID IS NOT NULL 
-			AND EDU_TYPE =  #{eduType} 
+			WHERE  
+			MENU_CD = #{menuCd}  
 			and USER_ID = #{userId}  
 			AND PROC_CD = #{procCd}
 		 )	

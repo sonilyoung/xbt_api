@@ -45,9 +45,10 @@ public class LearningServiceImpl implements LearningService {
 	}
 
 	@Override
-	public Learning selectLearning(Learning params) {
+	@SuppressWarnings("unchecked")
+	public List<Learning> selectLearning(Learning params) {
 		// TODO Auto-generated method stub
-		return learningDAO.selectLearning(params);
+		return (List<Learning>) learningDAO.selectLearning(params);
 	}	
 	
 	@Override

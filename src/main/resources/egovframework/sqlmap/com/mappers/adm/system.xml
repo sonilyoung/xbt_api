@@ -100,4 +100,15 @@
 		AND LANGUAGE_CODE = #{languageCode}
 	</delete>	
 	
+	<!-- 모듈적용메뉴가져오기 -->
+	<select id="selectModuleMenuList" parameterType="egovframework.com.adm.system.vo.Menu" resultType="egovframework.com.adm.system.vo.Menu">
+		SELECT 
+			MENU_CD,
+			MENU_NAME,
+			MENU_TYPE
+		FROM XBT_STU_MENU WHERE LANGUAGE_CODE = 'kr' 
+		AND MENU_TYPE IS NOT NULL
+		ORDER BY P_MENU_CD, MENU_ORDER ASC
+	</select>		
+	
 </mapper>

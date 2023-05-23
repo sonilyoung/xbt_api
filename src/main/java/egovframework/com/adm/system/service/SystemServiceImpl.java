@@ -98,6 +98,13 @@ public class SystemServiceImpl implements SystemService {
 	public Menu selectMenu(Menu params) {
 		// TODO Auto-generated method stub
 		return systemDAO.selectMenu(params);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Menu> selectModuleMenuList(Menu params) {
+		// TODO Auto-generated method stub
+		return (List<Menu>) systemDAO.selectModuleMenuList(params);
 	}	
 
 

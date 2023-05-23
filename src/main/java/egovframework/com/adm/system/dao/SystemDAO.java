@@ -52,5 +52,7 @@ public class SystemDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectMenu", params);
 	}			
 	
-
+	public List<?> selectModuleMenuList(Menu params) {
+		return (List<?>)selectList(Namespace + ".selectModuleMenuList", params);
+	}
 }

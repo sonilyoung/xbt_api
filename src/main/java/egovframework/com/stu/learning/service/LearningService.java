@@ -26,7 +26,7 @@ public interface LearningService {
 	
 	public Learning selectBaseline(Learning params);
 	
-	public Learning selectLearning(Learning params);
+	public List<Learning> selectLearning(Learning params);
 	
 	public Learning selectModuleInfo(Learning params);
 
