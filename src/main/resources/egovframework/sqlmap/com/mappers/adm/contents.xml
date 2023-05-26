@@ -92,8 +92,29 @@
 	<select id="selectUnitGroupList" parameterType="egovframework.com.adm.contents.vo.UnitGroup" resultType="egovframework.com.adm.contents.vo.UnitGroup" >
 			SELECT XUG.UNIT_GROUP_NO, /*코드번호*/
 			       XUG.UNIT_GROUP_CD, /*물품코드분류*/
-			       GROUP_NAME , /*물품분류명칭*/
-			       GROUP_DESC,/*물품분류설명*/
+					<choose>
+						<when test='languageCode == "kr"'>
+					       GROUP_NAME , /*물품분류명칭*/
+					       GROUP_DESC,/*물품분류설명*/
+						</when>
+						<when test='languageCode == "en"'>
+					       GROUP_NAME_EN AS GROUP_NAME, /*물품분류명칭*/
+					       GROUP_DESC_EN AS GROUP_DESC,/*물품분류설명*/										
+						</when>
+						<when test='languageCode == "ch"'>
+			       			GROUP_NAME_CH AS GROUP_NAME, /*물품분류명칭*/
+			       			GROUP_DESC_CH AS GROUP_DESC,/*물품분류설명*/				
+						</when>				
+						<when test='languageCode == "jp"'>
+			       			GROUP_NAME_JP AS GROUP_NAME, /*물품분류명칭*/
+			       			GROUP_DESC_JP AS GROUP_DESC,/*물품분류설명*/				
+						</when>
+						<otherwise>
+			       			GROUP_NAME , /*물품분류명칭*/
+			       			GROUP_DESC,/*물품분류설명*/	
+						</otherwise>											
+					</choose>			       
+			       
 			       ACTION_DIV,/*ACTION구분*/
 			       USE_YN,/*사용여부*/
 			       OPEN_YN,/*개봉여부*/
@@ -103,11 +124,9 @@
 			       UPDATE_DATE,/*수정일*/
 			       UPDATE_ID,/*수정자*/
 			       PARENT_UNIT_GROUP_CD,/*상위물품분류코드*/
-			       XUGI.IMG_FILE,
-			       LANGUAGE_CODE 
-			FROM XBT_UNIT_GROUP XUG INNER JOIN XBT_UNIT_GROUP_IMG XUGI 
-			ON XUG.UNIT_GROUP_CD = XUGI.UNIT_GROUP_CD
-			AND XUG.LANGUAGE_CODE = #{languageCode}
+			       IMG_FILE
+			FROM XBT_UNIT_GROUP XUG  
+			WHERE XUG.USE_YN = 'Y'
 			ORDER BY XUG.UNIT_GROUP_CD ASC
 	</select>	
 	
@@ -116,8 +135,28 @@
 	<select id="selectUnitGroup" parameterType="egovframework.com.adm.contents.vo.UnitGroup" resultType="egovframework.com.adm.contents.vo.UnitGroup" >
 			SELECT XUG.UNIT_GROUP_NO, /*코드번호*/
 			       XUG.UNIT_GROUP_CD, /*물품코드분류*/
-			       GROUP_NAME , /*물품분류명칭*/
-			       GROUP_DESC,/*물품분류설명*/
+					<choose>
+						<when test='languageCode == "kr"'>
+					       GROUP_NAME , /*물품분류명칭*/
+					       GROUP_DESC,/*물품분류설명*/
+						</when>
+						<when test='languageCode == "en"'>
+					       GROUP_NAME_EN AS GROUP_NAME, /*물품분류명칭*/
+					       GROUP_DESC_EN AS GROUP_DESC,/*물품분류설명*/										
+						</when>
+						<when test='languageCode == "ch"'>
+			       			GROUP_NAME_CH AS GROUP_NAME, /*물품분류명칭*/
+			       			GROUP_DESC_CH AS GROUP_DESC,/*물품분류설명*/				
+						</when>				
+						<when test='languageCode == "jp"'>
+			       			GROUP_NAME_JP AS GROUP_NAME, /*물품분류명칭*/
+			       			GROUP_DESC_JP AS GROUP_DESC,/*물품분류설명*/				
+						</when>
+						<otherwise>
+			       			GROUP_NAME , /*물품분류명칭*/
+			       			GROUP_DESC,/*물품분류설명*/	
+						</otherwise>											
+					</choose>		
 			       ACTION_DIV,/*ACTION구분*/
 			       USE_YN,/*사용여부*/
 			       OPEN_YN,/*개봉여부*/
@@ -128,10 +167,9 @@
 			       UPDATE_ID,/*수정자*/
 			       PARENT_UNIT_GROUP_CD,/*상위물품분류코드*/
 			       LANGUAGE_CODE,
-			       (SELECT IMG_FILE FROM XBT_UNIT_GROUP_IMG WHERE UNIT_GROUP_CD= XUG.UNIT_GROUP_CD) AS IMG_FILE 
+			       IMG_FILE 
 			FROM XBT_UNIT_GROUP XUG
-			WHERE XUG.LANGUAGE_CODE = #{languageCode}
-			AND XUG.UNIT_GROUP_CD = #{unitGroupCd}
+			WHERE XUG.UNIT_GROUP_CD = #{unitGroupCd}
 	</select>	
 		
 	
@@ -167,9 +205,11 @@
 	
 		
 	<!-- 그룹관리이미지삭제 -->
-	<insert id="deleteUnitGroupImg" parameterType="egovframework.com.adm.contents.vo.UnitGroup">	
-		DELETE FROM XBT_UNIT_GROUP_IMG WHERE UNIT_GROUP_CD = #{unitGroupCd} 
-	</insert>		
+	<update id="deleteUnitGroupImg" parameterType="egovframework.com.adm.contents.vo.UnitGroup">	
+		UPDATE XBT_UNIT_GROUP SET
+			IMG_FILE = ''
+		WHERE UNIT_GROUP_CD = #{unitGroupCd} 
+	</update>		
 	
 	
 	<!-- 그룹관리수정 -->
@@ -209,9 +249,11 @@
 
 
 	<!--그룹 이미지저장 -->
-	<insert id="insertUnitGroupImg" parameterType="egovframework.com.adm.contents.vo.UnitGroup" >
-		INSERT INTO XBT_UNIT_GROUP_IMG(UNIT_GROUP_CD, IMG_FILE)VALUES(#{unitGroupCd}, #{imgFile})
-	</insert>
+	<update id="insertUnitGroupImg" parameterType="egovframework.com.adm.contents.vo.UnitGroup" >
+		UPDATE XBT_UNIT_GROUP SET
+			IMG_FILE = #{imgFile}
+		WHERE UNIT_GROUP_CD = #{unitGroupCd} 		
+	</update>
 	
 	<!-- 물품콘텐츠관리 정보관리 -->
 	<select id="selectUnitList" parameterType="egovframework.com.adm.contents.vo.UnitImg" resultType="egovframework.com.adm.contents.vo.UnitImg" >	
@@ -220,13 +262,36 @@
 			, UNIT_SCAN_ID 
 			, UNIT_ID /*물품아이디*/
 			, UNIT_GROUP_CD/*뭎품그룹코드*/
-			, (SELECT GROUP_NAME FROM XBT_UNIT_GROUP where UNIT_GROUP_CD = XUI.UNIT_GROUP_CD and LANGUAGE_CODE = #{languageCode}) as UNIT_GROUP_NAME /*뭎품그룹코드*/
-			, UNIT_NAME /*물품명*/
-			, UNIT_DESC /*물품설명*/
+					<choose>
+						<when test='languageCode == "kr"'>
+						   ,(SELECT GROUP_NAME FROM XBT_UNIT_GROUP where UNIT_GROUP_CD = XUI.UNIT_GROUP_CD) as UNIT_GROUP_NAME /*뭎품그룹코드*/
+					       ,UNIT_NAME /*물품분류명칭*/
+					       ,UNIT_DESC/*물품분류설명*/ 
+						</when>
+						<when test='languageCode == "en"'>
+							,(SELECT GROUP_NAME_EN FROM XBT_UNIT_GROUP where UNIT_GROUP_CD = XUI.UNIT_GROUP_CD) as UNIT_GROUP_NAME /*뭎품그룹코드*/
+					       ,UNIT_NAME_EN AS GROUP_NAME /*물품분류명칭*/
+					       ,UNIT_DESC_EN AS GROUP_DESC/*물품분류설명*/										
+						</when>
+						<when test='languageCode == "ch"'>
+							,(SELECT GROUP_NAME_CH FROM XBT_UNIT_GROUP where UNIT_GROUP_CD = XUI.UNIT_GROUP_CD) as UNIT_GROUP_NAME /*뭎품그룹코드*/
+			       			,UNIT_NAME_CH AS GROUP_NAME /*물품분류명칭*/
+			       			,UNIT_DESC_CH AS GROUP_DESC/*물품분류설명*/				
+						</when>				
+						<when test='languageCode == "jp"'>
+							,(SELECT GROUP_NAME_JP FROM XBT_UNIT_GROUP where UNIT_GROUP_CD = XUI.UNIT_GROUP_CD) as UNIT_GROUP_NAME /*뭎품그룹코드*/
+			       			,UNIT_NAME_JP AS GROUP_NAME /*물품분류명칭*/
+			       			,UNIT_DESC_JP AS GROUP_DESC/*물품분류설명*/				
+						</when>
+						<otherwise>
+							,(SELECT GROUP_NAME FROM XBT_UNIT_GROUP where UNIT_GROUP_CD = XUI.UNIT_GROUP_CD) as UNIT_GROUP_NAME /*뭎품그룹코드*/
+					       , UNIT_NAME /*물품분류명칭*/
+					       , UNIT_DESC /*물품분류설명*/
+						</otherwise>											
+					</choose>
 			, USE_YN/*사용여부*/
 			, XUI.LANGUAGE_CODE
 		FROM XBT_UNIT_INFO XUI
-		WHERE XUI.LANGUAGE_CODE = #{languageCode}  		
 	</select>	
 	
 	
@@ -247,8 +312,8 @@
 			,(SELECT SIDE_IMG FROM XBT_UNIT_IMG_INFO_MASTER WHERE XUI.UNIT_SCAN_ID = UNIT_SCAN_ID) AS SIDE_IMG
 			,(SELECT THREED_IMG FROM XBT_UNIT_IMG_INFO_MASTER WHERE XUI.UNIT_SCAN_ID = UNIT_SCAN_ID) AS THREED_IMG			
 		FROM XBT_UNIT_INFO XUI
-		WHERE XUI.LANGUAGE_CODE = #{languageCode}
-		AND UNIT_ID = #{unitId}  		
+		WHERE 
+		UNIT_ID = #{unitId}  		
 	</select>		
 	
 	
@@ -295,7 +360,6 @@
 			T1.INSERT_DATE 
 		FROM XBT_BAG_INFO T1 LEFT JOIN XBT_UNIT_GROUP T3 ON
 		T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD
-		AND T3.LANGUAGE_CODE = 'kr'	
 		ORDER BY BAG_SCAN_ID ASC		  		 	
 	</select>
 	
@@ -546,13 +610,13 @@
 	<select id="selectXbtSeq" parameterType="egovframework.com.adm.contents.vo.XbtSeq" resultType="egovframework.com.adm.contents.vo.XbtSeq" >	
 		<choose>
 			<when test='seqInfo == "G"'><!-- 단품그룹시퀀스 -->
-				SELECT concat('G', LPAD(cast(right(IFNULL(MAX(UNIT_GROUP_CD), '0'), 6) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_UNIT_GROUP
+				SELECT concat('G', LPAD(cast(right(IFNULL(MAX(UNIT_GROUP_CD), '0'), 5) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_UNIT_GROUP
 			</when>		
 			<when test='seqInfo == "U"'><!-- 단품시퀀스 -->
-				SELECT concat('U', LPAD(cast(right(IFNULL(MAX(UNIT_ID), '0'), 6) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_UNIT_INFO
+				SELECT concat('U', LPAD(cast(right(IFNUL(MAX(UNIT_ID), '0'), 5) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_UNIT_INFO
 			</when>
 			<when test='seqInfo == "X"'><!-- 가방xray시퀀스 -->
-				SELECT concat('X', LPAD(cast(right(IFNULL(MAX(BAG_SCAN_ID), '0'), 6) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_BAG_INFO
+				SELECT concat('X', LPAD(cast(right(IFNULL(MAX(BAG_SCAN_ID), '0'), 5) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_BAG_INFO
 			</when>
 			<!-- 
 			<when test='seqInfo == "UX"'>단품시퀀스 

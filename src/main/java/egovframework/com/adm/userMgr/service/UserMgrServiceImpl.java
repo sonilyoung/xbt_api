@@ -42,11 +42,42 @@ public class UserMgrServiceImpl implements UserMgrService {
 
 
 	@Override
-	public List<UserInfo> getUserList(UserInfo params) {
+	public List<UserInfo> selectUserList(UserInfo params) {
 		// TODO Auto-generated method stub
-		return (List<UserInfo>) userMgrDAO.getUserList(params);
+		return (List<UserInfo>) userMgrDAO.selectUserList(params);
 	}
 
+
+	@Override
+	public UserInfo selectUser(UserInfo params) {
+		// TODO Auto-generated method stub
+		return (UserInfo) userMgrDAO.selectUser(params);
+	}
+
+
+	@Override
+	public int insertUser(UserInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.insertUser(params);
+	}
+
+
+	@Override
+	public int updateUser(UserInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.updateUser(params);
+	}
+
+
+	@Override
+	public int deleteUser(UserInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.deleteUser(params);
+	}	
+	
+	
+	
+	
 
 	@Override
 	public List<UserBaseline> getUserBaselineList(UserBaseline params) {
@@ -74,5 +105,7 @@ public class UserMgrServiceImpl implements UserMgrService {
 		// TODO Auto-generated method stub
 		return (List<UserBaselineSubInfo>) userMgrDAO.getUserBaselineSubDetailList(params);
 	}
+
+
 
 }

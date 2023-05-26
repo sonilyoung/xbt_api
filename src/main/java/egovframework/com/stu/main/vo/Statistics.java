@@ -15,6 +15,7 @@ public class Statistics {
 	private String testDate;
 	private int studyLvl;
 	private int moduleId;
+	private String moduleName;
 	private int gainScore;
 	private int passScore;
 	private int rightCnt;
@@ -25,6 +26,9 @@ public class Statistics {
 	private String insertDate;
 	private String type;
 	private String languageCode;
+	
+	private String unitGroupName;
+	private String unitGroupCd;
 
 	private int total;
 	private int firearms;

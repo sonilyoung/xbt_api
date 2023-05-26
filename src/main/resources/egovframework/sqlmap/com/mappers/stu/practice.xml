@@ -13,13 +13,11 @@
 			,OPEN_YN
 			,PASS_YN			
 			,(SELECT CODE_NAME FROM XBT_COMMON_CODE T1 WHERE T1.GROUP_ID = 'actionDiv' 
-				AND T1.CODE_VALUE = ACTION_DIV AND T1.USE_YN = 'Y' AND LANGUAGE_CODE = 'KOR')AS actionDivName
+				AND T1.CODE_VALUE = ACTION_DIV AND T1.USE_YN = 'Y' AND LANGUAGE_CODE = #{languageCode})AS actionDivName
 			,UNIT_IMG
 			,LANGUAGE_CODE 
 		FROM
 			XBT_UNIT_GROUP
-		WHERE
-			LANGUAGE_CODE = #{languageCode}
 	</select>	
 	
 	<!-- 반입금지물품정답조회 -->
@@ -29,8 +27,7 @@
 		FROM
 			XBT_UNIT_GROUP
 		WHERE
-			LANGUAGE_CODE = #{languageCode}
-			AND UNIT_GROUP_CD = #{unitGroupCd}
+			UNIT_GROUP_CD = #{unitGroupCd}
 	</select>		
 	
 	<!-- 물품연습 물품명칭조회  -->
@@ -40,10 +37,26 @@
 			, UNIT_SCAN_ID 
 			, UNIT_ID /*물품아이디*/
 			, UNIT_GROUP_CD/*뭎품그룹코드*/
-			, UNIT_NAME /*물품명*/
+			<choose>
+				<when test='languageCode == "kr"'>
+					, UNIT_NAME /*물품명*/
+				</when>
+				<when test='languageCode == "en"'>
+					, UNIT_NAME_EN AS UNIT_NAME /*물품명*/				
+				</when>
+				<when test='languageCode == "ch"'>
+					, UNIT_NAME_CH AS AS UNIT_NAME /*물품명*/				
+				</when>				
+				<when test='languageCode == "jp"'>
+					, UNIT_NAME_JP AS AS UNIT_NAME /*물품명*/				
+				</when>
+				<otherwise>
+					, UNIT_NAME /*물품명*/
+				</otherwise>											
+			</choose>
 		FROM XBT_UNIT_INFO XUI
-		WHERE XUI.LANGUAGE_CODE = #{languageCode}
-		AND UNIT_GROUP_CD = #{unitGroupCd}  			
+		WHERE
+			UNIT_GROUP_CD = #{unitGroupCd}  			
 	</select>
 	
 	<!-- 물품연습 물품상세조회  -->
@@ -55,12 +68,26 @@
 			, T2.UNIT_GROUP_CD/*뭎품그룹코드*/
 			, (SELECT GROUP_NAME FROM XBT_UNIT_GROUP WHERE UNIT_GROUP_CD = T2.UNIT_GROUP_CD and LANGUAGE_CODE = #{languageCode}) as UNIT_GROUP_NAME /*뭎품그룹코드*/
 			, (SELECT CODE_NAME FROM XBT_COMMON_CODE T1 WHERE T1.GROUP_ID = 'actionDiv' AND T1.CODE_VALUE = ACTION_DIV AND T1.USE_YN = 'Y' AND LANGUAGE_CODE = #{languageCode})AS actionDivName			
-			, UNIT_NAME /*물품명*/
+			<choose>
+				<when test='languageCode == "kr"'>
+					, UNIT_NAME /*물품명*/
+				</when>
+				<when test='languageCode == "en"'>
+					, UNIT_NAME_EN AS UNIT_NAME /*물품명*/				
+				</when>
+				<when test='languageCode == "ch"'>
+					, UNIT_NAME_CH AS AS UNIT_NAME /*물품명*/				
+				</when>						
+				<when test='languageCode == "jp"'>
+					, UNIT_NAME_JP AS AS UNIT_NAME /*물품명*/				
+				</when>
+				<otherwise>
+					, UNIT_NAME /*물품명*/
+				</otherwise>											
+			</choose>			
 			,T3.ACTION_DIV_NAME 
 		FROM XBT_UNIT_INFO T2 inner join XBT_UNIT_GROUP T3
 		ON T2.UNIT_GROUP_CD = T3.UNIT_GROUP_CD 
-		AND T2.LANGUAGE_CODE = #{languageCode}
-		AND T3.LANGUAGE_CODE = #{languageCode}
 		AND T2.UNIT_ID = #{unitId}
 	</select>
 </mapper>

@@ -253,9 +253,6 @@ public class ContentsController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(params.getLanguageCode() == null || "".contentEquals(params.getLanguageCode())){				
-			return new BaseResponse<List<UnitGroup>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
-		}	
 		
 		try {
 			//그룹관리조회

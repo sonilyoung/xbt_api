@@ -112,6 +112,7 @@
 			TEST_DATE,
 			(CASE WHEN PASS_YN = 'Y' THEN 'Pass' ELSE 'Fail' END)AS passYn ,
 			GAIN_SCORE,
+			(SELECT MODULE_NM FROM XBT_MODULE_INFO_MASTER T1 WHERE T1.MODULE_ID= T2.MODULE_ID)AS moduleName,
 			(SELECT PASS_SCORE FROM XBT_MODULE_INFO_MASTER T1 WHERE T1.MODULE_ID= T2.MODULE_ID)AS passScore
 		FROM XBT_BASELINE_LEARNING T2
 		WHERE USER_ID = #{userId}
@@ -133,76 +134,54 @@
 	
 	
 	<!-- 오답통계정보데이터 -->
-	<select id="selectStatisticsWrongAnswerContentsList" parameterType="egovframework.com.stu.main.vo.Statistics" resultType="egovframework.com.stu.main.vo.Statistics">
-		SELECT 
-		    COUNT(*) AS TOTAL
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000001', 'G000001', NULL)) as firearms
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000002', 'G000002', NULL)) as explosives
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000003', 'G000003', NULL)) as ammunitions
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000004', 'G000004', NULL)) as knife
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000005', 'G000005', NULL)) as generalWeapons
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000006', 'G000006', NULL)) as gastrointestinalWeapons
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000007', 'G000007', NULL)) as toolssuppliesCategory
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000008', 'G000008', NULL)) as flammableSubstances
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000009', 'G000009', NULL)) as dangerSubstance
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000010', 'G000010', NULL)) as Liquid
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000013', 'G000013', NULL)) as pass  
-		FROM(
+	<select id="selectStatisticsWrongAnswerList1" parameterType="egovframework.com.stu.main.vo.Statistics" resultType="egovframework.com.stu.main.vo.Statistics">
+		SELECT COUNT(UNIT_GROUP_CD)AS total, UNIT_GROUP_CD, UNIT_GROUP_NAME FROM (
+			SELECT * FROM (
 			SELECT
-				(SELECT UNIT_GROUP_CD FROM XBT_BAG_INFO T1 WHERE T1.BAG_SCAN_ID = T3.BAG_SCAN_ID) AS UNIT_GROUP_CD
+				(SELECT UNIT_GROUP_CD FROM XBT_BAG_INFO T1 WHERE T1.BAG_SCAN_ID = T3.BAG_SCAN_ID) AS UNIT_GROUP_CD,
+				(SELECT GROUP_NAME FROM XBT_UNIT_GROUP xug WHERE UNIT_GROUP_CD = (SELECT UNIT_GROUP_CD FROM XBT_BAG_INFO T1 WHERE T1.BAG_SCAN_ID = T3.BAG_SCAN_ID)) AS UNIT_GROUP_NAME
 			FROM
-				XBT_STU_LEARNING_PROGRESSING T3 
-			WHERE
-				USER_ID = #{userId}
+				XBT_STU_LEARNING_PROGRESSING T3 INNER JOIN XBT_BAG_INFO T4
+				ON T3.BAG_SCAN_ID = T4.BAG_SCAN_ID
+				AND USER_ID = #{userId} 		
 				AND END_YN = 'Y'
-		)TOT1
-		UNION ALL
-		SELECT 
-		    COUNT(*) AS TOTAL
-		  , ROUND(COUNT(IF(UNIT_GROUP_CD = 'G000001', 'G000001', NULL))/(select count(*) from (select user_id from XBT_STU_LEARNING_PROGRESSING group by user_id)temp)) as firearms
-		  , ROUND(COUNT(IF(UNIT_GROUP_CD = 'G000002', 'G000002', NULL))/(select count(*) from (select user_id from XBT_STU_LEARNING_PROGRESSING group by user_id)temp))  as explosives
-		  , ROUND(COUNT(IF(UNIT_GROUP_CD = 'G000003', 'G000003', NULL))/(select count(*) from (select user_id from XBT_STU_LEARNING_PROGRESSING group by user_id)temp))  as ammunitions
-		  , ROUND(COUNT(IF(UNIT_GROUP_CD = 'G000004', 'G000004', NULL))/(select count(*) from (select user_id from XBT_STU_LEARNING_PROGRESSING group by user_id)temp))  as knife
-		  , ROUND(COUNT(IF(UNIT_GROUP_CD = 'G000005', 'G000005', NULL))/(select count(*) from (select user_id from XBT_STU_LEARNING_PROGRESSING group by user_id)temp))  as generalWeapons
-		  , ROUND(COUNT(IF(UNIT_GROUP_CD = 'G000006', 'G000006', NULL))/(select count(*) from (select user_id from XBT_STU_LEARNING_PROGRESSING group by user_id)temp))  as gastrointestinalWeapons
-		  , ROUND(COUNT(IF(UNIT_GROUP_CD = 'G000007', 'G000007', NULL))/(select count(*) from (select user_id from XBT_STU_LEARNING_PROGRESSING group by user_id)temp))  as toolssuppliesCategory
-		  , ROUND(COUNT(IF(UNIT_GROUP_CD = 'G000008', 'G000008', NULL))/(select count(*) from (select user_id from XBT_STU_LEARNING_PROGRESSING group by user_id)temp))  as flammableSubstances
-		  , ROUND(COUNT(IF(UNIT_GROUP_CD = 'G000009', 'G000009', NULL))/(select count(*) from (select user_id from XBT_STU_LEARNING_PROGRESSING group by user_id)temp))  as dangerSubstance
-		  , ROUND(COUNT(IF(UNIT_GROUP_CD = 'G000010', 'G000010', NULL))/(select count(*) from (select user_id from XBT_STU_LEARNING_PROGRESSING group by user_id)temp))  as Liquid
-		  , ROUND(COUNT(IF(UNIT_GROUP_CD = 'G000013', 'G000013', NULL))/(select count(*) from (select user_id from XBT_STU_LEARNING_PROGRESSING group by user_id)temp))  as pass  		    
-		FROM(
+				ORDER BY UNIT_GROUP_CD 	
+			)TMP WHERE UNIT_GROUP_CD IN (SELECT UNIT_GROUP_CD from XBT_UNIT_GROUP WHERE USE_YN = 'Y')
+		)TOT GROUP BY UNIT_GROUP_CD , UNIT_GROUP_NAME	
+	</select>	
+	
+	<!-- 오답통계정보데이터 (평균)-->
+	<select id="selectStatisticsWrongAnswerList2" parameterType="egovframework.com.stu.main.vo.Statistics" resultType="egovframework.com.stu.main.vo.Statistics">
+		SELECT COUNT(UNIT_GROUP_CD)AS total, UNIT_GROUP_CD, UNIT_GROUP_NAME FROM (
+			SELECT * FROM (
 			SELECT
-				(SELECT UNIT_GROUP_CD FROM XBT_BAG_INFO T1 WHERE T1.BAG_SCAN_ID = T3.BAG_SCAN_ID) AS UNIT_GROUP_CD
+				(SELECT UNIT_GROUP_CD FROM XBT_BAG_INFO T1 WHERE T1.BAG_SCAN_ID = T3.BAG_SCAN_ID) AS UNIT_GROUP_CD,
+				(SELECT GROUP_NAME FROM XBT_UNIT_GROUP xug WHERE UNIT_GROUP_CD = (SELECT UNIT_GROUP_CD FROM XBT_BAG_INFO T1 WHERE T1.BAG_SCAN_ID = T3.BAG_SCAN_ID)) AS UNIT_GROUP_NAME
 			FROM
-				XBT_STU_LEARNING_PROGRESSING T3 
-			WHERE
-				T3.ACTION_DIV != T3.USER_ACTION_DIV 
+				XBT_STU_LEARNING_PROGRESSING T3 INNER JOIN XBT_BAG_INFO T4
+				ON T3.BAG_SCAN_ID = T4.BAG_SCAN_ID
+				AND T3.ACTION_DIV != T3.USER_ACTION_DIV 		
 				AND END_YN = 'Y'
-		)TOT2
-		UNION ALL
-		SELECT 
-		    COUNT(*) AS TOTAL
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000001', 'G000001', NULL)) as firearms
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000002', 'G000002', NULL)) as explosives
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000003', 'G000003', NULL)) as ammunitions
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000004', 'G000004', NULL)) as knife
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000005', 'G000005', NULL)) as generalWeapons
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000006', 'G000006', NULL)) as gastrointestinalWeapons
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000007', 'G000007', NULL)) as toolssuppliesCategory
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000008', 'G000008', NULL)) as flammableSubstances
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000009', 'G000009', NULL)) as dangerSubstance
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000010', 'G000010', NULL)) as Liquid
-		  , COUNT(IF(UNIT_GROUP_CD = 'G000013', 'G000013', NULL)) as pass  
-		FROM(
+				ORDER BY UNIT_GROUP_CD 	
+			)TMP WHERE UNIT_GROUP_CD IN (SELECT UNIT_GROUP_CD from XBT_UNIT_GROUP WHERE USE_YN = 'Y')
+		)TOT GROUP BY UNIT_GROUP_CD , UNIT_GROUP_NAME	
+	</select>
+	
+	<!-- 오답통계정보데이터 (오답)-->
+	<select id="selectStatisticsWrongAnswerList3" parameterType="egovframework.com.stu.main.vo.Statistics" resultType="egovframework.com.stu.main.vo.Statistics">
+		SELECT COUNT(UNIT_GROUP_CD)AS total, UNIT_GROUP_CD, UNIT_GROUP_NAME FROM (
+			SELECT * FROM (
 			SELECT
-				(SELECT UNIT_GROUP_CD FROM XBT_BAG_INFO T1 WHERE T1.BAG_SCAN_ID = T3.BAG_SCAN_ID) AS UNIT_GROUP_CD
+				(SELECT UNIT_GROUP_CD FROM XBT_BAG_INFO T1 WHERE T1.BAG_SCAN_ID = T3.BAG_SCAN_ID) AS UNIT_GROUP_CD,
+				(SELECT GROUP_NAME FROM XBT_UNIT_GROUP xug WHERE UNIT_GROUP_CD = (SELECT UNIT_GROUP_CD FROM XBT_BAG_INFO T1 WHERE T1.BAG_SCAN_ID = T3.BAG_SCAN_ID)) AS UNIT_GROUP_NAME
 			FROM
-				XBT_STU_LEARNING_PROGRESSING T3 
-			WHERE
-				USER_ID = #{userId}
-				AND T3.ACTION_DIV != T3.USER_ACTION_DIV 
+				XBT_STU_LEARNING_PROGRESSING T3 INNER JOIN XBT_BAG_INFO T4
+				ON T3.BAG_SCAN_ID = T4.BAG_SCAN_ID
+				AND USER_ID = #{userId}
+				AND T3.ACTION_DIV != T3.USER_ACTION_DIV 		
 				AND END_YN = 'Y'
-		)TOT3    
-
-	</select>		
+				ORDER BY UNIT_GROUP_CD 	
+			)TMP WHERE UNIT_GROUP_CD IN (SELECT UNIT_GROUP_CD from XBT_UNIT_GROUP WHERE USE_YN = 'Y')
+		)TOT GROUP BY UNIT_GROUP_CD , UNIT_GROUP_NAME	
+	</select>
 </mapper>

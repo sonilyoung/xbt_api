@@ -65,9 +65,21 @@ public class MainServiceImpl implements MainService {
 	}
 	
 	@Override
-	public List<Statistics> selectStatisticsWrongAnswerContentsList(Statistics params) {
+	public List<Statistics> selectStatisticsWrongAnswerList1(Statistics params) {
 		// TODO Auto-generated method stub
-		return (List<Statistics>)mainDAO.selectStatisticsWrongAnswerContentsList(params);
+		return (List<Statistics>)mainDAO.selectStatisticsWrongAnswerList1(params);
+	}
+	
+	@Override
+	public List<Statistics> selectStatisticsWrongAnswerList2(Statistics params) {
+		// TODO Auto-generated method stub
+		return (List<Statistics>)mainDAO.selectStatisticsWrongAnswerList2(params);
+	}
+	
+	@Override
+	public List<Statistics> selectStatisticsWrongAnswerList3(Statistics params) {
+		// TODO Auto-generated method stub
+		return (List<Statistics>)mainDAO.selectStatisticsWrongAnswerList3(params);
 	}
 
 

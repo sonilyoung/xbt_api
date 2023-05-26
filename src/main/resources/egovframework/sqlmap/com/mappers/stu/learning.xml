@@ -194,10 +194,27 @@
 	<!-- 학습문제출제목록상세정보가져오기 -->
 	<select id="selectLearnProblemsResult" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
 		SELECT 
-			(SELECT UNIT_NAME FROM XBT_UNIT_INFO T2 WHERE T2.UNIT_ID = T3.UNIT_ID AND LANGUAGE_CODE = #{languageCode}) AS unitName,
-			(SELECT OPEN_YN FROM XBT_UNIT_GROUP T1 WHERE T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD AND LANGUAGE_CODE = #{languageCode}) AS openYn,
-			(SELECT PASS_YN FROM XBT_UNIT_GROUP T1 WHERE T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD AND LANGUAGE_CODE = #{languageCode}) AS passYn
-		FROM XBT_BAG_CONST_UNIT T3 
+			<choose>
+				<when test='languageCode == "kr"'>
+					(SELECT UNIT_NAME FROM XBT_UNIT_INFO T2 WHERE T2.UNIT_ID = T3.UNIT_ID) AS unitName,
+				</when>
+				<when test='languageCode == "en"'>
+					(SELECT UNIT_NAME_EN FROM XBT_UNIT_INFO T2 WHERE T2.UNIT_ID = T3.UNIT_ID) AS unitName,				
+				</when>
+				<when test='languageCode == "ch"'>
+					(SELECT UNIT_NAME_CH FROM XBT_UNIT_INFO T2 WHERE T2.UNIT_ID = T3.UNIT_ID) AS unitName,
+				</when>				
+				<when test='languageCode == "jp"'>
+					(SELECT UNIT_NAME_JP FROM XBT_UNIT_INFO T2 WHERE T2.UNIT_ID = T3.UNIT_ID) AS unitName,
+				</when>
+				<otherwise>
+					, UNIT_NAME /*물품명*/
+				</otherwise>											
+			</choose>
+			(SELECT OPEN_YN FROM XBT_UNIT_GROUP T1 WHERE T1.UNIT_GROUP_CD = T4.UNIT_GROUP_CD ) AS openYn,
+			(SELECT PASS_YN FROM XBT_UNIT_GROUP T1 WHERE T1.UNIT_GROUP_CD = T4.UNIT_GROUP_CD ) AS passYn												
+		FROM XBT_BAG_CONST_UNIT T3 INNER JOIN XBT_UNIT_INFO T4
+		ON T3.UNIT_ID = T4.UNIT_ID 
 		WHERE BAG_SCAN_ID = #{bagScanId}
 	</select>	
 	

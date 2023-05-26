@@ -530,11 +530,11 @@ public class XbtImageServiceImpl implements XbtImageService {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
         		//System.out.println("fileByte : "+fileByte);
         		
-        		if(fileList[i].getName().contains("B")) {//정면
+        		if(fileList[i].getName().contains("B") || fileList[i].getName().contains("101")) {//정면
         			result.setImgFront(fileByte);
-        		}else if(fileList[i].getName().contains("C")) {//측면
+        		}else if(fileList[i].getName().contains("C")|| fileList[i].getName().contains("201")) {//측면
         			result.setImgSide(fileByte);
-        		}else if(fileList[i].getName().contains("R")) {//실사이미지
+        		}else if(fileList[i].getName().contains("R")|| fileList[i].getName().contains("401")) {//실사이미지
         			result.setImgReal(fileByte);
         		}else if(fileList[i].getName().contains("3D")) {//3D
         			result.setImgThreed(fileByte);
@@ -673,6 +673,10 @@ public class XbtImageServiceImpl implements XbtImageService {
 		fileList = FileReader.ListFile( strDirPath );
 			
         byte[] fileByte;/*이미지*/
+        
+        if(fileList==null) {
+        	return params;
+        }   
         
         //결과유기물
         for( int i = 0; i < fileList.length; i++ ) { 

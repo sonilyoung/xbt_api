@@ -31,5 +31,25 @@ public class StuLogin {
 	private String procYear;
 	private String procSeq;
 	private String moduleId;
+	private String eduName;
+	private String userNameCh;
+	private String userNameEn;
+	private String sex;
+	private String birthDay;
+	private String age;
+	private String address;
+	private String department;
+	private String work;
+	private String career1;
+	private String career2;
+	private String career3;
+	private String career4;
+	private String career5;
+	private String lastEduSchool;
+	private String militaryCareer;
+	private String registNumber;
+	private String employStatusYn;
+	private String lastEdu;
+	private String writeDate;
 
 }

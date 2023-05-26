@@ -274,7 +274,13 @@ public class MainController {
 				List<Statistics> titleList = mainService.selectStatisticsTitleList(params);
 				params.setEduEvaluationList(titleList);
 			}else {//오답조회
-				List<Statistics> dataList = mainService.selectStatisticsWrongAnswerContentsList(params);
+				
+				//총건수
+				List<Statistics> dataList1 = mainService.selectStatisticsWrongAnswerList1(params);
+				//평균
+				List<Statistics> dataList2 = mainService.selectStatisticsWrongAnswerList2(params);
+				//오답
+				List<Statistics> dataList3 = mainService.selectStatisticsWrongAnswerList3(params);
 				
 				//총건수
 				List<Integer>totalCnt = new ArrayList<Integer>();				
@@ -283,59 +289,31 @@ public class MainController {
 				//오답
 				List<Integer> wrongAnswerCnt = new ArrayList<Integer>();
 				
-			
-				//총건수
-				totalCnt.add(dataList.get(0).getFirearms());
-				totalCnt.add(dataList.get(0).getExplosives());
-				totalCnt.add(dataList.get(0).getAmmunitions());
-				totalCnt.add(dataList.get(0).getKnife());
-				totalCnt.add(dataList.get(0).getGeneralWeapons());
-				totalCnt.add(dataList.get(0).getGastrointestinalWeapons());
-				totalCnt.add(dataList.get(0).getToolssuppliesCategory());
-				totalCnt.add(dataList.get(0).getFlammableSubstances());
-				totalCnt.add(dataList.get(0).getDangerSubstance());
-				totalCnt.add(dataList.get(0).getLiquid());
-				totalCnt.add(dataList.get(0).getPass());
+				for(Statistics s : dataList1) {
+					totalCnt.add(s.getTotal());
+				}
 				
-				//평균
-				averageCnt.add(dataList.get(1).getFirearms());
-				averageCnt.add(dataList.get(1).getExplosives());
-				averageCnt.add(dataList.get(1).getAmmunitions());
-				averageCnt.add(dataList.get(1).getKnife());
-				averageCnt.add(dataList.get(1).getGeneralWeapons());
-				averageCnt.add(dataList.get(1).getGastrointestinalWeapons());
-				averageCnt.add(dataList.get(1).getToolssuppliesCategory());
-				averageCnt.add(dataList.get(1).getFlammableSubstances());
-				averageCnt.add(dataList.get(1).getDangerSubstance());
-				averageCnt.add(dataList.get(1).getLiquid());
-				averageCnt.add(dataList.get(1).getPass());				
+				for(Statistics s : dataList2) {
+					averageCnt.add(s.getTotal());
+				}
 				
-				//개인오답
-				wrongAnswerCnt.add(dataList.get(2).getFirearms());
-				wrongAnswerCnt.add(dataList.get(2).getExplosives());
-				wrongAnswerCnt.add(dataList.get(2).getAmmunitions());
-				wrongAnswerCnt.add(dataList.get(2).getKnife());
-				wrongAnswerCnt.add(dataList.get(2).getGeneralWeapons());
-				wrongAnswerCnt.add(dataList.get(2).getGastrointestinalWeapons());
-				wrongAnswerCnt.add(dataList.get(2).getToolssuppliesCategory());
-				wrongAnswerCnt.add(dataList.get(2).getFlammableSubstances());
-				wrongAnswerCnt.add(dataList.get(2).getDangerSubstance());
-				wrongAnswerCnt.add(dataList.get(2).getLiquid());
-				wrongAnswerCnt.add(dataList.get(2).getPass());				
+				for(Statistics s : dataList3) {
+					wrongAnswerCnt.add(s.getTotal());
+				}
 					
 				params.setTotalCnt(totalCnt);
 				params.setAverageCnt(averageCnt);
 				params.setWrongAnswerCnt(wrongAnswerCnt);
 
 				//그룹관리조회
-				UnitGroup ug = new UnitGroup();
-				ug.setLanguageCode(params.getLanguageCode());
-				List<UnitGroup> groupList = practiceService.selectUnitGroupList(ug);
+				//UnitGroup ug = new UnitGroup();
+				//ug.setLanguageCode(params.getLanguageCode());
+				//List<UnitGroup> groupList = practiceService.selectUnitGroupList(ug);
 				
-				String [] categorys = new String[groupList.size()];
+				String [] categorys = new String[dataList1.size()];
 				int i = 0;
-				for(UnitGroup s : groupList) {
-					categorys[i] = s.getGroupName(); 
+				for(Statistics s : dataList1) {
+					categorys[i] = s.getUnitGroupName(); 
 					i++;
 				}
 				params.setCategories(categorys);				

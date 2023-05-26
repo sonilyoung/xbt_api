@@ -16,6 +16,12 @@ public class UnitGroup implements Serializable {
 	private String unitGroupCd; /*물품코드분류*/
 	private String groupName; /*물품분류상세*/
 	private String groupDesc; /*물품분류설명*/
+	private String groupNameEn; /*물품분류상세*/
+	private String groupDescEn; /*물품분류설명*/
+	private String groupNameJp; /*물품분류상세*/
+	private String groupDescJp; /*물품분류설명*/
+	private String groupNameCh; /*물품분류상세*/
+	private String groupDescCh; /*물품분류설명*/
 	private String actionDiv;/*action구분*/
 	private String openYn;/*개봉여부*/
 	private String passYn;/*통과여부*/

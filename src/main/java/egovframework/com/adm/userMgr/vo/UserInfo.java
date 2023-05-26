@@ -1,10 +1,5 @@
 package egovframework.com.adm.userMgr.vo;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import egovframework.rte.psl.dataaccess.util.EgovMap;
 import lombok.Data;
 
 @Data
@@ -15,10 +10,10 @@ public class UserInfo {
 	private String userNm;                     /*사용자명*/        
 	private String userPw;                     /*패스워드*/
 	private String userPhoto;								 /*교육생사진(조회 속도를 위해 조회하지 않음 입력을 위해 빈칸 처리)*/
-	private String iauthCd;                     /*권한코드*/        
+	private String iauthCd;                     /*권한코드*/
+	private String authCd;	                 /*권한코드이름*/
 	private String authNm;	                 /*권한코드이름*/
 	private String company;	                 /*회사*/
-	private String dept;                        /*부서*/    
 	private String position;	                 /*직급*/
 	private String trainingDiv;                /*교육구분*/
 	private String telNo;                      /*전화번호*/        
@@ -36,5 +31,27 @@ public class UserInfo {
 	private String insertDate;                      /*등록일자*/        
 	private String updateId;                      /*수정자id*/        
 	private String updateDate;                      /*수정일자*/   
+	
+	private String eduName;
+	private String userNmCh;
+	private String userNmEn;
+	private String sex;
+	private String birthDay;
+	private String age;
+	private String address;
+	private String department;
+	private String work;
+	private String career1;
+	private String career2;
+	private String career3;
+	private String career4;
+	private String career5;
+	private String lastEduSchool;
+	private String militaryCareer;
+	private String registNumber;
+	private String employStatusYn;
+	private String lastEdu;
+	private String writeDate;
+	
 	
 }

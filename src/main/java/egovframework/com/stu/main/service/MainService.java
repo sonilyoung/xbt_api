@@ -33,6 +33,10 @@ public interface MainService {
 	
 	public List<Statistics> selectStatisticsContensList(Statistics params);
 	
-	public List<Statistics> selectStatisticsWrongAnswerContentsList(Statistics params);
+	public List<Statistics> selectStatisticsWrongAnswerList1(Statistics params);
+	
+	public List<Statistics> selectStatisticsWrongAnswerList2(Statistics params);
+	
+	public List<Statistics> selectStatisticsWrongAnswerList3(Statistics params);
 
 }

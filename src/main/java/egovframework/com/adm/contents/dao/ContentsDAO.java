@@ -70,7 +70,7 @@ public class ContentsDAO extends EgovAbstractMapper{
 	}	   
 	
 	public int deleteUnitGroupImg(UnitGroup params) {
-		return delete(Namespace + ".deleteUnitGroupImg", params);
+		return update(Namespace + ".deleteUnitGroupImg", params);
 	}	   	
 	
 	

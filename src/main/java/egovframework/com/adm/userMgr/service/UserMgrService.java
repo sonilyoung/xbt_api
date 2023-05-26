@@ -2,6 +2,7 @@ package egovframework.com.adm.userMgr.service;
 
 import java.util.List;
 
+import egovframework.com.adm.system.vo.Notice;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
@@ -27,7 +28,15 @@ import egovframework.com.adm.userMgr.vo.UserInfo;
  */
 public interface UserMgrService{
 	
-	public List<UserInfo> getUserList(UserInfo params);
+	public List<UserInfo> selectUserList(UserInfo params);
+	
+	public UserInfo selectUser(UserInfo params);
+	
+	public int insertUser(UserInfo params);
+	
+	public int updateUser(UserInfo params);
+	
+	public int deleteUser(UserInfo params);	
 	
 	
 	public List<UserBaseline> getUserBaselineList(UserBaseline params);

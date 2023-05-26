@@ -5,38 +5,245 @@
 	<!-- 교육생관리-->
 		
 	<!-- 교육생 정보조회-->
-	<select id="getUserList" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >	
+	<select id="selectUserList" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >	
 			SELECT 
-				 A.USER_NO
-               , A.USER_ID                     /*사용자ID*/        
-               , A.USER_NM                     /*사용자명*/        
-               , A.USER_PW                     /*패스워드*/
-               , CASE WHEN A.USER_PHOTO IS NOT NULL
-                	THEN '1' ELSE '0' END AS PHOTO_YN		 /*교육생사진여부*/
-               , '' AS USER_PHOTO								 /*교육생사진(조회 속도를 위해 조회하지 않음 입력을 위해 빈칸 처리)*/
-               , A.AUTH_CD                     /*권한코드*/        
-               , K.AUTH_NM	                 /*권한코드이름*/
-               , FN_GET_COMCODE_NAME('0003', A.COMPANY ,'kr') as COMPANY	                 /*회사*/
-               , A.DEPT                        /*부서*/    
-               , A.POSITION	                 /*직급*/
-               , A.TRAINING_DIV                /*교육구분*/
-               , A.TEL_NO                      /*전화번호*/        
-               , A.HP_NO                       /*핸드폰번호*/        
-               , A.EMAIL                       /*이메일*/        
-               , A.LOGIN_START                 /*최초로그인*/        
-               , A.LOGIN_LAST                  /*최종로그인*/        
-               , A.LOGIN_ERROR                 /*로그인에러*/        
-               , A.PW_PRIOR                    /*이전비밀번호*/        
-               , A.PW_CHANGE                   /*비밀번호변경일*/        
-               , A.PW_UPDATE                   /*비밀번호변경주기*/        
-               , A.PW_PERIOD                   /*비밀번호변경기간*/        
-               , A.USE_YN                     /*사용여부*/        
-               , A.INSERT_ID                      /*등록자ID*/        
-               , A.INSERT_DATE                      /*등록일자*/        
-               , A.UPDATE_ID                      /*수정자ID*/        
-               , A.UPDATE_DATE                      /*수정일자*/        
+				USER_NO,
+				USER_ID,
+				USER_NM,
+				USER_PW,
+				A.AUTH_CD,
+				EDU_NAME,
+				USER_NM_CH,
+				USER_NM_EN,
+				SEX,
+				BIRTH_DAY,
+				AGE,
+				ADDRESS,
+				DEPARTMENT,
+				POSITION,
+				WORK,
+				CAREER1,
+				CAREER2,
+				CAREER3,
+				CAREER4,
+				CAREER5,
+				LAST_EDU_SCHOOL,
+				MILITARY_CAREER,
+				REGIST_NUMBER,
+				EMPLOY_STATUS_YN,
+				LAST_EDU,
+				WRITE_DATE,
+				COMPANY,
+				TEL_NO,
+				HP_NO,
+				EMAIL,
+				LOGIN_START,
+				LOGIN_LAST,
+				PW_PRIOR,
+				PW_CHANGE,
+				PW_UPDATE,
+				PW_PERIOD,
+				A.USE_YN,
+				A.INSERT_ID,
+				A.INSERT_DATE,
+				A.UPDATE_ID,
+				A.UPDATE_DATE      
          FROM XBT_STU_USER A LEFT JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD			
 	</select>	
+	
+	<!-- 교육생 상세조회-->
+	<select id="selectUser" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >	
+			SELECT 
+				USER_NO,
+				USER_ID,
+				USER_NM,
+				USER_PW,
+				A.AUTH_CD,
+				EDU_NAME,
+				USER_NM_CH,
+				USER_NM_EN,
+				SEX,
+				BIRTH_DAY,
+				AGE,
+				ADDRESS,
+				DEPARTMENT,
+				POSITION,
+				WORK,
+				CAREER1,
+				CAREER2,
+				CAREER3,
+				CAREER4,
+				CAREER5,
+				LAST_EDU_SCHOOL,
+				MILITARY_CAREER,
+				REGIST_NUMBER,
+				EMPLOY_STATUS_YN,
+				LAST_EDU,
+				WRITE_DATE,
+				COMPANY,
+				TEL_NO,
+				HP_NO,
+				EMAIL,
+				LOGIN_START,
+				LOGIN_LAST,
+				PW_PRIOR,
+				PW_CHANGE,
+				PW_UPDATE,
+				PW_PERIOD,
+				A.USE_YN,
+				A.INSERT_ID,
+				A.INSERT_DATE,
+				A.UPDATE_ID,
+				A.UPDATE_DATE      
+         FROM XBT_STU_USER A LEFT JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD	
+         WHERE A.USER_ID = #{userId}		
+	</select>		
+	
+		<!-- 교육생 등록 -->
+	<insert id="insertUser" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">
+		INSERT INTO XBT_STU_USER(
+			USER_ID,
+			USER_NM,
+			USER_PW,
+			AUTH_CD,
+			EDU_NAME,
+			USER_NM_CH,
+			USER_NM_EN,
+			SEX,
+			BIRTH_DAY,
+			AGE,
+			ADDRESS,
+			DEPARTMENT,
+			POSITION,
+			WORK,
+			CAREER1,
+			CAREER2,
+			CAREER3,
+			CAREER4,
+			CAREER5,
+			LAST_EDU_SCHOOL,
+			MILITARY_CAREER,
+			REGIST_NUMBER,
+			EMPLOY_STATUS_YN,
+			LAST_EDU,
+			WRITE_DATE,
+			COMPANY,
+			TEL_NO,
+			HP_NO,
+			EMAIL,
+			LOGIN_START,
+			LOGIN_LAST,
+			PW_PRIOR,
+			PW_CHANGE,
+			PW_UPDATE,
+			PW_PERIOD,
+			USE_YN,
+			insert_id,
+			insert_date
+		)VALUES(
+			#{userId}
+			,#{userNm}
+			,#{userPw}
+			,#{authCd}
+			,#{eduName}
+			,#{userNmCh}
+			,#{userNmEn}
+			,#{sex}
+			,#{birthDay}
+			,#{age}
+			,#{address}
+			,#{department}
+			,#{position}
+			,#{work}
+			,#{career1}
+			,#{career2}
+			,#{career3}
+			,#{career4}
+			,#{career5}
+			,#{lastEduSchool}
+			,#{militaryCareer}
+			,#{registNumber}
+			,#{employStatusYn}
+			,#{lastEdu}
+			,#{writeDate}
+			,#{company}
+			,#{telNo}
+			,#{hpNo}
+			,#{email}
+			,#{loginStart}
+			,#{loginLast}
+			,#{pwPrior}
+			,#{pwChange}
+			,#{pwUpdate}
+			,#{pwPeriod}
+			,'Y'
+			,#{insertId}
+			,now()
+		)
+	
+	</insert>	
+	
+	
+	<!-- 교육생 수정 -->
+	<update id="updateUser" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
+		UPDATE XBT_STU_USER SET				
+			USER_NM = 		#{userNm},
+			USER_PW = 		#{userPw},
+			AUTH_CD = 		#{authCd},
+			EDU_NAME = 		#{eduName},
+			USER_NM_CH = 		#{userNmCh},
+			USER_NM_EN = 		#{userNmEn},
+			SEX = 		#{sex},
+			BIRTH_DAY = 		#{birthDay},
+			AGE = 		#{age},
+			ADDRESS = 		#{address},
+			DEPARTMENT = 		#{department},
+			POSITION = 		#{position},
+			WORK = 		#{work},
+			CAREER1 = 		#{career1},
+			CAREER2 = 		#{career2},
+			CAREER3 = 		#{career3},
+			CAREER4 = 		#{career4},
+			CAREER5 = 		#{career5},
+			LAST_EDU_SCHOOL = 		#{lastEduSchool},
+			MILITARY_CAREER = 		#{militaryCareer},
+			REGIST_NUMBER = 		#{registNumber},
+			EMPLOY_STATUS_YN = 		#{employStatusYn},
+			LAST_EDU = 		#{lastEdu},
+			WRITE_DATE = 		#{writeDate},
+			COMPANY = 		#{company},
+			TEL_NO = 		#{telNo},
+			HP_NO = 		#{hpNo},
+			EMAIL = 		#{email},
+			LOGIN_START = 		#{loginStart},
+			LOGIN_LAST = 		#{loginLast},
+			PW_PRIOR = 		#{pwPrior},
+			PW_CHANGE = 		#{pwChange},
+			PW_UPDATE = 		#{pwUpdate},
+			PW_PERIOD = 		#{pwPeriod},
+			USE_YN = 		#{useYn},
+			update_id = 		#{updateId},
+			update_date = 		now()
+		WHERE USER_ID = 		#{userId}	
+
+	</update>	
+	
+	<!-- 교육생 삭제-->
+	<delete id="deleteUser" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">
+		DELETE FROM XBT_STU_USER WHERE USER_ID = #{userId}  
+	</delete>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	<!-- 교육생 차수관리 상단목록-->
@@ -98,7 +305,7 @@
 			  ,TA1.START_DATE                          /* 학습시작일자 */
 			  ,TA1.END_DATE                          /* 학습종료일자 */
 			  ,TA2.COMPANY                           /* 회사명 */
-			  ,TA2.DEPT                           /* 부서명 */
+			  ,TA2.DEPARTMENT                           /* 부서명 */
 			  ,TA1.GOIN_STATUS                       /* 입교상태 */
 			  ,TA1.ATTEND_PERCENT                    /* 출석율 */
 			  ,TA1.UN_GOIN_REASON_CD                 /* 미입교사유코드 */

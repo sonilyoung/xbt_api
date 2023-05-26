@@ -31,7 +31,15 @@ public class MainDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectStatisticsContensList", params);
 	}
 	
-	public List<?> selectStatisticsWrongAnswerContentsList(Statistics params) {
-		return (List<?>)selectList(Namespace + ".selectStatisticsWrongAnswerContentsList", params);
+	public List<?> selectStatisticsWrongAnswerList1(Statistics params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsWrongAnswerList1", params);
+	}			
+	
+	public List<?> selectStatisticsWrongAnswerList2(Statistics params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsWrongAnswerList2", params);
+	}			
+	
+	public List<?> selectStatisticsWrongAnswerList3(Statistics params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsWrongAnswerList3", params);
 	}			
 }
