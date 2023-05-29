@@ -104,8 +104,9 @@ public interface ContentsService {
 	
 	public int deleteXrayUnit(XrayContents params);
 	
-	
 	public int updateXrayContentsImg(XrayImgContents params);
+	
+	public int updateXrayContentsDbImg(XrayImgContents params);
 		
 	
 }

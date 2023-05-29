@@ -10,7 +10,7 @@ public enum SeqGroupCode {
 	XBT_BAG_ID(
 			"X", "가방XRAY코드"
 	), XBT_UNIT_SCAN_ID(
-			"UX", "단품XRAY코드"			
+			"US", "단품XRAY코드"			
 	), XBT_UNIT_ID(
 			"U", "단품코드"
 	), XBT_UNIT_GROUP_ID(

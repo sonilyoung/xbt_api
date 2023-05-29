@@ -350,17 +350,16 @@
 			T1.BAG_SCAN_ID,
 			T1.UNIT_ID,/*정답물품아이디*/
 			(SELECT UNIT_NAME FROM XBT_UNIT_INFO WHERE UNIT_ID = T1.UNIT_ID) as unitName,/*정답물품명*/
-			T3.OPEN_YN,/*개봉여부*/
-			T3.PASS_YN,/*통과여부*/
-			T3.ACTION_DIV,
-			T3.ACTION_DIV_NAME,
+			(SELECT OPEN_YN FROM XBT_UNIT_GROUP T3 WHERE T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD)as OPEN_YN,/*개봉여부*/
+			(SELECT PASS_YN FROM XBT_UNIT_GROUP T3 WHERE T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD)as PASS_YN,/*통과여부*/
+			(SELECT ACTION_DIV FROM XBT_UNIT_GROUP T3 WHERE T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD)as ACTION_DIV,
+			(SELECT ACTION_DIV_NAME FROM XBT_UNIT_GROUP T3 WHERE T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD)as ACTION_DIV_NAME,
 			T1.STUDY_LVL, /*학습레벨*/
 			T1.USE_YN ,/*사용여부*/
 			T1.INSERT_ID, 
 			T1.INSERT_DATE 
-		FROM XBT_BAG_INFO T1 LEFT JOIN XBT_UNIT_GROUP T3 ON
-		T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD
-		ORDER BY BAG_SCAN_ID ASC		  		 	
+		FROM XBT_BAG_INFO T1
+		ORDER BY T1.BAG_SCAN_ID ASC		  		 	
 	</select>
 	
 	
@@ -602,7 +601,6 @@
 			, FN_CODE_NAME('0005', T2.ACTION_DIV,'KOR') AS actionDiv 
 		FROM XBT_UNIT_INFO T1 JOIN XBT_UNIT_GROUP T2
 		ON T1.UNIT_GROUP_CD = T2.UNIT_GROUP_CD 
-		WHERE T1.LANGUAGE_CODE = #{languageCode}
 	</select>		
 	
 	
@@ -610,13 +608,16 @@
 	<select id="selectXbtSeq" parameterType="egovframework.com.adm.contents.vo.XbtSeq" resultType="egovframework.com.adm.contents.vo.XbtSeq" >	
 		<choose>
 			<when test='seqInfo == "G"'><!-- 단품그룹시퀀스 -->
-				SELECT concat('G', LPAD(cast(right(IFNULL(MAX(UNIT_GROUP_CD), '0'), 5) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_UNIT_GROUP
+				SELECT concat('G', LPAD(cast(right(IFNULL(MAX(UNIT_GROUP_CD), '0'), 5) as DECIMAL)+1+1, 5 , '0')) AS seqId FROM XBT_UNIT_GROUP
 			</when>		
 			<when test='seqInfo == "U"'><!-- 단품시퀀스 -->
-				SELECT concat('U', LPAD(cast(right(IFNUL(MAX(UNIT_ID), '0'), 5) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_UNIT_INFO
+				SELECT LPAD(cast(right(IFNULL(MAX(UNIT_ID), '0'), 5) as DECIMAL)+1+1, 5 , '0') AS seqId FROM XBT_UNIT_INFO
 			</when>
+			<when test='seqInfo == "US"'><!-- 단품시퀀스 -->
+				SELECT concat('U', LPAD(cast(right(IFNULL(MAX(UNIT_ID), '0'), 5) as DECIMAL)+1+1, 5 , '0')) AS seqId FROM XBT_UNIT_INFO
+			</when>			
 			<when test='seqInfo == "X"'><!-- 가방xray시퀀스 -->
-				SELECT concat('X', LPAD(cast(right(IFNULL(MAX(BAG_SCAN_ID), '0'), 5) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_BAG_INFO
+				SELECT concat('X', LPAD(cast(right(IFNULL(MAX(BAG_SCAN_ID), '0'), 5) as DECIMAL)+1+1, 5 , '0')) AS seqId FROM XBT_BAG_INFO
 			</when>
 			<!-- 
 			<when test='seqInfo == "UX"'>단품시퀀스 
@@ -638,7 +639,6 @@
 			,UNIT_DESC
 			,USE_YN
 			,STUDY_LVL
-			,LANGUAGE_CODE		
 			,INSERT_ID
 			,INSERT_DATE 
 		)VALUES(
@@ -649,7 +649,6 @@
 			,#{unitDesc}
 			,#{useYn}
 			,#{studyLvl}
-			,#{languageCode}
 			,#{insertDate}
 			,now()
 		)
@@ -660,14 +659,34 @@
 		UPDATE XBT_UNIT_INFO
 		SET 
 			UNIT_GROUP_CD=#{unitGroupCd},
-			UNIT_NAME=#{unitName},
-			UNIT_DESC=#{unitDesc},
+					<choose>
+						<when test='languageCode == "kr"'>
+							UNIT_NAME=#{unitName},
+							UNIT_DESC=#{unitDesc},
+						</when>
+						<when test='languageCode == "en"'>
+							UNIT_NAME_EN=#{unitName},
+							UNIT_DESC_EN=#{unitDesc},								
+						</when>
+						<when test='languageCode == "ch"'>
+							UNIT_NAME_CH=#{unitName},
+							UNIT_DESC_CH=#{unitDesc},			
+						</when>				
+						<when test='languageCode == "jp"'>
+							UNIT_NAME_JP=#{unitName},
+							UNIT_DESC_JP=#{unitDesc},			
+						</when>
+						<otherwise>
+							UNIT_NAME=#{unitName},
+							UNIT_DESC=#{unitDesc},
+						</otherwise>											
+					</choose>				
+			
 			STUDY_LVL=#{studyLvl},
 			USE_YN=#{useYn},
 			UPDATE_ID=#{updateId},
 			UPDATE_DATE=now()
 		WHERE UNIT_ID = #{unitId}
-		AND LANGUAGE_CODE = #{languageCode}	
 	</update>		
 	
 	

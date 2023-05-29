@@ -102,6 +102,6 @@ public class XrayImgContents{
 	private String insertDate;
 	private String updateId;	
 	private String updateDate;
-	
+	private String command;
 	private LearningImg resultImg;
 }

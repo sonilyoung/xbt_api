@@ -442,9 +442,16 @@ public class ContentsServiceImpl implements ContentsService {
 		// TODO Auto-generated method stub
 		return contentsDAO.deleteXrayUnit(params);
 	}
-
+	
 	@Override
 	public int updateXrayContentsImg(XrayImgContents params) {
+		int result = 1;
+		
+		return result;
+	}
+
+	@Override
+	public int updateXrayContentsDbImg(XrayImgContents params) {
 		// TODO Auto-generated method stub
 		
 		if(contentsDAO.selectXrayImgContentsCount(params) <= 0) {

@@ -1542,7 +1542,7 @@ public class ContentsController {
 	    try { 
 	    	//params.setInsertId(login.getFirstLogin());
 	    	params.setUpdateId("admin");
-	    	contentsService.updateXrayContentsImg(params);
+	    	contentsService.updateXrayContentsDbImg(params);
 			return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
 	    }catch(Exception e) {
 	       LOGGER.error("error:", e);
