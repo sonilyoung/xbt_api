@@ -724,9 +724,6 @@ public class ContentsController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UnitId" + BaseApiMessage.REQUIRED.getMessage());
 		}
 		
-		if(StringUtils.isEmpty(params.getLanguageCode())){
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
-		}		
 		
 		try {
 			int result = contentsService.deleteUnit(params);
