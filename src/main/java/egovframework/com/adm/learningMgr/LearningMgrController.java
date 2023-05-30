@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.com.adm.learningMgr.service.LearningMgrService;
 import egovframework.com.adm.learningMgr.vo.EduModule;
+import egovframework.com.adm.learningMgr.vo.EduModulePop;
 import egovframework.com.adm.learningMgr.vo.EduType;
+import egovframework.com.adm.learningMgr.vo.PointStd;
 import egovframework.com.adm.learningMgr.vo.XrayPoint;
 import egovframework.com.adm.learningMgr.vo.XrayPointDetail;
 import egovframework.com.adm.login.service.LoginService;
@@ -349,7 +351,38 @@ public class LearningMgrController {
         }
     }     
     
-	
+    /**
+     * 학습관리-xray판독모듈 랜덤추출 가져오기
+     * 
+     * @param param
+     * @return Company
+     */
+	@ResponseBody
+    @RequestMapping(value = {"/selectModuleRandom.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @ApiOperation(value = "학습관리-xray판독모듈 랜덤추출 가져오기", notes = "학습관리-xray판독모듈 랜덤추출 가져오기")
+    public BaseResponse<List<EduModulePop>> selectModuleRandom(HttpServletRequest request
+    		, @RequestBody EduModulePop params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getStudyLvl())){				
+			return new BaseResponse<List<EduModulePop>>(BaseResponseCode.PARAMS_ERROR, "StudyLvl" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getQuestionCnt())){				
+			return new BaseResponse<List<EduModulePop>>(BaseResponseCode.PARAMS_ERROR, "QuestionCnt" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		try {
+			List<EduModulePop> resultList = learningMgrService.selectModuleRandom(params);
+	        return new BaseResponse<List<EduModulePop>>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }     	
 	
     /**
      * 학습관리-xray판독모듈의 등록할 문제가져오기
@@ -360,8 +393,8 @@ public class LearningMgrController {
 	@ResponseBody
     @RequestMapping(value = {"/selectModuleXrayPopList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
     @ApiOperation(value = "학습관리-xray판독모듈의 등록할 문제가져오기", notes = "학습관리-xray판독모듈의 등록할 문제가져오기")
-    public BaseResponse<List<EduModule>> selectModuleXrayPopList(HttpServletRequest request
-    		, @RequestBody EduModule params) {
+    public BaseResponse<List<EduModulePop>> selectModuleXrayPopList(HttpServletRequest request
+    		, @RequestBody EduModulePop params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
@@ -369,8 +402,8 @@ public class LearningMgrController {
 		
 		
 		try {
-			List<EduModule> resultList = learningMgrService.selectModuleXrayPopList(params);
-	        return new BaseResponse<List<EduModule>>(resultList);
+			List<EduModulePop> resultList = learningMgrService.selectModuleXrayPopList(params);
+	        return new BaseResponse<List<EduModulePop>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
@@ -513,5 +546,394 @@ public class LearningMgrController {
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
     }     	
+    
+    
+    
+    /**
+     * 배점기준정보마스터목록조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectPointStdList.do")
+    @ApiOperation(value = "배점기준정보마스터목록", notes = "배점기준정보마스터목록조회.")
+    public BaseResponse<List<PointStd>> selectPointStdList(HttpServletRequest request, @RequestBody PointStd params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			//배점기준정보마스터조회
+	        return new BaseResponse<List<PointStd>>(learningMgrService.selectPointStdList(params));
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    /**
+     * 배점기준정보마스터상세
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectPointStd.do")
+    @ApiOperation(value = "배점기준정보마스터상세", notes = "배점기준정보마스터상세조회.")
+    public BaseResponse<PointStd> selectPointStd(HttpServletRequest request, @RequestBody PointStd params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getPointsStdNo())){				
+			return new BaseResponse<PointStd>(BaseResponseCode.PARAMS_ERROR, "PointsStdNo" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			//배점기준정보마스터조회
+	        return new BaseResponse<PointStd>(learningMgrService.selectPointStd(params));
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+        
+    
+    
+    
+    /**
+     * 배점기준정보마스터등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertPointStd.do")
+    @ApiOperation(value = "배점기준정보마스터", notes = "배점기준정보마스터등록.")
+    public BaseResponse<Integer> insertPointStd(HttpServletRequest request, @RequestBody PointStd params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getPointsStdNm())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PointsStdNm" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getPointsStdDc())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PointsStdDc" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		try {
+			//배점기준정보마스터등록
+			params.setInsertId(login.getUserId());
+			int result = learningMgrService.insertPointStd(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * 배점기준정보마스터수정
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/updatePointStd.do")
+    @ApiOperation(value = "배점기준정보마스터", notes = "배점기준정보마스터수정.")
+    public BaseResponse<Integer> updatePointStd(HttpServletRequest request, @RequestBody PointStd params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getPointsStdNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PointsStdNo" + BaseApiMessage.REQUIRED.getCode());
+		}				
+
+		if(StringUtils.isEmpty(params.getPointsStdNm())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PointsStdNm" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getPointsStdDc())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PointsStdDc" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getUseYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UseYn" + BaseApiMessage.REQUIRED.getCode());
+		}			
+				
+		
+		try {
+			//배점기준정보마스터등록
+			params.setUpdateId(login.getUserId());
+			int result = learningMgrService.updatePointStd(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * 배점기준정보마스터삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deletePointStd.do")
+    @ApiOperation(value = "배점기준정보마스터", notes = "배점기준정보마스터삭제.")
+    public BaseResponse<Integer> deletePointStd(HttpServletRequest request, @RequestBody PointStd params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getPointsStdNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PointsStdNo" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		try {
+			//배점기준정보마스터삭제
+			int result = learningMgrService.deletePointStd(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
 	    
+    
+    
+    
+    
+    /**
+     * 배점기준정보상세목록조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectPointStdDetailList.do")
+    @ApiOperation(value = "배점기준정보상세목록", notes = "배점기준정보상세목록조회.")
+    public BaseResponse<List<PointStd>> selectPointStdDetailList(HttpServletRequest request, @RequestBody PointStd params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getPointsStdNo())){				
+			return new BaseResponse<List<PointStd>>(BaseResponseCode.PARAMS_ERROR, "PointsStdNo" + BaseApiMessage.REQUIRED.getCode());
+		}			
+				
+		
+		try {
+			//배점기준정보상세조회
+	        return new BaseResponse<List<PointStd>>(learningMgrService.selectPointStdDetailList(params));
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    /**
+     * 배점기준정보상세상세
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectPointStdDetail.do")
+    @ApiOperation(value = "배점기준정보상세상세", notes = "배점기준정보상세상세조회.")
+    public BaseResponse<PointStd> selectPointStdDetail(HttpServletRequest request, @RequestBody PointStd params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getPointsDetailNo())){				
+			return new BaseResponse<PointStd>(BaseResponseCode.PARAMS_ERROR, "PointsDetailNo" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			//배점기준정보상세조회
+	        return new BaseResponse<PointStd>(learningMgrService.selectPointStdDetail(params));
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+        
+    
+    
+    
+    /**
+     * 배점기준정보상세등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertPointStdDetail.do")
+    @ApiOperation(value = "배점기준정보상세", notes = "배점기준정보상세등록.")
+    public BaseResponse<Integer> insertPointStdDetail(HttpServletRequest request, @RequestBody PointStd params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getPointsStdNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PointsStdNo" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		if(StringUtils.isEmpty(params.getActionDiv())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ActionDiv" + BaseApiMessage.REQUIRED.getCode());
+		}					
+		
+		if(StringUtils.isEmpty(params.getBanUnitScore())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BanUnitScore" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getLimitUnitScore())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LimitUnitScore" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getQuestionUnitScore())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "QuestionUnitScore" + BaseApiMessage.REQUIRED.getCode());
+		}			
+				
+		if(StringUtils.isEmpty(params.getPassUnitScore())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PassUnitScore" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		
+		
+		try {
+			//배점기준정보상세등록
+			params.setInsertId(login.getUserId());
+			int result = learningMgrService.insertPointStdDetail(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * 배점기준정보상세수정
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/updatePointStdDetail.do")
+    @ApiOperation(value = "배점기준정보상세수정", notes = "배점기준정보상세수정.")
+    public BaseResponse<Integer> updatePointStdDetail(HttpServletRequest request, @RequestBody PointStd params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		
+		if(StringUtils.isEmpty(params.getPointsDetailNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PointsDetailNo" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getActionDiv())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ActionDiv" + BaseApiMessage.REQUIRED.getCode());
+		}					
+		
+		if(StringUtils.isEmpty(params.getBanUnitScore())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BanUnitScore" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getLimitUnitScore())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LimitUnitScore" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getQuestionUnitScore())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "QuestionUnitScore" + BaseApiMessage.REQUIRED.getCode());
+		}			
+				
+		if(StringUtils.isEmpty(params.getPassUnitScore())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PassUnitScore" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		
+		try {
+			//배점기준정보상세등록
+			params.setUpdateId(login.getUserId());
+			int result = learningMgrService.updatePointStdDetail(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * 배점기준정보상세삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deletePointStdDetail.do")
+    @ApiOperation(value = "배점기준정보상세", notes = "배점기준정보상세삭제.")
+    public BaseResponse<Integer> deletePointStdDetail(HttpServletRequest request, @RequestBody PointStd params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getPointsDetailNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PointsDetailNo" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		try {
+			//배점기준정보상세삭제
+			int result = learningMgrService.deletePointStdDetail(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }        
 }

@@ -222,7 +222,8 @@
 	<!-- 학습정답확인 -->
 	<select id="selectLearnAnswer" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			MAX(ACTION_DIV = #{userActionDiv}) as answer 
+			MAX(ACTION_DIV = #{userActionDiv}) as answer,
+			MAX(ACTION_DIV) as answerDiv
 		FROM XBT_STU_LEARNING_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 
@@ -233,7 +234,26 @@
 		AND USER_ID = #{userId}
 		AND BAG_SCAN_ID = #{bagScanId}
 		AND END_YN = 'N'
-	</select>		
+	</select>	
+
+
+	<!-- 관리자에셋팅된 점수체게 가져오기 -->
+	<select id="selectPointStdScore" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.PointStd">
+		SELECT
+			POINTS_DETAIL_NO, 
+			POINTS_STD_NO, 
+			ACTION_DIV, 
+			(SELECT CODE_NAME FROM XBT_COMMON_CODE T2 WHERE T2.GROUP_ID = 'actionDiv' 
+			 AND T2.CODE_VALUE = ACTION_DIV AND T2.USE_YN = 'Y' AND T2.LANGUAGE_CODE = 'kr')AS actionDivName,			
+			BAN_UNIT_SCORE, 
+			LIMIT_UNIT_SCORE, 
+			QUESTION_UNIT_SCORE, 
+			PASS_UNIT_SCORE 
+		FROM
+			XBT_POINTS_STD_DETAIL T1
+		WHERE POINTS_STD_NO = (SELECT MAX(POINTS_STD_NO) FROM XBT_POINTS_STD_MASTER)
+		AND ACTION_DIV = #{answerDiv}
+	</select>	
 	
 	
 	<!-- 학습정답선택-->
@@ -295,7 +315,7 @@
 	<!-- 학습종료점수합산 -->
 	<select id="selectLeaningSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			IFNULL(SUM(GAIN_SCORE), 0) AS gainScore
+			IFNULL(SUM(GAIN_SCORE), 0)/1000*100 AS gainScore
 		FROM XBT_STU_LEARNING_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 
@@ -460,7 +480,8 @@
 	<!-- 오답정답확인 -->
 	<select id="selectWrongAnswer" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			MAX(ACTION_DIV = #{userActionDiv}) as answer  
+			MAX(ACTION_DIV = #{userActionDiv}) as answer,
+			MAX(ACTION_DIV) as answerDiv  
 		FROM XBT_STU_WRONG_ANSWER_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 
@@ -471,7 +492,7 @@
 		AND USER_ID = #{userId}
 		AND BAG_SCAN_ID = #{bagScanId}
 		AND END_YN = 'N'
-	</select>			
+	</select>	
 	
 	<!-- 오답문제정답선택-->
 	<update id="updateWrongAnswer" parameterType="egovframework.com.stu.learning.vo.Learning">	
@@ -520,7 +541,7 @@
 	<!-- 오답문제종료점수합산 -->
 	<select id="selectWrongAnswerSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			IFNULL(SUM(GAIN_SCORE), 0) AS gainScore
+			IFNULL(SUM(GAIN_SCORE), 0)/1000*100 AS gainScore
 		FROM XBT_STU_WRONG_ANSWER_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 

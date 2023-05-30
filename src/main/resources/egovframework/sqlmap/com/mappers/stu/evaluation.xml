@@ -91,7 +91,8 @@
 	<!-- 평가정답확인 -->
 	<select id="selectEvaluationAnswer" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			MAX(ACTION_DIV = #{userActionDiv}) as answer  
+			MAX(ACTION_DIV = #{userActionDiv}) as answer,  
+			MAX(ACTION_DIV) as answerDiv
 		FROM XBT_STU_EVALUATION_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 
@@ -151,7 +152,7 @@
 	<!-- 평가종료점수합산 -->
 	<select id="selectEvaluationSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			IFNULL(SUM(GAIN_SCORE), 0) AS gainScore 
+			IFNULL(SUM(GAIN_SCORE), 0)/1000*100 AS gainScore 
 		FROM XBT_STU_EVALUATION_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 

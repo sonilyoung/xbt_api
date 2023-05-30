@@ -32,6 +32,8 @@ public class UserInfo {
 	private String updateId;                      /*수정자id*/        
 	private String updateDate;                      /*수정일자*/   
 	
+	
+	private String careerYn;
 	private String eduName;
 	private String userNmCh;
 	private String userNmEn;

@@ -28,6 +28,7 @@ public class Learning{
 	private String actionDivName;
 	private String moduleNm;
 	private String answer;
+	private String answerDiv;
 	private String passYn;
 	private String endYn;
 	private String languageCode;

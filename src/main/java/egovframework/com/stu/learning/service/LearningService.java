@@ -4,6 +4,7 @@ import java.util.List;
 
 import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningProblem;
+import egovframework.com.stu.learning.vo.PointStd;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.
@@ -61,6 +62,8 @@ public interface LearningService {
 	public LearningProblem selectLearningProblemsMaxkey(LearningProblem params);
 	
 	public List<LearningProblem> selectWrongAnswerProblems(LearningProblem params);
+	
+	public PointStd selectPointStdScore(Learning params);
 	
 	public LearningProblem selectWrongAnswerProblemsMaxkey(LearningProblem params);
 	

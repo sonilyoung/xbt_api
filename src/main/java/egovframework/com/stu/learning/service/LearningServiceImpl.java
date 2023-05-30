@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.stu.learning.dao.LearningDAO;
 import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningProblem;
+import egovframework.com.stu.learning.vo.PointStd;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -90,6 +91,12 @@ public class LearningServiceImpl implements LearningService {
 		// TODO Auto-generated method stub
 		return (List<LearningProblem>) learningDAO.selectLearnProblemsList(params);
 	}
+	
+	@Override
+	public PointStd selectPointStdScore(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectPointStdScore(params);
+	}	
 
 	@Override
 	@SuppressWarnings("unchecked")

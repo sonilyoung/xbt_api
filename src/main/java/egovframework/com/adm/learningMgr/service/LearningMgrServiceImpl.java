@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.adm.learningMgr.dao.LearningMgrDAO;
 import egovframework.com.adm.learningMgr.vo.EduModule;
+import egovframework.com.adm.learningMgr.vo.EduModulePop;
 import egovframework.com.adm.learningMgr.vo.EduType;
+import egovframework.com.adm.learningMgr.vo.PointStd;
 import egovframework.com.adm.learningMgr.vo.XrayPoint;
 import egovframework.com.adm.learningMgr.vo.XrayPointDetail;
 import lombok.extern.log4j.Log4j2;
@@ -53,6 +55,13 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 		return (List<EduModule>) learningMgrDAO.selectModuleQuestion(params);
 	}
 	
+	@Override
+	public List<EduModulePop> selectModuleRandom(EduModulePop params) {
+		// TODO Auto-generated method stub
+		return (List<EduModulePop>) learningMgrDAO.selectModuleRandom(params);
+	}
+	
+		
 	
 	@Override
 	@Transactional
@@ -145,10 +154,71 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 	}
 
 	@Override
-	public List<EduModule> selectModuleXrayPopList(EduModule params) {
+	public List<EduModulePop> selectModuleXrayPopList(EduModulePop params) {
 		// TODO Auto-generated method stub
-		return (List<EduModule>) learningMgrDAO.selectModuleXrayPopList(params);
+		return (List<EduModulePop>) learningMgrDAO.selectModuleXrayPopList(params);
 	}
 	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<PointStd> selectPointStdList(PointStd params) {
+		// TODO Auto-generated method stub
+		return (List<PointStd>)learningMgrDAO.selectPointStdList(params);
+	}
 
+	@Override
+	public int insertPointStd(PointStd params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.insertPointStd(params);
+	}
+
+	@Override
+	public int updatePointStd(PointStd params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.updatePointStd(params);
+	}
+
+	@Override
+	public int deletePointStd(PointStd params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.deletePointStd(params);
+	}
+
+	@Override
+	public PointStd selectPointStd(PointStd params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.selectPointStd(params);
+	}	
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<PointStd> selectPointStdDetailList(PointStd params) {
+		// TODO Auto-generated method stub
+		return (List<PointStd>)learningMgrDAO.selectPointStdDetailList(params);
+	}
+
+	@Override
+	public int insertPointStdDetail(PointStd params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.insertPointStdDetail(params);
+	}
+
+	@Override
+	public int updatePointStdDetail(PointStd params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.updatePointStdDetail(params);
+	}
+
+	@Override
+	public int deletePointStdDetail(PointStd params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.deletePointStdDetail(params);
+	}
+
+	@Override
+	public PointStd selectPointStdDetail(PointStd params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.selectPointStdDetail(params);
+	}	
+	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningProblem;
+import egovframework.com.stu.learning.vo.PointStd;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
@@ -91,6 +92,10 @@ public class LearningDAO extends EgovAbstractMapper{
 	public List<?> selectWrongAnswerProblems(LearningProblem params) {
 		return (List<?>)selectList(Namespace + ".selectWrongAnswerProblems", params);
 	}
+	
+	public PointStd selectPointStdScore(Learning params) {
+		return selectOne(Namespace + ".selectPointStdScore", params);
+	}	
 	
 	public LearningProblem selectWrongAnswerProblemsMaxkey(LearningProblem params) {
 		return selectOne(Namespace + ".selectWrongAnswerProblemsMaxkey", params);

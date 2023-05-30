@@ -13,6 +13,7 @@
 			,STUDY_LVL
 			,SLIDE_SPEED
 			,MODULE_TYPE
+			,LEARNING_TYPE
 			,TIME_LIMIT
 			,USE_YN
 			,QUESTION_CNT
@@ -58,6 +59,7 @@
 			,STUDY_LVL
 			,SLIDE_SPEED
 			,MODULE_TYPE
+			,LEARNING_TYPE
 			,USE_YN
 			,QUESTION_CNT
 			,GUN_SCORE
@@ -89,6 +91,7 @@
 			,STUDY_LVL
 			,SLIDE_SPEED
 			,MODULE_TYPE
+			,LEARNING_TYPE
 			,TIME_LIMIT
 			,USE_YN
 			,QUESTION_CNT
@@ -113,6 +116,7 @@
 			,#{studyLvl}
 			,#{slideSpeed}
 			,#{moduleType}
+			,#{learningType}
 			,#{timeLimit}
 			,#{useYn}
 			,#{questionCnt}
@@ -146,16 +150,17 @@
 			, T2.GROUP_NAME 
 			, T1.ACTION_DIV 
 			, T1.ACTION_DIV_NAME 			
+			, T2.OPEN_YN/*개봉여부*/
+			, T2.PASS_YN/*통과여부*/			
 			, T1.INSERT_ID
 			, T1.INSERT_DATE
-		FROM XBT_MODULE_INFO_DETAIL T1 LEFT JOIN XBT_UNIT_GROUP T2
-		ON T1.UNIT_GROUP_CD = T2.UNIT_GROUP_CD 
+		FROM XBT_MODULE_INFO_DETAIL T1 INNER JOIN XBT_UNIT_GROUP T2
+		ON T1.UNIT_GROUP_CD = T2.UNIT_GROUP_CD 	
 		WHERE T1.MODULE_ID = #{moduleId}	
-	</select>		
+	</select>
 	
-	
-	<!--  학습관리-xray판독모듈의 등록할 문제가져오기 -->
-	<select id="selectModuleXrayPopList" parameterType="egovframework.com.adm.learningMgr.vo.EduModule" resultType="egovframework.com.adm.learningMgr.vo.EduModule" >	
+	<!-- 문제랜덤추출 -->
+	<select id="selectModuleRandom" parameterType="egovframework.com.adm.learningMgr.vo.EduModulePop" resultType="egovframework.com.adm.learningMgr.vo.EduModulePop">
 		SELECT 
 			T1.BAG_SCAN_NO,
 			T1.BAG_SCAN_ID,
@@ -166,15 +171,39 @@
 			T3.UNIT_GROUP_CD ,
 			T3.GROUP_NAME ,			
 			T3.ACTION_DIV,
-			T3.ACTION_DIV_NAME,
+			(SELECT CODE_NAME FROM XBT_COMMON_CODE T2 WHERE T2.GROUP_ID = 'actionDiv' 
+			 AND T2.CODE_VALUE = T3.ACTION_DIV AND T2.USE_YN = 'Y' AND T2.LANGUAGE_CODE = 'kr')AS actionDivName,
 			T1.STUDY_LVL, /*학습레벨*/
 			T1.USE_YN ,/*사용여부*/
 			T1.INSERT_ID, 
 			T1.INSERT_DATE 
 		FROM XBT_BAG_INFO T1 INNER JOIN XBT_UNIT_GROUP T3 ON
 		T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD
-		AND T3.LANGUAGE_CODE = 'kr'	
-		AND T1.ACTION_DIV IS NOT NULL
+		AND STUDY_LVL = #{studyLvl}
+		ORDER BY RAND() LIMIT #{questionCnt}
+	</select>				
+	
+	
+	<!--  학습관리-xray판독모듈의 등록할 문제가져오기 -->
+	<select id="selectModuleXrayPopList" parameterType="egovframework.com.adm.learningMgr.vo.EduModulePop" resultType="egovframework.com.adm.learningMgr.vo.EduModulePop" >	
+		SELECT 
+			T1.BAG_SCAN_NO,
+			T1.BAG_SCAN_ID,
+			T1.UNIT_ID,/*정답물품아이디*/
+			(SELECT UNIT_NAME FROM XBT_UNIT_INFO WHERE UNIT_ID = T1.UNIT_ID) as unitName,/*정답물품명*/
+			T3.OPEN_YN,/*개봉여부*/
+			T3.PASS_YN,/*통과여부*/
+			T3.UNIT_GROUP_CD ,
+			T3.GROUP_NAME ,			
+			T3.ACTION_DIV,
+			(SELECT CODE_NAME FROM XBT_COMMON_CODE T2 WHERE T2.GROUP_ID = 'actionDiv' 
+			 AND T2.CODE_VALUE = T3.ACTION_DIV AND T2.USE_YN = 'Y' AND T2.LANGUAGE_CODE = 'kr')AS actionDivName,
+			T1.STUDY_LVL, /*학습레벨*/
+			T1.USE_YN ,/*사용여부*/
+			T1.INSERT_ID, 
+			T1.INSERT_DATE 
+		FROM XBT_BAG_INFO T1 INNER JOIN XBT_UNIT_GROUP T3 ON
+		T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD
 		ORDER BY BAG_SCAN_ID ASC		  		 	
 	</select>
 	
@@ -217,14 +246,14 @@
 			T3.UNIT_GROUP_CD,
 			T3.GROUP_NAME,
 			T3.ACTION_DIV,
-			T3.ACTION_DIV_NAME,
+			(SELECT CODE_NAME FROM XBT_COMMON_CODE T2 WHERE T2.GROUP_ID = 'actionDiv' 
+			 AND T2.CODE_VALUE = T3.ACTION_DIV AND T2.USE_YN = 'Y' AND T2.LANGUAGE_CODE = 'kr')AS actionDivName,
 			T1.STUDY_LVL, /*학습레벨*/
 			T1.USE_YN ,/*사용여부*/
 			T1.INSERT_ID, 
 			T1.INSERT_DATE 
 		FROM XBT_BAG_INFO T1 INNER JOIN XBT_UNIT_GROUP T3 ON
 		T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD
-		AND T3.LANGUAGE_CODE = 'kr'
 		AND T1.BAG_SCAN_ID = #{bagScanId}	
 	</select>
 		
@@ -317,5 +346,153 @@
 		  ON A.POINTS_STD_ID = B.POINTS_STD_ID 
 	</select>	
 				
+			
+	<!-- 판독배점관리 가져오기 -->
+	<select id="selectPointStdList" parameterType="egovframework.com.adm.learningMgr.vo.PointStd" resultType="egovframework.com.adm.learningMgr.vo.PointStd">
+		SELECT
+			POINTS_STD_NO,
+			POINTS_STD_NM,
+			POINTS_STD_DC,
+			USE_YN,
+			INSERT_DATE,
+			INSERT_ID
+		FROM
+			XBT_POINTS_STD_MASTER
+	</select>	
+	
+	<!-- 판독배점관리 상세 -->
+	<select id="selectPointStd" parameterType="egovframework.com.adm.learningMgr.vo.PointStd" resultType="egovframework.com.adm.learningMgr.vo.PointStd">
+		SELECT
+			POINTS_STD_NO,
+			POINTS_STD_NM,
+			POINTS_STD_DC,
+			USE_YN,
+			INSERT_DATE,
+			INSERT_ID
+		FROM
+			XBT_POINTS_STD_MASTER
+		WHERE POINTS_STD_NO = #{pointsStdNo}
+	</select>		
+	
+	<!-- 판독배점관리 등록 -->
+	<insert id="insertPointStd" parameterType="egovframework.com.adm.learningMgr.vo.PointStd">
+		INSERT INTO XBT_POINTS_STD_MASTER
+		(
+			POINTS_STD_NM,
+			POINTS_STD_DC,
+			USE_YN,
+			INSERT_DATE,
+			INSERT_ID
+		)VALUES(
+			#{pointsStdNm},
+			#{pointsStdDc},
+			'Y',
+			now(),
+			#{insertId}
+		)
+	</insert>	
+	
+	
+	<!-- 판독배점관리 수정 -->
+	<update id="updatePointStd" parameterType="egovframework.com.adm.learningMgr.vo.PointStd">	
+		UPDATE XBT_POINTS_STD_MASTER
+		SET 
+			POINTS_STD_NM = #{pointsStdNm}
+			, POINTS_STD_DC = #{pointsStdDc}
+			, USE_YN = #{useYn}
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DATE = now()
+		WHERE POINTS_STD_NO = #{pointsStdNo}
+	</update>	
+	
+	<!-- 판독배점관리 삭제-->
+	<delete id="deletePointStd" parameterType="egovframework.com.adm.learningMgr.vo.PointStd">
+		DELETE FROM XBT_POINTS_STD_MASTER WHERE POINTS_STD_NO = #{pointsStdNo}
+	</delete>	
+				
+				
+	<!-- 판독배점상세관리 가져오기 -->
+	<select id="selectPointStdDetailList" parameterType="egovframework.com.adm.learningMgr.vo.PointStd" resultType="egovframework.com.adm.learningMgr.vo.PointStd">
+		SELECT
+			POINTS_DETAIL_NO, 
+			POINTS_STD_NO, 
+			ACTION_DIV, 
+			(SELECT CODE_NAME FROM XBT_COMMON_CODE T2 WHERE T2.GROUP_ID = 'actionDiv' 
+			 AND T2.CODE_VALUE = ACTION_DIV AND T2.USE_YN = 'Y' AND T2.LANGUAGE_CODE = 'kr')AS actionDivName,						
+			BAN_UNIT_SCORE, 
+			LIMIT_UNIT_SCORE, 
+			QUESTION_UNIT_SCORE, 
+			PASS_UNIT_SCORE, 
+			INSERT_DATE, 
+			INSERT_ID, 
+			UPDATE_DATE, 
+			UPDATE_ID
+		FROM
+			XBT_POINTS_STD_DETAIL
+	</select>	
+	
+	<!-- 판독배점상세관리 상세 -->
+	<select id="selectPointStdDetail" parameterType="egovframework.com.adm.learningMgr.vo.PointStd" resultType="egovframework.com.adm.learningMgr.vo.PointStd">
+		SELECT
+			POINTS_DETAIL_NO, 
+			POINTS_STD_NO, 
+			ACTION_DIV, 
+			BAN_UNIT_SCORE, 
+			LIMIT_UNIT_SCORE, 
+			QUESTION_UNIT_SCORE, 
+			PASS_UNIT_SCORE, 
+			INSERT_DATE, 
+			INSERT_ID, 
+			UPDATE_DATE, 
+			UPDATE_ID
+		FROM
+			XBT_POINTS_STD_DETAIL
+		WHERE POINTS_DETAIL_NO = #{pointsDetailNo}
+	</select>		
+	
+	<!-- 판독배점상세관리 등록 -->
+	<insert id="insertPointStdDetail" parameterType="egovframework.com.adm.learningMgr.vo.PointStd">
+		INSERT INTO XBT_POINTS_STD_DETAIL
+		(
+			POINTS_STD_NO, 
+			ACTION_DIV, 
+			BAN_UNIT_SCORE, 
+			LIMIT_UNIT_SCORE, 
+			QUESTION_UNIT_SCORE, 
+			PASS_UNIT_SCORE, 
+			INSERT_DATE, 
+			INSERT_ID
+		)VALUES(
+			#{pointsStdNo},
+			#{actionDiv},
+			#{banUnitScore},
+			#{limitUnitScore},
+			#{questionUnitScore},
+			#{passUnitScore},
+			now(),
+			#{insertId}
+		)
+	</insert>	
+	
+	
+	<!-- 판독배점상세관리 수정 -->
+	<update id="updatePointStdDetail" parameterType="egovframework.com.adm.learningMgr.vo.PointStd">	
+		UPDATE XBT_POINTS_STD_DETAIL
+		SET 
+			ACTION_DIV = #{actionDiv}
+			, BAN_UNIT_SCORE = #{banUnitScore}
+			, LIMIT_UNIT_SCORE = #{limitUnitScore}
+			, QUESTION_UNIT_SCORE = #{questionUnitScore}
+			, PASS_UNIT_SCORE = #{passUnitScore}
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DATE = now()
+		WHERE POINTS_DETAIL_NO = #{pointsDetailNo}
+	</update>	
+	
+	<!-- 판독배점상세관리 삭제-->
+	<delete id="deletePointStdDetail" parameterType="egovframework.com.adm.learningMgr.vo.PointStd">
+		DELETE FROM XBT_POINTS_STD_DETAIL WHERE POINTS_DETAIL_NO = #{pointsDetailNo}
+	</delete>	
+								
 			
 </mapper>

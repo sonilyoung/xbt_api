@@ -3,7 +3,9 @@ package egovframework.com.adm.learningMgr.service;
 import java.util.List;
 
 import egovframework.com.adm.learningMgr.vo.EduModule;
+import egovframework.com.adm.learningMgr.vo.EduModulePop;
 import egovframework.com.adm.learningMgr.vo.EduType;
+import egovframework.com.adm.learningMgr.vo.PointStd;
 import egovframework.com.adm.learningMgr.vo.XrayPoint;
 import egovframework.com.adm.learningMgr.vo.XrayPointDetail;
 
@@ -30,6 +32,8 @@ public interface LearningMgrService {
 	
 	public List<EduModule> selectModuleQuestion(EduModule params);
 	
+	public List<EduModulePop> selectModuleRandom(EduModulePop params);
+	
 	public int insertModule(EduModule params);
 	
 	public int insertModuleQuestion(EduModule params);
@@ -50,5 +54,26 @@ public interface LearningMgrService {
 	
 	public EduModule selectXrayModuleContents(EduModule params);
 	
-	public List<EduModule> selectModuleXrayPopList(EduModule params);
+	public List<EduModulePop> selectModuleXrayPopList(EduModulePop params);
+	
+	public List<PointStd> selectPointStdList(PointStd params);
+	
+	public int insertPointStd(PointStd params);
+	
+	public int updatePointStd(PointStd params);
+	
+	public int deletePointStd(PointStd params);
+
+	public PointStd selectPointStd(PointStd params);	
+	
+	
+	public List<PointStd> selectPointStdDetailList(PointStd params);
+	
+	public int insertPointStdDetail(PointStd params);
+	
+	public int updatePointStdDetail(PointStd params);
+	
+	public int deletePointStdDetail(PointStd params);
+
+	public PointStd selectPointStdDetail(PointStd params);	
 }

@@ -26,6 +26,7 @@ import egovframework.com.stu.evaluation.service.EvaluationService;
 import egovframework.com.stu.learning.service.LearningService;
 import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningProblem;
+import egovframework.com.stu.learning.vo.PointStd;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -206,13 +207,24 @@ public class EvaluationController {
 			params.setTrySeq(maxKey.getTrySeq());			
 			
 			Learning answer = evaluationService.selectEvaluationAnswer(params);
-			if("1".equals(answer.getAnswer())) {//정답
-				double result = 100/(double)moduleInfoData.getQuestionCnt();
-				result = Math.round(result*1000)/1000.0; 
-				params.setGainScore(result);
-			}else {//오답
-				params.setGainScore(0);
+			params.setAnswerDiv(answer.getAnswerDiv());
+			PointStd score = learningService.selectPointStdScore(params);
+			
+			int gainScore = 0;
+			if("0".contentEquals(params.getUserActionDiv())) {
+				gainScore = score.getBanUnitScore();	
+			}else if("1".contentEquals(params.getUserActionDiv())) {
+				gainScore = score.getBanUnitScore();
+			}else if("2".contentEquals(params.getUserActionDiv())) {
+				gainScore = score.getLimitUnitScore();	
+			}else if("3".contentEquals(params.getUserActionDiv())) {
+				gainScore = score.getQuestionUnitScore();	
+			}else if("4".contentEquals(params.getUserActionDiv())) {
+				gainScore = score.getPassUnitScore();				
+			}else {
+				gainScore = 0;
 			}
+			params.setGainScore(gainScore);
 			
 			int result = evaluationService.updateEvaluationAnswer(params); 
 			if(result>0) {

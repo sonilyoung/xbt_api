@@ -94,7 +94,8 @@
 				A.INSERT_ID,
 				A.INSERT_DATE,
 				A.UPDATE_ID,
-				A.UPDATE_DATE      
+				A.UPDATE_DATE, 
+				A.CAREER_YN
          FROM XBT_STU_USER A LEFT JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD	
          WHERE A.USER_ID = #{userId}		
 	</select>		
@@ -138,8 +139,9 @@
 			PW_UPDATE,
 			PW_PERIOD,
 			USE_YN,
-			insert_id,
-			insert_date
+			INSERT_ID,
+			INSERT_DATE,
+			CAREER_YN
 		)VALUES(
 			#{userId}
 			,#{userNm}
@@ -179,6 +181,7 @@
 			,'Y'
 			,#{insertId}
 			,now()
+			,#{careerYn}
 		)
 	
 	</insert>	
@@ -223,7 +226,8 @@
 			PW_PERIOD = 		#{pwPeriod},
 			USE_YN = 		#{useYn},
 			update_id = 		#{updateId},
-			update_date = 		now()
+			update_date = 		now(),
+			CAREER_YN = #{careerYn}
 		WHERE USER_ID = 		#{userId}	
 
 	</update>	

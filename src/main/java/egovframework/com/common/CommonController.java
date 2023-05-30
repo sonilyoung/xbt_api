@@ -72,6 +72,9 @@ public class CommonController {
 		
 		try {
 			//다국어처리조회
+			if("ko".equals(params.getLanguageCode())) {
+				params.setLanguageCode("kr");
+			}
 			List<Common> result = commonService.selectLanguageApplyList(params);
 			HashMap<String, Object> languageApply = new HashMap<String, Object>();
 			if(result!=null) {

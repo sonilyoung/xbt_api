@@ -13,6 +13,9 @@ public class LearningImg{
 	//private byte[] imgReal;
 	
 	private byte[] imgReal;//실사
+	private byte[] imgFrontDanger;//정면윔험물품
+	private byte[] imgSideDanger;//측면위험물품
+	
 	private byte[] imgFront;//정면
 	private byte[] imgSide;//측면
 	private byte[] imgThreed;//3d이미지
