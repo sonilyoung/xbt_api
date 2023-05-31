@@ -619,6 +619,9 @@
 			<when test='seqInfo == "X"'><!-- 가방xray시퀀스 -->
 				SELECT concat('X', LPAD(cast(right(IFNULL(MAX(BAG_SCAN_ID), '0'), 5) as DECIMAL)+1+1, 5 , '0')) AS seqId FROM XBT_BAG_INFO
 			</when>
+			<when test='seqInfo == "S"'><!-- 이론시퀀스 -->
+				SELECT concat('S', LPAD(cast(right(IFNULL(MAX(QUESTION_ID), '0'), 5) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_THEORY_QUESTION	
+			</when>	
 			<!-- 
 			<when test='seqInfo == "UX"'>단품시퀀스 
 				SELECT CAST(date_format(NOW(), 'UX%y%m%d%h%i%s') as CHAR) AS seqId FROM DUAL

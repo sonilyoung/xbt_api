@@ -132,7 +132,10 @@ public class SystemController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
-		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}
 		
 		try {
 			//공지사항등록
@@ -182,7 +185,12 @@ public class SystemController {
 		
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
-		}			
+		}		
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 				
 		
 		try {
@@ -254,6 +262,11 @@ public class SystemController {
 			return new BaseResponse<List<Menu>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
+		
 		try {
 			//메뉴조회
 	        return new BaseResponse<List<Menu>>(systemService.selectMenuList(params));
@@ -283,7 +296,12 @@ public class SystemController {
 		
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
 			return new BaseResponse<Menu>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
-		}			
+		}		
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			//메뉴조회
@@ -328,6 +346,11 @@ public class SystemController {
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
 		}			
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			//메뉴등록
@@ -380,7 +403,11 @@ public class SystemController {
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
 		}			
-				
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			//메뉴등록
@@ -420,7 +447,12 @@ public class SystemController {
 		
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
-		}			
+		}		
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			//메뉴삭제

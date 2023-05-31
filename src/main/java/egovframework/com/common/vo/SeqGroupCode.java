@@ -13,6 +13,8 @@ public enum SeqGroupCode {
 			"US", "단품XRAY코드"			
 	), XBT_UNIT_ID(
 			"U", "단품코드"
+	), XBT_THEORY_ID(
+			"S", "이론코드"		
 	), XBT_UNIT_GROUP_ID(
 			"G", "단품그룹코드");
 	

@@ -72,6 +72,11 @@ public class PracticeController {
 			return new BaseResponse<List<UnitGroup>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
 		}	
 		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
+		
 		try {
 			//그룹관리조회
 			List<UnitGroup> resultList = practiceService.selectUnitGroupList(params);
@@ -108,6 +113,11 @@ public class PracticeController {
 			return new BaseResponse<UnitGroup>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
 		}	
 		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
+		
 		try {
 			//그룹관리조회
 			UnitGroup resultList = practiceService.selectUnitGroupAnswer(params);
@@ -143,6 +153,11 @@ public class PracticeController {
 			return new BaseResponse<List<Practice>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
 		}	
 		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
+		
 		try {
 			List<Practice> resultList = practiceService.selectUnitList(params);
 	        return new BaseResponse<List<Practice>>(resultList);
@@ -176,6 +191,11 @@ public class PracticeController {
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
 			return new BaseResponse<Practice>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
 		}	
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			Practice result = practiceService.selectUnit(params);

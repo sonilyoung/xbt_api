@@ -146,6 +146,11 @@ public class ContentsController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageName" + BaseApiMessage.REQUIRED.getMessage());
 		}	
 		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
+		
 		try {
 			
 			params.setInsertId(login.getUserId());
@@ -186,6 +191,11 @@ public class ContentsController {
 		if(StringUtils.isEmpty(params.getLanguageName())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageName" + BaseApiMessage.REQUIRED.getMessage());
 		}	
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			
@@ -278,9 +288,14 @@ public class ContentsController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(params.getLanguageCode() == null || "".contentEquals(params.getLanguageCode())){				
+		if(StringUtils.isEmpty(params.getLanguageCode())){
 			return new BaseResponse<UnitGroup>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
-		}	
+		}
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}
 		
 		try {
 			//그룹관리조회
@@ -322,6 +337,11 @@ public class ContentsController {
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
 		}		
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 
 		try {
 			
@@ -362,6 +382,10 @@ public class ContentsController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UnitGroupCd" + BaseApiMessage.REQUIRED.getMessage());
 		}
 		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			//그룹관리수정
@@ -394,6 +418,11 @@ public class ContentsController {
 		
 		if(StringUtils.isEmpty(params.getLanguageCode())){
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
 		}		
 		
 		try {
@@ -489,9 +518,14 @@ public class ContentsController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(params.getLanguageCode() == null || "".contentEquals(params.getLanguageCode())){				
+		if(StringUtils.isEmpty(params.getLanguageCode())){
 			return new BaseResponse<List<UnitImg>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
-		}	
+		}
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}
 		
 		try {
 			List<UnitImg> resultList = contentsService.selectUnitList(params);
@@ -523,9 +557,14 @@ public class ContentsController {
 			return new BaseResponse<UnitImg>(BaseResponseCode.PARAMS_ERROR, "UnitId" + BaseApiMessage.REQUIRED.getCode());
 		}						
 		
-		if(params.getLanguageCode() == null || "".contentEquals(params.getLanguageCode())){				
+		if(StringUtils.isEmpty(params.getLanguageCode())){
 			return new BaseResponse<UnitImg>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
 		}	
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			UnitImg result = contentsService.selectUnit(params);
@@ -1042,6 +1081,11 @@ public class ContentsController {
 		if(StringUtils.isEmpty(params.getLanguageCode())){
 			return new BaseResponse<List<UnitInformation>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
 		}	
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			List<UnitInformation> resultList = contentsService.selectUnitPopupList(params);

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import egovframework.com.adm.theory.vo.Theory;
 import egovframework.com.file.vo.AttachFile;
 
 
@@ -30,4 +31,5 @@ public interface FileStorageService {
     
     void getImage(String filePath, HttpServletResponse response) throws Exception;
 
+    AttachFile createTheoryImageFile(Theory params ,MultipartFile file) throws Exception;
 }

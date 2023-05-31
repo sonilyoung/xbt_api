@@ -96,7 +96,7 @@ public class XbtImageServiceImpl implements XbtImageService {
             File[] fileList = null;
     		fileList = FileReader.ListFile( strDirPath );
     			
-            byte[] fileByte;/*이미지*/
+            byte[] fileByte = null;/*이미지*/
             
             //결과유기물
             //////System.out.println("result count : " + fileList.length);
@@ -144,7 +144,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         File[] fileList = null;
 		fileList = FileReader.ListFile( strDirPath );
 			
-        byte[] fileByte;/*이미지*/
+        byte[] fileByte = null;/*이미지*/
         
         //결과유기물
         ////System.out.println("result count : " + fileList.length);
@@ -154,11 +154,16 @@ public class XbtImageServiceImpl implements XbtImageService {
         }        
         
         //byte변환
+        byte[] tempFileByte = null;/*정면이미지*/
         for( int i = 0; i < fileList.length; i++ ) { 
         	System.out.println("result : "+fileList[i]);
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
         		//System.out.println("fileByte : "+fileByte);
+        		
+        		if(fileList[i].getName().contains("101")) {
+        			tempFileByte = fileByte;
+        		}
         		
         		if("101".equals(params.getCommand()) && fileList[i].getName().contains("101")) {//정면
         			params.setImgFrontColor(fileByte);break;
@@ -248,11 +253,15 @@ public class XbtImageServiceImpl implements XbtImageService {
         			params.setImgSideDanger(fileByte);break;
         		}
         		
-				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+        }
+        
+        //실사이미지가 없을경우
+        if("403".equals(params.getCommand()) && params.getImgReal()==null) {
+        	params.setImgReal(tempFileByte);
         }
         
         
@@ -270,7 +279,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         File[] fileList = null;
 		fileList = FileReader.ListFile( strDirPath );
 			
-        byte[] fileByte;/*이미지*/
+        byte[] fileByte = null;/*이미지*/
         
         //결과유기물
         ////System.out.println("result count : " + fileList.length);
@@ -397,7 +406,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         File[] fileList = null;
 		fileList = FileReader.ListFile( strDirPath );
 			
-        byte[] fileByte;/*이미지*/
+        byte[] fileByte = null;/*이미지*/
         
         //결과유기물
         ////System.out.println("result count : " + fileList.length);
@@ -524,7 +533,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         File[] fileList = null;
 		fileList = FileReader.ListFile( strDirPath );
 			
-        byte[] fileByte;/*이미지*/
+        byte[] fileByte = null;/*이미지*/
         
         //결과유기물
         ////System.out.println("result count : " + fileList.length);
@@ -582,7 +591,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         File[] fileList = null;
 		fileList = FileReader.ListFile( strDirPath );
 			
-        byte[] fileByte;/*이미지*/
+        byte[] fileByte = null;/*이미지*/
         
         //결과유기물
         ////System.out.println("result count : " + fileList.length);
@@ -629,7 +638,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         File[] fileList = null;
 		fileList = FileReader.ListFile( strDirPath );
 			
-        byte[] fileByte;/*이미지*/
+        byte[] fileByte = null;/*이미지*/
         
         //결과유기물
         for( int i = 0; i < fileList.length; i++ ) { 
@@ -744,7 +753,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         File[] fileList = null;
 		fileList = FileReader.ListFile( strDirPath );
 			
-        byte[] fileByte;/*이미지*/
+        byte[] fileByte = null;/*이미지*/
         
         if(fileList==null) {
         	return params;

@@ -638,6 +638,11 @@ public class LearningController {
 			return new BaseResponse<Learning>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
 		}				
 		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
+		
 		try {
 			Learning baselineData = learningService.selectBaseline(params);
 			if(baselineData == null) {
@@ -713,6 +718,11 @@ public class LearningController {
 		
 		if(StringUtils.isEmpty(params.getBagScanId())){				
 			return new BaseResponse<List<LearningProblem>>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
 		}		
 		
 		try {
@@ -1035,6 +1045,11 @@ public class LearningController {
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
 			return new BaseResponse<Learning>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
 		}				
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			Learning baselineData = learningService.selectBaseline(params);

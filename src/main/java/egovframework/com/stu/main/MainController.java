@@ -154,7 +154,12 @@ public class MainController {
 		
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
 			return new BaseResponse<Schedule>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
-		}				
+		}
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			//일정조회
@@ -202,6 +207,11 @@ public class MainController {
 		
 		if(StringUtils.isEmpty(params.getType())){				
 			return new BaseResponse<Statistics>(BaseResponseCode.PARAMS_ERROR, "Type" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
 		}		
 		
 		try {

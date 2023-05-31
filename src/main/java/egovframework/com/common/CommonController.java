@@ -109,7 +109,12 @@ public class CommonController {
 		
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
 			return new BaseResponse<List<HashMap<String, Object>>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
-		}			
+		}		
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			//다국어처리조회
@@ -161,6 +166,11 @@ public class CommonController {
 		if(StringUtils.isEmpty(params.getLanguageCode())){				
 			return new BaseResponse<HashMap<String, Object>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
 		}			
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			//다국어처리조회
@@ -214,6 +224,10 @@ public class CommonController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "SortOrder" + BaseApiMessage.REQUIRED.getMessage());
 		}		
 		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			//다국어처리등록
@@ -268,6 +282,10 @@ public class CommonController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "SortOrder" + BaseApiMessage.REQUIRED.getMessage());
 		}		
 		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			//다국어처리등록
@@ -308,6 +326,11 @@ public class CommonController {
 		if(StringUtils.isEmpty(params.getCodeNo())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeNo" + BaseApiMessage.REQUIRED.getMessage());
 		}		
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}
 		
 		try {
 			//다국어처리등록
@@ -390,6 +413,10 @@ public class CommonController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeName" + BaseApiMessage.REQUIRED.getMessage());
 		}
 		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			//공통코드등록
@@ -456,7 +483,11 @@ public class CommonController {
 		if(StringUtils.isEmpty(params.getUseYn())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UseYn" + BaseApiMessage.REQUIRED.getMessage());
 		}		
-				
+			
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
 		
 		try {
 			//공통코드등록
@@ -496,6 +527,11 @@ public class CommonController {
 		
 		if(StringUtils.isEmpty(params.getCodeId())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "CodeId" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
 		}		
 		
 		try {

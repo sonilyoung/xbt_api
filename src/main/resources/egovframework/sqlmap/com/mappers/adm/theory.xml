@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.adm.theory.dao.TheoryDAO">
+	
+<!-- 이론그룹  목록 -->
+	<select id="selectTheoryGroupList" parameterType="egovframework.com.adm.theory.vo.TheoryGroup" resultType="egovframework.com.adm.theory.vo.TheoryGroup">
+		SELECT
+			GROUP_NO,
+			GROUP_TYPE,
+			THEORY_GROUP_CD,
+			THEORY_GROUP_NAME,
+			THEORY_PARENT_GROUP_CD,
+			USE_YN,
+			INSERT_ID,
+			INSERT_DATE
+		FROM
+			XBT_THEORY_GROUP
+		WHERE GROUP_TYPE = #{groupType}
+		<choose>
+			<when test='theoryParentGroupCd != null'>
+				AND THEORY_PARENT_GROUP_CD = #{theoryParentGroupCd}
+			</when>
+		</choose>		
+	</select>		
+
+<!-- 이론그룹  상세 -->
+	<select id="selectTheoryGroup" parameterType="egovframework.com.adm.theory.vo.TheoryGroup" resultType="egovframework.com.adm.theory.vo.TheoryGroup">
+		SELECT
+			GROUP_NO,
+			GROUP_TYPE,
+			THEORY_GROUP_CD,
+			THEORY_GROUP_NAME,
+			THEORY_PARENT_GROUP_CD,
+			USE_YN,
+			INSERT_ID,
+			INSERT_DATE
+		FROM
+			XBT_THEORY_GROUP
+		WHERE GROUP_NO = #{groupNo}
+	</select>		
+	
+	<!-- 이론그룹  등록 -->
+	<insert id="insertTheoryGroup" parameterType="egovframework.com.adm.theory.vo.TheoryGroup">
+		INSERT INTO XBT_THEORY_GROUP(
+			GROUP_TYPE,
+			THEORY_GROUP_CD,
+			THEORY_GROUP_NAME,
+			THEORY_PARENT_GROUP_CD,
+			USE_YN,
+			INSERT_ID,
+			INSERT_DATE
+		)VALUES(
+			#{groupType}
+			,#{theoryGroupCd}
+			,#{theoryGroupName}
+			,#{theoryParentGroupCd}
+			,'Y'
+			,#{insertId}
+			,now()
+		)
+	</insert>	
+	
+	
+	<!-- 이론그룹  수정 -->
+	<update id="updateTheoryGroup" parameterType="egovframework.com.adm.theory.vo.TheoryGroup">	
+		UPDATE XBT_THEORY_GROUP
+		SET 
+			THEORY_GROUP_NAME = #{theoryGroupName},
+			USE_YN = #{useYn}
+		WHERE GROUP_NO = #{groupNo}
+	</update>	
+	
+	<!-- 이론그룹  삭제-->
+	<delete id="deleteTheoryGroup" parameterType="egovframework.com.adm.theory.vo.TheoryGroup">
+		DELETE FROM XBT_THEORY_GROUP WHERE GROUP_NO = #{groupNo}
+	</delete>
+	
+	
+	
+<!-- 이론  목록 -->
+	<select id="selectTheoryList" parameterType="egovframework.com.adm.theory.vo.Theory" resultType="egovframework.com.adm.theory.vo.Theory">
+		SELECT
+			QUESTION_NO,
+			QUESTION_ID,
+			STUDY_LVL,
+			QUESTION_TYPE,
+			USE_YN,
+			LAGE_GROUP_CD,
+			MIDDLE_GROUP_CD,
+			SMALL_GROUP_CD,
+			MULTI_QUESTION,
+			MULTI_ANSWER,
+			MULTI_CHOICE1,
+			MULTI_CHOICE2,
+			MULTI_CHOICE3,
+			MULTI_CHOICE4,
+			MULTI_IMG_QUESTION,
+			MULTI_IMG_ANSWER,
+			MULTI_IMG_CHOICE1,
+			MULTI_IMG_CHOICE2,
+			MULTI_IMG_CHOICE3,
+			MULTI_IMG_CHOICE4,
+			MULTI_PLUS_QUESTION,
+			MULTI_PLUS_ANSWER,
+			MULTI_PLUS_IMG,
+			MULTI_PLUS_CHOICE1,
+			MULTI_PLUS_CHOICE2,
+			MULTI_PLUS_CHOICE3,
+			MULTI_PLUS_CHOICE4,
+			OX_QUESTION,
+			OX_ANSWER,
+			ACTION_DIV,
+			INSERT_ID,
+			INSERT_DATE
+		FROM
+			XBT_THEORY_QUESTION		
+	</select>		
+
+<!-- 이론  상세 -->
+	<select id="selectTheory" parameterType="egovframework.com.adm.theory.vo.Theory" resultType="egovframework.com.adm.theory.vo.Theory">
+		SELECT
+			QUESTION_NO,
+			QUESTION_ID,
+			STUDY_LVL,
+			QUESTION_TYPE,
+			USE_YN,
+			LAGE_GROUP_CD,
+			MIDDLE_GROUP_CD,
+			SMALL_GROUP_CD,
+			MULTI_QUESTION,
+			MULTI_ANSWER,
+			MULTI_CHOICE1,
+			MULTI_CHOICE2,
+			MULTI_CHOICE3,
+			MULTI_CHOICE4,
+			MULTI_IMG_QUESTION,
+			MULTI_IMG_ANSWER,
+			MULTI_IMG_CHOICE1,
+			MULTI_IMG_CHOICE2,
+			MULTI_IMG_CHOICE3,
+			MULTI_IMG_CHOICE4,
+			MULTI_PLUS_QUESTION,
+			MULTI_PLUS_ANSWER,
+			MULTI_PLUS_IMG,
+			MULTI_PLUS_CHOICE1,
+			MULTI_PLUS_CHOICE2,
+			MULTI_PLUS_CHOICE3,
+			MULTI_PLUS_CHOICE4,
+			OX_QUESTION,
+			OX_ANSWER,
+			ACTION_DIV,
+			INSERT_ID,
+			INSERT_DATE
+		FROM
+			XBT_THEORY_QUESTION	
+		WHHER QUESTION_ID = #{questionId}
+	</select>		
+	
+	<!-- 이론  등록 -->
+	<insert id="insertTheory" parameterType="egovframework.com.adm.theory.vo.Theory">
+		<choose>
+			<when test='questionType == "A"'><!--사지선다-->
+				INSERT INTO XBT_THEORY_QUESTION(
+					QUESTION_ID,
+					STUDY_LVL,
+					QUESTION_TYPE,
+					USE_YN,
+					LAGE_GROUP_CD,
+					MIDDLE_GROUP_CD,
+					SMALL_GROUP_CD,
+					MULTI_QUESTION,
+					MULTI_CHOICE1,
+					MULTI_CHOICE2,
+					MULTI_CHOICE3,
+					MULTI_CHOICE4,
+					ACTION_DIV,
+					INSERT_ID,
+					INSERT_DATE
+				)VALUES(
+					#{questionId}
+					,#{studyLvl}
+					,#{questionType}
+					,'Y'
+					,#{lageGroupCd}
+					,#{middleGroupCd}
+					,#{smallGroupCd}
+					,#{multiQuestion}
+					,#{multiChoice1}
+					,#{multiChoice2}
+					,#{multiChoice3}
+					,#{multiChoice4}
+					,#{actionDiv}
+					,#{insertId}
+					,now()
+				)
+			</when>
+			<when test='questionType == "B"'><!--OX-->
+				INSERT INTO XBT_THEORY_QUESTION(
+					QUESTION_ID,
+					STUDY_LVL,
+					QUESTION_TYPE,
+					USE_YN,
+					LAGE_GROUP_CD,
+					MIDDLE_GROUP_CD,
+					SMALL_GROUP_CD,
+					OX_QUESTION,
+					ACTION_DIV,
+					INSERT_ID,
+					INSERT_DATE
+				)VALUES(
+					#{questionId}
+					,#{studyLvl}
+					,#{questionType}
+					,'Y'
+					,#{lageGroupCd}
+					,#{middleGroupCd}
+					,#{smallGroupCd}
+					,#{oxQuestion}
+					,#{actionDiv}
+					,#{insertId}
+					,now()
+				)
+			</when>
+			<when test='questionType == "C"'><!--이미지선다-->
+				INSERT INTO XBT_THEORY_QUESTION(
+					QUESTION_ID,
+					STUDY_LVL,
+					QUESTION_TYPE,
+					USE_YN,
+					LAGE_GROUP_CD,
+					MIDDLE_GROUP_CD,
+					SMALL_GROUP_CD,
+					MULTI_IMG_QUESTION,
+					MULTI_IMG_CHOICE1,
+					MULTI_IMG_CHOICE2,
+					MULTI_IMG_CHOICE3,
+					MULTI_IMG_CHOICE4,
+					ACTION_DIV,
+					INSERT_ID,
+					INSERT_DATE
+				)VALUES(
+					#{questionId}
+					,#{studyLvl}
+					,#{questionType}
+					,'Y'
+					,#{lageGroupCd}
+					,#{middleGroupCd}
+					,#{smallGroupCd}
+					,#{multiImgQuestion}
+					,#{multiImgChoice1}
+					,#{multiImgChoice2}
+					,#{multiImgChoice3}
+					,#{multiImgChoice4}
+					,#{actionDiv}
+					,#{insertId}
+					,now()
+				)
+			</when>
+			<when test='questionType == "D"'><!--이미지+사지선다형 질문-->
+				INSERT INTO XBT_THEORY_QUESTION(
+					QUESTION_ID,
+					STUDY_LVL,
+					QUESTION_TYPE,
+					USE_YN,
+					LAGE_GROUP_CD,
+					MIDDLE_GROUP_CD,
+					SMALL_GROUP_CD,
+					MULTI_PLUS_QUESTION,
+					MULTI_PLUS_IMG,
+					MULTI_PLUS_CHOICE1,
+					MULTI_PLUS_CHOICE2,
+					MULTI_PLUS_CHOICE3,
+					MULTI_PLUS_CHOICE4,
+					ACTION_DIV,
+					INSERT_ID,
+					INSERT_DATE
+				)VALUES(
+					#{questionId}
+					,#{studyLvl}
+					,#{questionType}
+					,'Y'
+					,#{lageGroupCd}
+					,#{middleGroupCd}
+					,#{smallGroupCd}
+					,#{multiPlusQuestion}
+					,#{multiPlusImg}
+					,#{multiPlusChoice1}
+					,#{multiPlusChoice2}
+					,#{multiPlusChoice3}
+					,#{multiPlusChoice4}
+					,#{actionDiv}
+					,#{insertId}
+					,now()
+				)
+			</when>									
+		</choose>	
+	</insert>	
+	
+	
+	<!-- 이론  수정 -->
+	<update id="updateTheory" parameterType="egovframework.com.adm.theory.vo.Theory">	
+		<choose>
+			<when test='questionType == "A"'><!--사지선다-->
+				UPDATE XBT_THEORY_QUESTION 
+				SET
+					STUDY_LVL = #{studyLvl},
+					USE_YN = #{useYn},
+					LAGE_GROUP_CD = #{lageGroupCd},
+					MIDDLE_GROUP_CD = #{middleGroupCd},
+					SMALL_GROUP_CD = #{smallGroupCd},
+					MULTI_QUESTION = #{multiQuestion},
+					MULTI_CHOICE1 = #{multiChoice1},
+					MULTI_CHOICE2 = #{multiChoice2},
+					MULTI_CHOICE3 = #{multiChoice3},
+					MULTI_CHOICE4 = #{multiChoice4},
+					ACTION_DIV = #{actionDiv}
+				WHERE QUESTION_ID = #{questionId}
+			</when>
+			<when test='questionType == "B"'><!--OX-->
+				UPDATE XBT_THEORY_QUESTION 
+				SET 
+					STUDY_LVL = #{studyLvl},
+					USE_YN = #{useYn},
+					LAGE_GROUP_CD = #{lageGroupCd},
+					MIDDLE_GROUP_CD = #{middleGroupCd},
+					SMALL_GROUP_CD = #{smallGroupCd},
+					OX_QUESTION = #{oxQuestion},
+					ACTION_DIV = #{actionDiv}
+				WHERE QUESTION_ID = #{questionId}		
+			</when>
+			<when test='questionType == "C"'><!--이미지선다-->
+				UPDATE XBT_THEORY_QUESTION SET
+					STUDY_LVL = #{studyLvl},
+					USE_YN = #{useYn},
+					LAGE_GROUP_CD = #{lageGroupCd},
+					MIDDLE_GROUP_CD = #{middleGroupCd},
+					SMALL_GROUP_CD = #{smallGroupCd},
+					MULTI_IMG_QUESTION = #{multiImgQuestion},
+					ACTION_DIV = #{actionDiv},
+					MULTI_IMG_CHOICE1 = #{multiImgChoice1},
+					MULTI_IMG_CHOICE2 = #{multiImgChoice2},
+					MULTI_IMG_CHOICE3 = #{multiImgChoice3},
+					MULTI_IMG_CHOICE4 = #{multiImgChoice4},
+					ACTION_DIV = #{actionDiv}
+				WHERE QUESTION_ID = #{questionId}		
+			</when>
+			<when test='questionType == "D"'><!--이미지+사지선다형 질문-->
+				UPDATE XBT_THEORY_QUESTION SET
+					STUDY_LVL = #{studyLvl},
+					USE_YN = #{useYn},
+					LAGE_GROUP_CD = #{lageGroupCd},
+					MIDDLE_GROUP_CD = #{middleGroupCd},
+					SMALL_GROUP_CD = #{smallGroupCd},
+					MULTI_PLUS_QUESTION = #{multiPlusQuestion},
+					ACTION_DIV = #{actionDiv},
+					MULTI_PLUS_IMG = #{multiPlusImg},
+					MULTI_PLUS_CHOICE1 = #{multiPlusChoice1},
+					MULTI_PLUS_CHOICE2 = #{multiPlusChoice2},
+					MULTI_PLUS_CHOICE3 = #{multiPlusChoice3},
+					MULTI_PLUS_CHOICE4 = #{multiPlusChoice4},
+					ACTION_DIV = #{actionDiv}
+				WHERE QUESTION_ID = #{questionId}	
+			</when>									
+		</choose>	
+	</update>	
+	
+	<!-- 이론  삭제-->
+	<delete id="deleteTheory" parameterType="egovframework.com.adm.theory.vo.Theory">
+		DELETE FROM XBT_THEORY_QUESTION WHERE QUESTION_ID = #{questionId}
+	</delete>	
+	
+</mapper>
