@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.theory.vo.Theory;
 import egovframework.com.file.vo.AttachFile;
 
@@ -23,6 +24,8 @@ public interface FileStorageService {
 
 	AttachFile createXrayImageFile(String targetName, AttachFile params ,MultipartFile file) throws Exception;
 	
+	AttachFile createXrayImageFiles(String targetName, String fileNameWithoutExtension, XrayImgContents params,MultipartFile file) throws Exception;
+	
     File getFile(AttachFile AttachFile);
 
     AttachFile createFile(MultipartFile file) throws Exception;
@@ -31,5 +34,5 @@ public interface FileStorageService {
     
     void getImage(String filePath, HttpServletResponse response) throws Exception;
 
-    AttachFile createTheoryImageFile(Theory params ,MultipartFile file) throws Exception;
+    AttachFile createTheoryImageFile(String fileNameWithoutExtension, Theory params ,MultipartFile file) throws Exception;
 }

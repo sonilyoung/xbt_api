@@ -28,9 +28,10 @@ import egovframework.com.adm.contents.vo.XrayContents;
 import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
-import egovframework.com.common.service.XbtImageService;
 import egovframework.com.common.vo.LearningImg;
 import egovframework.com.common.vo.LearningMainImg;
+import egovframework.com.file.service.FileStorageService;
+import egovframework.com.file.service.XbtImageService;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
@@ -69,6 +70,9 @@ public class ContentsController {
 
     @Autowired
     private XbtImageService xbtImageService;
+    
+    @Autowired
+    private FileStorageService fileStorageService; 
     
     
     
@@ -1207,7 +1211,9 @@ public class ContentsController {
 			params.setMimgReal(imgReal);
 			if(!ComUtils.imgExtentionCheck(imgReal)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}
+			
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "403", params, imgReal);
 		}
 		
 		if(imgFront != null){
@@ -1215,6 +1221,8 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFront)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "101", params, imgFront);
 		}
 		
 		if(imgSide != null){
@@ -1222,13 +1230,15 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgSide)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "201", params, imgSide);
 		}		
 	
 		if(imgFrontCollar != null){
 			params.setMimgFrontCollar(imgFrontCollar);
 			if(!ComUtils.imgExtentionCheck(imgFrontCollar)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}	
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "101", params, imgFront);
 		}
 		
 		if(imgFrontOrganism != null){
@@ -1236,6 +1246,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFrontOrganism)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "102", params, imgFront);
 		}		
 		
 		
@@ -1243,7 +1254,8 @@ public class ContentsController {
 			params.setMimgFrontCollarOutline(imgFrontCollarOutline);
 			if(!ComUtils.imgExtentionCheck(imgFrontCollarOutline)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}	
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "103", params, imgFront);
 		}		
 		
 		
@@ -1252,7 +1264,8 @@ public class ContentsController {
 			params.setMimgFrontCollarReversal(imgFrontCollarReversal);
 			if(!ComUtils.imgExtentionCheck(imgFrontCollarReversal)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}	
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "104", params, imgFront);
 		}		
 		
 		
@@ -1262,6 +1275,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFrontCollarBwRate1)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "105", params, imgFront);
 		}		
 		
 		
@@ -1271,6 +1285,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFrontCollarBwRate2)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "106", params, imgFront);
 		}		
 		
 		
@@ -1280,6 +1295,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFrontCollarBwRate3)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "107", params, imgFront);
 		}		
 		
 		
@@ -1289,6 +1305,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFrontCollarBwRate4)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "108", params, imgFront);
 		}		
 		
 		
@@ -1297,7 +1314,8 @@ public class ContentsController {
 			params.setMimgFrontCollarBwRate5(imgFrontCollarBwRate5);
 			if(!ComUtils.imgExtentionCheck(imgFrontCollarBwRate5)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}	
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "109", params, imgFront);
 		}		
 		
 		
@@ -1307,6 +1325,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFrontCollarBwRate6)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "110", params, imgFront);
 		}		
 		
 		
@@ -1315,7 +1334,8 @@ public class ContentsController {
 			params.setMimgFrontBw(imgFrontBw);
 			if(!ComUtils.imgExtentionCheck(imgFrontBw)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}			
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "111", params, imgFront);
 		}		
 		
 		
@@ -1324,7 +1344,8 @@ public class ContentsController {
 			params.setMimgFrontMinerals(imgFrontMinerals);
 			if(!ComUtils.imgExtentionCheck(imgFrontMinerals)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}	
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "112", params, imgFront);
 		}		
 		
 		
@@ -1334,6 +1355,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFrontBwOutline)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "113", params, imgFront);
 		}		
 		
 		
@@ -1343,6 +1365,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFrontBwReversal)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "114", params, imgFront);
 		}		
 		
 		
@@ -1352,6 +1375,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFrontBwBwRate1)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "115", params, imgFront);
 		}		
 
 		
@@ -1360,7 +1384,8 @@ public class ContentsController {
 			params.setMimgFrontBwBwRate2(imgFrontBwBwRate2);
 			if(!ComUtils.imgExtentionCheck(imgFrontBwBwRate2)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "116", params, imgFront);
 		}		
 		
 		
@@ -1369,7 +1394,8 @@ public class ContentsController {
 			params.setMimgFrontBwBwRate3(imgFrontBwBwRate3);
 			if(!ComUtils.imgExtentionCheck(imgFrontBwBwRate3)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}			
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "117", params, imgFront);
 		}		
 		
 		
@@ -1379,6 +1405,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFrontBwBwRate4)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "118", params, imgFront);
 		}		
 		
 		
@@ -1388,6 +1415,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFrontBwBwRate5)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "119", params, imgFront);
 		}		
 		
 		
@@ -1397,20 +1425,23 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgFrontBwBwRate6)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "120", params, imgFront);
 		}		
 		
 		if(imgSideCollar != null){
 			params.setMimgSideCollar(imgSideCollar);
 			if(!ComUtils.imgExtentionCheck(imgSideCollar)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}	
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "201", params, imgFront);
 		}
 		
 		if(imgSideOrganism != null){
 			params.setMimgSideOrganism(imgSideOrganism);
 			if(!ComUtils.imgExtentionCheck(imgSideOrganism)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}		
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "202", params, imgFront);
 		}		
 		
 		
@@ -1419,6 +1450,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgSideCollarOutline)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "203", params, imgFront);
 		}		
 		
 		
@@ -1428,6 +1460,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgSideCollarReversal)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "204", params, imgFront);
 		}		
 		
 		
@@ -1436,7 +1469,8 @@ public class ContentsController {
 			params.setMimgSideCollarBwRate1(imgSideCollarBwRate1);
 			if(!ComUtils.imgExtentionCheck(imgSideCollarBwRate1)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}	
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "205", params, imgFront);
 		}		
 		
 		
@@ -1445,7 +1479,8 @@ public class ContentsController {
 			params.setMimgSideCollarBwRate2(imgSideCollarBwRate2);
 			if(!ComUtils.imgExtentionCheck(imgSideCollarBwRate2)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}	
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "206", params, imgFront);
 		}		
 		
 		
@@ -1454,7 +1489,8 @@ public class ContentsController {
 			params.setMimgSideCollarBwRate3(imgSideCollarBwRate3);
 			if(!ComUtils.imgExtentionCheck(imgSideCollarBwRate3)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}	
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "207", params, imgFront);
 		}		
 		
 		
@@ -1463,7 +1499,8 @@ public class ContentsController {
 			params.setMimgSideCollarBwRate4(imgSideCollarBwRate4);
 			if(!ComUtils.imgExtentionCheck(imgSideCollarBwRate4)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}		
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "208", params, imgFront);
 		}		
 		
 		
@@ -1472,7 +1509,8 @@ public class ContentsController {
 			params.setMimgSideCollarBwRate5(imgSideCollarBwRate5);
 			if(!ComUtils.imgExtentionCheck(imgSideCollarBwRate5)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}			
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "209", params, imgFront);
 		}		
 		
 		
@@ -1482,6 +1520,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgSideCollarBwRate6)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "210", params, imgFront);
 		}		
 		
 		
@@ -1491,6 +1530,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgSideBw)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "211", params, imgFront);
 		}		
 		
 		
@@ -1499,7 +1539,8 @@ public class ContentsController {
 			params.setMimgSideMinerals(imgSideMinerals);
 			if(!ComUtils.imgExtentionCheck(imgSideMinerals)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}			
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "212", params, imgFront);
 		}		
 		
 		
@@ -1508,7 +1549,8 @@ public class ContentsController {
 			params.setMimgSideBwOutline(imgSideBwOutline);
 			if(!ComUtils.imgExtentionCheck(imgSideBwOutline)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}	
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "213", params, imgFront);
 		}		
 		
 		
@@ -1517,7 +1559,8 @@ public class ContentsController {
 			params.setMimgSideBwReversal(imgSideBwReversal);
 			if(!ComUtils.imgExtentionCheck(imgSideBwReversal)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}		
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "214", params, imgFront);
 		}		
 		
 		
@@ -1527,6 +1570,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgSideBwBwRate1)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "215", params, imgFront);
 		}		
 
 		
@@ -1535,7 +1579,8 @@ public class ContentsController {
 			params.setMimgSideBwBwRate2(imgSideBwBwRate2);
 			if(!ComUtils.imgExtentionCheck(imgSideBwBwRate2)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}		
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "216", params, imgFront);
 		}		
 		
 		
@@ -1544,7 +1589,8 @@ public class ContentsController {
 			params.setMimgSideBwBwRate3(imgSideBwBwRate3);
 			if(!ComUtils.imgExtentionCheck(imgSideBwBwRate3)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}	
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "217", params, imgFront);
 		}		
 		
 		
@@ -1553,7 +1599,8 @@ public class ContentsController {
 			params.setMimgSideBwBwRate4(imgSideBwBwRate4);
 			if(!ComUtils.imgExtentionCheck(imgSideBwBwRate4)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}		
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "218", params, imgFront);
 		}		
 		
 		
@@ -1563,6 +1610,7 @@ public class ContentsController {
 			if(!ComUtils.imgExtentionCheck(imgSideBwBwRate5)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
 			}				
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "219", params, imgFront);
 		}		
 		
 		
@@ -1571,18 +1619,20 @@ public class ContentsController {
 			params.setMimgSideBw(imgSideBwBwRate6);
 			if(!ComUtils.imgExtentionCheck(imgSideBwBwRate6)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
-			}				
+			}	
+			fileStorageService.createXrayImageFiles(params.getBagScanId(), "220", params, imgFront);
 		}				
 		
 		
 	
 		if(StringUtils.isEmpty(params.getBagScanId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "getUnitScanId" + BaseApiMessage.REQUIRED.getMessage());
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getMessage());
 		}		
 		
 	    try { 
 	    	//params.setInsertId(login.getFirstLogin());
 	    	params.setUpdateId("admin");
+	    	//contentsService.updateXrayContentsImg(params);
 	    	contentsService.updateXrayContentsDbImg(params);
 			return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
 	    }catch(Exception e) {

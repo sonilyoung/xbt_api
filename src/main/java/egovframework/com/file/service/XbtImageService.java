@@ -1,7 +1,8 @@
-package egovframework.com.common.service;
+package egovframework.com.file.service;
 
 import java.util.List;
 
+import egovframework.com.adm.theory.vo.Theory;
 import egovframework.com.common.vo.LearningImg;
 import egovframework.com.common.vo.LearningMainImg;
 import egovframework.com.stu.learning.vo.LearningProblem;
@@ -40,5 +41,7 @@ public interface XbtImageService {
 	public LearningImg selectAdmAllUnitImg(LearningImg params);
 	
 	public LearningImg selectAdmAllBagImg(LearningImg params);	
+	
+	public Theory selectTheoryImg(Theory params);
 	
 }

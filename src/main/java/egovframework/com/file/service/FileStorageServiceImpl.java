@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.theory.vo.Theory;
 import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.common.GlobalsProperties;
@@ -276,13 +277,13 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
 	@Override
-	public AttachFile createTheoryImageFile(Theory params, MultipartFile file) throws Exception {
+	public AttachFile createTheoryImageFile(String fileNameWithoutExtension, Theory params, MultipartFile file) throws Exception {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
         AttachFile AttachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
-        String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
+        //String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
         String fileExtension = StringUtils.getFilenameExtension(originalFileName);
         
         String filePath = THEORY_ROOT_DIR;
@@ -304,6 +305,52 @@ public class FileStorageServiceImpl implements FileStorageService {
         //X00353-204.jpg
         
         sb.append(params.getQuestionId()).append("-").append(fileNameWithoutExtension).append(".").append(fileExtension);
+        String realFileName = sb.toString();
+        try {
+            newFile = new File(targetFilePath, realFileName);
+            file.transferTo(newFile);
+            AttachFile = new AttachFile();
+            AttachFile.setFileExt(fileExtension);
+            AttachFile.setFilePath(filePath);
+            AttachFile.setOriginalFileName(originalFileName);
+            AttachFile.setSaveFileName(realFileName);
+            AttachFile.setFileSize((int) file.getSize());
+        } catch (IllegalStateException e) {
+            throw e;
+        } catch (IOException e) {
+            throw e;
+        }
+        return AttachFile;
+	}
+
+	@Override
+	public AttachFile createXrayImageFiles(String targetName, String fileNameWithoutExtension, XrayImgContents params, MultipartFile file) throws Exception {
+		// TODO Auto-generated method stub
+        AttachFile AttachFile = null;
+        File newFile = null;
+        String originalFileName = file.getOriginalFilename();
+        //String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
+        String fileExtension = StringUtils.getFilenameExtension(originalFileName);
+        
+        String filePath = XRAY_ROOT_DIR;
+        
+        File fileDir = new File(filePath);
+        // root directory 없으면 생성
+    	if (!fileDir.exists()) {
+    		fileDir.mkdirs(); //폴더 생성합니다.
+    	}        
+        
+    	String targetFilePath = filePath+File.separator+targetName;
+    	File imgDir = new File(filePath+File.separator+targetName);
+    	if (!imgDir.exists()) {
+    		imgDir.mkdirs(); //폴더 생성합니다.
+    	}        	
+    	
+        // 실제 파일명_현재시간 으로 rename
+        StringBuilder sb = new StringBuilder();
+        //X00353-204.jpg
+        
+        sb.append(targetName).append("-").append(fileNameWithoutExtension).append(".").append(fileExtension);
         String realFileName = sb.toString();
         try {
             newFile = new File(targetFilePath, realFileName);

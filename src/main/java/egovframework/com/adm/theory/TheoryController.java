@@ -27,6 +27,7 @@ import egovframework.com.adm.theory.vo.Theory;
 import egovframework.com.adm.theory.vo.TheoryGroup;
 import egovframework.com.common.vo.SeqGroupCode;
 import egovframework.com.file.service.FileStorageService;
+import egovframework.com.file.service.XbtImageService;
 import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
@@ -64,6 +65,9 @@ public class TheoryController {
     
     @Autowired
     private ContentsService contentsService;
+    
+    @Autowired
+    private XbtImageService xbtImageService;
     
     				
     /**
@@ -290,7 +294,10 @@ public class TheoryController {
 		
 		try {
 			//이론조회
-	        return new BaseResponse<Theory>(theoryService.selectTheory(params));
+			Theory result = theoryService.selectTheory(params);
+			xbtImageService.selectTheoryImg(result);
+			
+	        return new BaseResponse<Theory>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
@@ -341,7 +348,11 @@ public class TheoryController {
 		
 		if(StringUtils.isEmpty(params.getActionDiv())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ActionDiv" + BaseApiMessage.REQUIRED.getCode());
-		}		
+		}	
+		
+		if(StringUtils.isEmpty(params.getQuestion())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Question" + BaseApiMessage.REQUIRED.getCode());
+		}				
 		
 		XbtSeq seq = new XbtSeq();
 		seq.setSeqInfo(SeqGroupCode.XBT_THEORY_ID.getCode());
@@ -349,88 +360,50 @@ public class TheoryController {
 		params.setQuestionId(unitId.getSeqId());		
 
 		
-		//사지선다(A), OX(B), 이미지선다(C), 이미지사지선다(D)
+		//사지선다(A), OX(B), 이미지사선다(C), 이미지+사지선다형(D)
 		if("A".equals(params.getQuestionType())) {
-			
-			if(StringUtils.isEmpty(params.getMultiQuestion())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiQuestion" + BaseApiMessage.REQUIRED.getCode());
-			}				
-			
-			if(StringUtils.isEmpty(params.getMultiChoice1())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiChoice1" + BaseApiMessage.REQUIRED.getCode());
+			if(StringUtils.isEmpty(params.getChoice1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice1" + BaseApiMessage.REQUIRED.getCode());
 			}	
 			
-			if(StringUtils.isEmpty(params.getMultiChoice2())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiChoice2" + BaseApiMessage.REQUIRED.getCode());
+			if(StringUtils.isEmpty(params.getChoice2())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice2" + BaseApiMessage.REQUIRED.getCode());
 			}	
 			
-			if(StringUtils.isEmpty(params.getMultiChoice3())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiChoice3" + BaseApiMessage.REQUIRED.getCode());
+			if(StringUtils.isEmpty(params.getChoice3())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice3" + BaseApiMessage.REQUIRED.getCode());
 			}		
 			
-			if(StringUtils.isEmpty(params.getMultiChoice4())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiChoice4" + BaseApiMessage.REQUIRED.getCode());
+			if(StringUtils.isEmpty(params.getChoice4())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice4" + BaseApiMessage.REQUIRED.getCode());
 			}				
-		}else if("B".equals(params.getQuestionType())) {
-			
-			if(StringUtils.isEmpty(params.getOxQuestion())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "OxQuestion" + BaseApiMessage.REQUIRED.getCode());
-			}	
-			
-		}else if("C".equals(params.getQuestionType())) {
-			if(StringUtils.isEmpty(params.getActionDiv())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ActionDiv" + BaseApiMessage.REQUIRED.getCode());
-			}			
-			
-			if(StringUtils.isEmpty(params.getMultiImgQuestion())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiImgQuestion" + BaseApiMessage.REQUIRED.getCode());
-			}	
-			
+		}else if("B".equals(params.getQuestionType())) {//OX(B)
+		}else if("C".equals(params.getQuestionType())) {//이미지사선다(C)
 			
 	        if (files != null) {
+	        	int i = 1;
 	            for (MultipartFile file : files) {
 	                // 파일 생성
-	            	AttachFile detail = fileStorageService.createTheoryImageFile(params, file);
-	            	if(detail.getSaveFileName().contains("1")) {
-	            		params.setMultiImgChoice1(detail.getSaveFileName());
-	            	}else if(detail.getSaveFileName().contains("2")) {
-	            		params.setMultiImgChoice2(detail.getSaveFileName());
-	            	}else if(detail.getSaveFileName().contains("3")) {
-	            		params.setMultiImgChoice3(detail.getSaveFileName());
-	            	}else if(detail.getSaveFileName().contains("4")) {
-	            		params.setMultiImgChoice4(detail.getSaveFileName());
+	            	AttachFile detail = fileStorageService.createTheoryImageFile(String.valueOf(i), params, file);
+	            	if(i==1) {
+	            		params.setChoice1(detail.getSaveFileName());
+	            	}else if(i==2) {
+	            		params.setChoice2(detail.getSaveFileName());
+	            	}else if(i==3) {
+	            		params.setChoice3(detail.getSaveFileName());
+	            	}else if(i==4) {
+	            		params.setChoice4(detail.getSaveFileName());
 	            	}
+	            	i++;
 	            }
 	        }
-		}else if("D".equals(params.getQuestionType())) {
-			if(StringUtils.isEmpty(params.getActionDiv())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ActionDiv" + BaseApiMessage.REQUIRED.getCode());
-			}			
-			
-			if(StringUtils.isEmpty(params.getMultiPlusQuestion())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiPlusQuestion" + BaseApiMessage.REQUIRED.getCode());
-			}
-			
-			if(StringUtils.isEmpty(params.getMultiPlusChoice1())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "multiPlusChoice1" + BaseApiMessage.REQUIRED.getCode());
-			}
-			if(StringUtils.isEmpty(params.getMultiPlusChoice2())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "multiPlusChoice2" + BaseApiMessage.REQUIRED.getCode());
-			}
-			if(StringUtils.isEmpty(params.getMultiPlusChoice3())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "multiPlusChoice3" + BaseApiMessage.REQUIRED.getCode());
-			}			
-			if(StringUtils.isEmpty(params.getMultiPlusChoice4())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "multiPlusChoice4" + BaseApiMessage.REQUIRED.getCode());
-			}			
+		}else if("D".equals(params.getQuestionType())) {//이미지+사지선다형(D)
 			
 	        if (files != null) {
 	            for (MultipartFile file : files) {
 	                // 파일 생성
-	            	AttachFile detail = fileStorageService.createTheoryImageFile(params, file);
-	            	if(detail.getSaveFileName().contains("Q")) {
-	            		params.setMultiPlusImg(detail.getSaveFileName());
-	            	}	            	
+	            	AttachFile detail = fileStorageService.createTheoryImageFile("Q", params, file);
+	            	params.setMultiPlusImgName(detail.getSaveFileName());
 	            }
 	        }
 		}
@@ -475,6 +448,10 @@ public class TheoryController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "QuestionId" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
+		if(StringUtils.isEmpty(params.getQuestionType())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "QuestionType" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
 		if(StringUtils.isEmpty(params.getStudyLvl())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "StudyLvl" + BaseApiMessage.REQUIRED.getCode());
 		}
@@ -489,85 +466,64 @@ public class TheoryController {
 		
 		if(StringUtils.isEmpty(params.getSmallGroupCd())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "SmallGroupCd" + BaseApiMessage.REQUIRED.getCode());
-		}			
+		}				
 		
 		if(StringUtils.isEmpty(params.getActionDiv())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ActionDiv" + BaseApiMessage.REQUIRED.getCode());
-		}		
+		}	
 		
-		//사지선다(A), OX(B), 이미지선다(C), 이미지사지선다(D)
+		if(StringUtils.isEmpty(params.getQuestion())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Question" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		if(StringUtils.isEmpty(params.getUseYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UseYn" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		//사지선다(A), OX(B), 이미지사선다(C), 이미지+사지선다형(D)
 		if("A".equals(params.getQuestionType())) {
-			if(StringUtils.isEmpty(params.getMultiQuestion())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiQuestion" + BaseApiMessage.REQUIRED.getCode());
-			}				
-			
-			
-			if(StringUtils.isEmpty(params.getMultiChoice1())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiChoice1" + BaseApiMessage.REQUIRED.getCode());
+			if(StringUtils.isEmpty(params.getChoice1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice1" + BaseApiMessage.REQUIRED.getCode());
 			}	
 			
-			if(StringUtils.isEmpty(params.getMultiChoice2())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiChoice2" + BaseApiMessage.REQUIRED.getCode());
+			if(StringUtils.isEmpty(params.getChoice2())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice2" + BaseApiMessage.REQUIRED.getCode());
 			}	
 			
-			if(StringUtils.isEmpty(params.getMultiChoice3())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiChoice3" + BaseApiMessage.REQUIRED.getCode());
+			if(StringUtils.isEmpty(params.getChoice3())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice3" + BaseApiMessage.REQUIRED.getCode());
 			}		
 			
-			if(StringUtils.isEmpty(params.getMultiChoice4())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiChoice4" + BaseApiMessage.REQUIRED.getCode());
+			if(StringUtils.isEmpty(params.getChoice4())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice4" + BaseApiMessage.REQUIRED.getCode());
 			}				
-		}else if("B".equals(params.getQuestionType())) {
-			if(StringUtils.isEmpty(params.getOxQuestion())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "OxQuestion" + BaseApiMessage.REQUIRED.getCode());
-			}	
-			
-		}else if("C".equals(params.getQuestionType())) {
-			
-			if(StringUtils.isEmpty(params.getMultiImgQuestion())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiImgQuestion" + BaseApiMessage.REQUIRED.getCode());
-			}	
+		}else if("B".equals(params.getQuestionType())) {//OX(B)
+		}else if("C".equals(params.getQuestionType())) {//이미지사선다(C)
 			
 	        if (files != null) {
+	        	int i = 1;
 	            for (MultipartFile file : files) {
 	                // 파일 생성
-	            	AttachFile detail = fileStorageService.createTheoryImageFile(params, file);
-	            	if(detail.getSaveFileName().contains("1")) {
-	            		params.setMultiImgChoice1(detail.getSaveFileName());
-	            	}else if(detail.getSaveFileName().contains("2")) {
-	            		params.setMultiImgChoice2(detail.getSaveFileName());
-	            	}else if(detail.getSaveFileName().contains("3")) {
-	            		params.setMultiImgChoice3(detail.getSaveFileName());
-	            	}else if(detail.getSaveFileName().contains("4")) {
-	            		params.setMultiImgChoice4(detail.getSaveFileName());
+	            	AttachFile detail = fileStorageService.createTheoryImageFile(String.valueOf(i), params, file);
+	            	if(i==1) {
+	            		params.setChoice1(detail.getSaveFileName());
+	            	}else if(i==2) {
+	            		params.setChoice2(detail.getSaveFileName());
+	            	}else if(i==3) {
+	            		params.setChoice3(detail.getSaveFileName());
+	            	}else if(i==4) {
+	            		params.setChoice4(detail.getSaveFileName());
 	            	}
+	            	i++;
 	            }
 	        }
-		}else if("D".equals(params.getQuestionType())) {
-			if(StringUtils.isEmpty(params.getMultiPlusQuestion())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MultiPlusQuestion" + BaseApiMessage.REQUIRED.getCode());
-			}
-			
-			if(StringUtils.isEmpty(params.getMultiPlusChoice1())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "multiPlusChoice1" + BaseApiMessage.REQUIRED.getCode());
-			}
-			if(StringUtils.isEmpty(params.getMultiPlusChoice2())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "multiPlusChoice2" + BaseApiMessage.REQUIRED.getCode());
-			}
-			if(StringUtils.isEmpty(params.getMultiPlusChoice3())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "multiPlusChoice3" + BaseApiMessage.REQUIRED.getCode());
-			}			
-			if(StringUtils.isEmpty(params.getMultiPlusChoice4())){				
-				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "multiPlusChoice4" + BaseApiMessage.REQUIRED.getCode());
-			}			
+		}else if("D".equals(params.getQuestionType())) {//이미지+사지선다형(D)
 			
 	        if (files != null) {
 	            for (MultipartFile file : files) {
 	                // 파일 생성
-	            	AttachFile detail = fileStorageService.createTheoryImageFile(params, file);
-	            	if(detail.getSaveFileName().contains("Q")) {
-	            		params.setMultiPlusImg(detail.getSaveFileName());
-	            	}	            	
+	            	AttachFile detail = fileStorageService.createTheoryImageFile("Q", params, file);
+	            	params.setMultiPlusImgName(detail.getSaveFileName());
 	            }
 	        }
 		}

@@ -1,4 +1,4 @@
-package egovframework.com.common.service;
+package egovframework.com.file.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import egovframework.com.adm.theory.vo.Theory;
 import egovframework.com.common.vo.LearningImg;
 import egovframework.com.common.vo.LearningMainImg;
 import egovframework.com.global.common.GlobalsProperties;
@@ -859,6 +860,46 @@ public class XbtImageServiceImpl implements XbtImageService {
         }
         
 		return params;
+	}
+
+
+
+	@Override
+	public Theory selectTheoryImg(Theory params) {
+		// TODO Auto-generated method stub
+    	String xrayPath = GlobalsProperties.getProperty("theory.img.path");
+		String scanId = params.getQuestionId();	
+        String strDirPath = xrayPath+File.separator+scanId; 
+        File[] fileList = null;
+		fileList = FileReader.ListFile( strDirPath );
+			
+        byte[] fileByte = null;/*이미지*/
+        
+        if(fileList==null) {
+        	return params;
+        }   
+        
+        //결과유기물
+        for( int i = 0; i < fileList.length; i++ ) { 
+        	try {
+        		fileByte = Files.readAllBytes(fileList[i].toPath());
+        		if(fileList[i].getName().contains("-1")) {//정면
+        			params.setChoiceImg1(fileByte);
+        		}else if(fileList[i].getName().contains("-2")) {
+        			params.setChoiceImg2(fileByte);
+        		}else if(fileList[i].getName().contains("-3")) {
+        			params.setChoiceImg3(fileByte);
+        		}else if(fileList[i].getName().contains("-4")) {
+        			params.setChoiceImg4(fileByte);
+        		}else if(fileList[i].getName().contains("-Q")) {
+        			params.setMultiPlusImg(fileByte);
+        		}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        return params;
 	}	
 		
 	
