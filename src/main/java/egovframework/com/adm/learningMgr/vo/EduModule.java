@@ -35,7 +35,7 @@ public class EduModule {
 	private int dangerMaterialsScore;
 	private int liquidGelScore;
 	private int passScore;
-	private int totalScore;
+	private String failToPass;
 	private int timeLimit;
 	private String moduleType;
 	private String learningType;

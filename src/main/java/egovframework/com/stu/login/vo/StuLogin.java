@@ -38,7 +38,6 @@ public class StuLogin {
 	private String birthDay;
 	private String age;
 	private String address;
-	private String department;
 	private String work;
 	private String career1;
 	private String career2;

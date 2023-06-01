@@ -15,6 +15,7 @@ public class UserInfo {
 	private String authNm;	                 /*권한코드이름*/
 	private String company;	                 /*회사*/
 	private String position;	                 /*직급*/
+	private String dept;	                 /*부서*/
 	private String trainingDiv;                /*교육구분*/
 	private String telNo;                      /*전화번호*/        
 	private String hpNo;                       /*핸드폰번호*/        
@@ -32,7 +33,6 @@ public class UserInfo {
 	private String updateId;                      /*수정자id*/        
 	private String updateDate;                      /*수정일자*/   
 	
-	
 	private String careerYn;
 	private String eduName;
 	private String userNmCh;
@@ -41,19 +41,46 @@ public class UserInfo {
 	private String birthDay;
 	private String age;
 	private String address;
-	private String department;
 	private String work;
 	private String career1;
 	private String career2;
 	private String career3;
 	private String career4;
 	private String career5;
-	private String lastEduSchool;
 	private String militaryCareer;
 	private String registNumber;
 	private String employStatusYn;
 	private String lastEdu;
 	private String writeDate;
+	
+	private String careerStartDate1;
+	private String careerEndDate1;
+	private String careerCompany1;
+	private String careerPosition1;
+	private String careerStartDate2;
+	private String careerEndDate2;
+	private String careerCompany2;
+	private String careerPosition2;
+	private String careerStartDate3;
+	private String careerEndDate3;
+	private String careerCompany3;
+	private String careerPosition3;
+	private String careerStartDate4;
+	private String careerEndDate4;
+	private String careerCompany4;
+	private String careerPosition4;
+	private String careerStartDate5;
+	private String careerEndDate5;
+	private String careerCompany5;
+	private String careerPosition5;
+	private String militaryClass;
+	private String militaryEnd;
+	private String militaryStartDate;
+	private String militaryEndDate;
+	private String lastEduName;
+	private String lastEduDept;
+	private String lastEduYear;
+	private String lastEduEnd;
 	
 	
 }

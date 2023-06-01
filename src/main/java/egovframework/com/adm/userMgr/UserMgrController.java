@@ -132,104 +132,147 @@ public class UserMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getAuthCd())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "AuthCd" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getUserId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getEduName())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userId" + BaseApiMessage.REQUIRED.getCode());
+		}
+
 		if(StringUtils.isEmpty(params.getUserNm())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserNm" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
-		if(StringUtils.isEmpty(params.getUserPw())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserPw" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		if(StringUtils.isEmpty(params.getCompany())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Company" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getPosition())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Position" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getHpNo())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "HpNo" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getTelNo())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "TelNo" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
-		if(StringUtils.isEmpty(params.getEduName())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "EduName" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userNm" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		if(StringUtils.isEmpty(params.getUserNmCh())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserNmCh" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userNmCh" + BaseApiMessage.REQUIRED.getCode());
+		}
+
 		if(StringUtils.isEmpty(params.getUserNmEn())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserNmEn" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userNmEn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
 		if(StringUtils.isEmpty(params.getSex())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Sex" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "sex" + BaseApiMessage.REQUIRED.getCode());
+		}
+
 		if(StringUtils.isEmpty(params.getBirthDay())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BirthDay" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "birthDay" + BaseApiMessage.REQUIRED.getCode());
+		}		
+
 		if(StringUtils.isEmpty(params.getAge())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Age" + BaseApiMessage.REQUIRED.getCode());
-		}				
-		
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "age" + BaseApiMessage.REQUIRED.getCode());
+		}		
+
+
 		if(StringUtils.isEmpty(params.getAddress())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Address" + BaseApiMessage.REQUIRED.getCode());
-		}				
-		
-		if(StringUtils.isEmpty(params.getDepartment())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Department" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "address" + BaseApiMessage.REQUIRED.getCode());
+		}		
+
+		if(StringUtils.isEmpty(params.getUserPw())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userPw" + BaseApiMessage.REQUIRED.getCode());
 		}
-		
-		if(StringUtils.isEmpty(params.getWork())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Work" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
-		if(StringUtils.isEmpty(params.getCareer1())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Career1" + BaseApiMessage.REQUIRED.getCode());
-		}
-		
-		if(StringUtils.isEmpty(params.getCareer2())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Career2" + BaseApiMessage.REQUIRED.getCode());
-		}				
-		
-		if(StringUtils.isEmpty(params.getLastEduSchool())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LastEduSchool" + BaseApiMessage.REQUIRED.getCode());
-		}
-		
-		if(StringUtils.isEmpty(params.getMilitaryCareer())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MilitaryCareer" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
-		if(StringUtils.isEmpty(params.getRegistNumber())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "RegistNumber" + BaseApiMessage.REQUIRED.getCode());
+
+		if(StringUtils.isEmpty(params.getDept())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "dept" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
+		if(StringUtils.isEmpty(params.getPosition())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "position" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getWork())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "work" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareer1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career1" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareer2())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career2" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getRegistNumber())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "registNumber" + BaseApiMessage.REQUIRED.getCode());
+		}
+
 		if(StringUtils.isEmpty(params.getEmployStatusYn())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "EmployStatusYn" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "employStatusYn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
 		if(StringUtils.isEmpty(params.getLastEdu())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LastEdu" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEdu" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getWriteDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "writeDate" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCompany())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "company" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getHpNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "hpNo" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+
+		if(StringUtils.isEmpty(params.getEmail())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "email" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareerYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerYn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareerStartDate1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate1" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareerEndDate1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate1" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getCareerCompany1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany1" + BaseApiMessage.REQUIRED.getCode());
 		}	
 		
-		if(StringUtils.isEmpty(params.getWriteDate())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "WriteDate" + BaseApiMessage.REQUIRED.getCode());
-		}				
+		if(StringUtils.isEmpty(params.getCareerPosition1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition1" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		if(StringUtils.isEmpty(params.getCareerStartDate2())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate2" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		if(StringUtils.isEmpty(params.getCareerEndDate2())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate2" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		if(StringUtils.isEmpty(params.getCareerCompany2())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany2" + BaseApiMessage.REQUIRED.getCode());
+		}	
+
+		if(StringUtils.isEmpty(params.getCareerPosition2())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition2" + BaseApiMessage.REQUIRED.getCode());
+		}	
+
+		if(StringUtils.isEmpty(params.getLastEduName())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduName" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		if(StringUtils.isEmpty(params.getLastEduDept())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduDept" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getLastEduYear())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduYear" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		if(StringUtils.isEmpty(params.getLastEduEnd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduEnd" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
 		
 		try {
 			//교육생등록
@@ -267,109 +310,147 @@ public class UserMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getAuthCd())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "AuthCd" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
-		if(StringUtils.isEmpty(params.getUserId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getEduName())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
-		if(StringUtils.isEmpty(params.getUserNm())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserNm" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
-		if(StringUtils.isEmpty(params.getUserPw())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserPw" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		if(StringUtils.isEmpty(params.getCompany())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Company" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getPosition())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Position" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getHpNo())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "HpNo" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getTelNo())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "TelNo" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
-		if(StringUtils.isEmpty(params.getUseYn())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UseYn" + BaseApiMessage.REQUIRED.getCode());
-		}			
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userId" + BaseApiMessage.REQUIRED.getCode());
+		}
 
-		if(StringUtils.isEmpty(params.getEduName())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "EduName" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getUserNm())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userNm" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		if(StringUtils.isEmpty(params.getUserNmCh())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserNmCh" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userNmCh" + BaseApiMessage.REQUIRED.getCode());
+		}
+
 		if(StringUtils.isEmpty(params.getUserNmEn())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserNmEn" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userNmEn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
 		if(StringUtils.isEmpty(params.getSex())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Sex" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "sex" + BaseApiMessage.REQUIRED.getCode());
+		}
+
 		if(StringUtils.isEmpty(params.getBirthDay())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BirthDay" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "birthDay" + BaseApiMessage.REQUIRED.getCode());
+		}		
+
 		if(StringUtils.isEmpty(params.getAge())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Age" + BaseApiMessage.REQUIRED.getCode());
-		}				
-		
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "age" + BaseApiMessage.REQUIRED.getCode());
+		}		
+
+
 		if(StringUtils.isEmpty(params.getAddress())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Address" + BaseApiMessage.REQUIRED.getCode());
-		}				
-		
-		if(StringUtils.isEmpty(params.getDepartment())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Department" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "address" + BaseApiMessage.REQUIRED.getCode());
+		}		
+
+		if(StringUtils.isEmpty(params.getUserPw())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userPw" + BaseApiMessage.REQUIRED.getCode());
 		}
+
+		if(StringUtils.isEmpty(params.getDept())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "dept" + BaseApiMessage.REQUIRED.getCode());
+		}		
 		
+		if(StringUtils.isEmpty(params.getPosition())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "position" + BaseApiMessage.REQUIRED.getCode());
+		}
+
 		if(StringUtils.isEmpty(params.getWork())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Work" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "work" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareer1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career1" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareer2())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career2" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getRegistNumber())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "registNumber" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getEmployStatusYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "employStatusYn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getLastEdu())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEdu" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getWriteDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "writeDate" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCompany())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "company" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getHpNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "hpNo" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+
+		if(StringUtils.isEmpty(params.getEmail())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "email" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareerYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerYn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareerStartDate1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate1" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareerEndDate1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate1" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getCareerCompany1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany1" + BaseApiMessage.REQUIRED.getCode());
 		}	
 		
-		if(StringUtils.isEmpty(params.getCareer1())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Career1" + BaseApiMessage.REQUIRED.getCode());
-		}
+		if(StringUtils.isEmpty(params.getCareerPosition1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition1" + BaseApiMessage.REQUIRED.getCode());
+		}	
 		
-		if(StringUtils.isEmpty(params.getCareer2())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Career2" + BaseApiMessage.REQUIRED.getCode());
-		}				
+		if(StringUtils.isEmpty(params.getCareerStartDate2())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate2" + BaseApiMessage.REQUIRED.getCode());
+		}	
 		
-		if(StringUtils.isEmpty(params.getLastEduSchool())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LastEduSchool" + BaseApiMessage.REQUIRED.getCode());
-		}
+		if(StringUtils.isEmpty(params.getCareerEndDate2())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate2" + BaseApiMessage.REQUIRED.getCode());
+		}	
 		
-		if(StringUtils.isEmpty(params.getMilitaryCareer())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MilitaryCareer" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getCareerCompany2())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany2" + BaseApiMessage.REQUIRED.getCode());
+		}	
+
+		if(StringUtils.isEmpty(params.getCareerPosition2())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition2" + BaseApiMessage.REQUIRED.getCode());
+		}	
+
+		if(StringUtils.isEmpty(params.getLastEduName())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduName" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		if(StringUtils.isEmpty(params.getLastEduDept())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduDept" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
-		if(StringUtils.isEmpty(params.getRegistNumber())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "RegistNumber" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getEmployStatusYn())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "EmployStatusYn" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getLastEduYear())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduYear" + BaseApiMessage.REQUIRED.getCode());
 		}	
 		
-		if(StringUtils.isEmpty(params.getLastEdu())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LastEdu" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getLastEduEnd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduEnd" + BaseApiMessage.REQUIRED.getCode());
 		}	
 		
-		if(StringUtils.isEmpty(params.getWriteDate())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "WriteDate" + BaseApiMessage.REQUIRED.getCode());
-		}		
-				
 		
 		try {
 			//교육생등록

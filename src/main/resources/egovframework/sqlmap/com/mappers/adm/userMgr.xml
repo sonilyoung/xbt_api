@@ -19,7 +19,7 @@
 				BIRTH_DAY,
 				AGE,
 				ADDRESS,
-				DEPARTMENT,
+				DEPT,
 				POSITION,
 				WORK,
 				CAREER1,
@@ -27,11 +27,38 @@
 				CAREER3,
 				CAREER4,
 				CAREER5,
-				LAST_EDU_SCHOOL,
+				CAREER_START_DATE1,
+				CAREER_END_DATE1,
+				CAREER_COMPANY1,
+				CAREER_POSITION1,
+				CAREER_START_DATE2,
+				CAREER_END_DATE2,
+				CAREER_COMPANY2,
+				CAREER_POSITION2,
+				CAREER_START_DATE3,
+				CAREER_END_DATE3,
+				CAREER_COMPANY3,
+				CAREER_POSITION3,
+				CAREER_START_DATE4,
+				CAREER_END_DATE4,
+				CAREER_COMPANY4,
+				CAREER_POSITION4,
+				CAREER_START_DATE5,
+				CAREER_END_DATE5,
+				CAREER_COMPANY5,
+				CAREER_POSITION5,				
 				MILITARY_CAREER,
+				MILITARY_CLASS,
+				MILITARY_END,
+				MILITARY_START_DATE,
+				MILITARY_END_DATE,				
 				REGIST_NUMBER,
 				EMPLOY_STATUS_YN,
 				LAST_EDU,
+				LAST_EDU_NAME,
+				LAST_EDU_DEPT,
+				LAST_EDU_YEAR,
+				LAST_EDU_END,
 				WRITE_DATE,
 				COMPANY,
 				TEL_NO,
@@ -66,7 +93,7 @@
 				BIRTH_DAY,
 				AGE,
 				ADDRESS,
-				DEPARTMENT,
+				DEPT,
 				POSITION,
 				WORK,
 				CAREER1,
@@ -74,11 +101,38 @@
 				CAREER3,
 				CAREER4,
 				CAREER5,
-				LAST_EDU_SCHOOL,
+				CAREER_START_DATE1,
+				CAREER_END_DATE1,
+				CAREER_COMPANY1,
+				CAREER_POSITION1,
+				CAREER_START_DATE2,
+				CAREER_END_DATE2,
+				CAREER_COMPANY2,
+				CAREER_POSITION2,
+				CAREER_START_DATE3,
+				CAREER_END_DATE3,
+				CAREER_COMPANY3,
+				CAREER_POSITION3,
+				CAREER_START_DATE4,
+				CAREER_END_DATE4,
+				CAREER_COMPANY4,
+				CAREER_POSITION4,
+				CAREER_START_DATE5,
+				CAREER_END_DATE5,
+				CAREER_COMPANY5,
+				CAREER_POSITION5,				
 				MILITARY_CAREER,
+				MILITARY_CLASS,
+				MILITARY_END,
+				MILITARY_START_DATE,
+				MILITARY_END_DATE,				
 				REGIST_NUMBER,
 				EMPLOY_STATUS_YN,
 				LAST_EDU,
+				LAST_EDU_NAME,
+				LAST_EDU_DEPT,
+				LAST_EDU_YEAR,
+				LAST_EDU_END,
 				WRITE_DATE,
 				COMPANY,
 				TEL_NO,
@@ -114,7 +168,7 @@
 			BIRTH_DAY,
 			AGE,
 			ADDRESS,
-			DEPARTMENT,
+			DEPT,
 			POSITION,
 			WORK,
 			CAREER1,
@@ -141,12 +195,40 @@
 			USE_YN,
 			INSERT_ID,
 			INSERT_DATE,
-			CAREER_YN
+			CAREER_YN,
+			CAREER_START_DATE1,
+			CAREER_END_DATE1,
+			CAREER_COMPANY1,
+			CAREER_POSITION1,
+			CAREER_START_DATE2,
+			CAREER_END_DATE2,
+			CAREER_COMPANY2,
+			CAREER_POSITION2,
+			CAREER_START_DATE3,
+			CAREER_END_DATE3,
+			CAREER_COMPANY3,
+			CAREER_POSITION3,
+			CAREER_START_DATE4,
+			CAREER_END_DATE4,
+			CAREER_COMPANY4,
+			CAREER_POSITION4,
+			CAREER_START_DATE5,
+			CAREER_END_DATE5,
+			CAREER_COMPANY5,
+			CAREER_POSITION5,
+			MILITARY_CLASS,
+			MILITARY_END,
+			MILITARY_START_DATE,
+			MILITARY_END_DATE,			
+			LAST_EDU_NAME,
+			LAST_EDU_DEPT,
+			LAST_EDU_YEAR,
+			LAST_EDU_END
 		)VALUES(
 			#{userId}
 			,#{userNm}
 			,#{userPw}
-			,#{authCd}
+			,'0002'
 			,#{eduName}
 			,#{userNmCh}
 			,#{userNmEn}
@@ -154,7 +236,7 @@
 			,#{birthDay}
 			,#{age}
 			,#{address}
-			,#{department}
+			,#{dept}
 			,#{position}
 			,#{work}
 			,#{career1}
@@ -182,6 +264,34 @@
 			,#{insertId}
 			,now()
 			,#{careerYn}
+			,#{careerStartDate1}
+			,#{careerEndDate1}
+			,#{careerCompany1}
+			,#{careerPosition1}
+			,#{careerStartDate2}
+			,#{careerEndDate2}
+			,#{careerCompany2}
+			,#{careerPosition2}
+			,#{careerStartDate3}
+			,#{careerEndDate3}
+			,#{careerCompany3}
+			,#{careerPosition3}
+			,#{careerStartDate4}
+			,#{careerEndDate4}
+			,#{careerCompany4}
+			,#{careerPosition4}
+			,#{careerStartDate5}
+			,#{careerEndDate5}
+			,#{careerCompany5}
+			,#{careerPosition5}
+			,#{militaryClass}
+			,#{militaryEnd}
+			,#{militaryStartDate}
+			,#{militaryEndDate}			
+			,#{lastEduName}
+			,#{lastEduDept}
+			,#{lastEduYear}
+			,#{lastEduEnd}
 		)
 	
 	</insert>	
@@ -192,7 +302,6 @@
 		UPDATE XBT_STU_USER SET				
 			USER_NM = 		#{userNm},
 			USER_PW = 		#{userPw},
-			AUTH_CD = 		#{authCd},
 			EDU_NAME = 		#{eduName},
 			USER_NM_CH = 		#{userNmCh},
 			USER_NM_EN = 		#{userNmEn},
@@ -200,7 +309,7 @@
 			BIRTH_DAY = 		#{birthDay},
 			AGE = 		#{age},
 			ADDRESS = 		#{address},
-			DEPARTMENT = 		#{department},
+			DEPT = 		#{dept},
 			POSITION = 		#{position},
 			WORK = 		#{work},
 			CAREER1 = 		#{career1},
@@ -227,7 +336,35 @@
 			USE_YN = 		#{useYn},
 			update_id = 		#{updateId},
 			update_date = 		now(),
-			CAREER_YN = #{careerYn}
+			CAREER_YN = #{careerYn},
+			CAREER_START_DATE1 = 	#{careerStartDate1}  ,
+			CAREER_END_DATE1 = 	#{careerEndDate1}        ,
+			CAREER_COMPANY1 = 	#{careerCompany1}        ,
+			CAREER_POSITION1 = 	#{careerPosition1}       ,
+			CAREER_START_DATE2 = 	#{careerStartDate2}  ,
+			CAREER_END_DATE2 = 	#{careerEndDate2}        ,
+			CAREER_COMPANY2 = 	#{careerCompany2}        ,
+			CAREER_POSITION2 = 	#{careerPosition2}       ,
+			CAREER_START_DATE3 = 	#{careerStartDate3}  ,
+			CAREER_END_DATE3 = 	#{careerEndDate3}        ,
+			CAREER_COMPANY3 = 	#{careerCompany3}        ,
+			CAREER_POSITION3 = 	#{careerPosition3}       ,
+			CAREER_START_DATE4 = 	#{careerStartDate4}  ,
+			CAREER_END_DATE4 = 	#{careerEndDate4}        ,
+			CAREER_COMPANY4 = 	#{careerCompany4}        ,
+			CAREER_POSITION4 = 	#{careerPosition4}       ,
+			CAREER_START_DATE5 = 	#{careerStartDate5}  ,
+			CAREER_END_DATE5 = 	#{careerEndDate5}        ,
+			CAREER_COMPANY5 = 	#{careerCompany5}        ,
+			CAREER_POSITION5 = 	#{careerPosition5}       ,
+			MILITARY_CLASS = 	#{militaryClass}         ,
+			MILITARY_END = 	#{militaryEnd}               ,
+			MILITARY_START_DATE = 	#{militaryStartDate} ,
+			MILITARY_END_DATE = 	#{militaryEndDate}   ,
+			LAST_EDU_NAME = 	#{lastEduName}           ,
+			LAST_EDU_DEPT = 	#{lastEduDept}           ,
+			LAST_EDU_YEAR = 	#{lastEduYear}           ,
+			LAST_EDU_END = 	#{lastEduEnd}                
 		WHERE USER_ID = 		#{userId}	
 
 	</update>	
@@ -309,7 +446,7 @@
 			  ,TA1.START_DATE                          /* 학습시작일자 */
 			  ,TA1.END_DATE                          /* 학습종료일자 */
 			  ,TA2.COMPANY                           /* 회사명 */
-			  ,TA2.DEPARTMENT                           /* 부서명 */
+			  ,TA2.DEPT                           /* 부서명 */
 			  ,TA1.GOIN_STATUS                       /* 입교상태 */
 			  ,TA1.ATTEND_PERCENT                    /* 출석율 */
 			  ,TA1.UN_GOIN_REASON_CD                 /* 미입교사유코드 */

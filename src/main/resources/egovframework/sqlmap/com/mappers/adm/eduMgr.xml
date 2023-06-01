@@ -19,6 +19,8 @@
 			,LIMIT_PERSON_CNT
 			,ENDING_STD_SCORE
 			,ENDING_PROCESS_END_YN
+			,PRACTICE_TOTAL_SCORE
+			,EVALUATION_TOTAL_SCORE			
 			,INSERT_DATE
 			,INSERT_ID
 			,UPDATE_DATE
@@ -56,6 +58,8 @@
 			,LIMIT_PERSON_CNT
 			,ENDING_STD_SCORE
 			,ENDING_PROCESS_END_YN
+			,PRACTICE_TOTAL_SCORE
+			,EVALUATION_TOTAL_SCORE			
 			,INSERT_DATE
 			,INSERT_ID
 			,UPDATE_DATE
@@ -76,6 +80,8 @@
 			LIMIT_PERSON_CNT,
 			ENDING_STD_SCORE,
 			ENDING_PROCESS_END_YN,
+			PRACTICE_TOTAL_SCORE,
+			EVALUATION_TOTAL_SCORE,
 			INSERT_DATE,
 			INSERT_ID
 		)VALUES(
@@ -88,6 +94,8 @@
 			,#{limitPersonCnt}
 			,#{endingStdScore}
 			,'N'
+			,#{practiceTotalScore}
+			,#{evaluationTotalScore}
 			,now()
 			,#{insertId}
 		)
@@ -107,6 +115,8 @@
 			LIMIT_PERSON_CNT = #{limitPersonCnt},
 			ENDING_STD_SCORE = #{endingStdScore},
 			ENDING_PROCESS_END_YN = #{endingProcessEndYn},
+			PRACTICE_TOTAL_SCORE = #{practiceTotalScore},
+			EVALUATION_TOTAL_SCORE = #{evaluationTotalScore},
 			STUDY_LVL = #{studyLvl},
 			UPDATE_DATE = #{insertId},
 			UPDATE_ID = now()

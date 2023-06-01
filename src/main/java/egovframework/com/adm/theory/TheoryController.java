@@ -398,6 +398,21 @@ public class TheoryController {
 	            }
 	        }
 		}else if("D".equals(params.getQuestionType())) {//이미지+사지선다형(D)
+			if(StringUtils.isEmpty(params.getChoice1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice1" + BaseApiMessage.REQUIRED.getCode());
+			}	
+			
+			if(StringUtils.isEmpty(params.getChoice2())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice2" + BaseApiMessage.REQUIRED.getCode());
+			}	
+			
+			if(StringUtils.isEmpty(params.getChoice3())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice3" + BaseApiMessage.REQUIRED.getCode());
+			}		
+			
+			if(StringUtils.isEmpty(params.getChoice4())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice4" + BaseApiMessage.REQUIRED.getCode());
+			}	
 			
 	        if (files != null) {
 	            for (MultipartFile file : files) {
@@ -518,6 +533,21 @@ public class TheoryController {
 	            }
 	        }
 		}else if("D".equals(params.getQuestionType())) {//이미지+사지선다형(D)
+			if(StringUtils.isEmpty(params.getChoice1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice1" + BaseApiMessage.REQUIRED.getCode());
+			}	
+			
+			if(StringUtils.isEmpty(params.getChoice2())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice2" + BaseApiMessage.REQUIRED.getCode());
+			}	
+			
+			if(StringUtils.isEmpty(params.getChoice3())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice3" + BaseApiMessage.REQUIRED.getCode());
+			}		
+			
+			if(StringUtils.isEmpty(params.getChoice4())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice4" + BaseApiMessage.REQUIRED.getCode());
+			}				
 			
 	        if (files != null) {
 	            for (MultipartFile file : files) {

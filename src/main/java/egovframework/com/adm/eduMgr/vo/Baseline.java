@@ -16,6 +16,8 @@ public class Baseline {
 	private int endingProcessEndYn;
 	private int totTimeDiff;
 	private int studyLvl;
+	private int practiceTotalScore;
+	private int evaluationTotalScore;
 	private String timeDiff;
 	private String insertDate;
 	private String insertId;
@@ -26,3 +28,4 @@ public class Baseline {
 	private String[] userIds;
 
 }
+
