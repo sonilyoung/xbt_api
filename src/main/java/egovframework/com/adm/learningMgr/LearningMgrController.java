@@ -125,50 +125,50 @@ public class LearningMgrController {
      */
     @PostMapping("/insertModule.do")
     @ApiOperation(value = "모듈", notes = "모듈등록.")
-    public BaseResponse<Integer> insertModule(HttpServletRequest request, @RequestBody EduModule params) {
+    public BaseResponse<EduModule> insertModule(HttpServletRequest request, @RequestBody EduModule params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
 		if(StringUtils.isEmpty(params.getBagList())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BagList" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "BagList" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
 		if(StringUtils.isEmpty(params.getModuleNm())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleNm" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "ModuleNm" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		if(StringUtils.isEmpty(params.getModuleDesc())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleDesc" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "ModuleDesc" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		if(StringUtils.isEmpty(params.getStudyLvl())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "StudyLvl" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "StudyLvl" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
 		if(StringUtils.isEmpty(params.getSlideSpeed())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "slideSpeed" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "slideSpeed" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		if(StringUtils.isEmpty(params.getModuleType())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleType" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "moduleType" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
 		if(StringUtils.isEmpty(params.getUseYn())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "useYn" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "useYn" + BaseApiMessage.REQUIRED.getCode());
 		}	
 		
 		if(StringUtils.isEmpty(params.getQuestionCnt())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "questionCnt" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "questionCnt" + BaseApiMessage.REQUIRED.getCode());
 		}				
 		
 		if(StringUtils.isEmpty(params.getModuleDesc())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleDesc" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "ModuleDesc" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		if(StringUtils.isEmpty(params.getMenuCd())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
 		
@@ -179,9 +179,9 @@ public class LearningMgrController {
 			int result = learningMgrService.insertModule(params);
 			
 			if(result>0) {
-				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+				return new BaseResponse<EduModule>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage(), params);
 			}else {
-				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+				return new BaseResponse<EduModule>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage(), params);
 			}
 			
         } catch (Exception e) {
@@ -198,38 +198,42 @@ public class LearningMgrController {
      */
     @PostMapping("/updateModule.do")
     @ApiOperation(value = "모듈수정", notes = "모듈수정.")
-    public BaseResponse<Integer> updateModule(HttpServletRequest request, @RequestBody EduModule params) {
+    public BaseResponse<EduModule> updateModule(HttpServletRequest request, @RequestBody EduModule params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
+		if(StringUtils.isEmpty(params.getBagList())){				
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "BagList" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
 		if(StringUtils.isEmpty(params.getModuleId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleId" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "ModuleId" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		if(StringUtils.isEmpty(params.getStudyLvl())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "studyLvl" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "studyLvl" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
 		if(StringUtils.isEmpty(params.getModuleType())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleType" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "moduleType" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
 		if(StringUtils.isEmpty(params.getSlideSpeed())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "slideSpeed" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "slideSpeed" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		if(StringUtils.isEmpty(params.getUseYn())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "useYn" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "useYn" + BaseApiMessage.REQUIRED.getCode());
 		}				
 		
 		if(StringUtils.isEmpty(params.getModuleNm())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleNm" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "ModuleNm" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		if(StringUtils.isEmpty(params.getModuleDesc())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleDesc" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "ModuleDesc" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
 		try {
@@ -238,9 +242,9 @@ public class LearningMgrController {
 			int result = learningMgrService.updateModule(params);
 			
 			if(result>0) {
-				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+				return new BaseResponse<EduModule>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage(), params);
 			}else {
-				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+				return new BaseResponse<EduModule>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage(), params);
 			}
 			
         } catch (Exception e) {
@@ -264,15 +268,20 @@ public class LearningMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getModuleId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleId" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getModuleIdList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleIdList" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		try {
 			//모듈삭제
 			params.setInsertId(login.getUserId());
-			int result = learningMgrService.deleteModule(params);
+			int result = 0;
 			
+			for(Long id : params.getModuleIdList()) {
+				params.setModuleId(new Long(id));				
+				result = learningMgrService.deleteModule(params);
+			}
+					
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
 			}else {

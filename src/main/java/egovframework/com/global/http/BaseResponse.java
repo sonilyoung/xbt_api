@@ -37,6 +37,12 @@ public class BaseResponse<T> {
         this.ret_code = baseResponseCode.getCode();
         this.ret_desc = message;
     }
+    
+    public BaseResponse(BaseResponseCode baseResponseCode, String message, T ret_data) {
+        this.ret_code = baseResponseCode.getCode();
+        this.ret_desc = message;
+        this.ret_data = ret_data;
+    }    
 
     public T getRet_data() {
         return ret_data;

@@ -55,6 +55,7 @@ public class EduModule {
 	private Long moduleDetailId;
 
 	private List<String> bagList;
+	private List<Long> moduleIdList;
 	
 	private Long bagScanNo;
 	private String unitName;                     /*물품명*/
