@@ -1,5 +1,7 @@
 package egovframework.com.adm.userMgr.vo;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -81,6 +83,8 @@ public class UserInfo {
 	private String lastEduDept;
 	private String lastEduYear;
 	private String lastEduEnd;
+	
+	private List<String> userIdList;
 	
 	
 }

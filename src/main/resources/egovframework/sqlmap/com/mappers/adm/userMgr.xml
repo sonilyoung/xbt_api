@@ -79,6 +79,14 @@
 	</select>	
 	
 	<!-- 교육생 상세조회-->
+	<select id="selectUserCheck" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >	
+		 SELECT 
+			USER_ID
+         FROM XBT_STU_USER A LEFT JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD	
+         WHERE A.USER_ID = #{userId}	
+	</select>			
+	
+	<!-- 교육생 상세조회-->
 	<select id="selectUser" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >	
 			SELECT 
 				USER_NO,
@@ -176,7 +184,6 @@
 			CAREER3,
 			CAREER4,
 			CAREER5,
-			LAST_EDU_SCHOOL,
 			MILITARY_CAREER,
 			REGIST_NUMBER,
 			EMPLOY_STATUS_YN,
@@ -244,7 +251,6 @@
 			,#{career3}
 			,#{career4}
 			,#{career5}
-			,#{lastEduSchool}
 			,#{militaryCareer}
 			,#{registNumber}
 			,#{employStatusYn}
@@ -317,7 +323,6 @@
 			CAREER3 = 		#{career3},
 			CAREER4 = 		#{career4},
 			CAREER5 = 		#{career5},
-			LAST_EDU_SCHOOL = 		#{lastEduSchool},
 			MILITARY_CAREER = 		#{militaryCareer},
 			REGIST_NUMBER = 		#{registNumber},
 			EMPLOY_STATUS_YN = 		#{employStatusYn},

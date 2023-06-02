@@ -5,12 +5,17 @@ import lombok.Data;
 @Data
 public class EduDate {
 	private Long dayNo;
-	private String procCd;
+	private Long procCd;
+	private Long moduleId;
 	private String procNm;
-	private String moduleId;
 	private String userId;
+	private String menuCd;
+	private String menuNm;
+	private String menuType;
+	private String moduleType;
 	private String eduDate;
 	private String insertId;
 	private String insertDate;
+	private String learnYn;
 
 }

@@ -37,14 +37,20 @@ public interface EduMgrService {
 	
 	public List<Student> selectBaselineStudentList(Student params);
 	
+	public Student selectBaselineStudent(Student params);
+	
 	public int insertBaselineStudent(Student params);
 	
-	public int deleteBaselineStudent(Student params);	
+	public int deleteBaselineStudent(Student params);
+	
+	public int deleteBaselineStudentAll(Student params);	
 	
 	public List<EduDate> selectEduDateList(EduDate params);
 	
 	public int insertEduDate(EduDate params);
 	
 	public int deleteEduDate(EduDate params);
+	
+	public int deleteEduDateAll(EduDate params);
 	
 }

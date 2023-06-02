@@ -39,6 +39,11 @@ public class EduMgrDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectBaselineStudentList", params);
 	}
 	
+	
+	public Student selectBaselineStudent(Student params) {
+		return selectOne(Namespace + ".selectBaselineStudent", params);
+	}	
+	
 	public int insertBaselineStudent(Student params) {
 		return insert(Namespace + ".insertBaselineStudent", params);
 	}
@@ -46,6 +51,10 @@ public class EduMgrDAO extends EgovAbstractMapper{
 	
 	public int deleteBaselineStudent(Student params) {
 		return delete(Namespace + ".deleteBaselineStudent", params);
+	}		
+	
+	public int deleteBaselineStudentAll(Student params) {
+		return delete(Namespace + ".deleteBaselineStudentAll", params);
 	}		
 	
 	public List<?> selectEduDateList(EduDate params) {
@@ -61,4 +70,8 @@ public class EduMgrDAO extends EgovAbstractMapper{
 		return delete(Namespace + ".deleteEduDate", params);
 	}	
 
+	
+	public int deleteEduDateAll(EduDate params) {
+		return delete(Namespace + ".deleteEduDateAll", params);
+	}		
 }

@@ -20,6 +20,10 @@ public class UserMgrDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectUserList", params);
 	}
 	
+	public UserInfo selectUserCheck(UserInfo params) {
+		return selectOne(Namespace + ".selectUserCheck", params);
+	}		
+	
 	public UserInfo selectUser(UserInfo params) {
 		return selectOne(Namespace + ".selectUser", params);
 	}	

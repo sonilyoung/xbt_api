@@ -20,6 +20,8 @@ import egovframework.com.adm.eduMgr.vo.EduDate;
 import egovframework.com.adm.eduMgr.vo.Student;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
+import egovframework.com.adm.userMgr.service.UserMgrService;
+import egovframework.com.adm.userMgr.vo.UserInfo;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
@@ -51,6 +53,9 @@ public class EduMgrController {
     
     @Autowired
     private EduMgrService eduMgrService;
+    
+    @Autowired
+    private UserMgrService userMgrService;    
     
     
     /**
@@ -98,7 +103,19 @@ public class EduMgrController {
 		
 		try {
 			//차수조회
-	        return new BaseResponse<Baseline>(eduMgrService.selectBaseline(params));
+			Baseline baseline = eduMgrService.selectBaseline(params);
+			
+			EduDate ed = new EduDate();
+			ed.setProcCd(params.getProcCd());
+			List<EduDate> scheduleList = eduMgrService.selectEduDateList(ed);
+			baseline.setScheduleList(scheduleList);
+			
+			Student stu = new Student();
+			stu.setProcCd(params.getProcCd());
+			List<Student> stuList = eduMgrService.selectBaselineStudentList(stu);			
+			baseline.setStuList(stuList);
+			
+	        return new BaseResponse<Baseline>(baseline);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
@@ -106,6 +123,62 @@ public class EduMgrController {
     }    
         
     
+	    
+	/**
+	 * 학습일상세팝업조회
+	 * 
+	 * @param param
+	 * @return Company
+	 */
+	@PostMapping("/selectBaselineEduDateList.do")
+	@ApiOperation(value = "학습일상세팝업조회", notes = "학습일상세팝업조회.")
+	public BaseResponse<List<EduDate>> selectBaselineEduDateList(HttpServletRequest request, @RequestBody EduDate params) {
+		Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<List<EduDate>>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			List<EduDate> scheduleList = eduMgrService.selectEduDateList(params);
+	        return new BaseResponse<List<EduDate>>(scheduleList);
+	    } catch (Exception e) {
+	    	LOGGER.error("error:", e);
+	        throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+	    }
+	}        
+    
+    
+    
+	/**
+	 * 학습인원팝업조회
+	 * 
+	 * @param param
+	 * @return Company
+	 */
+	@PostMapping("/selectBaselineStuList.do")
+	@ApiOperation(value = "학습인원팝업조회", notes = "학습인원팝업조회.")
+	public BaseResponse<List<Student>> selectBaselineStuList(HttpServletRequest request, @RequestBody Student params) {
+		Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<List<Student>>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			List<Student> stuList = eduMgrService.selectBaselineStudentList(params);			
+	        return new BaseResponse<List<Student>>(stuList);
+	    } catch (Exception e) {
+	    	LOGGER.error("error:", e);
+	        throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+	    }
+	}        
     
     
     /**
@@ -125,10 +198,6 @@ public class EduMgrController {
 		
 		if(StringUtils.isEmpty(params.getProcSeq())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "procSeq" + BaseApiMessage.REQUIRED.getCode());
-		}
-		
-		if(StringUtils.isEmpty(params.getModuleId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleId" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		if(StringUtils.isEmpty(params.getEduStartDate())){				
@@ -157,15 +226,20 @@ public class EduMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "endingStdScore" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
-		if(StringUtils.isEmpty(params.getUserIds())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userIds" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getScheduleList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "scheduleList" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getUserList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userList" + BaseApiMessage.REQUIRED.getCode());
 		}				
 		
 		try {
 			//차수등록
 			params.setInsertId(login.getUserId());
+			params.setUserId(login.getUserId());
 			int result = eduMgrService.insertBaseline(params);
-			
+
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
 			}else {
@@ -195,20 +269,8 @@ public class EduMgrController {
 		}
 		
 
-		if(StringUtils.isEmpty(params.getProcCd())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
-		if(StringUtils.isEmpty(params.getProcYear())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcYear" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
 		if(StringUtils.isEmpty(params.getProcSeq())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "procSeq" + BaseApiMessage.REQUIRED.getCode());
-		}
-		
-		if(StringUtils.isEmpty(params.getModuleId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleId" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		if(StringUtils.isEmpty(params.getEduStartDate())){				
@@ -222,7 +284,11 @@ public class EduMgrController {
 		
 		if(StringUtils.isEmpty(params.getTotStudyDate())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "totStudyDate" + BaseApiMessage.REQUIRED.getCode());
-		}		
+		}	
+		
+		if(StringUtils.isEmpty(params.getStudyLvl())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "studyLvl" + BaseApiMessage.REQUIRED.getCode());
+		}				
 		
 		
 		if(StringUtils.isEmpty(params.getLimitPersonCnt())){				
@@ -233,22 +299,67 @@ public class EduMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "endingStdScore" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
-		if(StringUtils.isEmpty(params.getEndingProcessEndYn())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "endingProcessEndYn" + BaseApiMessage.REQUIRED.getCode());
-		}		
-				
-				
+		if(StringUtils.isEmpty(params.getScheduleList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "scheduleList" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getUserList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userList" + BaseApiMessage.REQUIRED.getCode());
+		}				
 		
 		try {
 			//차수등록
 			params.setUpdateId(login.getUserId());
 			int result = eduMgrService.updateBaseline(params);
+			Baseline baseline = eduMgrService.selectBaseline(params);
+			
+			for(String u : params.getUserList()) {
+				Long moduleId = (long) 0;
+				for(EduDate sl : params.getScheduleList()) {
+					moduleId = sl.getModuleId();
+					sl.setProcCd(baseline.getProcCd());
+					sl.setProcNm(baseline.getProcName());
+					sl.setUserId(u);
+					sl.setInsertId(login.getUserId());
+					eduMgrService.insertEduDate(sl);					
+				}
+				
+				UserInfo ui = new UserInfo();
+				ui.setUserId(u);
+				UserInfo userInfo = userMgrService.selectUser(ui);
+				
+				Student s = new Student();
+				s.setModuleId(moduleId);
+				s.setProcCd(baseline.getProcCd());
+				s.setProcYear(baseline.getProcYear());
+				s.setProcSeq(baseline.getProcSeq());
+				s.setProcNm(baseline.getProcName());
+				s.setEduStartDate(baseline.getEduStartDate());
+				s.setEduEndDate(baseline.getEduEndDate());
+				s.setModuleId(baseline.getModuleId());
+				
+				s.setDeptNm(userInfo.getDept());
+				s.setUserId(u);
+				s.setUserNm(userInfo.getUserNm());
+				s.setCompNm(userInfo.getCompany());
+				s.setDeptNm(userInfo.getDept());
+				s.setInsertId(login.getUserId());
+				
+				Student stu = new Student();
+				stu.setProcCd(baseline.getProcCd());
+				stu.setUserId(u);
+				Student baselineStu = eduMgrService.selectBaselineStudent(stu);
+				if(baselineStu == null) {
+					eduMgrService.insertBaselineStudent(s);
+				}				
+			}
 			
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
 			}else {
 				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
 			}
+			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
@@ -271,13 +382,25 @@ public class EduMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getProcCd())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getProcCdList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ProcCdList" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
 		try {
 			//차수삭제
-			int result = eduMgrService.deleteBaseline(params);
+			int result = 0;
+			for(Long p : params.getProcCdList()) {
+				params.setProcCd(p);
+				result = eduMgrService.deleteBaseline(params);
+				
+				Student s = new Student();
+				s.setProcCd(p);
+				eduMgrService.deleteBaselineStudentAll(s);
+				
+				EduDate ed = new EduDate();
+				ed.setProcCd(p);
+				eduMgrService.deleteEduDateAll(ed);
+			}
 			
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
@@ -306,6 +429,10 @@ public class EduMgrController {
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
+		
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<List<Student>>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+		}			
 		
 		try {
 			//교육생조회
@@ -397,13 +524,17 @@ public class EduMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getUserId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getUserIdList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserIdList" + BaseApiMessage.REQUIRED.getCode());
 		}				
 		
 		try {
 			//교육생삭제
-			int result = eduMgrService.deleteBaselineStudent(params);
+			int result = 0;
+			for(String ui : params.getUserIdList()) {
+				params.setUserId(ui);
+				result = eduMgrService.deleteBaselineStudent(params);
+			}
 			
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());

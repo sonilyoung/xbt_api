@@ -117,6 +117,40 @@ public class UserMgrController {
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
     }    
+    
+    
+    
+    /**
+     * 교육생 아이디 중복체크 
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectUserCheck.do")
+    @ApiOperation(value = "교육생 아이디 중복체크", notes = "교육생 아이디 중복체크")
+    public BaseResponse<UserInfo> selectUserCheck(HttpServletRequest request, @RequestBody UserInfo params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			UserInfo result = userMgrService.selectUser(params);
+			if(result == null) {
+				return new BaseResponse<UserInfo>(BaseResponseCode.NO_ID, BaseResponseCode.NO_ID.getMessage());
+			}else {
+				return new BaseResponse<UserInfo>(BaseResponseCode.EXGIST_USERS, BaseResponseCode.EXGIST_USERS.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+            
         
     /**
      * 교육생등록
@@ -185,14 +219,6 @@ public class UserMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "work" + BaseApiMessage.REQUIRED.getCode());
 		}
 
-		if(StringUtils.isEmpty(params.getCareer1())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career1" + BaseApiMessage.REQUIRED.getCode());
-		}
-
-		if(StringUtils.isEmpty(params.getCareer2())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career2" + BaseApiMessage.REQUIRED.getCode());
-		}
-
 		if(StringUtils.isEmpty(params.getRegistNumber())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "registNumber" + BaseApiMessage.REQUIRED.getCode());
 		}
@@ -226,37 +252,29 @@ public class UserMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerYn" + BaseApiMessage.REQUIRED.getCode());
 		}
 
-		if(StringUtils.isEmpty(params.getCareerStartDate1())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate1" + BaseApiMessage.REQUIRED.getCode());
+		if("Y".equals(params.getCareerYn())) {
+			if(StringUtils.isEmpty(params.getCareer1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career1" + BaseApiMessage.REQUIRED.getCode());
+			}			
+			
+			if(StringUtils.isEmpty(params.getCareerStartDate1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate1" + BaseApiMessage.REQUIRED.getCode());
+			}
+
+			if(StringUtils.isEmpty(params.getCareerEndDate1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate1" + BaseApiMessage.REQUIRED.getCode());
+			}		
+			
+			if(StringUtils.isEmpty(params.getCareerCompany1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany1" + BaseApiMessage.REQUIRED.getCode());
+			}	
+			
+			if(StringUtils.isEmpty(params.getCareerPosition1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition1" + BaseApiMessage.REQUIRED.getCode());
+			}	
+			
 		}
 
-		if(StringUtils.isEmpty(params.getCareerEndDate1())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate1" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getCareerCompany1())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany1" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
-		if(StringUtils.isEmpty(params.getCareerPosition1())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition1" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
-		if(StringUtils.isEmpty(params.getCareerStartDate2())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate2" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
-		if(StringUtils.isEmpty(params.getCareerEndDate2())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate2" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
-		if(StringUtils.isEmpty(params.getCareerCompany2())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany2" + BaseApiMessage.REQUIRED.getCode());
-		}	
-
-		if(StringUtils.isEmpty(params.getCareerPosition2())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition2" + BaseApiMessage.REQUIRED.getCode());
-		}	
 
 		if(StringUtils.isEmpty(params.getLastEduName())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduName" + BaseApiMessage.REQUIRED.getCode());
@@ -273,6 +291,11 @@ public class UserMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduEnd" + BaseApiMessage.REQUIRED.getCode());
 		}	
 		
+		
+		UserInfo userInfo = userMgrService.selectUser(params);
+		if(userInfo!=null) {
+			return new BaseResponse<Integer>(BaseResponseCode.EXGIST_USERS, BaseResponseCode.EXGIST_USERS.getMessage());
+		}
 		
 		try {
 			//교육생등록
@@ -363,14 +386,6 @@ public class UserMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "work" + BaseApiMessage.REQUIRED.getCode());
 		}
 
-		if(StringUtils.isEmpty(params.getCareer1())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career1" + BaseApiMessage.REQUIRED.getCode());
-		}
-
-		if(StringUtils.isEmpty(params.getCareer2())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career2" + BaseApiMessage.REQUIRED.getCode());
-		}
-
 		if(StringUtils.isEmpty(params.getRegistNumber())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "registNumber" + BaseApiMessage.REQUIRED.getCode());
 		}
@@ -404,38 +419,29 @@ public class UserMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerYn" + BaseApiMessage.REQUIRED.getCode());
 		}
 
-		if(StringUtils.isEmpty(params.getCareerStartDate1())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate1" + BaseApiMessage.REQUIRED.getCode());
-		}
+		if("Y".equals(params.getCareerYn())) {
+			if(StringUtils.isEmpty(params.getCareer1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career1" + BaseApiMessage.REQUIRED.getCode());
+			}			
+			
+			if(StringUtils.isEmpty(params.getCareerStartDate1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate1" + BaseApiMessage.REQUIRED.getCode());
+			}
 
-		if(StringUtils.isEmpty(params.getCareerEndDate1())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate1" + BaseApiMessage.REQUIRED.getCode());
+			if(StringUtils.isEmpty(params.getCareerEndDate1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate1" + BaseApiMessage.REQUIRED.getCode());
+			}		
+			
+			if(StringUtils.isEmpty(params.getCareerCompany1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany1" + BaseApiMessage.REQUIRED.getCode());
+			}	
+			
+			if(StringUtils.isEmpty(params.getCareerPosition1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition1" + BaseApiMessage.REQUIRED.getCode());
+			}	
+			
 		}		
 		
-		if(StringUtils.isEmpty(params.getCareerCompany1())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany1" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
-		if(StringUtils.isEmpty(params.getCareerPosition1())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition1" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
-		if(StringUtils.isEmpty(params.getCareerStartDate2())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate2" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
-		if(StringUtils.isEmpty(params.getCareerEndDate2())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate2" + BaseApiMessage.REQUIRED.getCode());
-		}	
-		
-		if(StringUtils.isEmpty(params.getCareerCompany2())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany2" + BaseApiMessage.REQUIRED.getCode());
-		}	
-
-		if(StringUtils.isEmpty(params.getCareerPosition2())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition2" + BaseApiMessage.REQUIRED.getCode());
-		}	
-
 		if(StringUtils.isEmpty(params.getLastEduName())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduName" + BaseApiMessage.REQUIRED.getCode());
 		}	
@@ -487,13 +493,17 @@ public class UserMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getUserId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getUserIdList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserIdList" + BaseApiMessage.REQUIRED.getCode());
 		}				
 		
 		try {
 			//교육생삭제
-			int result = userMgrService.deleteUser(params);
+			int result = 0;
+			for(String id :params.getUserIdList()) {
+				params.setUserId(id);
+				result = userMgrService.deleteUser(params);
+			}
 			
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());

@@ -30,6 +30,8 @@ public interface UserMgrService{
 	
 	public List<UserInfo> selectUserList(UserInfo params);
 	
+	public UserInfo selectUserCheck(UserInfo params);
+	
 	public UserInfo selectUser(UserInfo params);
 	
 	public int insertUser(UserInfo params);

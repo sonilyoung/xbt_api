@@ -3,6 +3,7 @@ package egovframework.com.adm.eduMgr.service;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,9 @@ import egovframework.com.adm.eduMgr.dao.EduMgrDAO;
 import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.adm.eduMgr.vo.EduDate;
 import egovframework.com.adm.eduMgr.vo.Student;
+import egovframework.com.adm.login.dao.UserManageDAO;
+import egovframework.com.adm.userMgr.dao.UserMgrDAO;
+import egovframework.com.adm.userMgr.vo.UserInfo;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -38,6 +42,9 @@ public class EduMgrServiceImpl implements EduMgrService {
     @Resource(name = "EduMgrDAO")
 	private EduMgrDAO eduMgrDAO;
 
+    @Resource(name = "UserMgrDAO")
+	private UserMgrDAO userMgrDAO;
+   
 
 	@Override
 	public List<Baseline> selectBaselineList(Baseline params) {
@@ -46,9 +53,49 @@ public class EduMgrServiceImpl implements EduMgrService {
 	}
 	
 	@Override
+	@Transactional
 	public int insertBaseline(Baseline params) {
 		// TODO Auto-generated method stub
-		return eduMgrDAO.insertBaseline(params);
+		int result = eduMgrDAO.insertBaseline(params);
+		Baseline baseline = eduMgrDAO.selectBaseline(params);
+		
+		for(String u : params.getUserList()) {
+			
+			Long moduleId = (long) 0;
+			for(EduDate sl : params.getScheduleList()) {
+				moduleId = sl.getModuleId();
+				sl.setProcCd(baseline.getProcCd());
+				sl.setProcNm(baseline.getProcName());
+				sl.setUserId(u);
+				sl.setInsertId(params.getUserId());
+				eduMgrDAO.insertEduDate(sl);					
+			}
+			
+			UserInfo ui = new UserInfo();
+			ui.setUserId(u);
+			UserInfo userInfo = userMgrDAO.selectUser(ui);
+			
+			Student s = new Student();
+			s.setModuleId(moduleId);
+			s.setProcCd(baseline.getProcCd());
+			s.setProcYear(baseline.getProcYear());
+			s.setProcSeq(baseline.getProcSeq());
+			s.setProcNm(baseline.getProcName());
+			s.setEduStartDate(baseline.getEduStartDate());
+			s.setEduEndDate(baseline.getEduEndDate());
+			s.setModuleId(baseline.getModuleId());
+			
+			s.setDeptNm(userInfo.getDept());
+			s.setUserId(u);
+			s.setUserNm(userInfo.getUserNm());
+			s.setCompNm(userInfo.getCompany());
+			s.setDeptNm(userInfo.getDept());
+			s.setInsertId(params.getUserId());
+			eduMgrDAO.insertBaselineStudent(s);				
+		}
+				
+		
+		return result;
 	}
 
 	@Override
@@ -76,6 +123,12 @@ public class EduMgrServiceImpl implements EduMgrService {
 		// TODO Auto-generated method stub
 		return (List<Student>)eduMgrDAO.selectBaselineStudentList(params);
 	}
+	
+	@Override
+	public Student selectBaselineStudent(Student params) {
+		// TODO Auto-generated method stub
+		return eduMgrDAO.selectBaselineStudent(params);
+	}	
 
 	@Override
 	public int insertBaselineStudent(Student params) {
@@ -89,6 +142,12 @@ public class EduMgrServiceImpl implements EduMgrService {
 		// TODO Auto-generated method stub
 		return eduMgrDAO.deleteBaselineStudent(params);
 	}	
+	
+	@Override
+	public int deleteBaselineStudentAll(Student params) {
+		// TODO Auto-generated method stub
+		return eduMgrDAO.deleteBaselineStudentAll(params);
+	}		
 		
 	@Override
 	@SuppressWarnings("unchecked")
@@ -108,6 +167,12 @@ public class EduMgrServiceImpl implements EduMgrService {
 	public int deleteEduDate(EduDate params) {
 		// TODO Auto-generated method stub
 		return eduMgrDAO.deleteEduDate(params);
+	}
+	
+	@Override
+	public int deleteEduDateAll(EduDate params) {
+		// TODO Auto-generated method stub
+		return eduMgrDAO.deleteEduDateAll(params);
 	}
 
 

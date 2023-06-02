@@ -1,6 +1,7 @@
 
 package egovframework.com.adm.learningMgr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -109,6 +110,13 @@ public class LearningMgrController {
 		
 		try {
 			EduModule resultList = learningMgrService.selectModule(params);
+			List<EduModule> bagResultList = learningMgrService.selectModuleQuestion(params);
+			List<String> bagList = new ArrayList<String>();
+			for(EduModule b : bagResultList) {
+				bagList.add(b.getBagScanId());
+			}
+			
+			resultList.setBagList(bagList);
 	        return new BaseResponse<EduModule>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);

@@ -10,22 +10,25 @@
 		SELECT PROC_CD
 			,PROC_YEAR
 			,PROC_SEQ 
+			,PROC_NAME
+			,concat(EDU_START_DATE , ' ~ ' , EDU_END_DATE) AS EDU_DATE
 			,EDU_START_DATE
 			,EDU_END_DATE
-			,TOT_STUDY_DATE
+			,TOT_STUDY_DATE /*학습일*/
 			,STUDY_LVL
-			,TIMESTAMPDIFF(DAY, EDU_START_DATE , EDU_END_DATE) AS TOT_TIME_DIFF
-			,TIMESTAMPDIFF(DAY, EDU_START_DATE , CURDATE()) AS TIME_DIFF			
+			,TIMESTAMPDIFF(DAY, EDU_START_DATE , EDU_END_DATE) AS TOT_TIME_DIFF /*전체학습일*/
+			,TIMESTAMPDIFF(DAY, EDU_START_DATE , CURDATE()) AS TIME_DIFF /*진행학습일*/			
 			,LIMIT_PERSON_CNT
-			,ENDING_STD_SCORE
-			,ENDING_PROCESS_END_YN
-			,PRACTICE_TOTAL_SCORE
-			,EVALUATION_TOTAL_SCORE			
+			,ENDING_STD_SCORE /*수료기준점수*/
+			,ENDING_PROCESS_END_YN /*수료완료유무*/
+			,PRACTICE_TOTAL_SCORE /*실기가중치*/
+			,EVALUATION_TOTAL_SCORE	/*평가가중치*/		
+			,THEORY_TOTAL_SCORE /*이론평가가중치*/		
 			,INSERT_DATE
 			,INSERT_ID
 			,UPDATE_DATE
 			,UPDATE_ID
-		FROM XBT_BASELINE
+		FROM XBT_BASELINE			
          
         <!--
 		<choose>
@@ -49,30 +52,34 @@
 		SELECT PROC_CD
 			,PROC_YEAR
 			,PROC_SEQ 
+			,PROC_NAME
+			,concat(EDU_START_DATE , ' ~ ' , EDU_END_DATE) AS EDU_DATE
 			,EDU_START_DATE
 			,EDU_END_DATE
-			,TOT_STUDY_DATE
+			,TOT_STUDY_DATE /*학습일*/
 			,STUDY_LVL
-			,TIMESTAMPDIFF(DAY, EDU_START_DATE , EDU_END_DATE) AS TOT_TIME_DIFF
-			,TIMESTAMPDIFF(DAY, EDU_START_DATE , CURDATE()) AS TIME_DIFF			
+			,TIMESTAMPDIFF(DAY, EDU_START_DATE , EDU_END_DATE) AS TOT_TIME_DIFF /*전체학습일*/
+			,TIMESTAMPDIFF(DAY, EDU_START_DATE , CURDATE()) AS TIME_DIFF /*진행학습일*/			
 			,LIMIT_PERSON_CNT
-			,ENDING_STD_SCORE
-			,ENDING_PROCESS_END_YN
-			,PRACTICE_TOTAL_SCORE
-			,EVALUATION_TOTAL_SCORE			
+			,ENDING_STD_SCORE /*수료기준점수*/
+			,ENDING_PROCESS_END_YN /*수료완료유무*/
+			,PRACTICE_TOTAL_SCORE /*실기가중치*/
+			,EVALUATION_TOTAL_SCORE	/*평가가중치*/		
+			,THEORY_TOTAL_SCORE /*이론평가가중치*/		
 			,INSERT_DATE
 			,INSERT_ID
 			,UPDATE_DATE
 			,UPDATE_ID
-		FROM XBT_BASELINE
+		FROM XBT_BASELINE	
 		WHERE PROC_CD = #{procCd}
 	</select>		
 	
 	<!-- 차수 등록 -->
-	<insert id="insertBaseline" parameterType="egovframework.com.adm.eduMgr.vo.Baseline">
+	<insert id="insertBaseline" parameterType="egovframework.com.adm.eduMgr.vo.Baseline" useGeneratedKeys="true" keyProperty="procCd">
 		INSERT INTO XBT_BASELINE(
 			PROC_YEAR,
 			PROC_SEQ,
+			PROC_NAME,
 			EDU_START_DATE,
 			EDU_END_DATE,
 			TOT_STUDY_DATE,
@@ -82,11 +89,13 @@
 			ENDING_PROCESS_END_YN,
 			PRACTICE_TOTAL_SCORE,
 			EVALUATION_TOTAL_SCORE,
+			THEORY_TOTAL_SCORE,
 			INSERT_DATE,
 			INSERT_ID
 		)VALUES(
 			 DATE_FORMAT(NOW(),'%Y')
 			,#{procSeq}
+			,#{procName}
 			,#{eduStartDate}
 			,#{eduEndDate}
 			,#{totStudyDate}
@@ -96,6 +105,7 @@
 			,'N'
 			,#{practiceTotalScore}
 			,#{evaluationTotalScore}
+			,#{theoryTotalScore}
 			,now()
 			,#{insertId}
 		)
@@ -106,9 +116,8 @@
 	<update id="updateBaseline" parameterType="egovframework.com.adm.eduMgr.vo.Baseline">	
 		UPDATE XBT_BASELINE
 		SET 
-			PROC_YEAR = #{procYear},
 			PROC_SEQ = #{procSeq},
-			MODULE_ID = #{moduleId},
+			PROC_NAME = #{procName},
 			EDU_START_DATE = #{eduStartDate},
 			EDU_END_DATE = #{eduEndDate},
 			TOT_STUDY_DATE = #{totStudyDate},
@@ -117,6 +126,7 @@
 			ENDING_PROCESS_END_YN = #{endingProcessEndYn},
 			PRACTICE_TOTAL_SCORE = #{practiceTotalScore},
 			EVALUATION_TOTAL_SCORE = #{evaluationTotalScore},
+			THEORY_TOTAL_SCORE = #{theoryTotalScore},
 			STUDY_LVL = #{studyLvl},
 			UPDATE_DATE = #{insertId},
 			UPDATE_ID = now()
@@ -136,9 +146,9 @@
 			PROC_YEAR,
 			PROC_SEQ,
 			USER_ID,
+			USER_NM,
 			PROC_NM,
 			COMP_NM,
-			DEPT_CD,
 			DEPT_NM,
 			GAIN_SCORE,
 			PASS_YN,
@@ -149,8 +159,33 @@
 			UPDATE_DATE,
 			UPDATE_ID
 		FROM XBT_BASELINE_STUDENT_INFO
+		WHERE PROC_CD = #{procCd}
 	</select>	
 	
+	<!-- 교육생상세조회 -->
+	<select id="selectBaselineStudent" parameterType="egovframework.com.adm.eduMgr.vo.Student" resultType="egovframework.com.adm.eduMgr.vo.Student">
+		SELECT 
+			STUDENT_NO,
+			PROC_CD,
+			PROC_YEAR,
+			PROC_SEQ,
+			USER_ID,
+			PROC_NM,
+			COMP_NM,
+			DEPT_NM,
+			GAIN_SCORE,
+			PASS_YN,
+			ENDING_PROCESS_DATE,
+			ENDING_YN,
+			INSERT_DATE,
+			INSERT_ID,
+			UPDATE_DATE,
+			UPDATE_ID
+		FROM XBT_BASELINE_STUDENT_INFO
+		WHERE USER_ID = #{userId}
+		AND PROC_CD = #{procCd}
+	</select>	
+		
 			
 	<!-- 교육생 등록 -->
 	<insert id="insertBaselineStudent" parameterType="egovframework.com.adm.eduMgr.vo.Student">
@@ -159,14 +194,16 @@
 			PROC_YEAR,
 			PROC_SEQ,
 			USER_ID,
+			USER_NM,
 			PROC_NM,
 			COMP_NM,
-			DEPT_CD,
 			DEPT_NM,
 			GAIN_SCORE,
 			PASS_YN,
 			ENDING_PROCESS_DATE,
 			ENDING_YN,
+			EDU_START_DATE,
+			EDU_END_DATE,
 			INSERT_DATE,
 			INSERT_ID
 		)VALUES(
@@ -174,14 +211,16 @@
 			,#{procYear}
 			,#{procSeq}
 			,#{userId}
+			,#{userNm}
 			,#{procNm}
 			,#{compNm}
-			,#{deptCd}
 			,#{deptNm}
-			,#{gainScore}
-			,#{passYn}
+			,0
+			,'N'
 			,#{endingProcessDate}
-			,#{endingYn}
+			,'N'
+			,#{eduStartDate}
+			,#{eduEndDate}
 			,now()
 			,#{insertId}
 		)
@@ -194,21 +233,30 @@
 		DELETE FROM XBT_BASELINE_STUDENT_INFO WHERE USER_ID = #{userId}
 	</delete>	
 	
-	
+	<!-- 교육생 모두삭제-->
+	<delete id="deleteBaselineStudentAll" parameterType="egovframework.com.adm.eduMgr.vo.Student">
+		DELETE FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = #{procCd}
+	</delete>		
 	
 	
 	<!-- 교육일정 목록 -->
 	<select id="selectEduDateList" parameterType="egovframework.com.adm.eduMgr.vo.EduDate" resultType="egovframework.com.adm.eduMgr.vo.EduDate">
-		SELECT 
-			DAY_NO,
+	<![CDATA[
+		SELECT DISTINCT
 			PROC_CD,
 			PROC_NM,
 			MODULE_ID,
-			USER_ID,
 			EDU_DATE,
+			MENU_CD,
+			MENU_NM,
+			MENU_TYPE,
+			MODULE_TYPE,
 			INSERT_ID,
-			INSERT_DATE
+			INSERT_DATE,
+			CASE WHEN EDU_DATE < date_format(NOW(), '%Y-%m-%d') THEN "true" else "false" end learnYn
 		FROM XBT_BASELINE_EDU_DATE
+		WHERE PROC_CD = #{procCd}
+	]]>
 	</select>		
 
 	
@@ -220,6 +268,10 @@
 			MODULE_ID,
 			USER_ID,
 			EDU_DATE,
+			MENU_CD,
+			MENU_NM,
+			MODULE_TYPE,
+			MENU_TYPE,
 			INSERT_ID,
 			INSERT_DATE
 		)VALUES(
@@ -228,6 +280,10 @@
 			,#{moduleId}
 			,#{userId}
 			,#{eduDate}
+			,#{menuCd}
+			,#{menuNm}
+			,#{moduleType}
+			,#{menuType}
 			,#{insertId}
 			,now()
 		)
@@ -240,7 +296,11 @@
 		DELETE FROM XBT_BASELINE_EDU_DATE WHERE DAY_NO = #{dayNo}
 	</delete>	
 	
-	
+	<!-- 교육일정 모두삭제-->
+	<delete id="deleteEduDateAll" parameterType="egovframework.com.adm.eduMgr.vo.EduDate">
+		DELETE FROM XBT_BASELINE_EDU_DATE WHERE PROC_CD = #{procCd}
+	</delete>	
+		
 	
 			
 	

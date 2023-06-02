@@ -46,7 +46,12 @@ public class UserMgrServiceImpl implements UserMgrService {
 		// TODO Auto-generated method stub
 		return (List<UserInfo>) userMgrDAO.selectUserList(params);
 	}
-
+	
+	@Override
+	public UserInfo selectUserCheck(UserInfo params) {
+		// TODO Auto-generated method stub
+		return (UserInfo) userMgrDAO.selectUserCheck(params);
+	}	
 
 	@Override
 	public UserInfo selectUser(UserInfo params) {
