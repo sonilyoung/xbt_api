@@ -66,16 +66,16 @@ public class TheoryDAO extends EgovAbstractMapper{
 
 	public int insertTheoryFile(TheoryFile params) {
 		// TODO Auto-generated method stub
-		return insert(Namespace + ".selectTheoryFile", params);
+		return insert(Namespace + ".insertTheoryFile", params);
 	}
 
 	public int updateTheoryFile(TheoryFile params) {
 		// TODO Auto-generated method stub
-		return update(Namespace + ".selectTheoryFile", params);
+		return update(Namespace + ".updateTheoryFile", params);
 	}
 
 	public int deleteTheoryFile(TheoryFile params) {
 		// TODO Auto-generated method stub
-		return delete(Namespace + ".selectTheoryFile", params);
+		return delete(Namespace + ".deleteTheoryFile", params);
 	}	
 }

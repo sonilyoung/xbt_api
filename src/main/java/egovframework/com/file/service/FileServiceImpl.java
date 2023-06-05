@@ -28,15 +28,20 @@ public class FileServiceImpl implements FileService {
     @Resource(name = "FileDAO")
 	private FileDAO fileDAO;	
 	
-    /*파일업로드 저장경로*/
-    public static final String FILE_UPLOAD_PATH = GlobalsProperties.getProperty("file.upload.path");
-
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<AttachFile> selectFileList(AttachFile param) {
 		// TODO Auto-generated method stub
 		return (List<AttachFile>) fileDAO.selectFileList(param);
 	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<AttachFile> selectFileAll(AttachFile param) {
+		// TODO Auto-generated method stub
+		return (List<AttachFile>) fileDAO.selectFileAll(param);
+	}
+	
 
 	@Override
 	public AttachFile selectFile(AttachFile param) {

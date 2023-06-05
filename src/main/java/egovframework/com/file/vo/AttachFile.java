@@ -1,5 +1,7 @@
 package egovframework.com.file.vo;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AttachFile {
-	private Long atchFileId;
+	private Long attachFileId;
 	private Long fileTarget;
     private int fileSn;
     private String originalFileName;

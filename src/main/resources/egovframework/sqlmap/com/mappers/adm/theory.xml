@@ -223,7 +223,7 @@
 	</select>		
 	
 	<!-- 이론파일강사 등록 -->
-	<insert id="insertTheoryFile" parameterType="egovframework.com.adm.theory.vo.TheoryFile">
+	<insert id="insertTheoryFile" parameterType="egovframework.com.adm.theory.vo.TheoryFile" useGeneratedKeys="true" keyProperty="theoryNo">
 		INSERT INTO XBT_THEORY_FILE
 		(
 			TITLE,
@@ -232,7 +232,7 @@
 			INSERT_DATE
 		)
 		VALUES(
-			,#{title}
+			#{title}
 			,#{contents}
 			,#{insertId}
 			,now()

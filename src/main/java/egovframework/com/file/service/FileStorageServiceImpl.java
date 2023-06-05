@@ -53,6 +53,9 @@ public class FileStorageServiceImpl implements FileStorageService {
     /*이론 저장경로*/
     public static final String THEORY_ROOT_DIR = GlobalsProperties.getProperty("theory.img.path");
     
+    /*파일업로드 저장경로*/
+    public static final String FILE_UPLOAD_PATH = GlobalsProperties.getProperty("file.upload.path");
+    
     @PostConstruct
     public void initialize() {
         this.realPath = servletContext.getRealPath("/");
@@ -156,7 +159,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
         String fileExtension = StringUtils.getFilenameExtension(originalFileName);
-        String filePath = XRAY_ROOT_DIR;
+        String filePath = FILE_UPLOAD_PATH;
         File fileDir = new File(filePath);
         // root directory 없으면 생성
     	if (!fileDir.exists()) {

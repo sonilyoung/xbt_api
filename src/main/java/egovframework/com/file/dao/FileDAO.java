@@ -15,6 +15,10 @@ public class FileDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectFileList", params);
 	}
 	
+	public List<?> selectFileAll(AttachFile params) {
+		return (List<?>)selectList(Namespace + ".selectFileAll", params);
+	}	
+	
 	public AttachFile selectFile(AttachFile params) {
 		return selectOne(Namespace + ".selectFile", params);
 	}

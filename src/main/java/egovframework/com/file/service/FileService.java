@@ -15,6 +15,8 @@ import egovframework.com.file.vo.AttachFile;
 public interface FileService {
 	
     List<AttachFile> selectFileList(AttachFile atchFileId);
+    
+    List<AttachFile> selectFileAll(AttachFile atchFileId);
 
     AttachFile selectFile(AttachFile param);
 
