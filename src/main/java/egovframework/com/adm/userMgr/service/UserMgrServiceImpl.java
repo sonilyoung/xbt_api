@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.adm.userMgr.dao.UserMgrDAO;
+import egovframework.com.adm.userMgr.vo.TeacherInfo;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
@@ -111,6 +112,46 @@ public class UserMgrServiceImpl implements UserMgrService {
 		return (List<UserBaselineSubInfo>) userMgrDAO.getUserBaselineSubDetailList(params);
 	}
 
+
+	@Override
+	public List<TeacherInfo> selectTeacherList(TeacherInfo params) {
+		// TODO Auto-generated method stub
+		return (List<TeacherInfo>) userMgrDAO.selectTeacherList(params);
+	}
+	
+	@Override
+	public TeacherInfo selectTeacherCheck(TeacherInfo params) {
+		// TODO Auto-generated method stub
+		return (TeacherInfo) userMgrDAO.selectTeacherCheck(params);
+	}	
+
+	@Override
+	public TeacherInfo selectTeacher(TeacherInfo params) {
+		// TODO Auto-generated method stub
+		return (TeacherInfo) userMgrDAO.selectTeacher(params);
+	}
+
+
+	@Override
+	public int insertTeacher(TeacherInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.insertTeacher(params);
+	}
+
+
+	@Override
+	public int updateTeacher(TeacherInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.updateTeacher(params);
+	}
+
+
+	@Override
+	public int deleteTeacher(TeacherInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.deleteTeacher(params);
+	}	
+		
 
 
 }

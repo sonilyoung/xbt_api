@@ -17,15 +17,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AttachFile {
-    private Long atchFileId;
+	private Long atchFileId;
+	private Long fileTarget;
     private int fileSn;
-    private String command;
-    private String targetName;
-    private String filePath;
+    private String originalFileName;
     private String saveFileName; 
-    private String originalFileName; 
+    private String filePath;
     private String fileExt;
     private int fileSize;
-    private boolean saved;
-    private boolean deleted;
+    private String insertDate;
+    private String insertId;
+    
+    private String targetName;
+    private String command;
 }

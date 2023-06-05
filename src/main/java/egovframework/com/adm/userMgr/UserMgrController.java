@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.userMgr.service.UserMgrService;
+import egovframework.com.adm.userMgr.vo.TeacherInfo;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
@@ -643,5 +643,464 @@ public class UserMgrController {
         }
     }        
         
-	    
+
+    /**
+     * 강사 정보조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectTeacherList.do")
+    @ApiOperation(value = "강사정보관리", notes = "강사정보를 관리한다.")
+    public BaseResponse<List<TeacherInfo>> getTeacherList(HttpServletRequest request, @RequestBody TeacherInfo params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			List<TeacherInfo> resultList = userMgrService.selectTeacherList(params);
+			
+			for(TeacherInfo u : resultList) {
+	        	AES256Util aesUtil = new AES256Util();
+	            String pwEnc = aesUtil.decrypt(u.getUserPw());
+	            u.setUserPw(pwEnc);					
+			}
+			
+	        return new BaseResponse<List<TeacherInfo>>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    /**
+     * 강사 상세정보조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectTeacher.do")
+    @ApiOperation(value = "강사 상세정보조회", notes = "강사 상세정보조회 관리한다.")
+    public BaseResponse<TeacherInfo> selectTeacher(HttpServletRequest request, @RequestBody TeacherInfo params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<TeacherInfo>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			TeacherInfo resultList = userMgrService.selectTeacher(params);
+        	AES256Util aesUtil = new AES256Util();
+            String pwEnc = aesUtil.decrypt(resultList.getUserPw());
+            resultList.setUserPw(pwEnc);			
+	        return new BaseResponse<TeacherInfo>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * 강사 아이디 중복체크 
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectTeacherCheck.do")
+    @ApiOperation(value = "강사 아이디 중복체크", notes = "강사 아이디 중복체크")
+    public BaseResponse<TeacherInfo> selectTeacherCheck(HttpServletRequest request, @RequestBody TeacherInfo params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<TeacherInfo>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			TeacherInfo result = userMgrService.selectTeacher(params);
+			if(result == null) {
+				return new BaseResponse<TeacherInfo>(BaseResponseCode.NO_ID, BaseResponseCode.NO_ID.getMessage());
+			}else {
+				return new BaseResponse<TeacherInfo>(BaseResponseCode.EXGIST_USERS, BaseResponseCode.EXGIST_USERS.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+            
+        
+    /**
+     * 강사등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertTeacher.do")
+    @ApiOperation(value = "강사", notes = "강사등록.")
+    public BaseResponse<Integer> insertTeacher(HttpServletRequest request, @RequestBody TeacherInfo params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getEduName())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getUserNm())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserNm" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getUserNmCh())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserNmCh" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getUserNmEn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserNmEn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getSex())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "sex" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getBirthDay())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "birthDay" + BaseApiMessage.REQUIRED.getCode());
+		}		
+
+		if(StringUtils.isEmpty(params.getAge())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "age" + BaseApiMessage.REQUIRED.getCode());
+		}		
+
+
+		if(StringUtils.isEmpty(params.getAddress())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "address" + BaseApiMessage.REQUIRED.getCode());
+		}		
+
+		if(StringUtils.isEmpty(params.getUserPw())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "TeacherPw" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getDept())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "dept" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getPosition())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "position" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getWork())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "work" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getRegistNumber())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "registNumber" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getEmployStatusYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "employStatusYn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getLastEdu())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEdu" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getWriteDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "writeDate" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCompany())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "company" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getHpNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "hpNo" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+
+		if(StringUtils.isEmpty(params.getEmail())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "email" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareerYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerYn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if("Y".equals(params.getCareerYn())) {
+			if(StringUtils.isEmpty(params.getCareer1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career1" + BaseApiMessage.REQUIRED.getCode());
+			}			
+			
+			if(StringUtils.isEmpty(params.getCareerStartDate1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate1" + BaseApiMessage.REQUIRED.getCode());
+			}
+
+			if(StringUtils.isEmpty(params.getCareerEndDate1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate1" + BaseApiMessage.REQUIRED.getCode());
+			}		
+			
+			if(StringUtils.isEmpty(params.getCareerCompany1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany1" + BaseApiMessage.REQUIRED.getCode());
+			}	
+			
+			if(StringUtils.isEmpty(params.getCareerPosition1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition1" + BaseApiMessage.REQUIRED.getCode());
+			}	
+			
+		}
+
+
+		if(StringUtils.isEmpty(params.getLastEduName())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduName" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		if(StringUtils.isEmpty(params.getLastEduDept())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduDept" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getLastEduYear())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduYear" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		if(StringUtils.isEmpty(params.getLastEduEnd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduEnd" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		
+		TeacherInfo TeacherInfo = userMgrService.selectTeacher(params);
+		if(TeacherInfo!=null) {
+			return new BaseResponse<Integer>(BaseResponseCode.EXGIST_USERS, BaseResponseCode.EXGIST_USERS.getMessage());
+		}
+		
+		try {
+			//강사등록
+			params.setInsertId(login.getUserId());
+        	AES256Util aesUtil = new AES256Util();
+            String pwEnc = aesUtil.encrypt(params.getUserPw());
+            params.setUserPw(pwEnc);
+			int result = userMgrService.insertTeacher(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * 강사수정
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/updateTeacher.do")
+    @ApiOperation(value = "강사", notes = "강사수정.")
+    public BaseResponse<Integer> updateTeacher(HttpServletRequest request, @RequestBody TeacherInfo params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getEduName())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getUserNm())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserNm" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getUserNmCh())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserNmCh" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getUserNmEn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserNmEn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getSex())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "sex" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getBirthDay())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "birthDay" + BaseApiMessage.REQUIRED.getCode());
+		}		
+
+		if(StringUtils.isEmpty(params.getAge())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "age" + BaseApiMessage.REQUIRED.getCode());
+		}		
+
+
+		if(StringUtils.isEmpty(params.getAddress())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "address" + BaseApiMessage.REQUIRED.getCode());
+		}		
+
+		if(StringUtils.isEmpty(params.getUserPw())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "TeacherPw" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getDept())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "dept" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getPosition())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "position" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getWork())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "work" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getRegistNumber())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "registNumber" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getEmployStatusYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "employStatusYn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getLastEdu())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEdu" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getWriteDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "writeDate" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCompany())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "company" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getHpNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "hpNo" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+
+		if(StringUtils.isEmpty(params.getEmail())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "email" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareerYn())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerYn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if("Y".equals(params.getCareerYn())) {
+			if(StringUtils.isEmpty(params.getCareer1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career1" + BaseApiMessage.REQUIRED.getCode());
+			}			
+			
+			if(StringUtils.isEmpty(params.getCareerStartDate1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate1" + BaseApiMessage.REQUIRED.getCode());
+			}
+
+			if(StringUtils.isEmpty(params.getCareerEndDate1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate1" + BaseApiMessage.REQUIRED.getCode());
+			}		
+			
+			if(StringUtils.isEmpty(params.getCareerCompany1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany1" + BaseApiMessage.REQUIRED.getCode());
+			}	
+			
+			if(StringUtils.isEmpty(params.getCareerPosition1())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition1" + BaseApiMessage.REQUIRED.getCode());
+			}	
+			
+		}		
+		
+		if(StringUtils.isEmpty(params.getLastEduName())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduName" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		if(StringUtils.isEmpty(params.getLastEduDept())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduDept" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getLastEduYear())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduYear" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		if(StringUtils.isEmpty(params.getLastEduEnd())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduEnd" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		
+		try {
+			//강사등록
+			params.setUpdateId(login.getUserId());
+        	AES256Util aesUtil = new AES256Util();
+            String pwEnc = aesUtil.encrypt(params.getUserPw());
+            params.setUserPw(pwEnc);			
+			int result = userMgrService.updateTeacher(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * 강사삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteTeacher.do")
+    @ApiOperation(value = "강사", notes = "강사삭제.")
+    public BaseResponse<Integer> deleteTeacher(HttpServletRequest request, @RequestBody TeacherInfo params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getUserIdList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserIdList" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		try {
+			//강사삭제
+			int result = 0;
+			for(String id :params.getUserIdList()) {
+				params.setUserId(id);
+				result = userMgrService.deleteTeacher(params);
+			}
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }      
+        
 }

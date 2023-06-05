@@ -14,6 +14,8 @@ import egovframework.com.adm.learningMgr.vo.EduType;
 import egovframework.com.adm.learningMgr.vo.PointStd;
 import egovframework.com.adm.learningMgr.vo.XrayPoint;
 import egovframework.com.adm.learningMgr.vo.XrayPointDetail;
+import egovframework.com.common.dao.CommonDAO;
+import egovframework.com.common.vo.Common;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -41,6 +43,9 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 
     @Resource(name = "LearningMgrDAO")
 	private LearningMgrDAO learningMgrDAO;
+    
+    @Resource(name = "CommonDAO")
+	private CommonDAO commonDAO;    
 
 
 	@Override
@@ -167,9 +172,21 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 	}
 
 	@Override
+	@Transactional
+	@SuppressWarnings("unchecked")
 	public int insertPointStd(PointStd params) {
 		// TODO Auto-generated method stub
-		return learningMgrDAO.insertPointStd(params);
+		int result = learningMgrDAO.insertPointStd(params);
+		Common c = new Common();
+		c.setLanguageCode("kr");
+		c.setGroupId("actionDiv");
+		List<Common> comList = (List<Common>) commonDAO.selectCommonList(c);		
+		
+		for(Common cl : comList) {
+			params.setActionDiv(cl.getCodeValue());
+			learningMgrDAO.insertPointStdDetail(params);
+		}
+		return result;
 	}
 
 	@Override

@@ -40,7 +40,6 @@ import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.global.util.ComUtils;
-import egovframework.com.stu.main.vo.Statistics;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 

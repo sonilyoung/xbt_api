@@ -17,5 +17,6 @@ public class EduDate {
 	private String insertId;
 	private String insertDate;
 	private String learnYn;
+	private String command;
 
 }

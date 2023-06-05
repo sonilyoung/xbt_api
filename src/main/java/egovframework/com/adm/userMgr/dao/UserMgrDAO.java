@@ -2,7 +2,7 @@ package egovframework.com.adm.userMgr.dao;
 
 import java.util.List;
 
-import egovframework.com.adm.system.vo.Notice;
+import egovframework.com.adm.userMgr.vo.TeacherInfo;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
@@ -58,4 +58,30 @@ public class UserMgrDAO extends EgovAbstractMapper{
 	public List<?> getUserBaselineSubDetailList(UserBaselineSubInfo params) {
 		return (List<?>)selectList(Namespace + ".getUserBaselineSubDetailList", params);
 	}	
+	
+	
+	
+	public List<?> selectTeacherList(TeacherInfo params) {
+		return (List<?>)selectList(Namespace + ".selectTeacherList", params);
+	}
+	
+	public TeacherInfo selectTeacherCheck(TeacherInfo params) {
+		return selectOne(Namespace + ".selectTeacherCheck", params);
+	}		
+	
+	public TeacherInfo selectTeacher(TeacherInfo params) {
+		return selectOne(Namespace + ".selectTeacher", params);
+	}	
+	
+	public int insertTeacher(TeacherInfo params) {
+		return insert(Namespace + ".insertTeacher", params);
+	}
+	
+	public int updateTeacher(TeacherInfo params) {
+		return update(Namespace + ".updateTeacher", params);
+	}	
+	
+	public int deleteTeacher(TeacherInfo params) {
+		return delete(Namespace + ".deleteTeacher", params);
+	}		
 }

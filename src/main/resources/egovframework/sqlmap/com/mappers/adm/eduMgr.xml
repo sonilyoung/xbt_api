@@ -257,6 +257,14 @@
 		FROM XBT_BASELINE_EDU_DATE
 		WHERE PROC_CD = #{procCd}
 	]]>
+		<choose>
+			<when test='command == "menuList"'>
+				AND (MODULE_TYPE IS NOT NULL OR MODULE_TYPE != '')
+			</when>
+			<when test='command == "moduleList"'>
+				AND (MODULE_TYPE IS NULL OR MODULE_TYPE = '')
+			</when>
+		</choose>		
 	</select>		
 
 	

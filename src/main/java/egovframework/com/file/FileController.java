@@ -21,7 +21,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.system.vo.Notice;
+import egovframework.com.adm.theory.vo.TheoryAdm;
 import egovframework.com.common.service.CommonService;
+import egovframework.com.file.service.FileService;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.OfficeMessageSource;
@@ -60,6 +62,9 @@ public class FileController {
     @Autowired
     private FileStorageService fileStorageService;
     
+    
+    @Autowired
+    private FileService fileService;    
 
     /**
      * xray 이미지 업로드 
@@ -97,56 +102,67 @@ public class FileController {
             	}
                 
                 if (detail != null) {
-                    // 기존 파일첨부 아이디가 있는 경우 해당 아이디로 파일 정보 생성
-                    if (atchFileId != null) {
-                        detail.setAtchFileId(atchFileId);
-                    }
-                    else {
-                        detail.setFileSn(i++);
-                    }
+                    detail.setFileSn(i++);
                     saveFiles.add(detail);
                 }
             }
         }
         // 파일 정보 생성
-        //fileService.saveFiles(saveFiles, deleteFiles);
+        //fileStorageService.saveFiles(saveFiles, deleteFiles);
 
         List<AttachFile> result = saveFiles != null ? saveFiles : new ArrayList<AttachFile>();
         return new BaseResponse<>(result);
     }  
+
+
     
     /**
-     * 교육생화면 ui다국어처리
+     * 이론파일업로드 
      * 
+     * @param files
      * @param param
-     * @return Company
-     
-    @PostMapping("/selectLanguageApplyInfo.do")
-    @ApiOperation(value = "교육생화면 ui다국어처리", notes = "교육생화면 ui다국어처리")
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value="/theoryFileUpload.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
-    public BaseResponse<HashMap<String, Object>> selectLanguageApplyInfo(HttpServletRequest request, @RequestBody Common params) {
-		
-		if(StringUtils.isEmpty(params.getLanguageCode())){				
-			return new BaseResponse<HashMap<String, Object>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
-		try {
-			//다국어처리조회
-			List<Common> result = commonService.selectLanguageApplyList(params);
-			HashMap<String, Object> languageApply = new HashMap<String, Object>();
-			if(result!=null) {
-				for(Common c : result) {
-					languageApply.put("groupId", c.getGroupId());//구분코드
-					languageApply.put(c.getCodeName(), c.getCodeValue());//메세지
-					languageApply.put("languageCode", c.getLanguageCode());// 언어코드
-				}
-			}
-	        return new BaseResponse<HashMap<String, Object>>(languageApply);
-        } catch (Exception e) {
-        	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+    @ApiOperation(value = "공통파일업로드", notes = "공통파일업로드")
+    public BaseResponse<List<AttachFile>> fileUpload(
+            @RequestPart(value = "files", required = true) MultipartFile[] files,
+            @RequestPart(value = "params", required = false) TheoryAdm params)
+            throws Exception {
+        List<AttachFile> saveFiles = null;
+        
+		if(StringUtils.isEmpty(files)){				
+			return new BaseResponse<List<AttachFile>>(BaseResponseCode.PARAMS_ERROR, "Files" + BaseApiMessage.REQUIRED.getCode());
+		}	        
+        
+        if (files != null) {
+        	int i = 1;
+            saveFiles = new ArrayList<>();
+            for (MultipartFile file : files) {
+                // 파일 생성
+            	AttachFile detail = fileStorageService.createFile(file);
+                if (detail != null) {
+                    detail.setFileSn(i++);
+                    saveFiles.add(detail);
+                }
+            }
         }
-    }        
-      */
+        
+        
+        
+        
+        for(AttachFile af : saveFiles) {
+        	// 파일 정보 생성
+        	fileService.insertFile(af);
+        }
+
+        List<AttachFile> result = saveFiles != null ? saveFiles : new ArrayList<AttachFile>();
+        return new BaseResponse<>(result);
+    }      
+    
+    
+    
     
 }

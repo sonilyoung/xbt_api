@@ -107,8 +107,13 @@ public class EduMgrController {
 			
 			EduDate ed = new EduDate();
 			ed.setProcCd(params.getProcCd());
+			ed.setCommand("menuList");
 			List<EduDate> scheduleList = eduMgrService.selectEduDateList(ed);
-			baseline.setScheduleList(scheduleList);
+			baseline.setMenuList(scheduleList);
+			
+			ed.setCommand("moduleList");
+			List<EduDate> moduleList = eduMgrService.selectEduDateList(ed);
+			baseline.setModuleList(moduleList);			
 			
 			Student stu = new Student();
 			stu.setProcCd(params.getProcCd());
@@ -226,8 +231,12 @@ public class EduMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "endingStdScore" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
-		if(StringUtils.isEmpty(params.getScheduleList())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "scheduleList" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getMenuList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "menuList" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getModuleList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleList" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
 		if(StringUtils.isEmpty(params.getUserList())){				
@@ -299,8 +308,12 @@ public class EduMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "endingStdScore" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
-		if(StringUtils.isEmpty(params.getScheduleList())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "scheduleList" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getMenuList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "menuList" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getModuleList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleList" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
 		if(StringUtils.isEmpty(params.getUserList())){				
@@ -311,48 +324,6 @@ public class EduMgrController {
 			//차수등록
 			params.setUpdateId(login.getUserId());
 			int result = eduMgrService.updateBaseline(params);
-			Baseline baseline = eduMgrService.selectBaseline(params);
-			
-			for(String u : params.getUserList()) {
-				Long moduleId = (long) 0;
-				for(EduDate sl : params.getScheduleList()) {
-					moduleId = sl.getModuleId();
-					sl.setProcCd(baseline.getProcCd());
-					sl.setProcNm(baseline.getProcName());
-					sl.setUserId(u);
-					sl.setInsertId(login.getUserId());
-					eduMgrService.insertEduDate(sl);					
-				}
-				
-				UserInfo ui = new UserInfo();
-				ui.setUserId(u);
-				UserInfo userInfo = userMgrService.selectUser(ui);
-				
-				Student s = new Student();
-				s.setModuleId(moduleId);
-				s.setProcCd(baseline.getProcCd());
-				s.setProcYear(baseline.getProcYear());
-				s.setProcSeq(baseline.getProcSeq());
-				s.setProcNm(baseline.getProcName());
-				s.setEduStartDate(baseline.getEduStartDate());
-				s.setEduEndDate(baseline.getEduEndDate());
-				s.setModuleId(baseline.getModuleId());
-				
-				s.setDeptNm(userInfo.getDept());
-				s.setUserId(u);
-				s.setUserNm(userInfo.getUserNm());
-				s.setCompNm(userInfo.getCompany());
-				s.setDeptNm(userInfo.getDept());
-				s.setInsertId(login.getUserId());
-				
-				Student stu = new Student();
-				stu.setProcCd(baseline.getProcCd());
-				stu.setUserId(u);
-				Student baselineStu = eduMgrService.selectBaselineStudent(stu);
-				if(baselineStu == null) {
-					eduMgrService.insertBaselineStudent(s);
-				}				
-			}
 			
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
@@ -515,7 +486,7 @@ public class EduMgrController {
      * 
      * @param param
      * @return Company
-     */
+     
     @PostMapping("/deleteBaselineStudent.do")
     @ApiOperation(value = "교육생", notes = "교육생삭제.")
     public BaseResponse<Integer> deleteBaselineStudent(HttpServletRequest request, @RequestBody Student params) {
@@ -546,7 +517,7 @@ public class EduMgrController {
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
     }        
-    
+    */
     
     
     /**

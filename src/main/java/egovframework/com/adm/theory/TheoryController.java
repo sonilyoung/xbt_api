@@ -1,7 +1,6 @@
 
 package egovframework.com.adm.theory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +28,6 @@ import egovframework.com.common.vo.SeqGroupCode;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.file.service.XbtImageService;
 import egovframework.com.file.vo.AttachFile;
-import egovframework.com.global.annotation.SkipAuth;
-import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
@@ -230,13 +227,17 @@ public class TheoryController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 
-		if(StringUtils.isEmpty(params.getGroupNo())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "GroupNo" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getGroupNoList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "GroupNoList" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
 		try {
-			//이론그룹삭제
-			int result = theoryService.deleteTheoryGroup(params);
+			int result = 0;
+			for(Long tg : params.getGroupNoList()) {
+				//이론그룹삭제
+				params.setGroupNo(tg);
+				result = theoryService.deleteTheoryGroup(params);
+			}
 			
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());

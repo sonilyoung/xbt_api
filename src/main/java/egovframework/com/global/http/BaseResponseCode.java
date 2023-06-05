@@ -52,7 +52,7 @@ public enum BaseResponseCode {
 	), EXGIST_USERS(		
 			"9996", "이미존재하는 아이디입니다."	     
 	), NO_ID(		
-			"9998", "사용가능한 아이디입니다.."				
+			"9998", "사용가능한 아이디입니다."				
 	), NO_USERS(		
 			"9995", "사용자가 존재하지 않습니다."	        
 	), AUTH_FAIL(		

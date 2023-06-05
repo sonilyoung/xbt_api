@@ -375,7 +375,7 @@
 	</select>		
 	
 	<!-- 판독배점관리 등록 -->
-	<insert id="insertPointStd" parameterType="egovframework.com.adm.learningMgr.vo.PointStd">
+	<insert id="insertPointStd" parameterType="egovframework.com.adm.learningMgr.vo.PointStd" useGeneratedKeys="true" keyProperty="pointsStdNo">
 		INSERT INTO XBT_POINTS_STD_MASTER
 		(
 			POINTS_STD_NM,
@@ -429,6 +429,7 @@
 			UPDATE_ID
 		FROM
 			XBT_POINTS_STD_DETAIL
+		WHERE POINTS_STD_NO = #{pointsStdNo}
 	</select>	
 	
 	<!-- 판독배점상세관리 상세 -->
@@ -479,8 +480,7 @@
 	<update id="updatePointStdDetail" parameterType="egovframework.com.adm.learningMgr.vo.PointStd">	
 		UPDATE XBT_POINTS_STD_DETAIL
 		SET 
-			ACTION_DIV = #{actionDiv}
-			, BAN_UNIT_SCORE = #{banUnitScore}
+			BAN_UNIT_SCORE = #{banUnitScore}
 			, LIMIT_UNIT_SCORE = #{limitUnitScore}
 			, QUESTION_UNIT_SCORE = #{questionUnitScore}
 			, PASS_UNIT_SCORE = #{passUnitScore}
@@ -491,7 +491,7 @@
 	
 	<!-- 판독배점상세관리 삭제-->
 	<delete id="deletePointStdDetail" parameterType="egovframework.com.adm.learningMgr.vo.PointStd">
-		DELETE FROM XBT_POINTS_STD_DETAIL WHERE POINTS_DETAIL_NO = #{pointsDetailNo}
+		DELETE FROM XBT_POINTS_STD_DETAIL WHERE POINTS_STD_NO = #{pointsStdNo}
 	</delete>	
 								
 			

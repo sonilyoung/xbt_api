@@ -8,7 +8,7 @@
 		SELECT
 			T1.STUDENT_NO,
 			T2.PROC_CD,
-			T2.PROC_NM,
+			T2.PROC_NAME AS PROC_NM,
 			T1.PROC_YEAR,
 			T1.PROC_SEQ,
 			T1.USER_ID,
@@ -70,7 +70,8 @@
 			'false' AS menuFlag
 		FROM XBT_STU_MENU T1 
 		WHERE LANGUAGE_CODE = #{languageCode}
-		AND P_MENU_CD = #{pMenuCd} 
+		AND P_MENU_CD = #{pMenuCd}
+		AND T1.USE_YN = 'Y' 
     	AND T1.MENU_CD NOT IN (
 	    	SELECT MENU_CD FROM XBT_BASELINE_EDU_DATE WHERE EDU_DATE = DATE_FORMAT(NOW(),'%Y%m%d') AND USER_ID = #{userId}
     	)   
@@ -91,6 +92,7 @@
 		FROM XBT_STU_MENU T2 
 		WHERE LANGUAGE_CODE = #{languageCode}
 		AND P_MENU_CD = #{pMenuCd}
+		AND T2.USE_YN = 'Y'
     	AND T2.MENU_CD IN (
 	    	SELECT MENU_CD FROM XBT_BASELINE_EDU_DATE WHERE EDU_DATE = DATE_FORMAT(NOW(),'%Y%m%d') AND USER_ID = #{userId}
 	    	)       	

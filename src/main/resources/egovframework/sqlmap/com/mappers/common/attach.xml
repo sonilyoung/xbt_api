@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.global.file.dao.FileDAO">
+
+	<!-- 첨부 파일 아이디에 해당하는 상세 리스트 조회 -->
+	<select id="selectFileList" 
+		parameterType="egovframework.com.file.vo.AttachFile" 
+		resultType="egovframework.com.file.vo.AttachFile">
+		SELECT
+			ATTACH_FILE_ID,
+			ATTACH_FILE_DETAIL_ID,
+			FILE_SN,
+			ORIGINAL_FILENAME,
+			SAVE_FILENAME,
+			FILE_PATH,
+			FILE_EXT,
+			FILE_SIZE,
+			INSERT_DATE,
+			INSERT_ID
+		FROM
+			ATTACH_FILE_DETAIL
+		WHERE ATTACH_FILE_ID = #{attachFileId}
+		ORDER BY FILE_SN
+	</select>
+	
+	<!-- 이미지 파일 path 조회 -->
+	<select id="selectFile" parameterType="egovframework.com.file.vo.AttachFile" 
+		resultType="egovframework.com.file.vo.AttachFile">
+		SELECT
+			COUNT(ATTACH_FILE_ID) OVER() AS TOTALCNT
+	        ,ATTACH_FILE_ID AS ATCH_FILE_ID
+	        ,FILE_SN
+	        ,FILE_TARGET
+	        ,FILE_PATH
+	        ,SAVE_FILENAME
+	        ,ORIGINAL_FILENAME
+	        ,FILE_EXT
+	        ,FILE_SIZE     		 
+		FROM ATTACH_FILE  
+		WHERE ATTACH_FILE_ID = #{attachFileId}
+		AND FILE_TARGET = #{fileTarget}
+		AND FILE_SN = #{fileSn}
+	</select>
+	
+	<!-- 첨부 파일 상세 정보 생성 -->
+	<insert id="insertFile"
+            parameterType="egovframework.com.file.vo.AttachFile" useGeneratedKeys="true" keyProperty="attachFileId">
+            INSERT INTO ATTACH_FILE (
+				FILE_SN
+				, FILE_PATH
+				, SAVE_FILENAME
+				, ORIGINAL_FILENAME
+				, FILE_EXT
+				, FILE_SIZE
+				, FILE_TARGET
+            ) VALUES (
+				#{fileSn}
+				, #{filePath}
+				, #{saveFileName}
+				, #{originalFileName}
+				, #{fileExt}
+				, #{fileSize}
+				, #{fileSize}
+				, #{fileTarget}
+            )
+	</insert>
+	
+	<!-- 첨부 파일 정보 삭제 -->
+	<delete id="deleteFile" parameterType="egovframework.com.file.vo.AttachFile">
+		DELETE FROM ATTACH_FILE WHERE attach_file_id = #{attachFileId}
+	</delete>
+	
+	<!-- 첨부 파일 아이디에 해당하는 상세 정보 모두 삭제 -->
+	<delete id="deleteFileAll" parameterType="egovframework.com.file.vo.AttachFile">
+		DELETE FROM ATTACH_FILE WHERE FILE_TARGET = #{fileTarget}
+	</delete>
+	
+
+	
+</mapper>

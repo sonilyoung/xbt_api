@@ -61,7 +61,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	@Override
 	public AttachFile createUnitImageFile(String targetName, AttachFile params, MultipartFile file) throws Exception {
 		// TODO Auto-generated method stub
-        AttachFile AttachFile = null;
+        AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
         String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
@@ -90,24 +90,24 @@ public class FileStorageServiceImpl implements FileStorageService {
         try {
             newFile = new File(targetFilePath, realFileName);
             file.transferTo(newFile);
-            AttachFile = new AttachFile();
-            AttachFile.setFileExt(fileExtension);
-            AttachFile.setFilePath(filePath);
-            AttachFile.setOriginalFileName(originalFileName);
-            AttachFile.setSaveFileName(realFileName);
-            AttachFile.setFileSize((int) file.getSize());
+            attachFile = new AttachFile();
+            attachFile.setFileExt(fileExtension);
+            attachFile.setFilePath(filePath);
+            attachFile.setOriginalFileName(originalFileName);
+            attachFile.setSaveFileName(realFileName);
+            attachFile.setFileSize((int) file.getSize());
         } catch (IllegalStateException e) {
             throw e;
         } catch (IOException e) {
             throw e;
         }
-        return AttachFile;
+        return attachFile;
 	}        
     
 	@Override
 	public AttachFile createXrayImageFile(String targetName, AttachFile params, MultipartFile file) throws Exception {
 		// TODO Auto-generated method stub
-        AttachFile AttachFile = null;
+        AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
         String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
@@ -136,23 +136,23 @@ public class FileStorageServiceImpl implements FileStorageService {
         try {
             newFile = new File(targetFilePath, realFileName);
             file.transferTo(newFile);
-            AttachFile = new AttachFile();
-            AttachFile.setFileExt(fileExtension);
-            AttachFile.setFilePath(filePath);
-            AttachFile.setOriginalFileName(originalFileName);
-            AttachFile.setSaveFileName(realFileName);
-            AttachFile.setFileSize((int) file.getSize());
+            attachFile = new AttachFile();
+            attachFile.setFileExt(fileExtension);
+            attachFile.setFilePath(filePath);
+            attachFile.setOriginalFileName(originalFileName);
+            attachFile.setSaveFileName(realFileName);
+            attachFile.setFileSize((int) file.getSize());
         } catch (IllegalStateException e) {
             throw e;
         } catch (IOException e) {
             throw e;
         }
-        return AttachFile;
+        return attachFile;
 	}    
 
     @Override
     public AttachFile createFile(MultipartFile file) throws Exception {
-        AttachFile AttachFile = null;
+        AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
         String fileExtension = StringUtils.getFilenameExtension(originalFileName);
@@ -173,18 +173,18 @@ public class FileStorageServiceImpl implements FileStorageService {
         try {
             newFile = new File(filePath, realFileName);
             file.transferTo(newFile);
-            AttachFile = new AttachFile();
-            AttachFile.setFileExt(fileExtension);
-            AttachFile.setFilePath(filePath);
-            AttachFile.setOriginalFileName(originalFileName);
-            AttachFile.setSaveFileName(realFileName);
-            AttachFile.setFileSize((int) file.getSize());
+            attachFile = new AttachFile();
+            attachFile.setFileExt(fileExtension);
+            attachFile.setFilePath(filePath);
+            attachFile.setOriginalFileName(originalFileName);
+            attachFile.setSaveFileName(realFileName);
+            attachFile.setFileSize((int) file.getSize());
         } catch (IllegalStateException e) {
             throw e;
         } catch (IOException e) {
             throw e;
         }
-        return AttachFile;
+        return attachFile;
     }
 
     @Override
@@ -279,8 +279,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	@Override
 	public AttachFile createTheoryImageFile(String fileNameWithoutExtension, Theory params, MultipartFile file) throws Exception {
 		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-        AttachFile AttachFile = null;
+        AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
         //String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
@@ -309,24 +308,24 @@ public class FileStorageServiceImpl implements FileStorageService {
         try {
             newFile = new File(targetFilePath, realFileName);
             file.transferTo(newFile);
-            AttachFile = new AttachFile();
-            AttachFile.setFileExt(fileExtension);
-            AttachFile.setFilePath(filePath);
-            AttachFile.setOriginalFileName(originalFileName);
-            AttachFile.setSaveFileName(realFileName);
-            AttachFile.setFileSize((int) file.getSize());
+            attachFile = new AttachFile();
+            attachFile.setFileExt(fileExtension);
+            attachFile.setFilePath(filePath);
+            attachFile.setOriginalFileName(originalFileName);
+            attachFile.setSaveFileName(realFileName);
+            attachFile.setFileSize((int) file.getSize());
         } catch (IllegalStateException e) {
             throw e;
         } catch (IOException e) {
             throw e;
         }
-        return AttachFile;
+        return attachFile;
 	}
 
 	@Override
 	public AttachFile createXrayImageFiles(String targetName, String fileNameWithoutExtension, XrayImgContents params, MultipartFile file) throws Exception {
 		// TODO Auto-generated method stub
-        AttachFile AttachFile = null;
+        AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
         //String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
@@ -355,18 +354,18 @@ public class FileStorageServiceImpl implements FileStorageService {
         try {
             newFile = new File(targetFilePath, realFileName);
             file.transferTo(newFile);
-            AttachFile = new AttachFile();
-            AttachFile.setFileExt(fileExtension);
-            AttachFile.setFilePath(filePath);
-            AttachFile.setOriginalFileName(originalFileName);
-            AttachFile.setSaveFileName(realFileName);
-            AttachFile.setFileSize((int) file.getSize());
+            attachFile = new AttachFile();
+            attachFile.setFileExt(fileExtension);
+            attachFile.setFilePath(filePath);
+            attachFile.setOriginalFileName(originalFileName);
+            attachFile.setSaveFileName(realFileName);
+            attachFile.setFileSize((int) file.getSize());
         } catch (IllegalStateException e) {
             throw e;
         } catch (IOException e) {
             throw e;
         }
-        return AttachFile;
+        return attachFile;
 	}
 
 

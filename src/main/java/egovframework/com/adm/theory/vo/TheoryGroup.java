@@ -1,5 +1,7 @@
 package egovframework.com.adm.theory.vo;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -13,5 +15,7 @@ public class TheoryGroup {
 	private String useYn;
 	private String insertId;
 	private String insertDate;
+	
+	private List<Long> groupNoList;
 
 }

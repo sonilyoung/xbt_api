@@ -723,14 +723,20 @@ public class LearningMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getPointsStdNo())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PointsStdNo" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getPointsStdNoList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PointsStdNoList" + BaseApiMessage.REQUIRED.getCode());
 		}				
 		
 		try {
-			//배점기준정보마스터삭제
-			int result = learningMgrService.deletePointStd(params);
-			
+			int result = 0;
+			for(Long id : params.getPointsStdNoList()) {
+				params.setPointsStdNo(id);
+				//배점기준정보마스터삭제
+				result = learningMgrService.deletePointStd(params);
+				//배점기준정보상세삭제
+				learningMgrService.deletePointStdDetail(params);				
+			}
+
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
 			}else {
@@ -743,17 +749,14 @@ public class LearningMgrController {
     }    
 	    
     
-    
-    
-    
     /**
-     * 배점기준정보상세목록조회
+     * 배점기준정보상세상세
      * 
      * @param param
      * @return Company
      */
     @PostMapping("/selectPointStdDetailList.do")
-    @ApiOperation(value = "배점기준정보상세목록", notes = "배점기준정보상세목록조회.")
+    @ApiOperation(value = "배점기준정보상세목록", notes = "배점기준정보상세상세목록.")
     public BaseResponse<List<PointStd>> selectPointStdDetailList(HttpServletRequest request, @RequestBody PointStd params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
@@ -763,7 +766,6 @@ public class LearningMgrController {
 		if(StringUtils.isEmpty(params.getPointsStdNo())){				
 			return new BaseResponse<List<PointStd>>(BaseResponseCode.PARAMS_ERROR, "PointsStdNo" + BaseApiMessage.REQUIRED.getCode());
 		}			
-				
 		
 		try {
 			//배점기준정보상세조회
@@ -772,35 +774,51 @@ public class LearningMgrController {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
-    }    
+    }  
+    
     
     /**
-     * 배점기준정보상세상세
+     * 배점기준정보상세목록조회
      * 
      * @param param
      * @return Company
      */
     @PostMapping("/selectPointStdDetail.do")
-    @ApiOperation(value = "배점기준정보상세상세", notes = "배점기준정보상세상세조회.")
+    @ApiOperation(value = "배점기준정보상세", notes = "배점기준정보상세.")
     public BaseResponse<PointStd> selectPointStdDetail(HttpServletRequest request, @RequestBody PointStd params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getPointsDetailNo())){				
-			return new BaseResponse<PointStd>(BaseResponseCode.PARAMS_ERROR, "PointsDetailNo" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getPointsStdNo())){				
+			return new BaseResponse<PointStd>(BaseResponseCode.PARAMS_ERROR, "PointsStdNo" + BaseApiMessage.REQUIRED.getCode());
 		}			
+
+		List<PointStd> resultList = learningMgrService.selectPointStdDetailList(params);
+		
+		for(PointStd p : resultList) {
+			if("0".equals(p.getActionDiv())) {
+				params.setActionDiv0(p);
+			}else if("1".equals(p.getActionDiv())) {
+				params.setActionDiv1(p);
+			}else if("2".equals(p.getActionDiv())) {
+				params.setActionDiv2(p);
+			}else if("3".equals(p.getActionDiv())) {
+				params.setActionDiv3(p);
+			}else if("4".equals(p.getActionDiv())) {
+				params.setActionDiv4(p);
+			}
+		}
 		
 		try {
 			//배점기준정보상세조회
-	        return new BaseResponse<PointStd>(learningMgrService.selectPointStdDetail(params));
+	        return new BaseResponse<PointStd>(params);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
     }    
-        
     
     
     
@@ -809,7 +827,7 @@ public class LearningMgrController {
      * 
      * @param param
      * @return Company
-     */
+     
     @PostMapping("/insertPointStdDetail.do")
     @ApiOperation(value = "배점기준정보상세", notes = "배점기준정보상세등록.")
     public BaseResponse<Integer> insertPointStdDetail(HttpServletRequest request, @RequestBody PointStd params) {
@@ -860,7 +878,7 @@ public class LearningMgrController {
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
     }    
-    
+    */
     
     
     /**
@@ -878,35 +896,17 @@ public class LearningMgrController {
 		}
 		
 		
-		if(StringUtils.isEmpty(params.getPointsDetailNo())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PointsDetailNo" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getUpdateList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UpdateList" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
-		if(StringUtils.isEmpty(params.getActionDiv())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ActionDiv" + BaseApiMessage.REQUIRED.getCode());
-		}					
-		
-		if(StringUtils.isEmpty(params.getBanUnitScore())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BanUnitScore" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
-		if(StringUtils.isEmpty(params.getLimitUnitScore())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LimitUnitScore" + BaseApiMessage.REQUIRED.getCode());
-		}
-		
-		if(StringUtils.isEmpty(params.getQuestionUnitScore())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "QuestionUnitScore" + BaseApiMessage.REQUIRED.getCode());
-		}			
-				
-		if(StringUtils.isEmpty(params.getPassUnitScore())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PassUnitScore" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
-		
 		try {
+			int result = 0;
 			//배점기준정보상세등록
-			params.setUpdateId(login.getUserId());
-			int result = learningMgrService.updatePointStdDetail(params);
+			for(PointStd ps: params.getUpdateList()) {
+				ps.setUpdateId(login.getUserId());
+				result = learningMgrService.updatePointStdDetail(ps);				
+			}
 			
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
@@ -926,7 +926,7 @@ public class LearningMgrController {
      * 
      * @param param
      * @return Company
-     */
+     
     @PostMapping("/deletePointStdDetail.do")
     @ApiOperation(value = "배점기준정보상세", notes = "배점기준정보상세삭제.")
     public BaseResponse<Integer> deletePointStdDetail(HttpServletRequest request, @RequestBody PointStd params) {
@@ -952,5 +952,6 @@ public class LearningMgrController {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
         }
-    }        
+    }  
+    */      
 }

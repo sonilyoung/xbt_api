@@ -62,7 +62,7 @@ public class EduMgrServiceImpl implements EduMgrService {
 		for(String u : params.getUserList()) {
 			
 			Long moduleId = (long) 0;
-			for(EduDate sl : params.getScheduleList()) {
+			for(EduDate sl : params.getMenuList()) {
 				moduleId = sl.getModuleId();
 				sl.setProcCd(baseline.getProcCd());
 				sl.setProcNm(baseline.getProcName());
@@ -70,6 +70,15 @@ public class EduMgrServiceImpl implements EduMgrService {
 				sl.setInsertId(params.getUserId());
 				eduMgrDAO.insertEduDate(sl);					
 			}
+			
+			for(EduDate sl : params.getModuleList()) {
+				moduleId = sl.getModuleId();
+				sl.setProcCd(baseline.getProcCd());
+				sl.setProcNm(baseline.getProcName());
+				sl.setUserId(u);
+				sl.setInsertId(params.getUserId());
+				eduMgrDAO.insertEduDate(sl);					
+			}			
 			
 			UserInfo ui = new UserInfo();
 			ui.setUserId(u);
@@ -99,9 +108,67 @@ public class EduMgrServiceImpl implements EduMgrService {
 	}
 
 	@Override
+	@Transactional
 	public int updateBaseline(Baseline params) {
 		// TODO Auto-generated method stub
-		return eduMgrDAO.updateBaseline(params);
+		int result = eduMgrDAO.updateBaseline(params);
+		
+		Baseline baseline = eduMgrDAO.selectBaseline(params);
+		
+		//사용자삭제
+		Student uiall = new Student();
+		uiall.setProcCd(baseline.getProcCd());
+		eduMgrDAO.deleteBaselineStudentAll(uiall);
+		
+		//일정삭제
+		EduDate ed = new EduDate();
+		ed.setProcCd(baseline.getProcCd());
+		eduMgrDAO.deleteEduDateAll(ed);		
+		
+		for(String u : params.getUserList()) {
+			Long moduleId = (long) 0;
+			for(EduDate sl : params.getMenuList()) {
+				moduleId = sl.getModuleId();
+				sl.setProcCd(baseline.getProcCd());
+				sl.setProcNm(baseline.getProcName());
+				sl.setUserId(u);
+				sl.setInsertId(params.getUpdateId());
+				eduMgrDAO.insertEduDate(sl);					
+			}
+			
+			for(EduDate sl : params.getModuleList()) {
+				moduleId = sl.getModuleId();
+				sl.setProcCd(baseline.getProcCd());
+				sl.setProcNm(baseline.getProcName());
+				sl.setUserId(u);
+				sl.setInsertId(params.getUpdateId());
+				eduMgrDAO.insertEduDate(sl);					
+			}				
+			
+			UserInfo ui = new UserInfo();
+			ui.setUserId(u);
+			UserInfo userInfo = userMgrDAO.selectUser(ui);
+			
+			Student s = new Student();
+			s.setModuleId(moduleId);
+			s.setProcCd(baseline.getProcCd());
+			s.setProcYear(baseline.getProcYear());
+			s.setProcSeq(baseline.getProcSeq());
+			s.setProcNm(baseline.getProcName());
+			s.setEduStartDate(baseline.getEduStartDate());
+			s.setEduEndDate(baseline.getEduEndDate());
+			s.setModuleId(baseline.getModuleId());
+			
+			s.setDeptNm(userInfo.getDept());
+			s.setUserId(u);
+			s.setUserNm(userInfo.getUserNm());
+			s.setCompNm(userInfo.getCompany());
+			s.setDeptNm(userInfo.getDept());
+			s.setInsertId(params.getUserId());
+			eduMgrDAO.insertBaselineStudent(s);	
+		}		
+		
+		return result;
 	}
 
 	@Override
