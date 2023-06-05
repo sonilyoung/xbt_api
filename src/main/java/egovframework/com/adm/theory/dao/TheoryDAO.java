@@ -3,6 +3,7 @@ package egovframework.com.adm.theory.dao;
 import java.util.List;
 
 import egovframework.com.adm.theory.vo.Theory;
+import egovframework.com.adm.theory.vo.TheoryFile;
 import egovframework.com.adm.theory.vo.TheoryGroup;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -52,4 +53,29 @@ public class TheoryDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectTheory", params);
 	}	
 
+	
+	public List<?> selectTheoryFileList(TheoryFile params) {
+		// TODO Auto-generated method stub
+		return (List<?>)selectList(Namespace + ".selectTheoryFileList", params);
+	}
+
+	public TheoryFile selectTheoryFile(TheoryFile params) {
+		// TODO Auto-generated method stub
+		return selectOne(Namespace + ".selectTheoryFile", params);
+	}
+
+	public int insertTheoryFile(TheoryFile params) {
+		// TODO Auto-generated method stub
+		return insert(Namespace + ".selectTheoryFile", params);
+	}
+
+	public int updateTheoryFile(TheoryFile params) {
+		// TODO Auto-generated method stub
+		return update(Namespace + ".selectTheoryFile", params);
+	}
+
+	public int deleteTheoryFile(TheoryFile params) {
+		// TODO Auto-generated method stub
+		return delete(Namespace + ".selectTheoryFile", params);
+	}	
 }

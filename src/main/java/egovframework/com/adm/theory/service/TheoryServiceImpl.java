@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.adm.theory.dao.TheoryDAO;
 import egovframework.com.adm.theory.vo.Theory;
+import egovframework.com.adm.theory.vo.TheoryFile;
 import egovframework.com.adm.theory.vo.TheoryGroup;
 import lombok.extern.log4j.Log4j2;
 
@@ -97,6 +98,36 @@ public class TheoryServiceImpl implements TheoryService {
 	public Theory selectTheory(Theory params) {
 		// TODO Auto-generated method stub
 		return theoryDAO.selectTheory(params);
+	}
+
+	@Override
+	public List<TheoryFile> selectTheoryFileList(TheoryFile params) {
+		// TODO Auto-generated method stub
+		return (List<TheoryFile>) theoryDAO.selectTheoryFileList(params);
+	}
+
+	@Override
+	public TheoryFile selectTheoryFile(TheoryFile params) {
+		// TODO Auto-generated method stub
+		return theoryDAO.selectTheoryFile(params);
+	}
+
+	@Override
+	public int insertTheoryFile(TheoryFile params) {
+		// TODO Auto-generated method stub
+		return theoryDAO.insertTheoryFile(params);
+	}
+
+	@Override
+	public int updateTheoryFile(TheoryFile params) {
+		// TODO Auto-generated method stub
+		return theoryDAO.updateTheoryFile(params);
+	}
+
+	@Override
+	public int deleteTheoryFile(TheoryFile params) {
+		// TODO Auto-generated method stub
+		return theoryDAO.deleteTheoryFile(params);
 	}
 
 }

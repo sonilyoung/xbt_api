@@ -3,6 +3,7 @@ package egovframework.com.adm.theory.service;
 import java.util.List;
 
 import egovframework.com.adm.theory.vo.Theory;
+import egovframework.com.adm.theory.vo.TheoryFile;
 import egovframework.com.adm.theory.vo.TheoryGroup;
 
 /**
@@ -43,5 +44,16 @@ public interface TheoryService {
 	public int deleteTheory(Theory params);
 
 	public Theory selectTheory(Theory params);	
+	
+	
+	public List<TheoryFile> selectTheoryFileList(TheoryFile params);
+	
+	public TheoryFile selectTheoryFile(TheoryFile params);
+	
+	public int insertTheoryFile(TheoryFile params);
+	
+	public int updateTheoryFile(TheoryFile params);
+	
+	public int deleteTheoryFile(TheoryFile params);
 		
 }

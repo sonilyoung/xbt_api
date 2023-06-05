@@ -67,7 +67,7 @@
 	
 	<!-- 첨부 파일 정보 삭제 -->
 	<delete id="deleteFile" parameterType="egovframework.com.file.vo.AttachFile">
-		DELETE FROM ATTACH_FILE WHERE attach_file_id = #{attachFileId}
+		DELETE FROM ATTACH_FILE WHERE ATTACH_FILE_ID = #{attachFileId}
 	</delete>
 	
 	<!-- 첨부 파일 아이디에 해당하는 상세 정보 모두 삭제 -->

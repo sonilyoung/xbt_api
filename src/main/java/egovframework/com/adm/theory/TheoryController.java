@@ -1,6 +1,7 @@
 
 package egovframework.com.adm.theory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,11 +24,15 @@ import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.theory.service.TheoryService;
 import egovframework.com.adm.theory.vo.Theory;
+import egovframework.com.adm.theory.vo.TheoryFile;
 import egovframework.com.adm.theory.vo.TheoryGroup;
 import egovframework.com.common.vo.SeqGroupCode;
+import egovframework.com.file.service.FileService;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.file.service.XbtImageService;
 import egovframework.com.file.vo.AttachFile;
+import egovframework.com.global.annotation.SkipAuth;
+import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
@@ -65,6 +70,9 @@ public class TheoryController {
     
     @Autowired
     private XbtImageService xbtImageService;
+    
+    @Autowired
+    private FileService fileService;       
     
     				
     /**
@@ -610,5 +618,199 @@ public class TheoryController {
         }
     }      
     
+    
+    
+    
+    /**
+     * 이론파일업로드 
+     * 
+     * @param files
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value="/insertTheoryFile.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    @ApiOperation(value = "공통파일업로드", notes = "공통파일업로드")
+    public BaseResponse<List<AttachFile>> fileUpload(
+            @RequestPart(value = "files", required = true) MultipartFile[] files,
+            @RequestPart(value = "params", required = false) TheoryFile params)
+            throws Exception {
+        List<AttachFile> saveFiles = null;
+        
+		if(StringUtils.isEmpty(files)){				
+			return new BaseResponse<List<AttachFile>>(BaseResponseCode.PARAMS_ERROR, "Files" + BaseApiMessage.REQUIRED.getCode());
+		}	        
+        
+        if (files != null) {
+        	int i = 1;
+            saveFiles = new ArrayList<>();
+            for (MultipartFile file : files) {
+                // 파일 생성
+            	AttachFile detail = fileStorageService.createFile(file);
+                if (detail != null) {
+                    detail.setFileSn(i++);
+                    saveFiles.add(detail);
+                }
+            }
+        }
+        
+        for(AttachFile af : saveFiles) {
+        	// 파일 정보 생성
+        	fileService.insertFile(af);
+        }
+
+        List<AttachFile> result = saveFiles != null ? saveFiles : new ArrayList<AttachFile>();
+        return new BaseResponse<>(result);
+    }
+    
+    /**
+     * 이론파일강사상세
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectTheoryFile.do")
+    @ApiOperation(value = "이론파일강사상세", notes = "이론파일강사상세조회.")
+    public BaseResponse<TheoryFile> selectTheoryFile(HttpServletRequest request, @RequestBody TheoryFile params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getTheoryNo())){				
+			return new BaseResponse<TheoryFile>(BaseResponseCode.PARAMS_ERROR, "TheoryNo" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		try {
+			//이론파일강사조회
+	        return new BaseResponse<TheoryFile>(theoryService.selectTheoryFile(params));
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+        
+    
+    
+    
+    /**
+     * 이론파일강사등록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertTheoryFile.do")
+    @ApiOperation(value = "이론파일강사", notes = "이론파일강사등록.")
+    public BaseResponse<Integer> insertTheoryFile(HttpServletRequest request, @RequestBody TheoryFile params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getTitle())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Title" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getContents())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Contents" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			//이론파일강사등록
+			params.setInsertId(login.getUserId());
+			int result = theoryService.insertTheoryFile(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * 이론파일강사수정
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/updateTheoryFile.do")
+    @ApiOperation(value = "이론파일강사", notes = "이론파일강사수정.")
+    public BaseResponse<Integer> updateTheoryFile(HttpServletRequest request, @RequestBody TheoryFile params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getTheoryNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "TheoryNo" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		if(StringUtils.isEmpty(params.getTitle())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Title" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getContents())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Contents" + BaseApiMessage.REQUIRED.getCode());
+		}			
+				
+		
+		try {
+			//이론파일강사등록
+			params.setUpdateId(login.getUserId());
+			int result = theoryService.updateTheoryFile(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+    
+    
+    
+    /**
+     * 이론파일강사삭제
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteTheoryFile.do")
+    @ApiOperation(value = "이론파일강사", notes = "이론파일강사삭제.")
+    public BaseResponse<Integer> deleteTheoryFile(HttpServletRequest request, @RequestBody TheoryFile params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getTheoryNo())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "TheoryNo" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		try {
+			//이론파일강사삭제
+			int result = theoryService.deleteTheoryFile(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.DELETE_ERROR, BaseResponseCode.DELETE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
 	    
 }

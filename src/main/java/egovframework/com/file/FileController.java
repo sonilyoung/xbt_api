@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.system.vo.Notice;
-import egovframework.com.adm.theory.vo.TheoryAdm;
+import egovframework.com.adm.theory.vo.TheoryFile;
 import egovframework.com.common.service.CommonService;
 import egovframework.com.file.service.FileService;
 import egovframework.com.file.service.FileStorageService;
@@ -115,54 +115,5 @@ public class FileController {
     }  
 
 
-    
-    /**
-     * 이론파일업로드 
-     * 
-     * @param files
-     * @param param
-     * @return
-     * @throws Exception
-     */
-    @PostMapping(value="/theoryFileUpload.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
-    @ApiOperation(value = "공통파일업로드", notes = "공통파일업로드")
-    public BaseResponse<List<AttachFile>> fileUpload(
-            @RequestPart(value = "files", required = true) MultipartFile[] files,
-            @RequestPart(value = "params", required = false) TheoryAdm params)
-            throws Exception {
-        List<AttachFile> saveFiles = null;
-        
-		if(StringUtils.isEmpty(files)){				
-			return new BaseResponse<List<AttachFile>>(BaseResponseCode.PARAMS_ERROR, "Files" + BaseApiMessage.REQUIRED.getCode());
-		}	        
-        
-        if (files != null) {
-        	int i = 1;
-            saveFiles = new ArrayList<>();
-            for (MultipartFile file : files) {
-                // 파일 생성
-            	AttachFile detail = fileStorageService.createFile(file);
-                if (detail != null) {
-                    detail.setFileSn(i++);
-                    saveFiles.add(detail);
-                }
-            }
-        }
-        
-        
-        
-        
-        for(AttachFile af : saveFiles) {
-        	// 파일 정보 생성
-        	fileService.insertFile(af);
-        }
-
-        List<AttachFile> result = saveFiles != null ? saveFiles : new ArrayList<AttachFile>();
-        return new BaseResponse<>(result);
-    }      
-    
-    
-    
     
 }

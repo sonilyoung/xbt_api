@@ -190,4 +190,71 @@
 		DELETE FROM XBT_THEORY_QUESTION WHERE QUESTION_ID = #{questionId}
 	</delete>	
 	
+	
+	
+	
+<!-- 이론파일강사 목록 -->
+	<select id="selectTheoryFileList" parameterType="egovframework.com.adm.theory.vo.TheoryFile" resultType="egovframework.com.adm.theory.vo.TheoryFile">
+		SELECT
+			THEORY_NO,
+			TITLE,
+			CONTENTS,
+			INSERT_ID,
+			INSERT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE
+		FROM
+			XBT_THEORY_FILE
+	</select>		
+
+<!-- 이론파일강사 상세 -->
+	<select id="selectTheoryFile" parameterType="egovframework.com.adm.theory.vo.TheoryFile" resultType="egovframework.com.adm.theory.vo.TheoryFile">
+		SELECT
+			THEORY_NO,
+			TITLE,
+			CONTENTS,
+			INSERT_ID,
+			INSERT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE
+		FROM
+			XBT_THEORY_FILE
+		WHERE THEORY_NO = #{theoryNo}
+	</select>		
+	
+	<!-- 이론파일강사 등록 -->
+	<insert id="insertTheoryFile" parameterType="egovframework.com.adm.theory.vo.TheoryFile">
+		INSERT INTO XBT_THEORY_FILE
+		(
+			TITLE,
+			CONTENTS,
+			INSERT_ID,
+			INSERT_DATE
+		)
+		VALUES(
+			,#{title}
+			,#{contents}
+			,#{insertId}
+			,now()
+		)	
+	</insert>	
+	
+	
+	<!-- 이론파일강사 수정 -->
+	<update id="updateTheoryFile" parameterType="egovframework.com.adm.theory.vo.TheoryFile">	
+		UPDATE XBT_THEORY_FILE
+		SET 
+			TITLE = #{title}
+			, CONTENTS = #{title}
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DATE = now()
+		WHERE THEORY_NO = #{theoryNo}
+
+	</update>	
+	
+	<!-- 이론파일강사 삭제-->
+	<delete id="deleteTheoryFile" parameterType="egovframework.com.adm.theory.vo.TheoryFile">
+		DELETE FROM XBT_THEORY_FILE WHERE THEORY_NO = #{theoryNo}  
+	</delete>	
+	
 </mapper>
