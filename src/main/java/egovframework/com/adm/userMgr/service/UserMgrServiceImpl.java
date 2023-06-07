@@ -43,10 +43,28 @@ public class UserMgrServiceImpl implements UserMgrService {
 
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<UserInfo> selectUserList(UserInfo params) {
 		// TODO Auto-generated method stub
 		return (List<UserInfo>) userMgrDAO.selectUserList(params);
 	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<UserBaseline> selectBaselineUserList(UserBaseline params) {
+		// TODO Auto-generated method stub
+		return (List<UserBaseline>) userMgrDAO.selectBaselineUserList(params);
+	}
+	
+
+
+	@Override
+	public int updateBaselineUser(UserBaseline params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.updateBaselineUser(params);
+	}
+	
+		
 	
 	@Override
 	public UserInfo selectUserCheck(UserInfo params) {

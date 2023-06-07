@@ -20,7 +20,6 @@ public class Learning{
 	private Long moduleId;
 	private String moduleType;
 	private String eduType;
-	private String eduDate;
 	private int studyLvl;
 	private String bagScanId;
 	private String actionDiv;

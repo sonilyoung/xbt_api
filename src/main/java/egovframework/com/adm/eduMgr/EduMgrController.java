@@ -108,12 +108,16 @@ public class EduMgrController {
 			EduDate ed = new EduDate();
 			ed.setProcCd(params.getProcCd());
 			ed.setCommand("menuList");
-			List<EduDate> scheduleList = eduMgrService.selectEduDateList(ed);
-			baseline.setMenuList(scheduleList);
+			List<EduDate> menuList = eduMgrService.selectEduDateList(ed);
+			baseline.setMenuList(menuList);
 			
 			ed.setCommand("moduleList");
 			List<EduDate> moduleList = eduMgrService.selectEduDateList(ed);
 			baseline.setModuleList(moduleList);			
+
+			ed.setCommand("scheduleList");
+			List<EduDate> scheduleList = eduMgrService.selectEduDateList(ed);
+			baseline.setScheduleList(scheduleList);				
 			
 			Student stu = new Student();
 			stu.setProcCd(params.getProcCd());
@@ -235,6 +239,10 @@ public class EduMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "menuList" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
+		if(StringUtils.isEmpty(params.getScheduleList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "scheduleList" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
 		if(StringUtils.isEmpty(params.getModuleList())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleList" + BaseApiMessage.REQUIRED.getCode());
 		}			
@@ -312,9 +320,13 @@ public class EduMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "menuList" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
+		if(StringUtils.isEmpty(params.getScheduleList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "scheduleList" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
 		if(StringUtils.isEmpty(params.getModuleList())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleList" + BaseApiMessage.REQUIRED.getCode());
-		}			
+		}		
 		
 		if(StringUtils.isEmpty(params.getUserList())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userList" + BaseApiMessage.REQUIRED.getCode());
@@ -575,9 +587,13 @@ public class EduMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
 		}			
 				
-		if(StringUtils.isEmpty(params.getEduDate())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "EduDate" + BaseApiMessage.REQUIRED.getCode());
-		}	
+		if(StringUtils.isEmpty(params.getEduStartDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "EduStartDate" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getEduEndDate())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "EduEndDate" + BaseApiMessage.REQUIRED.getCode());
+		}			
 		
 		try {
 			//교육일정등록

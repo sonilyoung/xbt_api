@@ -13,7 +13,20 @@ public class UserBaseline {
 	private String trainees;/* 교육인원 */
 	private String endingProcessEndYn;/* 수료처리완료여부 */
 	
-	
+	private String userId;
+	private String userNm;
+	private String compNm;
+	private String deptNm;
+	private String gainScore;
+	private String practiceScore;
+	private String theoryScore;
+	private String evaluationScore;
+	private String passYn;
+	private String endingProcessDate;
+	private String eduStartDate;
+	private String eduEndDate;
+	private String endingYn;
+
 
 	
 }

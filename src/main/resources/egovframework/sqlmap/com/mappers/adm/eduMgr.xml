@@ -246,14 +246,15 @@
 			PROC_CD,
 			PROC_NM,
 			MODULE_ID,
-			EDU_DATE,
+			EDU_START_DATE,
+			EDU_END_DATE,
 			MENU_CD,
 			MENU_NM,
 			MENU_TYPE,
 			MODULE_TYPE,
 			INSERT_ID,
 			INSERT_DATE,
-			CASE WHEN EDU_DATE < date_format(NOW(), '%Y-%m-%d') THEN "true" else "false" end learnYn
+			CASE WHEN EDU_START_DATE <= date_format(NOW(), '%Y-%m-%d') <= EDU_END_DATE THEN "true" else "false" end learnYn
 		FROM XBT_BASELINE_EDU_DATE
 		WHERE PROC_CD = #{procCd}
 	]]>
@@ -275,7 +276,8 @@
 			PROC_NM,
 			MODULE_ID,
 			USER_ID,
-			EDU_DATE,
+			EDU_START_DATE,
+			EDU_END_DATE,
 			MENU_CD,
 			MENU_NM,
 			MODULE_TYPE,
@@ -287,7 +289,8 @@
 			,#{procNm}
 			,#{moduleId}
 			,#{userId}
-			,#{eduDate}
+			,#{eduStartDate}
+			,#{eduEndDate}
 			,#{menuCd}
 			,#{menuNm}
 			,#{moduleType}

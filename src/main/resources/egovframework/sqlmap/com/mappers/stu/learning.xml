@@ -31,7 +31,8 @@
 			MODULE_TYPE ,
 			EDU_TYPE ,
 			USER_ID ,
-			EDU_DATE 
+			EDU_START_DATE , 
+			EDU_END_DATE 
 		FROM XBT_BASELINE_EDU_DATE 
 		WHERE  
 		MENU_CD = #{menuCd} 

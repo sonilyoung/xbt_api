@@ -89,6 +89,72 @@ public class UserMgrController {
     
     
     /**
+     * 교육생 합격불합격 정보조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectBaselineUserList.do")
+    @ApiOperation(value = "교육생 합격불합격 정보조회", notes = "교육생 합격불합격 정보조회")
+    public BaseResponse<List<UserBaseline>> selectBaselineUserList(HttpServletRequest request, @RequestBody UserBaseline params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<List<UserBaseline>>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		try {
+			List<UserBaseline> resultList = userMgrService.selectBaselineUserList(params);
+	        return new BaseResponse<List<UserBaseline>>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }     
+    
+    /**
+     * 차수 교육생 수정
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/updateBaselineUser.do")
+    @ApiOperation(value = "차수 교육생 수정", notes = "차수 교육생 수정.")
+    public BaseResponse<UserBaseline> updateBaselineUser(HttpServletRequest request, @RequestBody UserBaseline params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getPracticeScore())){				
+			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		try {
+			//강사등록
+			int result = userMgrService.updateBaselineUser(params);
+			
+			if(result>0) {
+				return new BaseResponse<UserBaseline>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<UserBaseline>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+        }
+    }    
+        
+    
+    
+    /**
      * 교육생 상세정보조회
      * 
      * @param param

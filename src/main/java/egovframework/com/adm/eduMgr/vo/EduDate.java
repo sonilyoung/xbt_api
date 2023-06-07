@@ -13,7 +13,8 @@ public class EduDate {
 	private String menuNm;
 	private String menuType;
 	private String moduleType;
-	private String eduDate;
+	private String eduStartDate;
+	private String eduEndDate;
 	private String insertId;
 	private String insertDate;
 	private String learnYn;
