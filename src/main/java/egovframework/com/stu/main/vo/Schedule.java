@@ -20,7 +20,7 @@ public class Schedule {
 	private String userId;
 	private String moduleId;
 	private String moduleType;
-	private String menuType;
+	private String learningType;
 	private String menuFlag;
 	
 	private List<Schedule> menu1;

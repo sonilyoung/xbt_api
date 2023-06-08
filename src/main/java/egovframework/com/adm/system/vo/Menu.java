@@ -14,7 +14,8 @@ public class Menu{
 	private String useYn;
 	private String menuOrder;
 	private String languageCode;
-	private String menuType;
+	private String moduleType;
+	private String learningType;
 	private String insertId;
 	private String insertDate;
 	private String updateId;

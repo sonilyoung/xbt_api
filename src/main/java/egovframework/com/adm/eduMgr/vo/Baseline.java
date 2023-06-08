@@ -32,7 +32,6 @@ public class Baseline {
 	
 	private List<Student> stuList;
 	private List<EduDate> menuList;
-	private List<EduDate> moduleList;
 	private List<EduDate> scheduleList;
 	private List<String> userList;
 	private List<Long> procCdList;

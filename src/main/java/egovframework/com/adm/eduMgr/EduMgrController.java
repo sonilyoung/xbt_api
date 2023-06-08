@@ -111,10 +111,6 @@ public class EduMgrController {
 			List<EduDate> menuList = eduMgrService.selectEduDateList(ed);
 			baseline.setMenuList(menuList);
 			
-			ed.setCommand("moduleList");
-			List<EduDate> moduleList = eduMgrService.selectEduDateList(ed);
-			baseline.setModuleList(moduleList);			
-
 			ed.setCommand("scheduleList");
 			List<EduDate> scheduleList = eduMgrService.selectEduDateList(ed);
 			baseline.setScheduleList(scheduleList);				
@@ -243,10 +239,6 @@ public class EduMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "scheduleList" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
-		if(StringUtils.isEmpty(params.getModuleList())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleList" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
 		if(StringUtils.isEmpty(params.getUserList())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userList" + BaseApiMessage.REQUIRED.getCode());
 		}				
@@ -324,9 +316,6 @@ public class EduMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "scheduleList" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
-		if(StringUtils.isEmpty(params.getModuleList())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleList" + BaseApiMessage.REQUIRED.getCode());
-		}		
 		
 		if(StringUtils.isEmpty(params.getUserList())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userList" + BaseApiMessage.REQUIRED.getCode());

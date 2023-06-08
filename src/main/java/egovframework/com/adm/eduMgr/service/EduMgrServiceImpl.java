@@ -69,22 +69,11 @@ public class EduMgrServiceImpl implements EduMgrService {
 				sl.setProcNm(baseline.getProcName());
 				sl.setUserId(u);
 				sl.setInsertId(params.getUserId());
-				sl.setEduStartDate(params.getMenuList().get(i).getEduStartDate()); 
-				sl.setEduStartDate(params.getMenuList().get(i).getEduEndDate());
+				sl.setEduStartDate(params.getScheduleList().get(i).getEduStartDate()); 
+				sl.setEduStartDate(params.getScheduleList().get(i).getEduEndDate());
 				eduMgrDAO.insertEduDate(sl);					
 			}
 			
-			for(int i=0; i < params.getModuleList().size();i++) {
-				EduDate sl = new EduDate();
-				moduleId = sl.getModuleId();
-				sl.setProcCd(baseline.getProcCd());
-				sl.setProcNm(baseline.getProcName());
-				sl.setUserId(u);
-				sl.setInsertId(params.getUserId());
-				sl.setEduStartDate(params.getMenuList().get(i).getEduStartDate()); 
-				sl.setEduStartDate(params.getMenuList().get(i).getEduEndDate());				
-				eduMgrDAO.insertEduDate(sl);					
-			}			
 			
 			UserInfo ui = new UserInfo();
 			ui.setUserId(u);
@@ -145,17 +134,6 @@ public class EduMgrServiceImpl implements EduMgrService {
 				eduMgrDAO.insertEduDate(sl);					
 			}
 			
-			for(int i=0; i < params.getModuleList().size();i++) {
-				EduDate sl = new EduDate();
-				moduleId = sl.getModuleId();
-				sl.setProcCd(baseline.getProcCd());
-				sl.setProcNm(baseline.getProcName());
-				sl.setUserId(u);
-				sl.setInsertId(params.getUserId());
-				sl.setEduStartDate(params.getScheduleList().get(i).getEduStartDate()); 
-				sl.setEduStartDate(params.getScheduleList().get(i).getEduEndDate());				
-				eduMgrDAO.insertEduDate(sl);					
-			}				
 			
 			UserInfo ui = new UserInfo();
 			ui.setUserId(u);
