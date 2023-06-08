@@ -2,6 +2,7 @@ package egovframework.com.scheduler.service;
 
 import egovframework.com.adm.eduMgr.service.EduMgrService;
 import egovframework.com.adm.eduMgr.vo.Baseline;
+import egovframework.com.adm.learningMgr.LearningMgrController;
 import egovframework.com.adm.system.service.SystemService;
 import egovframework.com.adm.system.vo.XbtScore;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -10,6 +11,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +38,8 @@ import org.springframework.stereotype.Service;
 @Service("egovXtsScheduling")
 public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovXtsScheduling.class);
+	
     @Autowired
     private SystemService systemService; 
 
@@ -68,8 +73,15 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 				
 				//이론점수
 				XbtScore theory = systemService.selectTheoryScore(xs);
+				int theoryScore = 0;
+				int evaluationScore = 0;
+				int practiceScore = 0;
 				if(theory!=null) {
-					int theoryScore = (theory.getGainScore()*baseline.getTheoryTotalScore())/100;
+					theoryScore = (theory.getGainScore()*baseline.getTheoryTotalScore())/100;
+					LOGGER.info("==============이론==============");
+					LOGGER.info("교육생 theoryScore:" + theory.getUserId() + " : " + theory.getGainScore());
+					LOGGER.info("설정 theoryScore:" + baseline.getTheoryTotalScore());
+					LOGGER.info("theoryScore:" + theoryScore);
 					xs.setTheoryScore(theoryScore);
 					xs.setCommand("theory");
 					systemService.updateXbtScore(xs);					
@@ -78,15 +90,37 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 				//평가점수
 				XbtScore evaluation = systemService.selectEvaluationScore(xs);
 				if(evaluation!=null) {
-					int evaluationScore = (evaluation.getGainScore()*baseline.getEvaluationTotalScore())/100;
+					evaluationScore = (evaluation.getGainScore()*baseline.getEvaluationTotalScore())/100;
+					LOGGER.info("==============평가==============");
+					LOGGER.info("교육생 evaluationScore:" + evaluation.getUserId() + " : " + evaluation.getGainScore());
+					LOGGER.info("설정 evaluationScore:"+ baseline.getEvaluationTotalScore());
+					LOGGER.info("evaluationScore:"+ evaluationScore);
 					xs.setEvaluationScore(evaluationScore);
 					xs.setCommand("evaluation");
 					systemService.updateXbtScore(xs);
 				}
-
-				//XbtScore evaluationTotalScore = systemService.selectPracticeScore(xs);
-				//systemService.updateXbtScore(xs);
-
+				
+				//실습점수
+				XbtScore evaluationTotalScore = systemService.selectPracticeScore(xs);
+				practiceScore = evaluationTotalScore.getPracticeScore();
+				LOGGER.info("==============실습==============");
+				LOGGER.info("교육생 evaluationScore:" + evaluationTotalScore.getUserId() + " : " + evaluationTotalScore.getPracticeScore());
+				LOGGER.info("설정 evaluationScore:"+ baseline.getPracticeTotalScore());
+				LOGGER.info("evaluationScore:"+ evaluationTotalScore.getPracticeScore());
+				
+				XbtScore processScore = systemService.selectPracticeScore(xs);
+				if("Y".equals(processScore.getTheoryYn()) && "Y".equals(processScore.getPracticeYn()) && "Y".equals(processScore.getEvaluationYn())) {
+					 int totalScore = theoryScore + evaluationScore + practiceScore;
+					 xs.setGainScore(totalScore);
+					 
+					 if(totalScore >= baseline.getEndingStdScore()) {
+						 xs.setPassYn("Y");
+					 }else {
+						 xs.setPassYn("N");
+					 }
+					 systemService.updateXbtEndScore(xs);
+				}
+				
 				
 			}
 		}

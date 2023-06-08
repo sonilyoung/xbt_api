@@ -92,7 +92,7 @@ public class UserMgrController {
 	        return new BaseResponse<List<UserInfo>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -120,7 +120,7 @@ public class UserMgrController {
 	        return new BaseResponse<List<UserBaseline>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }     
     
@@ -171,7 +171,7 @@ public class UserMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
         
@@ -203,7 +203,7 @@ public class UserMgrController {
 	        return new BaseResponse<UserInfo>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -236,7 +236,7 @@ public class UserMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
             
@@ -415,7 +415,7 @@ public class UserMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -587,7 +587,7 @@ public class UserMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -626,7 +626,7 @@ public class UserMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }      
     
@@ -653,7 +653,7 @@ public class UserMgrController {
 	        return new BaseResponse<List<UserBaseline>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -690,7 +690,7 @@ public class UserMgrController {
 	        return new BaseResponse<List<UserBaselineSub>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -727,7 +727,7 @@ public class UserMgrController {
 	        return new BaseResponse<UserBaselineDetail>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
         
@@ -753,7 +753,7 @@ public class UserMgrController {
 	        return new BaseResponse<List<UserBaselineSubInfo>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }        
         
@@ -784,7 +784,7 @@ public class UserMgrController {
 	        return new BaseResponse<List<TeacherInfo>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -815,7 +815,7 @@ public class UserMgrController {
 	        return new BaseResponse<TeacherInfo>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -848,7 +848,7 @@ public class UserMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
             
@@ -1014,7 +1014,7 @@ public class UserMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -1174,7 +1174,7 @@ public class UserMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -1213,7 +1213,7 @@ public class UserMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }      
         

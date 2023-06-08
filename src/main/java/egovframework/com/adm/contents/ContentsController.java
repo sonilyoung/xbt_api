@@ -94,7 +94,7 @@ public class ContentsController {
 	        return new BaseResponse<List<Language>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -123,7 +123,7 @@ public class ContentsController {
 	        return new BaseResponse<Language>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }        
     
@@ -167,7 +167,7 @@ public class ContentsController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -213,7 +213,7 @@ public class ContentsController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }       
     
@@ -246,7 +246,7 @@ public class ContentsController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }      
     
@@ -273,7 +273,7 @@ public class ContentsController {
 	        return new BaseResponse<List<UnitGroup>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -306,7 +306,7 @@ public class ContentsController {
 	        return new BaseResponse<UnitGroup>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
         
@@ -359,7 +359,7 @@ public class ContentsController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }       
     
@@ -396,7 +396,7 @@ public class ContentsController {
 			return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }  
     
@@ -438,7 +438,7 @@ public class ContentsController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }          
     
@@ -495,7 +495,7 @@ public class ContentsController {
 	        }
 	    }catch(Exception e) {
 	       LOGGER.error("error:", e);
-	       throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+	       throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
 	    } 
 	    
 	}	    
@@ -535,7 +535,7 @@ public class ContentsController {
 	        return new BaseResponse<List<UnitImg>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }   
 	
@@ -582,7 +582,7 @@ public class ContentsController {
 	        return new BaseResponse<UnitImg>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }   	
 		
@@ -623,7 +623,7 @@ public class ContentsController {
             return new BaseResponse<UnitImg>(params);	    	
 	    }catch(Exception e) {
 	       LOGGER.error("error:", e);
-	       throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+	       throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
 	    } 
 	    
 	}	   
@@ -669,7 +669,7 @@ public class ContentsController {
 			}	    	
 	    }catch(Exception e) {
 	       LOGGER.error("error:", e);
-	       throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+	       throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
 	    } 
 	    
 	}	   	
@@ -738,7 +738,7 @@ public class ContentsController {
 			return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
 	    }catch(Exception e) {
 	       LOGGER.error("error:", e);
-	       throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+	       throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
 	    } 
 	    
 	    
@@ -777,7 +777,7 @@ public class ContentsController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }   	
  	
@@ -805,7 +805,7 @@ public class ContentsController {
 	        return new BaseResponse<List<XrayContents>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }  
 
@@ -859,7 +859,7 @@ public class ContentsController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -905,7 +905,7 @@ public class ContentsController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -940,7 +940,7 @@ public class ContentsController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }	
 	
@@ -971,7 +971,7 @@ public class ContentsController {
 	        return new BaseResponse<List<XrayContents>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }  	
 	
@@ -1026,7 +1026,7 @@ public class ContentsController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
 	
@@ -1060,7 +1060,7 @@ public class ContentsController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }		
 	
@@ -1095,7 +1095,7 @@ public class ContentsController {
 	        return new BaseResponse<List<UnitInformation>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }  	
 	    
@@ -1131,7 +1131,7 @@ public class ContentsController {
 	        return new BaseResponse<XrayImgContents>(params);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
         	
@@ -1636,7 +1636,7 @@ public class ContentsController {
 			return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
 	    }catch(Exception e) {
 	       LOGGER.error("error:", e);
-	       throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+	       throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
 	    } 
 	    
 	    

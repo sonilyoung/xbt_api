@@ -83,7 +83,7 @@ public class PracticeController {
 	        return new BaseResponse<List<UnitGroup>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }       
     
@@ -124,7 +124,7 @@ public class PracticeController {
 	        return new BaseResponse<UnitGroup>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }     
     
@@ -163,7 +163,7 @@ public class PracticeController {
 	        return new BaseResponse<List<Practice>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }       
     
@@ -202,7 +202,7 @@ public class PracticeController {
 	        return new BaseResponse<Practice>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }   	
 

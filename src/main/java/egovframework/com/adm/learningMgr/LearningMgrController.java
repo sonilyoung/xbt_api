@@ -82,7 +82,7 @@ public class LearningMgrController {
 	        return new BaseResponse<List<EduModule>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }  	
 	
@@ -120,7 +120,7 @@ public class LearningMgrController {
 	        return new BaseResponse<EduModule>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }  	
 		
@@ -194,7 +194,7 @@ public class LearningMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -257,7 +257,7 @@ public class LearningMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }       
     
@@ -298,7 +298,7 @@ public class LearningMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -333,7 +333,7 @@ public class LearningMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }      
     	
@@ -364,7 +364,7 @@ public class LearningMgrController {
 	        return new BaseResponse<List<EduModule>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }     
     
@@ -397,7 +397,7 @@ public class LearningMgrController {
 	        return new BaseResponse<List<EduModulePop>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }     	
 	
@@ -423,7 +423,7 @@ public class LearningMgrController {
 	        return new BaseResponse<List<EduModulePop>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }     
     
@@ -480,7 +480,7 @@ public class LearningMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    	
 	
@@ -507,7 +507,7 @@ public class LearningMgrController {
 	        return new BaseResponse<List<XrayPoint>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }  		
 	
@@ -535,7 +535,7 @@ public class LearningMgrController {
 	        return new BaseResponse<List<XrayPointDetail>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }  		
 	
@@ -560,7 +560,7 @@ public class LearningMgrController {
 	        return new BaseResponse<List<EduType>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }     	
     
@@ -585,7 +585,7 @@ public class LearningMgrController {
 	        return new BaseResponse<List<PointStd>>(learningMgrService.selectPointStdList(params));
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -612,7 +612,7 @@ public class LearningMgrController {
 	        return new BaseResponse<PointStd>(learningMgrService.selectPointStd(params));
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
         
@@ -654,7 +654,7 @@ public class LearningMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -703,7 +703,7 @@ public class LearningMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -744,7 +744,7 @@ public class LearningMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
 	    
@@ -772,7 +772,7 @@ public class LearningMgrController {
 	        return new BaseResponse<List<PointStd>>(learningMgrService.selectPointStdDetailList(params));
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }  
     
@@ -816,7 +816,7 @@ public class LearningMgrController {
 	        return new BaseResponse<PointStd>(params);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -875,7 +875,7 @@ public class LearningMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     */
@@ -915,7 +915,7 @@ public class LearningMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -950,7 +950,7 @@ public class LearningMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }  
     */      

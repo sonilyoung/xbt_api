@@ -87,7 +87,7 @@ public class CommonController {
 	        return new BaseResponse<HashMap<String, Object>>(languageApply);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }        
       
@@ -136,7 +136,7 @@ public class CommonController {
 	        return new BaseResponse<List<HashMap<String, Object>>>(resultMessage);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }        
     
@@ -188,7 +188,7 @@ public class CommonController {
 			return new BaseResponse<HashMap<String, Object>>(languageApply);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }       
     
@@ -242,7 +242,7 @@ public class CommonController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -300,7 +300,7 @@ public class CommonController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -343,7 +343,7 @@ public class CommonController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }          
         
@@ -367,7 +367,7 @@ public class CommonController {
 	        return new BaseResponse<List<Common>>(commonService.selectCommonList(params));
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -431,7 +431,7 @@ public class CommonController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -501,7 +501,7 @@ public class CommonController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -545,7 +545,7 @@ public class CommonController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }      
 

@@ -80,7 +80,7 @@ public class EduMgrController {
 	        return new BaseResponse<List<Baseline>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
         
@@ -127,8 +127,6 @@ public class EduMgrController {
 			 
 			baseline.setMenuList(menus);
 			
-			
-			
 			Student stu = new Student();
 			stu.setProcCd(params.getProcCd());
 			List<Student> stuList = eduMgrService.selectBaselineStudentList(stu);			
@@ -137,7 +135,7 @@ public class EduMgrController {
 	        return new BaseResponse<Baseline>(baseline);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
         
@@ -166,7 +164,7 @@ public class EduMgrController {
 	        return new BaseResponse<List<EduDate>>(scheduleList);
 	    } catch (Exception e) {
 	    	LOGGER.error("error:", e);
-	        throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+	        throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
 	    }
 	}        
     
@@ -195,7 +193,7 @@ public class EduMgrController {
 	        return new BaseResponse<List<Student>>(stuList);
 	    } catch (Exception e) {
 	    	LOGGER.error("error:", e);
-	        throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+	        throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
 	    }
 	}        
     
@@ -271,7 +269,7 @@ public class EduMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -348,7 +346,7 @@ public class EduMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -395,7 +393,7 @@ public class EduMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }
     
@@ -425,7 +423,7 @@ public class EduMgrController {
 	        return new BaseResponse<List<Student>>(eduMgrService.selectBaselineStudentList(params));
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
   
@@ -490,7 +488,7 @@ public class EduMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -529,7 +527,7 @@ public class EduMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }        
     */
@@ -554,7 +552,7 @@ public class EduMgrController {
 	        return new BaseResponse<List<EduDate>>(eduMgrService.selectEduDateList(params));
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
   
@@ -611,7 +609,7 @@ public class EduMgrController {
 			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
     
@@ -646,7 +644,7 @@ public class EduMgrController {
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, BaseResponseCode.UNKONWN_ERROR.getMessage());
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
 }

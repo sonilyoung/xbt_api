@@ -144,6 +144,16 @@ public class SystemServiceImpl implements SystemService {
 		// TODO Auto-generated method stub
 		return systemDAO.updateXbtScore(params);
 	}
+	
+	@Override
+	public XbtScore selectProcessScore(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.selectProcessScore(params);
+	}
 
-
+	@Override
+	public int updateXbtEndScore(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.updateXbtEndScore(params);
+	}
 }
