@@ -23,7 +23,8 @@ public class Student {
 	private String eduStartDate;
 	private String eduEndDate;
 	private Long moduleId;
-	
+	private String eduCode;
+	private String eduName;
 	private String insertDate;
 	private String insertId;
 	private String updateDate;

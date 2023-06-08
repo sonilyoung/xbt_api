@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.adm.system.dao.SystemDAO;
 import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.system.vo.Notice;
+import egovframework.com.adm.system.vo.XbtScore;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -75,6 +76,12 @@ public class SystemServiceImpl implements SystemService {
 		// TODO Auto-generated method stub
 		return (List<Menu>)systemDAO.selectMenuList(params);
 	}
+	
+	@Override
+	public Menu selectModuleMenu(Menu params) {
+		// TODO Auto-generated method stub
+		return systemDAO.selectModuleMenu(params);
+	}		
 
 	@Override
 	public int insertMenu(Menu params) {
@@ -105,7 +112,38 @@ public class SystemServiceImpl implements SystemService {
 	public List<Menu> selectModuleMenuList(Menu params) {
 		// TODO Auto-generated method stub
 		return (List<Menu>) systemDAO.selectModuleMenuList(params);
-	}	
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<XbtScore> selectXbtEndingUserList(XbtScore params) {
+		// TODO Auto-generated method stub
+		return (List<XbtScore>) systemDAO.selectXbtEndingUserList(params);
+	}
+
+	@Override
+	public XbtScore selectTheoryScore(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.selectTheoryScore(params);
+	}
+
+	@Override
+	public XbtScore selectEvaluationScore(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.selectEvaluationScore(params);
+	}
+
+	@Override
+	public XbtScore selectPracticeScore(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.selectPracticeScore(params);
+	}
+
+	@Override
+	public int updateXbtScore(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.updateXbtScore(params);
+	}
 
 
 }

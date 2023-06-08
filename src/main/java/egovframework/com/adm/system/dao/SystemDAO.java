@@ -4,6 +4,7 @@ import java.util.List;
 
 import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.system.vo.Notice;
+import egovframework.com.adm.system.vo.XbtScore;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
@@ -55,4 +56,28 @@ public class SystemDAO extends EgovAbstractMapper{
 	public List<?> selectModuleMenuList(Menu params) {
 		return (List<?>)selectList(Namespace + ".selectModuleMenuList", params);
 	}
+	
+	public Menu selectModuleMenu(Menu params) {
+		return selectOne(Namespace + ".selectModuleMenu", params);
+	}		
+	
+	public List<?> selectXbtEndingUserList(XbtScore params) {
+		return (List<?>)selectList(Namespace + ".selectXbtEndingUserList", params);
+	}	
+	
+	public XbtScore selectTheoryScore(XbtScore params) {
+		return selectOne(Namespace + ".selectTheoryScore", params);
+	}	
+
+	public XbtScore selectEvaluationScore(XbtScore params) {
+		return selectOne(Namespace + ".selectEvaluationScore", params);
+	}	
+	
+	public XbtScore selectPracticeScore(XbtScore params) {
+		return selectOne(Namespace + ".selectPracticeScore", params);
+	}	
+	
+	public int updateXbtScore(XbtScore params) {
+		return update(Namespace + ".updateXbtScore", params);
+	}		
 }

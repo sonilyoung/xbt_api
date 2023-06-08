@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import egovframework.com.adm.eduMgr.service.EduMgrService;
+import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.userMgr.service.UserMgrService;
@@ -23,6 +25,8 @@ import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
 import egovframework.com.adm.userMgr.vo.UserBaselineSubInfo;
 import egovframework.com.adm.userMgr.vo.UserInfo;
+import egovframework.com.common.service.CommonService;
+import egovframework.com.common.vo.Common;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
@@ -56,6 +60,11 @@ public class UserMgrController {
     @Autowired
     private UserMgrService userMgrService;
     
+    @Autowired
+    private CommonService commonService;
+    
+    @Autowired
+    private EduMgrService eduMgrService;    
     
     /**
      * 교육생 정보조회
@@ -129,6 +138,10 @@ public class UserMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "procCd" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
 		if(StringUtils.isEmpty(params.getUserId())){				
 			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
 		}
@@ -138,8 +151,18 @@ public class UserMgrController {
 		}
 		
 		try {
-			//강사등록
-			int result = userMgrService.updateBaselineUser(params);
+			//차수조회
+			Baseline bp = new Baseline();
+			bp.setProcCd(params.getProcCd());
+			Baseline baseline = eduMgrService.selectBaseline(bp);			
+
+			int result = 0;
+			if(baseline!=null) {
+				int practiceScore = (params.getPracticeScore() * baseline.getPracticeTotalScore())/100;
+				params.setPracticeScore(practiceScore);
+				//강사등록
+				result = userMgrService.updateBaselineUser(params);
+			}
 			
 			if(result>0) {
 				return new BaseResponse<UserBaseline>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
@@ -364,6 +387,19 @@ public class UserMgrController {
 		}
 		
 		try {
+			
+			Common cp = new Common();
+			cp.setGroupId("eduName");
+			List<Common> clist = commonService.selectCommonList(cp);
+			
+			if(clist!=null) {
+				for(Common c : clist) {
+					if(params.getEduName().equals(c.getCodeName())){
+						params.setEduCode(c.getCodeValue());
+					} 
+				}
+			}
+			
 			//교육생등록
 			params.setInsertId(login.getUserId());
         	AES256Util aesUtil = new AES256Util();
@@ -525,6 +561,18 @@ public class UserMgrController {
 		
 		
 		try {
+			Common cp = new Common();
+			cp.setGroupId("eduName");
+			List<Common> clist = commonService.selectCommonList(cp);
+			
+			if(clist!=null) {
+				for(Common c : clist) {
+					if(params.getEduName().equals(c.getCodeName())){
+						params.setEduCode(c.getCodeValue());
+					} 
+				}
+			}			
+			
 			//교육생등록
 			params.setUpdateId(login.getUserId());
         	AES256Util aesUtil = new AES256Util();

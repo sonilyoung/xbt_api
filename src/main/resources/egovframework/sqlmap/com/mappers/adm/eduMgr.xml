@@ -193,6 +193,8 @@
 			PROC_CD,
 			PROC_YEAR,
 			PROC_SEQ,
+			EDU_CODE,
+			EDU_NAME,			
 			USER_ID,
 			USER_NM,
 			PROC_NM,
@@ -210,6 +212,8 @@
 			#{procCd}
 			,#{procYear}
 			,#{procSeq}
+			,#{eduCode}
+			,#{eduName}			
 			,#{userId}
 			,#{userNm}
 			,#{procNm}
@@ -239,48 +243,27 @@
 	</delete>		
 	
 	
-	<!-- 교육일정 목록 -->
+	<!-- 교육일정 메뉴목록-->
+	<select id="selectEduMenuList" parameterType="egovframework.com.adm.eduMgr.vo.EduDate" resultType="egovframework.com.adm.eduMgr.vo.EduDate">
+		<![CDATA[
+			SELECT DISTINCT
+				MENU_CD
+			FROM XBT_BASELINE_EDU_DATE
+			WHERE PROC_CD = #{procCd}
+		]]>
+	</select>		
+	
+	<!-- 교육일정  일정목록 -->
 	<select id="selectEduDateList" parameterType="egovframework.com.adm.eduMgr.vo.EduDate" resultType="egovframework.com.adm.eduMgr.vo.EduDate">
-		<choose>
-			<when test='command == "menuList"'>
-				<![CDATA[
-					SELECT DISTINCT
-						PROC_CD,
-						PROC_NM,
-						MODULE_ID,
-						EDU_START_DATE,
-						EDU_END_DATE,
-						MENU_CD,
-						MENU_NM,
-						MODULE_TYPE,
-						LEARNING_TYPE,
-						INSERT_ID,
-						INSERT_DATE,
-						CASE WHEN EDU_START_DATE <= date_format(NOW(), '%Y-%m-%d') <= EDU_END_DATE THEN "true" else "false" end learnYn
-					FROM XBT_BASELINE_EDU_DATE
-					WHERE PROC_CD = #{procCd}
-				]]>
-			</when>
-			<when test='command == "moduleList"'>
-				<![CDATA[
-					SELECT DISTINCT
-						PROC_CD,
-						PROC_NM,
-						MODULE_ID,
-						EDU_START_DATE,
-						EDU_END_DATE,
-						MENU_CD,
-						MENU_NM,
-						MODULE_TYPE,
-						LEARNING_TYPE,
-						INSERT_ID,
-						INSERT_DATE,
-						CASE WHEN EDU_START_DATE <= date_format(NOW(), '%Y-%m-%d') <= EDU_END_DATE THEN "true" else "false" end learnYn
-					FROM XBT_BASELINE_EDU_DATE
-					WHERE PROC_CD = #{procCd}
-				]]>
-			</when>
-		</choose>		
+		<![CDATA[
+			SELECT DISTINCT
+				PROC_CD,
+				EDU_START_DATE,
+				EDU_END_DATE,
+				CASE WHEN EDU_START_DATE <= date_format(NOW(), '%Y-%m-%d') <= EDU_END_DATE THEN "true" else "false" end learnYn
+			FROM XBT_BASELINE_EDU_DATE
+			WHERE PROC_CD = #{procCd}
+		]]>
 	</select>		
 
 	
@@ -309,7 +292,7 @@
 			,#{menuCd}
 			,#{menuNm}
 			,#{moduleType}
-			,#{learingType}
+			,#{learningType}
 			,#{insertId}
 			,now()
 		)

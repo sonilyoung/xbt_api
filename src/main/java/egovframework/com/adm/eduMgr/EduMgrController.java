@@ -1,6 +1,7 @@
 
 package egovframework.com.adm.eduMgr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -107,13 +108,26 @@ public class EduMgrController {
 			
 			EduDate ed = new EduDate();
 			ed.setProcCd(params.getProcCd());
-			ed.setCommand("menuList");
-			List<EduDate> menuList = eduMgrService.selectEduDateList(ed);
-			baseline.setMenuList(menuList);
 			
-			ed.setCommand("scheduleList");
+			//스케줄
 			List<EduDate> scheduleList = eduMgrService.selectEduDateList(ed);
-			baseline.setScheduleList(scheduleList);				
+			baseline.setScheduleList(scheduleList);	
+			
+			List<List<String>> menus = new ArrayList<List<String>>();
+			List<String> dmenus = new ArrayList<String>();
+			int i = 0;
+			for(EduDate e : scheduleList) {
+				//메뉴목록
+				List<EduDate> menuList = eduMgrService.selectEduMenuList(e);
+				for(EduDate m : menuList) {
+					dmenus.add(m.getMenuCd()); 
+				}
+				menus.add(dmenus);
+			}
+			 
+			baseline.setMenuList(menus);
+			
+			
 			
 			Student stu = new Student();
 			stu.setProcCd(params.getProcCd());

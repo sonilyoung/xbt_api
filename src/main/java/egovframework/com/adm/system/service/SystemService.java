@@ -4,6 +4,7 @@ import java.util.List;
 
 import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.system.vo.Notice;
+import egovframework.com.adm.system.vo.XbtScore;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.
@@ -45,7 +46,20 @@ public interface SystemService {
 
 	public Menu selectMenu(Menu params);	
 	
-	
 	public List<Menu> selectModuleMenuList(Menu params);
+	
+	public Menu selectModuleMenu(Menu params);	
+	
+	public List<XbtScore> selectXbtEndingUserList(XbtScore params);
+	
+	public XbtScore selectTheoryScore(XbtScore params);
+	
+	public XbtScore selectEvaluationScore(XbtScore params);
+	
+	public XbtScore selectPracticeScore(XbtScore params);
+	
+	public int updateXbtScore(XbtScore params);
+	
+	
 		
 }

@@ -47,6 +47,8 @@ public interface EduMgrService {
 	
 	public List<EduDate> selectEduDateList(EduDate params);
 	
+	public List<EduDate> selectEduMenuList(EduDate params);
+	
 	public int insertEduDate(EduDate params);
 	
 	public int deleteEduDate(EduDate params);

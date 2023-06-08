@@ -74,8 +74,8 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 		// TODO Auto-generated method stub
 		//12	학습컷	lc
 		//13	학습슬라이드	ls
-		//24	오답문제풀이컷	sc
-		//25	오답문제풀이슬라이드	ss
+		//24	오답문제풀이컷	oxc
+		//25	오답문제풀이슬라이드	oxs
 		//14	AI강화학습컷 	ac
 		//15	AI강화학습슬라이드 	as
 		//21	XBT 평가컷	ec

@@ -36,6 +36,7 @@ public class UserInfo {
 	private String updateDate;                      /*수정일자*/   
 	
 	private String careerYn;
+	private String eduCode;
 	private String eduName;
 	private String userNmCh;
 	private String userNmEn;

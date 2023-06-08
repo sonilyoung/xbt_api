@@ -12,6 +12,8 @@ import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.adm.eduMgr.vo.EduDate;
 import egovframework.com.adm.eduMgr.vo.Student;
 import egovframework.com.adm.login.dao.UserManageDAO;
+import egovframework.com.adm.system.dao.SystemDAO;
+import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.userMgr.dao.UserMgrDAO;
 import egovframework.com.adm.userMgr.vo.UserInfo;
 import lombok.extern.log4j.Log4j2;
@@ -44,9 +46,13 @@ public class EduMgrServiceImpl implements EduMgrService {
 
     @Resource(name = "UserMgrDAO")
 	private UserMgrDAO userMgrDAO;
+    
+    @Resource(name = "SystemDAO")
+	private SystemDAO systemDAO;
    
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Baseline> selectBaselineList(Baseline params) {
 		// TODO Auto-generated method stub
 		return (List<Baseline>) eduMgrDAO.selectBaselineList(params);
@@ -63,15 +69,25 @@ public class EduMgrServiceImpl implements EduMgrService {
 			
 			Long moduleId = (long) 0;
 			for(int i=0; i < params.getMenuList().size();i++) {
-				EduDate sl = new EduDate();
-				moduleId = params.getMenuList().get(i).getModuleId();
-				sl.setProcCd(baseline.getProcCd());
-				sl.setProcNm(baseline.getProcName());
-				sl.setUserId(u);
-				sl.setInsertId(params.getUserId());
-				sl.setEduStartDate(params.getScheduleList().get(i).getEduStartDate()); 
-				sl.setEduStartDate(params.getScheduleList().get(i).getEduEndDate());
-				eduMgrDAO.insertEduDate(sl);					
+				for(int j=0; j < params.getMenuList().get(i).size();j++) {
+					EduDate sl = new EduDate();
+					Menu m = new Menu();
+					m.setMenuCd(params.getMenuList().get(i).get(j));
+					Menu menu = systemDAO.selectModuleMenu(m);
+					moduleId = menu.getModuleId();
+					sl.setModuleId(moduleId);
+					sl.setProcCd(baseline.getProcCd());
+					sl.setProcNm(baseline.getProcName());
+					sl.setMenuCd(menu.getMenuCd());  
+					sl.setMenuNm(menu.getMenuName());  
+					sl.setModuleType(menu.getModuleType());  
+					sl.setLearningType(menu.getLearningType()); 
+					sl.setUserId(u);
+					sl.setInsertId(params.getUserId());
+					sl.setEduStartDate(params.getScheduleList().get(i).getEduStartDate()); 
+					sl.setEduEndDate(params.getScheduleList().get(i).getEduEndDate());
+					eduMgrDAO.insertEduDate(sl);						
+				}
 			}
 			
 			
@@ -89,6 +105,8 @@ public class EduMgrServiceImpl implements EduMgrService {
 			s.setEduEndDate(baseline.getEduEndDate());
 			s.setModuleId(baseline.getModuleId());
 			
+			s.setEduCode(userInfo.getEduCode());
+			s.setEduName(userInfo.getEduName());
 			s.setDeptNm(userInfo.getDept());
 			s.setUserId(u);
 			s.setUserNm(userInfo.getUserNm());
@@ -123,15 +141,25 @@ public class EduMgrServiceImpl implements EduMgrService {
 		for(String u : params.getUserList()) {
 			Long moduleId = (long) 0;
 			for(int i=0; i < params.getMenuList().size();i++) {
-				EduDate sl = new EduDate();
-				moduleId = params.getMenuList().get(i).getModuleId();
-				sl.setProcCd(baseline.getProcCd());
-				sl.setProcNm(baseline.getProcName());
-				sl.setUserId(u);
-				sl.setInsertId(params.getUserId());
-				sl.setEduStartDate(params.getScheduleList().get(i).getEduStartDate()); 
-				sl.setEduStartDate(params.getScheduleList().get(i).getEduEndDate());
-				eduMgrDAO.insertEduDate(sl);					
+				for(int j=0; j < params.getMenuList().get(i).size();j++) {
+					EduDate sl = new EduDate();
+					Menu m = new Menu();
+					m.setMenuCd(params.getMenuList().get(i).get(j));
+					Menu menu = systemDAO.selectModuleMenu(m);
+					moduleId = menu.getModuleId();
+					sl.setModuleId(moduleId);
+					sl.setProcCd(baseline.getProcCd());
+					sl.setProcNm(baseline.getProcName());
+					sl.setMenuCd(menu.getMenuCd());  
+					sl.setMenuNm(menu.getMenuName());  
+					sl.setModuleType(menu.getModuleType());  
+					sl.setLearningType(menu.getLearningType()); 
+					sl.setUserId(u);
+					sl.setInsertId(params.getUserId());
+					sl.setEduStartDate(params.getScheduleList().get(i).getEduStartDate()); 
+					sl.setEduEndDate(params.getScheduleList().get(i).getEduEndDate());
+					eduMgrDAO.insertEduDate(sl);						
+				}
 			}
 			
 			
@@ -149,6 +177,8 @@ public class EduMgrServiceImpl implements EduMgrService {
 			s.setEduEndDate(baseline.getEduEndDate());
 			s.setModuleId(baseline.getModuleId());
 			
+			s.setEduCode(userInfo.getEduCode());
+			s.setEduName(userInfo.getEduName());			
 			s.setDeptNm(userInfo.getDept());
 			s.setUserId(u);
 			s.setUserNm(userInfo.getUserNm());
@@ -212,6 +242,13 @@ public class EduMgrServiceImpl implements EduMgrService {
 		// TODO Auto-generated method stub
 		return (List<EduDate>)eduMgrDAO.selectEduDateList(params);
 	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<EduDate> selectEduMenuList(EduDate params) {
+		// TODO Auto-generated method stub
+		return (List<EduDate>)eduMgrDAO.selectEduMenuList(params);
+	}	
 
 	@Override
 	public int insertEduDate(EduDate params) {

@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class Menu{
 
+	private Long moduleId;
 	private String menuNo;
 	private String menuUrl;
 	private String pmenuCd;
@@ -19,6 +20,8 @@ public class Menu{
 	private String insertId;
 	private String insertDate;
 	private String updateId;
-	private String updateDate;	
+	private String updateDate;
+	private String command;
+	
 
 }

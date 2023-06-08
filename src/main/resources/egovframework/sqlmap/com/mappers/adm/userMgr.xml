@@ -106,7 +106,8 @@
 	<!-- 차수 교육생 수정 -->
 	<update id="updateBaselineUser" parameterType="egovframework.com.adm.userMgr.vo.UserBaseline">
 		UPDATE XBT_BASELINE_STUDENT_INFO
-		SET PRACTICE_SCORE = #{practiceScore}
+		SET PRACTICE_SCORE = #{practiceScore},
+		PRACTICE_YN = 'Y'
 		WHERE USER_ID = #{userId}			
 	</update>	
 	
@@ -126,6 +127,7 @@
 				USER_NM,
 				USER_PW,
 				A.AUTH_CD,
+				EDU_CODE,
 				EDU_NAME,
 				USER_NM_CH,
 				USER_NM_EN,
@@ -201,6 +203,7 @@
 			USER_NM,
 			USER_PW,
 			AUTH_CD,
+			EDU_CODE,
 			EDU_NAME,
 			USER_NM_CH,
 			USER_NM_EN,
@@ -268,6 +271,7 @@
 			,#{userNm}
 			,#{userPw}
 			,'0002'
+			,#{eduCode}
 			,#{eduName}
 			,#{userNmCh}
 			,#{userNmEn}
@@ -340,6 +344,7 @@
 		UPDATE XBT_STU_USER SET				
 			USER_NM = 		#{userNm},
 			USER_PW = 		#{userPw},
+			eduCode = 		#{eduCode},
 			EDU_NAME = 		#{eduName},
 			USER_NM_CH = 		#{userNmCh},
 			USER_NM_EN = 		#{userNmEn},

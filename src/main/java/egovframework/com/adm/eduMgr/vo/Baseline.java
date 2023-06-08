@@ -31,7 +31,7 @@ public class Baseline {
 	private String userId;
 	
 	private List<Student> stuList;
-	private List<EduDate> menuList;
+	private List<List<String>> menuList;
 	private List<EduDate> scheduleList;
 	private List<String> userList;
 	private List<Long> procCdList;
