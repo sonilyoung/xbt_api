@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.stu.theory.dao.StuTheoryDAO">
+	
+	
+
+<!-- 이론  목록 -->
+	<select id="selectTheoryList" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="egovframework.com.stu.theory.vo.StuTheory">
+		SELECT
+			QUESTION_NO,
+			QUESTION_ID,
+			STUDY_LVL,
+			QUESTION_TYPE,
+			USE_YN,
+			LAGE_GROUP_CD,
+			MIDDLE_GROUP_CD,
+			SMALL_GROUP_CD,
+			QUESTION,
+			CHOICE1,
+			CHOICE2,
+			CHOICE3,
+			CHOICE4,
+			MULTI_PLUS_IMG,
+			ACTION_DIV,
+			INSERT_ID,
+			INSERT_DATE
+		FROM
+			XBT_THEORY_QUESTION		
+			ORDER BY QUESTION_ID 
+	</select>		
+	
+	<!-- 등록된이론문제 횟수확인 -->
+	<select id="selectTheoryProblemsMaxkey" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="egovframework.com.stu.theory.vo.StuTheory">
+		SELECT 
+			IFNULL(MAX(TRY_SEQ), 0) AS trySeq
+		FROM XBT_STU_THEORY_PROGRESSING
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND USER_ID = #{userId}
+	</select>		
+	
+	<!-- 등록된이론문제 체크 -->
+	<select id="selectTheoryProblemsCount" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="int">
+		SELECT 
+			COUNT(PROGRESS_NO) 
+		FROM XBT_STU_THEORY_PROGRESSING
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}
+		AND END_YN = #{endYn}
+	</select>	
+
+
+	<!-- 이론문제 등록 -->
+	<insert id="insertTheoryProblems" parameterType="egovframework.com.stu.theory.vo.StuTheory">
+		INSERT INTO XBT_STU_THEORY_PROGRESSING(
+			PROC_CD,
+			PROC_YEAR,
+			PROC_SEQ,
+			TRY_SEQ,
+			USER_ID,
+			QUESTION_ID,
+			QUESTION_TYPE,
+			STUDY_LVL,
+			LAGE_GROUP_CD,
+			MIDDLE_GROUP_CD,
+			SMALL_GROUP_CD,
+			QUESTION,
+			MULTI_PLUS_IMG,
+			CHOICE1,
+			CHOICE2,
+			CHOICE3,
+			CHOICE4,
+			ACTION_DIV,
+			GAIN_SCORE,
+			END_YN,
+			INSERT_DATE)
+		SELECT
+			#{procCd},
+			#{procYear},
+			#{procSeq},
+			#{trySeq},
+			#{userId},
+			QUESTION_ID,
+			QUESTION_TYPE,
+			STUDY_LVL,
+			USE_YN,
+			LAGE_GROUP_CD,
+			MIDDLE_GROUP_CD,
+			SMALL_GROUP_CD,
+			QUESTION,
+			MULTI_PLUS_IMG,
+			CHOICE1,
+			CHOICE2,
+			CHOICE3,
+			CHOICE4,
+			ACTION_DIV,
+			0,
+			'N',
+			now()
+		FROM
+			XBT_THEORY_QUESTION
+	</insert>
+	
+	<!-- 이론문제출제목록가져오기 -->
+	<select id="selectTheoryProblemsList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
+		SELECT 
+			MODULE_ID, 
+			PROC_CD, 
+			PROC_YEAR, 
+			PROC_SEQ, 
+			USER_ID,
+			BAG_SCAN_ID, 
+			ACTION_DIV,
+			USER_ACTION_DIV,
+			CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 'Y' ELSE 'N' END AS answerYn,  
+			INSERT_DATE
+		FROM XBT_STU_THEORY_PROGRESSING 
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}
+		AND END_YN = #{endYn}
+	</select>
+	
+</mapper>

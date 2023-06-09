@@ -68,7 +68,7 @@ public class EduMgrServiceImpl implements EduMgrService {
 		for(String u : params.getUserList()) {
 			
 			Long moduleId = (long) 0;
-			for(int i=0; i < params.getMenuList().size();i++) {
+			for(int i=0; i < params.getScheduleList().size();i++) {
 				for(int j=0; j < params.getMenuList().get(i).size();j++) {
 					EduDate sl = new EduDate();
 					Menu m = new Menu();
@@ -140,7 +140,7 @@ public class EduMgrServiceImpl implements EduMgrService {
 		
 		for(String u : params.getUserList()) {
 			Long moduleId = (long) 0;
-			for(int i=0; i < params.getMenuList().size();i++) {
+			for(int i=0; i < params.getScheduleList().size();i++) {
 				for(int j=0; j < params.getMenuList().get(i).size();j++) {
 					EduDate sl = new EduDate();
 					Menu m = new Menu();
@@ -241,6 +241,13 @@ public class EduMgrServiceImpl implements EduMgrService {
 	public List<EduDate> selectEduDateList(EduDate params) {
 		// TODO Auto-generated method stub
 		return (List<EduDate>)eduMgrDAO.selectEduDateList(params);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<EduDate> selectEduDateListPop(EduDate params) {
+		// TODO Auto-generated method stub
+		return (List<EduDate>)eduMgrDAO.selectEduDateListPop(params);
 	}
 	
 	@Override

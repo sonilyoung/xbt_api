@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class UserInfo {
-
+	private Long procCd; 
 	private Long userNo; /*사용자NO*/
 	private String userId;                     /*사용자id*/        
 	private String userNm;                     /*사용자명*/        

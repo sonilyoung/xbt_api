@@ -30,6 +30,8 @@ public interface UserMgrService{
 	
 	public List<UserInfo> selectUserList(UserInfo params);
 	
+	public List<UserInfo> selectUserListPop(UserInfo params);
+	
 	public List<UserBaseline> selectBaselineUserList(UserBaseline params);
 	
 	public int updateBaselineUser(UserBaseline params);

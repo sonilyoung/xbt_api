@@ -98,6 +98,37 @@ public class UserMgrController {
     
     
     /**
+     * 교육생 정보조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectUserListPop.do")
+    @ApiOperation(value = "교육생정보관리", notes = "교육생정보를 관리한다.")
+    public BaseResponse<List<UserInfo>> selectUserListPop(HttpServletRequest request, @RequestBody UserInfo params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			List<UserInfo> resultList = userMgrService.selectUserListPop(params);
+			
+			for(UserInfo u : resultList) {
+	        	AES256Util aesUtil = new AES256Util();
+	            String pwEnc = aesUtil.decrypt(u.getUserPw());
+	            u.setUserPw(pwEnc);					
+			}
+			
+	        return new BaseResponse<List<UserInfo>>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }    
+        
+    
+    /**
      * 교육생 합격불합격 정보조회
      * 
      * @param param

@@ -61,6 +61,10 @@ public class EduMgrDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectEduDateList", params);
 	}
 	
+	public List<?> selectEduDateListPop(EduDate params) {
+		return (List<?>)selectList(Namespace + ".selectEduDateListPop", params);
+	}
+	
 	public List<?> selectEduMenuList(EduDate params) {
 		return (List<?>)selectList(Namespace + ".selectEduMenuList", params);
 	}	

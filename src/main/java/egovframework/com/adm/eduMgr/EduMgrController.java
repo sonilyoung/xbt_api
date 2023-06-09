@@ -115,9 +115,9 @@ public class EduMgrController {
 			
 			List<List<String>> menus = new ArrayList<List<String>>();
 			List<String> dmenus = new ArrayList<String>();
-			int i = 0;
 			for(EduDate e : scheduleList) {
 				//메뉴목록
+				dmenus = new ArrayList<String>();
 				List<EduDate> menuList = eduMgrService.selectEduMenuList(e);
 				for(EduDate m : menuList) {
 					dmenus.add(m.getMenuCd()); 
@@ -129,8 +129,14 @@ public class EduMgrController {
 			
 			Student stu = new Student();
 			stu.setProcCd(params.getProcCd());
-			List<Student> stuList = eduMgrService.selectBaselineStudentList(stu);			
-			baseline.setStuList(stuList);
+			
+			List<String> stuList = new ArrayList<String>();
+			List<Student> stuResultList = eduMgrService.selectBaselineStudentList(stu);
+			
+			for(Student s : stuResultList){
+				stuList.add(s.getUserId());
+			}
+			baseline.setUserList(stuList);
 			
 	        return new BaseResponse<Baseline>(baseline);
         } catch (Exception e) {
@@ -149,19 +155,38 @@ public class EduMgrController {
 	 */
 	@PostMapping("/selectBaselineEduDateList.do")
 	@ApiOperation(value = "학습일상세팝업조회", notes = "학습일상세팝업조회.")
-	public BaseResponse<List<EduDate>> selectBaselineEduDateList(HttpServletRequest request, @RequestBody EduDate params) {
+	public BaseResponse<Baseline> selectBaselineEduDateList(HttpServletRequest request, @RequestBody EduDate params) {
 		Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
 		if(StringUtils.isEmpty(params.getProcCd())){				
-			return new BaseResponse<List<EduDate>>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<Baseline>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
 		try {
-			List<EduDate> scheduleList = eduMgrService.selectEduDateList(params);
-	        return new BaseResponse<List<EduDate>>(scheduleList);
+			Baseline baseline = new Baseline();
+			EduDate ed = new EduDate();
+			ed.setProcCd(params.getProcCd());			
+			
+			//스케줄
+			List<EduDate> scheduleList = eduMgrService.selectEduDateList(ed);
+			List<List<EduDate>> menus = new ArrayList<List<EduDate>>();
+			List<EduDate> dmenus = new ArrayList<EduDate>();
+			for(EduDate e : scheduleList) {
+				//메뉴목록
+				menus = new ArrayList<List<EduDate>>();
+				dmenus = new ArrayList<EduDate>();
+				List<EduDate> menuList = eduMgrService.selectEduMenuList(e);
+				for(EduDate m : menuList) {
+					dmenus.add(m); 
+				}
+				menus.add(dmenus);
+				e.setMenuList(menus);
+			}
+			baseline.setScheduleList(scheduleList);
+	        return new BaseResponse<Baseline>(baseline);
 	    } catch (Exception e) {
 	    	LOGGER.error("error:", e);
 	        throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());

@@ -35,6 +35,8 @@ public enum BaseResponseCode {
 			"0902", "교육정보가 없습니다."		
 	), MODULE_DATA(
 			"0903", "모듈정보가 없습니다."
+	), THEORY_DATA(
+			"0904", "등록이론문제가 없습니다."				
 	), LEARNINGPROBLEM_DATA(
 			"0904", "등록학습문제가 없습니다."			
 	), WRONGANSWERPROBLEM_DATA(

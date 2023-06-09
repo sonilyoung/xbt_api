@@ -49,15 +49,7 @@ public class CommonServiceImpl implements CommonService {
 	@Override
 	public List<Common> selectCommonList(Common params) {
 		// TODO Auto-generated method stub
-		
-		List<Common> mainList = (List<Common>) commonDAO.getCommonGroupList(params);
-		for(Common m : mainList) {
-			m.setLanguageCode(params.getLanguageCode());
-			List<Common> subList = (List<Common>) commonDAO.selectCommonList(m);
-			m.setSubList(subList);
-		}
-		
-		return mainList;
+		return (List<Common>) commonDAO.selectCommonList(params);
 	}
 
 	@Override

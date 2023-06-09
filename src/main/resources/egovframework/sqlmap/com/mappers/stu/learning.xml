@@ -17,6 +17,8 @@
 		AND T1.PROC_SEQ = T2.PROC_SEQ 
 		AND T2.USER_ID = #{userId}
 		AND NOW() BETWEEN T1.EDU_START_DATE AND T1.EDU_END_DATE		 
+		ORDER BY PROC_CD DESC
+		LIMIT 1		
 	</select>	
 	
 	<!-- 사용자교육정보가져오기 -->
@@ -29,7 +31,7 @@
 			MENU_NM ,
 			MODULE_ID ,
 			MODULE_TYPE ,
-			EDU_TYPE ,
+			LEARNING_TYPE,
 			USER_ID ,
 			EDU_START_DATE , 
 			EDU_END_DATE 
