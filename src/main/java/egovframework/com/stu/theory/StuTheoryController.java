@@ -25,7 +25,6 @@ import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.stu.learning.service.LearningService;
 import egovframework.com.stu.learning.vo.Learning;
-import egovframework.com.stu.learning.vo.LearningProblem;
 import egovframework.com.stu.theory.service.StuTheoryService;
 import egovframework.com.stu.theory.vo.StuTheory;
 import io.swagger.annotations.Api;
@@ -88,6 +87,12 @@ public class StuTheoryController {
 			if(baselineData == null) {
 				return new BaseResponse<StuTheory>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
 			}			
+			
+			params.setProcCd(baselineData.getProcCd());
+			params.setProcYear(baselineData.getProcYear());
+			params.setProcSeq(baselineData.getProcSeq());
+			params.setStudyLvl(baselineData.getStudyLvl());
+						
 			
 			//이론문제가져오기
 			List<StuTheory> problems = theoryService.selectTheoryList(params);
@@ -170,29 +175,158 @@ public class StuTheoryController {
      * 
      * @param param
      * @return Company
-     */ 
-    @PostMapping("/submitTheory.do")
+     
+    @PostMapping("/updateTheory.do")
     @ApiOperation(value = "이론제출", notes = "이론제출.")
-    public BaseResponse<StuTheory> submitTheory(HttpServletRequest request, @RequestBody StuTheory params) {
+    public BaseResponse<Integer> updateTheory(HttpServletRequest request, @RequestBody List<StuTheory> params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getQuestionList())){				
-			return new BaseResponse<StuTheory>(BaseResponseCode.PARAMS_ERROR, "QuestionList" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params)){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "params" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
 		try {
-			//이론조회
-			//StuTheory result = theoryService.submitTheory(params);
-			//Theory tr = new Theory();
-			//xbtImageService.selectTheoryImg(tr);
+			StuTheory st = new StuTheory();
+			int result = 0;
+			for(StuTheory s : params) {
+				Learning lp = new Learning();
+				lp.setUserId(login.getUserId());
+				Learning baselineData = learningService.selectBaseline(lp);
+				if(baselineData == null) {
+					return new BaseResponse<Integer>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
+				}	
+				
+				StuTheory answer = theoryService.selectTheoryAnswer(s);
+				s.setAnswerDiv(answer.getAnswerDiv());
+				
+				if("1".equals(answer.getAnswer())) {//정답
+					answer.setGainScore(Math.round(baselineData.getQuestionCnt()/100));
+				}else {//오답
+					answer.setGainScore(0);
+				}
+				
+				result = theoryService.updateTheoryAnswer(answer);
+			}
 			
-	        return new BaseResponse<StuTheory>(params);
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
-    } 
+    } */ 
+    
+    
+    /**
+     * 이론종료
+     * 
+     * @param param
+     * @return Company
+    */  
+    @PostMapping("/endTheory.do")
+    @ApiOperation(value = "이론종료", notes = "이론종료")
+    public BaseResponse<StuTheory> endTheory(HttpServletRequest request, @RequestBody StuTheory params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		params.setUserId(login.getUserId());
+		
+		if(StringUtils.isEmpty(params.getMenuCd())){				
+			return new BaseResponse<StuTheory>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getMessage());
+		}			
+		
+		
+		if(StringUtils.isEmpty(params.getTheoryList())){				
+			return new BaseResponse<StuTheory>(BaseResponseCode.PARAMS_ERROR, "TheoryList" + BaseApiMessage.REQUIRED.getMessage());
+		}			
+		
+		try {
+			StuTheory st = new StuTheory();
+			int result = 0;
+			for(StuTheory s : params.getTheoryList()) {
+				Learning lp = new Learning();
+				lp.setUserId(login.getUserId());
+				Learning baselineData = learningService.selectBaseline(lp);
+				if(baselineData == null) {
+					return new BaseResponse<StuTheory>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
+				}	
+				
+				StuTheory answer = theoryService.selectTheoryAnswer(s);
+				s.setAnswerDiv(answer.getAnswerDiv());
+				
+				if("1".equals(answer.getAnswer())) {//정답
+					answer.setGainScore(Math.round(baselineData.getQuestionCnt()/100));
+				}else {//오답
+					answer.setGainScore(0);
+				}
+				
+				result = theoryService.updateTheoryAnswer(answer);
+			}			
+			
+			
+			Learning lp = new Learning();
+			lp.setUserId(login.getUserId());			
+			Learning baselineData = learningService.selectBaseline(lp);
+			if(baselineData == null) {
+				return new BaseResponse<StuTheory>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
+			}
+			
+			lp.setProcCd(baselineData.getProcCd()); 
+			List<Learning> learningData = learningService.selectLearning(lp);
+			if(learningData == null) {
+				return new BaseResponse<StuTheory>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
+			}
+			
+			params.setProcCd(baselineData.getProcCd());
+			params.setProcYear(baselineData.getProcYear());
+			params.setProcSeq(baselineData.getProcSeq());
+			
+			//시도횟수
+			StuTheory maxKey = theoryService.selectTheoryProblemsMaxkey(params);
+			params.setTrySeq(maxKey.getTrySeq());				
+			
+			//학습종료데이터확인
+			int baselineCnt = theoryService.selectTheoryBaselineResultCount(params);
+			
+			//학습종료데이터등록
+			if(baselineCnt <= 0) {
+				theoryService.insertTheoryResult(params);				
+			}
+
+			StuTheory gainScore = theoryService.selectTheorySum(params);
+			params.setGainScore(gainScore.getGainScore());
+			//if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassScore())) {//통과
+				//params.setPassYn("Y");
+			//}else {//과락
+				//params.setPassYn("N");
+			//}
+			
+			//학습종료 틀린갯수 맞은갯수 확인 
+			StuTheory resultCnt = theoryService.selectTheoryResultCount(params);
+			params.setQuestionCnt(resultCnt.getQuestionCnt());
+			params.setWrongCnt(resultCnt.getWrongCnt());
+			params.setRightCnt(resultCnt.getRightCnt());		
+			
+			//문제종료처리
+			params.setEndYn("Y");
+			theoryService.updateTheoryEnd(params);
+			
+			//결과데이터저장
+			theoryService.updateTheoryResult(params);
+			
+			return new BaseResponse<StuTheory>(params);
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }          
+    	      
 }

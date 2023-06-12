@@ -27,7 +27,33 @@
 		FROM
 			XBT_THEORY_QUESTION		
 			ORDER BY QUESTION_ID 
-	</select>		
+	</select>	
+	
+<!-- 이론  상세 -->
+	<select id="selectTheory" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="egovframework.com.stu.theory.vo.StuTheory">
+		SELECT
+			QUESTION_NO,
+			QUESTION_ID,
+			STUDY_LVL,
+			QUESTION_TYPE,
+			USE_YN,
+			LAGE_GROUP_CD,
+			MIDDLE_GROUP_CD,
+			SMALL_GROUP_CD,
+			QUESTION,
+			CHOICE1,
+			CHOICE2,
+			CHOICE3,
+			CHOICE4,
+			MULTI_PLUS_IMG,
+			ACTION_DIV,
+			INSERT_ID,
+			INSERT_DATE
+		FROM
+			XBT_THEORY_QUESTION		
+		WHERE QUESTION_ID = #{questionId}
+		
+	</select>			
 	
 	<!-- 등록된이론문제 횟수확인 -->
 	<select id="selectTheoryProblemsMaxkey" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="egovframework.com.stu.theory.vo.StuTheory">
@@ -87,7 +113,6 @@
 			QUESTION_ID,
 			QUESTION_TYPE,
 			STUDY_LVL,
-			USE_YN,
 			LAGE_GROUP_CD,
 			MIDDLE_GROUP_CD,
 			SMALL_GROUP_CD,
@@ -106,15 +131,22 @@
 	</insert>
 	
 	<!-- 이론문제출제목록가져오기 -->
-	<select id="selectTheoryProblemsList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
+	<select id="selectTheoryProblemsList" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="egovframework.com.stu.theory.vo.StuTheory">			
 		SELECT 
-			MODULE_ID, 
-			PROC_CD, 
-			PROC_YEAR, 
-			PROC_SEQ, 
-			USER_ID,
-			BAG_SCAN_ID, 
+			QUESTION_ID,
+			STUDY_LVL,
+			QUESTION_TYPE,
+			LAGE_GROUP_CD,
+			MIDDLE_GROUP_CD,
+			SMALL_GROUP_CD,
+			QUESTION,
+			CHOICE1,
+			CHOICE2,
+			CHOICE3,
+			CHOICE4,
+			MULTI_PLUS_IMG,
 			ACTION_DIV,
+			INSERT_DATE
 			USER_ACTION_DIV,
 			CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 'Y' ELSE 'N' END AS answerYn,  
 			INSERT_DATE
@@ -127,4 +159,135 @@
 		AND END_YN = #{endYn}
 	</select>
 	
+	<!-- 오답정답확인 -->
+	<select id="selectTheoryAnswer" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="egovframework.com.stu.theory.vo.StuTheory">
+		SELECT 
+			MAX(ACTION_DIV = #{userActionDiv}) as answer,
+			MAX(ACTION_DIV) as answerDiv  
+		FROM XBT_STU_THEORY_PROGRESSING 
+		WHERE 
+		MODULE_ID = #{moduleId} 
+		AND PROC_CD = #{procCd}  
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}
+		AND QUESTION_ID = #{questionId}
+		AND END_YN = 'N'
+	</select>		
+	
+	<!-- 오답문제정답선택-->
+	<update id="updateTheoryAnswer" parameterType="egovframework.com.stu.theory.vo.StuTheory">	
+		UPDATE 
+			XBT_STU_THEORY_PROGRESSING 
+		SET 
+			USER_ACTION_DIV = #{userActionDiv},
+			GAIN_SCORE = #{gainScore}
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}
+		AND QUESTION_ID = #{questionId}
+	</update>	
+	
+	<!-- 오답문제종료 결과데이터 확인 -->
+	<select id="selectTheoryBaselineResultCount" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="int">
+		SELECT COUNT(*) 
+		FROM XBT_BASELINE_THEORY
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}
+	</select>	
+		
+		<!-- 결과 등록 -->
+	<insert id="insertTheoryResult" parameterType="egovframework.com.stu.theory.vo.StuTheory">	
+		INSERT INTO XBT_BASELINE_THEORY(
+			PROC_CD,
+			PROC_YEAR,
+			PROC_SEQ,
+			TRY_SEQ,
+			USER_ID,
+			TEST_DATE,
+			STUDY_LVL,
+			MODULE_ID,
+			END_YN,
+			INSERT_DATE
+		)VALUES(
+			#{procCd},
+			#{procYear},
+			#{procSeq},
+			#{trySeq},
+			#{userId},
+			now(),
+			#{studyLvl},
+			#{moduleId},
+			'Y',
+			now()
+		)
+	</insert>
+	
+	<!-- 학습종료점수합산 -->
+	<select id="selectTheorySum" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="egovframework.com.stu.theory.vo.StuTheory">
+		SELECT 
+			IFNULL(SUM(GAIN_SCORE), 0)/1000*100 AS gainScore
+		FROM XBT_STU_THEORY_PROGRESSING 
+		WHERE 
+		PROC_CD = #{procCd}  
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}
+		AND END_YN = 'N'
+	</select>		
+	
+	<!-- 학습종료 틀린갯수 맞은갯수 확인 -->
+	<select id="selectTheoryResultCount" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="egovframework.com.stu.theory.vo.StuTheory">
+		SELECT
+			COUNT(*)AS questionCnt,
+			COUNT(CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 1 END) AS rightCnt,
+			COUNT(CASE WHEN ACTION_DIV != USER_ACTION_DIV || USER_ACTION_DIV IS NULL THEN 1 END) AS wrongCnt	
+		FROM
+			XBT_STU_THEORY_PROGRESSING
+		WHERE 
+		PROC_CD = #{procCd}  
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}
+	</select>	
+	
+	
+	<!-- 학습문제종료-->
+	<update id="updateTheoryEnd" parameterType="egovframework.com.stu.learning.vo.Learning">	
+		UPDATE 
+			XBT_STU_THEORY_PROGRESSING 
+		SET 
+			END_YN = #{endYn}
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}
+	</update>	
+		
+	
+	<!-- 학습종료 결과데이터-->
+	<update id="updateTheoryResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
+		UPDATE 
+			XBT_BASELINE_THEORY 
+		SET 
+			GAIN_SCORE = #{gainScore},
+			PASS_YN = #{passYn},
+			RIGHT_CNT = #{rightCnt},
+			WRONG_CNT = #{wrongCnt}
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}
+	</update>		
+		
 </mapper>

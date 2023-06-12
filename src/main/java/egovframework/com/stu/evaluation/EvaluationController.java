@@ -280,7 +280,7 @@ public class EvaluationController {
 			params.setProcYear(baselineData.getProcYear());
 			params.setProcSeq(baselineData.getProcSeq());
 			params.setStudyLvl(moduleInfoData.getStudyLvl());
-			params.setPassScore(moduleInfoData.getPassScore());
+			params.setPassScore(baselineData.getPassScore());
 			
 			//시도횟수
 			LearningProblem lpParams = new LearningProblem();
@@ -301,7 +301,7 @@ public class EvaluationController {
 			
 			Learning gainScore = evaluationService.selectEvaluationSum(params);
 			params.setGainScore(gainScore.getGainScore());
-			if(gainScore.getGainScore()>=Double.valueOf(moduleInfoData.getPassScore())) {//통과
+			if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassScore())) {//통과
 				params.setPassYn("Y");
 			}else {//과락
 				params.setPassYn("N");

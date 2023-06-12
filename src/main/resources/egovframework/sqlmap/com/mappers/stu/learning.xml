@@ -10,7 +10,9 @@
 			T1.PROC_YEAR ,
 			T1.PROC_SEQ ,
 			T1.EDU_START_DATE ,
-			T1.EDU_END_DATE 
+			T1.EDU_END_DATE ,
+			T1.THEORY_QUESTION_CNT,
+			T1.PASS_SCORE
 		FROM XBT_BASELINE T1 INNER JOIN XBT_BASELINE_STUDENT_INFO T2
 		ON T1.PROC_CD = T2.PROC_CD 
 		AND T1.PROC_YEAR = T2.PROC_YEAR 
@@ -51,8 +53,8 @@
 			TIME_LIMIT ,
 			STUDY_LVL ,
 			MODULE_TYPE ,
-			SLIDE_SPEED ,
-			PASS_SCORE
+			SLIDE_SPEED 
+			<!-- PASS_SCORE -->
 		FROM XBT_MODULE_INFO_MASTER
 		WHERE MODULE_ID = 
 		(
@@ -560,7 +562,7 @@
 	<!-- 오답문제종료 결과데이터 확인 -->
 	<select id="selectWrongAnswerBaselineResultCount" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="int">
 		SELECT COUNT(*) 
-		FROM XBT_STU_WRONG_ANSWER_PROGRESSING
+		FROM XBT_BASELINE_WRONG_ANSWER
 		WHERE PROC_CD = #{procCd} 
 		AND PROC_YEAR = #{procYear} 
 		AND PROC_SEQ = #{procSeq}

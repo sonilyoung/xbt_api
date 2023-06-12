@@ -5,13 +5,12 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class StuTheory{
+public class StuTheory {
 	private Long questionNo;
 	private Long procCd;
 	private String procYear;
-	private String procSeq;	
+	private String procSeq;
 	private String questionId;
-	private String studyLvl;
 	private String questionType;
 	private String useYn;
 	private String lageGroupCd;
@@ -25,18 +24,27 @@ public class StuTheory{
 	private byte[] choiceImg1;
 	private byte[] choiceImg2;
 	private byte[] choiceImg3;
-	private byte[] choiceImg4;	
+	private byte[] choiceImg4;
 	private String multiPlusImgName;
 	private byte[] multiPlusImg;
+	private double gainScore;
 	private String actionDiv;
 	private String userActionDiv;
 	private String insertId;
 	private String userId;
 	private String userName;
 	private String insertDate;
+	private String answer;
+	private String answerDiv;
 	private String endYn;
+	private String menuCd;
 	private int trySeq;
-	
+	private int rightCnt;
+	private int wrongCnt;
+	private int questionCnt;	
+	private int studyLvl;
+
 	private List<StuTheory> questionList;
+	private List<StuTheory> theoryList;
 
 }

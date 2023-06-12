@@ -608,19 +608,19 @@
 	<select id="selectXbtSeq" parameterType="egovframework.com.adm.contents.vo.XbtSeq" resultType="egovframework.com.adm.contents.vo.XbtSeq" >	
 		<choose>
 			<when test='seqInfo == "G"'><!-- 단품그룹시퀀스 -->
-				SELECT concat('G', LPAD(cast(right(IFNULL(MAX(UNIT_GROUP_CD), '0'), 5) as DECIMAL)+1+1, 5 , '0')) AS seqId FROM XBT_UNIT_GROUP
+				SELECT concat('G', LPAD(cast(right(IFNULL(MAX(UNIT_GROUP_CD), '0'), 5) as DECIMAL)+1, 5 , '0')) AS seqId FROM XBT_UNIT_GROUP
 			</when>		
 			<when test='seqInfo == "U"'><!-- 단품시퀀스 -->
-				SELECT LPAD(cast(right(IFNULL(MAX(UNIT_ID), '0'), 5) as DECIMAL)+1+1, 5 , '0') AS seqId FROM XBT_UNIT_INFO
+				SELECT LPAD(cast(right(IFNULL(MAX(UNIT_ID), '0'), 5) as DECIMAL)+1, 5 , '0') AS seqId FROM XBT_UNIT_INFO
 			</when>
 			<when test='seqInfo == "US"'><!-- 단품시퀀스 -->
-				SELECT concat('U', LPAD(cast(right(IFNULL(MAX(UNIT_ID), '0'), 5) as DECIMAL)+1+1, 5 , '0')) AS seqId FROM XBT_UNIT_INFO
+				SELECT concat('U', LPAD(cast(right(IFNULL(MAX(UNIT_ID), '0'), 5) as DECIMAL)+1, 5 , '0')) AS seqId FROM XBT_UNIT_INFO
 			</when>			
 			<when test='seqInfo == "X"'><!-- 가방xray시퀀스 -->
-				SELECT concat('X', LPAD(cast(right(IFNULL(MAX(BAG_SCAN_ID), '0'), 5) as DECIMAL)+1+1, 5 , '0')) AS seqId FROM XBT_BAG_INFO
+				SELECT concat('X', LPAD(cast(right(IFNULL(MAX(BAG_SCAN_ID), '0'), 5) as DECIMAL)+1, 5 , '0')) AS seqId FROM XBT_BAG_INFO
 			</when>
 			<when test='seqInfo == "S"'><!-- 이론시퀀스 -->
-				SELECT concat('S', LPAD(cast(right(IFNULL(MAX(QUESTION_ID), '0'), 5) as DECIMAL)+1+1, 6 , '0')) AS seqId FROM XBT_THEORY_QUESTION	
+				SELECT concat('S', LPAD(cast(right(IFNULL(MAX(QUESTION_ID), '0'), 5) as DECIMAL)+1, 6 , '0')) AS seqId FROM XBT_THEORY_QUESTION	
 			</when>	
 			<!-- 
 			<when test='seqInfo == "UX"'>단품시퀀스 

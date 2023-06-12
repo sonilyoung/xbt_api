@@ -2,6 +2,7 @@ package egovframework.com.stu.theory.service;
 
 import java.util.List;
 
+import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningProblem;
 import egovframework.com.stu.theory.vo.StuTheory;
 
@@ -36,4 +37,20 @@ public interface StuTheoryService {
 	public int insertTheoryProblems(StuTheory params);
 	
 	public List<StuTheory> selectTheoryProblemsList(StuTheory params);
+	
+	public StuTheory selectTheoryAnswer(StuTheory params);
+	
+	public int updateTheoryAnswer(StuTheory params);
+	
+	public int selectTheoryBaselineResultCount(StuTheory params);
+	
+	public int insertTheoryResult(StuTheory params);
+	
+	public StuTheory selectTheorySum(StuTheory params);
+	
+	public StuTheory selectTheoryResultCount(StuTheory params);
+	
+	public int updateTheoryEnd(StuTheory params);
+	
+	public int updateTheoryResult(StuTheory params);
 }

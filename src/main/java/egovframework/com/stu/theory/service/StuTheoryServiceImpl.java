@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningProblem;
 import egovframework.com.stu.theory.dao.StuTheoryDAO;
 import egovframework.com.stu.theory.vo.StuTheory;
@@ -78,6 +79,55 @@ public class StuTheoryServiceImpl implements StuTheoryService {
 	public List<StuTheory> selectTheoryProblemsList(StuTheory params) {
 		// TODO Auto-generated method stub
 		return (List<StuTheory>) stuTheoryDAO.selectTheoryProblemsList(params);
+	}
+
+	@Override
+	public StuTheory selectTheoryAnswer(StuTheory params) {
+		// TODO Auto-generated method stub
+		return stuTheoryDAO.selectTheoryAnswer(params);
+	}
+
+	@Override
+	public int updateTheoryAnswer(StuTheory params) {
+		// TODO Auto-generated method stub
+		return stuTheoryDAO.updateTheoryAnswer(params);
+	}
+
+	@Override
+	public int selectTheoryBaselineResultCount(StuTheory params) {
+		// TODO Auto-generated method stub
+		return stuTheoryDAO.selectTheoryBaselineResultCount(params);
+	}
+
+	@Override
+	public int insertTheoryResult(StuTheory params) {
+		// TODO Auto-generated method stub
+		return stuTheoryDAO.insertTheoryResult(params);
 	}	
+	
+	@Override
+	public StuTheory selectTheorySum(StuTheory params) {
+		// TODO Auto-generated method stub
+		return stuTheoryDAO.selectTheorySum(params);
+	}
+
+	@Override
+	public StuTheory selectTheoryResultCount(StuTheory params) {
+		// TODO Auto-generated method stub
+		return stuTheoryDAO.selectTheoryResultCount(params);
+	}
+
+	@Override
+	public int updateTheoryEnd(StuTheory params) {
+		// TODO Auto-generated method stub
+		return stuTheoryDAO.updateTheoryEnd(params);
+	}
+
+	@Override
+	public int updateTheoryResult(StuTheory params) {
+		// TODO Auto-generated method stub
+		return stuTheoryDAO.updateTheoryResult(params);
+	}
+	
 		
 }

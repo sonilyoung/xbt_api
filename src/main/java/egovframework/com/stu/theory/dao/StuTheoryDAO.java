@@ -44,6 +44,39 @@ public class StuTheoryDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectTheoryProblemsList", params);
 	}	
 		
+	public StuTheory selectTheoryAnswer(StuTheory params) {
+		return selectOne(Namespace + ".selectTheoryAnswer", params);
+	}		
+	
+	public int updateTheoryAnswer(StuTheory params) {
+		return update(Namespace + ".updateTheoryAnswer", params);
+	}	
+	
+	public int selectTheoryBaselineResultCount(StuTheory params) {
+		return selectOne(Namespace + ".selectTheoryBaselineResultCount", params);
+	}	
+	
+	public int insertTheoryResult(StuTheory params) {
+		return insert(Namespace + ".insertTheoryResult", params);
+	}		
 	
 	
+	public StuTheory selectTheorySum(StuTheory params) {
+		return selectOne(Namespace + ".selectTheorySum", params);
+	}			
+	
+	
+	public StuTheory selectTheoryResultCount(StuTheory params) {
+		return selectOne(Namespace + ".selectTheoryResultCount", params);
+	}
+	
+	public int updateTheoryEnd(StuTheory params) {
+		return update(Namespace + ".updateTheoryEnd", params);
+	}		
+	
+	public int updateTheoryResult(StuTheory params) {
+		return update(Namespace + ".updateTheoryResult", params);
+	}		
+		
+		
 }

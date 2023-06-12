@@ -27,7 +27,7 @@
 			,FLAMMABILITY_SCORE
 			,DANGER_MATERIALS_SCORE
 			,LIQUID_GEL_SCORE
-			,PASS_SCORE
+			<!-- ,PASS_SCORE-->
 			,FAIL_TO_PASS
 			,INSERT_ID
 			,INSERT_DATE
@@ -72,7 +72,7 @@
 			,FLAMMABILITY_SCORE
 			,DANGER_MATERIALS_SCORE
 			,LIQUID_GEL_SCORE
-			,PASS_SCORE
+			<!-- ,PASS_SCORE-->
 			,FAIL_TO_PASS
 			,INSERT_ID
 			,INSERT_DATE
@@ -105,7 +105,7 @@
 			,FLAMMABILITY_SCORE
 			,DANGER_MATERIALS_SCORE
 			,LIQUID_GEL_SCORE
-			,PASS_SCORE
+			<!-- ,PASS_SCORE-->
 			,FAIL_TO_PASS
 			,INSERT_ID
 			,INSERT_DATE
@@ -130,7 +130,7 @@
 			,#{flammabilityScore}
 			,#{dangerMaterialsScore}
 			,#{liquidGelScore}
-			,#{passScore}
+			<!-- ,#{passScore}-->
 			,#{failToPass}
 			,#{insertId}
 			,now()
@@ -282,7 +282,7 @@
 			, DANGER_MATERIALS_SCORE = #{dangerMaterialsScore}
 			, LIQUID_GEL_SCORE = #{liquidGelScore}
 			, FAIL_TO_PASS = #{failToPass}
-			, PASS_SCORE = #{passScore}
+			<!-- , PASS_SCORE = #{passScore} -->
 			, UPDATE_ID = #{gunScore}
 			, UPDATE_DATE = now()
 			, MENU_CD = #{menuCd}
