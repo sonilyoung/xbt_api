@@ -327,7 +327,7 @@ public class TheoryController {
     public BaseResponse<Integer> insertTheory(
     		HttpServletRequest request, 
             @RequestPart(value = "files", required = false) MultipartFile[] files,
-            @RequestPart(value = "params", required = true) Theory params)throws Exception {
+            @RequestPart(value = "params", required = false) Theory params)throws Exception {
     	
     	Login login = loginService.getLoginInfo(request);
     	
@@ -524,24 +524,36 @@ public class TheoryController {
 		}else if("B".equals(params.getQuestionType())) {//OX(B)
 		}else if("C".equals(params.getQuestionType())) {//이미지사선다(C)
 			
-	        if (files != null) {
-	        	int i = 1;
-	            for (MultipartFile file : files) {
-	                // 파일 생성
-	            	AttachFile detail = fileStorageService.createTheoryImageFile(String.valueOf(i), params, file);
-	            	if(i==1) {
-	            		params.setChoice1(detail.getSaveFileName());
-	            	}else if(i==2) {
-	            		params.setChoice2(detail.getSaveFileName());
-	            	}else if(i==3) {
-	            		params.setChoice3(detail.getSaveFileName());
-	            	}else if(i==4) {
-	            		params.setChoice4(detail.getSaveFileName());
-	            	}
-	            	i++;
-	            }
-	        }
+			if(StringUtils.isEmpty(params.getCommand())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Command" + BaseApiMessage.REQUIRED.getCode());
+			}			
+			
+			if("true".equals(params.getCommand())) {
+		        if (files != null) {
+		        	int i = 1;
+		            for (MultipartFile file : files) {
+		                // 파일 생성
+		            	AttachFile detail = fileStorageService.createTheoryImageFile(String.valueOf(i), params, file);
+		            	if(i==1) {
+		            		params.setChoice1(detail.getSaveFileName());
+		            	}else if(i==2) {
+		            		params.setChoice2(detail.getSaveFileName());
+		            	}else if(i==3) {
+		            		params.setChoice3(detail.getSaveFileName());
+		            	}else if(i==4) {
+		            		params.setChoice4(detail.getSaveFileName());
+		            	}
+		            	i++;
+		            }
+		        }
+			}
+			
+
 		}else if("D".equals(params.getQuestionType())) {//이미지+사지선다형(D)
+			if(StringUtils.isEmpty(params.getCommand())){				
+				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Command" + BaseApiMessage.REQUIRED.getCode());
+			}			
+			
 			if(StringUtils.isEmpty(params.getChoice1())){				
 				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice1" + BaseApiMessage.REQUIRED.getCode());
 			}	
@@ -558,13 +570,15 @@ public class TheoryController {
 				return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Choice4" + BaseApiMessage.REQUIRED.getCode());
 			}				
 			
-	        if (files != null) {
-	            for (MultipartFile file : files) {
-	                // 파일 생성
-	            	AttachFile detail = fileStorageService.createTheoryImageFile("Q", params, file);
-	            	params.setMultiPlusImgName(detail.getSaveFileName());
-	            }
-	        }
+			if("true".equals(params.getCommand())) {
+		        if (files != null) {
+		            for (MultipartFile file : files) {
+		                // 파일 생성
+		            	AttachFile detail = fileStorageService.createTheoryImageFile("Q", params, file);
+		            	params.setMultiPlusImgName(detail.getSaveFileName());
+		            }
+		        }
+			}
 		}
 						
 		

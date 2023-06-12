@@ -20,13 +20,14 @@
 			CHOICE2,
 			CHOICE3,
 			CHOICE4,
-			MULTI_PLUS_IMG,
+			MULTI_PLUS_IMG_NAME,
 			ACTION_DIV,
 			INSERT_ID,
 			INSERT_DATE
 		FROM
 			XBT_THEORY_QUESTION		
 			ORDER BY QUESTION_ID 
+		LIMIT #{questionCnt}
 	</select>	
 	
 <!-- 이론  상세 -->
@@ -45,7 +46,7 @@
 			CHOICE2,
 			CHOICE3,
 			CHOICE4,
-			MULTI_PLUS_IMG,
+			MULTI_PLUS_IMG_NAME,
 			ACTION_DIV,
 			INSERT_ID,
 			INSERT_DATE
@@ -95,7 +96,7 @@
 			MIDDLE_GROUP_CD,
 			SMALL_GROUP_CD,
 			QUESTION,
-			MULTI_PLUS_IMG,
+			MULTI_PLUS_IMG_NAME,
 			CHOICE1,
 			CHOICE2,
 			CHOICE3,
@@ -117,7 +118,7 @@
 			MIDDLE_GROUP_CD,
 			SMALL_GROUP_CD,
 			QUESTION,
-			MULTI_PLUS_IMG,
+			MULTI_PLUS_IMG_NAME,
 			CHOICE1,
 			CHOICE2,
 			CHOICE3,
@@ -144,9 +145,9 @@
 			CHOICE2,
 			CHOICE3,
 			CHOICE4,
-			MULTI_PLUS_IMG,
+			MULTI_PLUS_IMG_NAME,
 			ACTION_DIV,
-			INSERT_DATE
+			INSERT_DATE,
 			USER_ACTION_DIV,
 			CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 'Y' ELSE 'N' END AS answerYn,  
 			INSERT_DATE
@@ -166,14 +167,12 @@
 			MAX(ACTION_DIV) as answerDiv  
 		FROM XBT_STU_THEORY_PROGRESSING 
 		WHERE 
-		MODULE_ID = #{moduleId} 
-		AND PROC_CD = #{procCd}  
+		PROC_CD = #{procCd}  
 		AND PROC_YEAR = #{procYear} 
 		AND PROC_SEQ = #{procSeq}
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
 		AND QUESTION_ID = #{questionId}
-		AND END_YN = 'N'
 	</select>		
 	
 	<!-- 오답문제정답선택-->
@@ -201,6 +200,20 @@
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
 	</select>	
+	
+	<!-- 난이도 정보 -->
+	<select id="selectStudyLvlTheory" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="egovframework.com.stu.theory.vo.StuTheory">
+		SELECT SUM(STUDY_LVL)/COUNT(STUDY_LVL) AS studyLvl FROM (
+			SELECT STUDY_LVL FROM XBT_STU_THEORY_PROGRESSING 			
+			WHERE 
+			PROC_CD = #{procCd}  
+			AND PROC_YEAR = #{procYear} 
+			AND PROC_SEQ = #{procSeq}
+			AND TRY_SEQ = #{trySeq}
+			AND USER_ID = #{userId}
+			GROUP BY STUDY_LVL
+		)T1 
+	</select>		
 		
 		<!-- 결과 등록 -->
 	<insert id="insertTheoryResult" parameterType="egovframework.com.stu.theory.vo.StuTheory">	
@@ -212,7 +225,6 @@
 			USER_ID,
 			TEST_DATE,
 			STUDY_LVL,
-			MODULE_ID,
 			END_YN,
 			INSERT_DATE
 		)VALUES(
@@ -223,7 +235,6 @@
 			#{userId},
 			now(),
 			#{studyLvl},
-			#{moduleId},
 			'Y',
 			now()
 		)
@@ -232,7 +243,7 @@
 	<!-- 학습종료점수합산 -->
 	<select id="selectTheorySum" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="egovframework.com.stu.theory.vo.StuTheory">
 		SELECT 
-			IFNULL(SUM(GAIN_SCORE), 0)/1000*100 AS gainScore
+			IFNULL(SUM(GAIN_SCORE), 0) AS gainScore
 		FROM XBT_STU_THEORY_PROGRESSING 
 		WHERE 
 		PROC_CD = #{procCd}  
@@ -240,7 +251,6 @@
 		AND PROC_SEQ = #{procSeq}
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
-		AND END_YN = 'N'
 	</select>		
 	
 	<!-- 학습종료 틀린갯수 맞은갯수 확인 -->

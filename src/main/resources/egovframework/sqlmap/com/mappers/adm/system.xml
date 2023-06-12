@@ -179,20 +179,20 @@
 	
 	<!-- 이론평가 점수비중 정보 -->
 	<select id="selectTheoryScore" parameterType="egovframework.com.adm.system.vo.XbtScore" resultType="egovframework.com.adm.system.vo.XbtScore">
-		SELECT USER_ID ,GAIN_SCORE FROM XBT_BASELINE_THEORY 
+		SELECT USER_ID ,IFNULL(GAIN_SCORE, 0)AS gainScore FROM XBT_BASELINE_THEORY 
 		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId} and END_YN = 'Y'
 	</select>		
 		
 	
 	<!-- XBT평가 점수비중 정보 -->
 	<select id="selectEvaluationScore" parameterType="egovframework.com.adm.system.vo.XbtScore" resultType="egovframework.com.adm.system.vo.XbtScore">
-		SELECT USER_ID ,GAIN_SCORE FROM XBT_BASELINE_EVALUATION 
+		SELECT USER_ID ,IFNULL(GAIN_SCORE, 0)AS gainScore  FROM XBT_BASELINE_EVALUATION 
 		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId} AND END_YN = 'Y'
 	</select>	
 	
 	<!-- 실습 점수비중 정보 -->
 	<select id="selectPracticeScore" parameterType="egovframework.com.adm.system.vo.XbtScore" resultType="egovframework.com.adm.system.vo.XbtScore">
-		SELECT USER_ID ,PRACTICE_SCORE FROM XBT_BASELINE_STUDENT_INFO 
+		SELECT USER_ID ,IFNULL(PRACTICE_SCORE, 0)AS practiceScore FROM XBT_BASELINE_STUDENT_INFO 
 		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId} AND PRACTICE_YN = 'Y'
 	</select>		
 	

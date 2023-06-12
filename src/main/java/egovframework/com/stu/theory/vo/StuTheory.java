@@ -37,6 +37,7 @@ public class StuTheory {
 	private String answer;
 	private String answerDiv;
 	private String endYn;
+	private String passYn;
 	private String menuCd;
 	private int trySeq;
 	private int rightCnt;

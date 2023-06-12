@@ -93,7 +93,7 @@
 			CHOICE2,
 			CHOICE3,
 			CHOICE4,
-			MULTI_PLUS_IMG,
+			MULTI_PLUS_IMG_NAME,
 			ACTION_DIV,
 			INSERT_ID,
 			INSERT_DATE
@@ -117,7 +117,7 @@
 			CHOICE2,
 			CHOICE3,
 			CHOICE4,
-			MULTI_PLUS_IMG,
+			MULTI_PLUS_IMG_NAME,
 			ACTION_DIV,
 			INSERT_ID,
 			INSERT_DATE
@@ -141,7 +141,7 @@
 			CHOICE2,
 			CHOICE3,
 			CHOICE4,
-			MULTI_PLUS_IMG,
+			MULTI_PLUS_IMG_NAME,
 			ACTION_DIV,
 			INSERT_ID,
 			INSERT_DATE
@@ -181,7 +181,7 @@
 			CHOICE3 = #{choice3},
 			CHOICE4 = #{choice4},
 			ACTION_DIV = #{actionDiv},
-			MULTI_PLUS_IMG = #{multiPlusImgName}
+			MULTI_PLUS_IMG_NAME = #{multiPlusImgName}
 		WHERE QUESTION_ID = #{questionId}	
 	</update>	
 	

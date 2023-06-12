@@ -128,6 +128,12 @@ public class StuTheoryServiceImpl implements StuTheoryService {
 		// TODO Auto-generated method stub
 		return stuTheoryDAO.updateTheoryResult(params);
 	}
+
+	@Override
+	public StuTheory selectStudyLvlTheory(StuTheory params) {
+		// TODO Auto-generated method stub
+		return stuTheoryDAO.selectStudyLvlTheory(params);
+	}
 	
 		
 }

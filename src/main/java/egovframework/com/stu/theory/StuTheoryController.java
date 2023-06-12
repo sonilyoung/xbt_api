@@ -92,8 +92,8 @@ public class StuTheoryController {
 			params.setProcYear(baselineData.getProcYear());
 			params.setProcSeq(baselineData.getProcSeq());
 			params.setStudyLvl(baselineData.getStudyLvl());
-						
 			
+			params.setQuestionCnt(baselineData.getTheoryQuestionCnt()); 						
 			//이론문제가져오기
 			List<StuTheory> problems = theoryService.selectTheoryList(params);
 			if(problems == null) {
@@ -124,8 +124,8 @@ public class StuTheoryController {
 				return new BaseResponse<StuTheory>(BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS, BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS.getMessage());
 			}			
 			
-			moduleInfoData.setQuestionList(resultList);
-			return new BaseResponse<StuTheory>(moduleInfoData);
+			params.setQuestionList(resultList);
+			return new BaseResponse<StuTheory>(params);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
@@ -157,7 +157,13 @@ public class StuTheoryController {
 			//이론조회
 			StuTheory result = theoryService.selectTheory(params);
 			Theory tr = new Theory();
+			tr.setQuestionId(params.getQuestionId());
 			xbtImageService.selectTheoryImg(tr);
+			result.setChoiceImg1(tr.getChoiceImg1());
+			result.setChoiceImg2(tr.getChoiceImg2());
+			result.setChoiceImg3(tr.getChoiceImg3());
+			result.setChoiceImg4(tr.getChoiceImg4());
+			result.setMultiPlusImg(tr.getMultiPlusImg());
 			
 	        return new BaseResponse<StuTheory>(result);
         } catch (Exception e) {
@@ -231,7 +237,7 @@ public class StuTheoryController {
     */  
     @PostMapping("/endTheory.do")
     @ApiOperation(value = "이론종료", notes = "이론종료")
-    public BaseResponse<StuTheory> endTheory(HttpServletRequest request, @RequestBody StuTheory params) {
+    public BaseResponse<Integer> endTheory(HttpServletRequest request, @RequestBody StuTheory params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
@@ -239,74 +245,93 @@ public class StuTheoryController {
 		params.setUserId(login.getUserId());
 		
 		if(StringUtils.isEmpty(params.getMenuCd())){				
-			return new BaseResponse<StuTheory>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getMessage());
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getMessage());
 		}			
 		
-		
 		if(StringUtils.isEmpty(params.getTheoryList())){				
-			return new BaseResponse<StuTheory>(BaseResponseCode.PARAMS_ERROR, "TheoryList" + BaseApiMessage.REQUIRED.getMessage());
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "TheoryList" + BaseApiMessage.REQUIRED.getMessage());
 		}			
 		
 		try {
-			StuTheory st = new StuTheory();
-			int result = 0;
-			for(StuTheory s : params.getTheoryList()) {
-				Learning lp = new Learning();
-				lp.setUserId(login.getUserId());
-				Learning baselineData = learningService.selectBaseline(lp);
-				if(baselineData == null) {
-					return new BaseResponse<StuTheory>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
-				}	
-				
-				StuTheory answer = theoryService.selectTheoryAnswer(s);
-				s.setAnswerDiv(answer.getAnswerDiv());
-				
-				if("1".equals(answer.getAnswer())) {//정답
-					answer.setGainScore(Math.round(baselineData.getQuestionCnt()/100));
-				}else {//오답
-					answer.setGainScore(0);
-				}
-				
-				result = theoryService.updateTheoryAnswer(answer);
-			}			
-			
-			
 			Learning lp = new Learning();
 			lp.setUserId(login.getUserId());			
 			Learning baselineData = learningService.selectBaseline(lp);
 			if(baselineData == null) {
-				return new BaseResponse<StuTheory>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
-			}
-			
-			lp.setProcCd(baselineData.getProcCd()); 
-			List<Learning> learningData = learningService.selectLearning(lp);
-			if(learningData == null) {
-				return new BaseResponse<StuTheory>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
-			}
+				return new BaseResponse<Integer>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
+			}			
 			
 			params.setProcCd(baselineData.getProcCd());
 			params.setProcYear(baselineData.getProcYear());
 			params.setProcSeq(baselineData.getProcSeq());
 			
+			params.setQuestionCnt(baselineData.getTheoryQuestionCnt()); 
+			//이론문제가져오기
+			List<StuTheory> problems = theoryService.selectTheoryList(params);
+			int problemsCnt = 0;
+			if(problems!=null) {
+				problemsCnt = problems.size();	
+			}
+			 
+			
 			//시도횟수
 			StuTheory maxKey = theoryService.selectTheoryProblemsMaxkey(params);
-			params.setTrySeq(maxKey.getTrySeq());				
+			params.setTrySeq(maxKey.getTrySeq());			
+			
+			for(StuTheory s : params.getTheoryList()) {
+				s.setUserId(login.getUserId());
+				s.setProcCd(baselineData.getProcCd());
+				s.setProcYear(baselineData.getProcYear());
+				s.setProcSeq(baselineData.getProcSeq());
+				s.setTrySeq(maxKey.getTrySeq());
+				StuTheory answer = theoryService.selectTheoryAnswer(s);
+				s.setAnswerDiv(answer.getAnswerDiv());
+				answer.setQuestionId(s.getQuestionId());
+				params.setQuestionId(s.getQuestionId());
+				if("1".equals(answer.getAnswer())) {//정답
+					//double result = 100/(double)baselineData.getTheoryQuestionCnt();
+					double result = 100/(double)problemsCnt;
+					result = Math.round(result*1000)/1000.0; 
+					answer.setGainScore(result);					
+				}else {//오답
+					answer.setGainScore(0);
+				}
+				
+				answer.setUserId(login.getUserId());
+				answer.setProcCd(baselineData.getProcCd());
+				answer.setProcYear(baselineData.getProcYear());
+				answer.setProcSeq(baselineData.getProcSeq());
+				answer.setTrySeq(maxKey.getTrySeq());
+				answer.setUserActionDiv(s.getUserActionDiv());
+				theoryService.updateTheoryAnswer(answer);
+			}			
+			
+			lp.setProcCd(baselineData.getProcCd()); 
+			lp.setUserId(login.getUserId());
+			lp.setProcCd(baselineData.getProcCd());
+			lp.setProcYear(baselineData.getProcYear());
+			lp.setTrySeq(maxKey.getTrySeq());			
+			List<Learning> learningData = learningService.selectLearning(lp); /*menuCd*/
+			if(learningData == null) {
+				return new BaseResponse<Integer>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
+			}
 			
 			//학습종료데이터확인
 			int baselineCnt = theoryService.selectTheoryBaselineResultCount(params);
 			
 			//학습종료데이터등록
 			if(baselineCnt <= 0) {
+				StuTheory studyLvl = theoryService.selectStudyLvlTheory(params);
+				params.setStudyLvl(studyLvl.getTrySeq()); 
 				theoryService.insertTheoryResult(params);				
 			}
 
 			StuTheory gainScore = theoryService.selectTheorySum(params);
 			params.setGainScore(gainScore.getGainScore());
-			//if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassScore())) {//통과
-				//params.setPassYn("Y");
-			//}else {//과락
-				//params.setPassYn("N");
-			//}
+			if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassScore())) {//통과
+				params.setPassYn("Y");
+			}else {//과락
+				params.setPassYn("N");
+			}
 			
 			//학습종료 틀린갯수 맞은갯수 확인 
 			StuTheory resultCnt = theoryService.selectTheoryResultCount(params);
@@ -319,10 +344,13 @@ public class StuTheoryController {
 			theoryService.updateTheoryEnd(params);
 			
 			//결과데이터저장
-			theoryService.updateTheoryResult(params);
+			int result = theoryService.updateTheoryResult(params);
 			
-			return new BaseResponse<StuTheory>(params);
-			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}			
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());

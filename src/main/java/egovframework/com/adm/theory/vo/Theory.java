@@ -29,6 +29,7 @@ public class Theory {
 	private String actionDiv;
 	private String insertId;
 	private String insertDate;
+	private String command;
 	
 	private List<String> questionIdList;
 

@@ -31,6 +31,8 @@ public interface StuTheoryService {
 	public StuTheory selectTheory(StuTheory params);
 
 	public StuTheory selectTheoryProblemsMaxkey(StuTheory params);
+	
+	public StuTheory selectStudyLvlTheory(StuTheory params);
 
 	public int selectTheoryProblemsCount(StuTheory params);
 	

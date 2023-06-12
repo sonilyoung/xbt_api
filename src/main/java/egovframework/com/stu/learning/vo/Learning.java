@@ -33,6 +33,7 @@ public class Learning{
 	private String languageCode;
 	private double gainScore;
 	private int questionCnt;
+	private int theoryQuestionCnt;
 	private int timeLimit;
 	private int slideSpeed;
 	private int passScore;
