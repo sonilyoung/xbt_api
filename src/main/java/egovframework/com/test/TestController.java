@@ -5,60 +5,65 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-import egovframework.com.adm.login.service.LoginService;
-import egovframework.com.adm.login.service.UserService;
-import egovframework.com.adm.login.vo.Login;
-import egovframework.com.adm.login.vo.LoginRequest;
-import egovframework.com.adm.login.vo.User;
-import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
-import egovframework.com.cmm.vo.TokenResponse;
-import egovframework.com.global.OfficeMessageSource;
+import egovframework.com.excel.ExcelRead;
+import egovframework.com.excel.ExcelReadOption;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.common.GlobalsProperties;
-import egovframework.com.global.exception.CustomBaseException;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
-import egovframework.com.global.http.exception.BaseException;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import egovframework.com.global.util.FileReader;
-
+import egovframework.com.test.service.TestService;
+import io.swagger.annotations.ApiOperation;
 /**
  * 테스트
  */
 @RestController
-//@RequestMapping("/")
+@RequestMapping("/test")
 public class TestController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
+	
+    /*파일업로드 저장경로*/
+    public static final String FILE_UPLOAD_PATH = GlobalsProperties.getProperty("file.upload.path");
 
-	private OfficeMessageSource officeMessageSource;
-
+    @Autowired
+    private TestService testService;    
+    
 	@GetMapping("/index.do")
 	@ApiOperation(value = "test", notes = "test")
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
@@ -200,5 +205,391 @@ public class TestController {
 		JSONObject jsonObject = (JSONObject) parser.parse(response);
 		return jsonObject;
 	}
+	
+	
+	//가방안에 담긴 데이터정렬 데이터추가
+	@PostMapping(value="/selctBagInfoList")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public void selctBagInfoList(
+			HttpServletRequest request
+			,HttpServletResponse response
+			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
+	) throws Exception{
+		LOGGER.debug("========= excelUpload ========="+ excelFile);
 
+	    try {
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmsss"); 
+			Date time = new Date(); 
+			String fmtDate=format.format(time);
+
+			//String stordFilePath = GlobalsProperties.getProperty("Globals.fileStorePath");
+			File fileDir = new File(FILE_UPLOAD_PATH);
+			// root directory 없으면 생성
+			if (!fileDir.exists()) {
+				fileDir.mkdirs(); //폴더 생성합니다.
+			}             
+			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
+			
+			excelFile.transferTo(destFile); // 엑셀파일 생성
+			String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			    
+			ExcelReadOption excelReadOption = new ExcelReadOption();
+			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
+			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
+			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
+			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
+           
+	        XSSFWorkbook wb = new XSSFWorkbook();
+	        XSSFSheet sheet = wb.createSheet("첫번째 시트");        
+	        
+	        Row row = null;
+	        Cell cell = null;
+	        int rowNum = 0;	
+	        
+	        
+			//스타일 설정
+			CellStyle xssfWb = wb.createCellStyle();
+			 
+			//정렬
+			xssfWb.setAlignment(CellStyle.ALIGN_CENTER);
+			xssfWb.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+			
+			//테두리 라인
+			xssfWb.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			
+			//배경색
+			//xssfWb.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
+			xssfWb.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+			xssfWb.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);   
+			
+			//폰트
+			XSSFFont font = wb.createFont();
+			font.setFontName("맑은고딕");
+			font.setBold(true);
+			xssfWb.setFont(font);
+			
+	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+	        int i = 0;
+	        String targetValue = "";
+			for(LinkedHashMap<String, String> excelData: excelContent){    
+	            row = sheet.createRow(rowNum++);
+	            //row.setHeight((short)1200);
+	            
+	            cell = row.createCell(0);
+	            cell.setCellValue(excelData.get("A"));
+	            cell = row.createCell(1);
+	            
+	            if(!excelData.get("A").equals(targetValue)) {
+	            	i=0;
+	            }
+	            
+	            cell.setCellValue(i+1);
+	            cell = row.createCell(2);
+	            cell.setCellValue(excelData.get("C"));
+	            cell = row.createCell(3);
+	            cell.setCellValue(excelData.get("D"));
+	            cell = row.createCell(4);
+	            cell.setCellValue(excelData.get("E"));
+	            cell = row.createCell(5);
+	            cell.setCellValue(excelData.get("F"));
+	            cell = row.createCell(6);
+	            cell.setCellValue(excelData.get("H"));
+	            i++;
+	            targetValue = excelData.get("A");
+			}
+			
+	        // 컨텐츠 타입과 파일명 지정
+			//xls확장자로 다운로드   
+			String tempName = "xray가방데이터";
+			response.setContentType("ms-vnd/excel");
+			//response.setContentType("application/x-msdownload;charset=utf-8");
+			String fileName = URLEncoder.encode(tempName, ("UTF-8"));
+			response.setHeader("Set-Cookie", "fileDownloadToken=Y; path=/");
+			response.setHeader("Content-Disposition", "attachment; filename=\""+fileName+".xlsx\"");         
+	        // Excel File Output
+	        wb.write(response.getOutputStream());
+	        wb.close();
+	        response.getOutputStream().flush();
+	        response.getOutputStream().close();
+	        destFile.delete(); // 업로드된 엑셀파일 삭제
+	    }catch(Exception e) {
+	    	e.printStackTrace();
+	    } 
+	    
+	}
+	
+	
+	@PostMapping(value="/insertXbtBagConstUnitTemp")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public BaseResponse<Integer> insertXbtBagConstUnitTemp(
+			HttpServletRequest request
+			,HttpServletResponse response
+			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
+	) throws Exception{
+		LOGGER.debug("========= excelUpload ========="+ excelFile);
+
+	    try {
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmsss"); 
+			Date time = new Date(); 
+			String fmtDate=format.format(time);
+
+			//String stordFilePath = GlobalsProperties.getProperty("Globals.fileStorePath");
+			File fileDir = new File(FILE_UPLOAD_PATH);
+			// root directory 없으면 생성
+			if (!fileDir.exists()) {
+				fileDir.mkdirs(); //폴더 생성합니다.
+			}             
+			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
+			
+			excelFile.transferTo(destFile); // 엑셀파일 생성
+			String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			    
+			ExcelReadOption excelReadOption = new ExcelReadOption();
+			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
+			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
+			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
+			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
+           
+	        XSSFWorkbook wb = new XSSFWorkbook();
+	        XSSFSheet sheet = wb.createSheet("첫번째 시트");        
+	        
+	        Row row = null;
+	        Cell cell = null;
+	        int rowNum = 0;	
+	        
+	        
+			//스타일 설정
+			CellStyle xssfWb = wb.createCellStyle();
+			 
+			//정렬
+			xssfWb.setAlignment(CellStyle.ALIGN_CENTER);
+			xssfWb.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+			
+			//테두리 라인
+			xssfWb.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			
+			//배경색
+			//xssfWb.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
+			xssfWb.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+			xssfWb.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);   
+			
+			//폰트
+			XSSFFont font = wb.createFont();
+			font.setFontName("맑은고딕");
+			font.setBold(true);
+			xssfWb.setFont(font);
+			
+	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			
+			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+			for(LinkedHashMap<String, String> excelData: excelContent){
+				params = new LinkedHashMap<String, Object>();
+	            //row.setHeight((short)1200);
+	            params.put("bagScanId", excelData.get("A"));
+	            params.put("seq", excelData.get("B"));
+	            params.put("unitGroupCd", excelData.get("C"));
+	            params.put("unitId", excelData.get("D"));
+	            
+	            testService.insertXbtBagConstUnitTemp(params);
+			}
+			
+			int result = 1;
+            if(result>0) {
+	            return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+            }else {
+            	return new BaseResponse<Integer>(BaseResponseCode.DATA_IS_NULL);
+            }
+	    }catch(Exception e) {
+	    	return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR);
+	    } 
+	    
+	}	
+	
+	@PostMapping(value="/insertXbtBagInfoTemp")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public BaseResponse<Integer> insertXbtBagInfoTemp(
+			HttpServletRequest request
+			,HttpServletResponse response
+			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
+	) throws Exception{
+		LOGGER.debug("========= excelUpload ========="+ excelFile);
+
+	    try {
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmsss"); 
+			Date time = new Date(); 
+			String fmtDate=format.format(time);
+
+			//String stordFilePath = GlobalsProperties.getProperty("Globals.fileStorePath");
+			File fileDir = new File(FILE_UPLOAD_PATH);
+			// root directory 없으면 생성
+			if (!fileDir.exists()) {
+				fileDir.mkdirs(); //폴더 생성합니다.
+			}             
+			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
+			
+			excelFile.transferTo(destFile); // 엑셀파일 생성
+			String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			    
+			ExcelReadOption excelReadOption = new ExcelReadOption();
+			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
+			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
+			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
+			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
+           
+	        XSSFWorkbook wb = new XSSFWorkbook();
+	        XSSFSheet sheet = wb.createSheet("첫번째 시트");        
+	        
+	        Row row = null;
+	        Cell cell = null;
+	        int rowNum = 0;	
+	        
+	        
+			//스타일 설정
+			CellStyle xssfWb = wb.createCellStyle();
+			 
+			//정렬
+			xssfWb.setAlignment(CellStyle.ALIGN_CENTER);
+			xssfWb.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+			
+			//테두리 라인
+			xssfWb.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			
+			//배경색
+			//xssfWb.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
+			xssfWb.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+			xssfWb.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);   
+			
+			//폰트
+			XSSFFont font = wb.createFont();
+			font.setFontName("맑은고딕");
+			font.setBold(true);
+			xssfWb.setFont(font);
+			
+	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			
+			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+			for(LinkedHashMap<String, String> excelData: excelContent){
+				params = new LinkedHashMap<String, Object>();
+	            //row.setHeight((short)1200);
+	            params.put("bagScanId", excelData.get("A"));
+	            params.put("seq", excelData.get("B"));
+	            params.put("unitGroupCd", excelData.get("C"));
+	            params.put("unitId", excelData.get("D"));
+	            
+	            testService.insertXbtBagInfoTemp(params);
+			}
+			
+			int result = 1;
+            if(result>0) {
+	            return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+            }else {
+            	return new BaseResponse<Integer>(BaseResponseCode.DATA_IS_NULL);
+            }
+	    }catch(Exception e) {
+	    	return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR);
+	    } 
+	    
+	}	
+	
+	@PostMapping(value="/insertUnitTemp")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public BaseResponse<Integer> insertUnitTemp(
+			HttpServletRequest request
+			,HttpServletResponse response
+			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
+	) throws Exception{
+		LOGGER.debug("========= excelUpload ========="+ excelFile);
+
+	    try {
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmsss"); 
+			Date time = new Date(); 
+			String fmtDate=format.format(time);
+
+			//String stordFilePath = GlobalsProperties.getProperty("Globals.fileStorePath");
+			File fileDir = new File(FILE_UPLOAD_PATH);
+			// root directory 없으면 생성
+			if (!fileDir.exists()) {
+				fileDir.mkdirs(); //폴더 생성합니다.
+			}             
+			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
+			
+			excelFile.transferTo(destFile); // 엑셀파일 생성
+			String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			    
+			ExcelReadOption excelReadOption = new ExcelReadOption();
+			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
+			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
+			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
+			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
+           
+	        XSSFWorkbook wb = new XSSFWorkbook();
+	        XSSFSheet sheet = wb.createSheet("첫번째 시트");        
+	        
+	        Row row = null;
+	        Cell cell = null;
+	        int rowNum = 0;	
+	        
+	        
+			//스타일 설정
+			CellStyle xssfWb = wb.createCellStyle();
+			 
+			//정렬
+			xssfWb.setAlignment(CellStyle.ALIGN_CENTER);
+			xssfWb.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+			
+			//테두리 라인
+			xssfWb.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			
+			//배경색
+			//xssfWb.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
+			xssfWb.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+			xssfWb.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);   
+			
+			//폰트
+			XSSFFont font = wb.createFont();
+			font.setFontName("맑은고딕");
+			font.setBold(true);
+			xssfWb.setFont(font);
+			
+	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			
+			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+			for(LinkedHashMap<String, String> excelData: excelContent){
+				params = new LinkedHashMap<String, Object>();
+	            //row.setHeight((short)1200);
+	            params.put("bagScanId", excelData.get("A"));
+	            params.put("seq", excelData.get("B"));
+	            params.put("unitGroupCd", excelData.get("C"));
+	            params.put("unitId", excelData.get("D"));
+	            
+	            testService.insertUnitTemp(params);
+			}
+			
+			int result = 1;
+            if(result>0) {
+	            return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+            }else {
+            	return new BaseResponse<Integer>(BaseResponseCode.DATA_IS_NULL);
+            }
+	    }catch(Exception e) {
+	    	return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR);
+	    } 
+	    
+	}		
 }

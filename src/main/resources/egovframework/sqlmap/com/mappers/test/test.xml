@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.test.dao.TestDAO">
+	<!-- 
+	<select id="selectNoticeList" parameterType="hashmap" resultType="hashmap">
+	</select>	
+	
+	<select id="selectNotice" parameterType="hashmap" resultType="hashmap">
+	</select>
+	 -->		
+	
+	<insert id="insertXbtBagConstUnitTemp" parameterType="java.util.LinkedHashMap">
+		INSERT INTO XBT_BAG_CONST_UNIT_TEMP(
+			BAG_SCAN_ID,
+			SEQ,
+			UNIT_GROUP_CD,
+			UNIT_ID,
+			INSERT_DATE,
+			INSERT_ID
+		)VALUES(
+			#{bagScanId}
+			,#{seq}
+			,#{unitGroupCd}
+			,#{unitId}
+			now(),
+			'system'
+		)
+	</insert>	
+	
+	<insert id="insertXbtBagInfoTemp" parameterType="java.util.LinkedHashMap">
+		INSERT INTO XBT_BAG_INFO(
+			BAG_SCAN_ID,
+			STUDY_LVL,
+			UNIT_ID,
+			UNIT_GROUP_CD,
+			USE_YN,
+			INSERT_DATE,
+			INSERT_ID
+		)VALUES(
+			#{bagScanId}
+			,#{studyLvl}
+			,#{unitId}
+			,#{unitGroupCd}
+			,'N'
+			,now()
+			,'system'
+		)	
+	</insert>	
+		
+	<insert id="insertUnitTemp" parameterType="java.util.LinkedHashMap">
+		INSERT INTO XBT_UNIT_INFO
+		(
+			UNIT_SCAN_ID
+			,UNIT_ID
+			,UNIT_GROUP_CD
+			,UNIT_NAME
+			,UNIT_DESC
+			,USE_YN
+			,STUDY_LVL
+			,INSERT_ID
+			,INSERT_DATE 
+		)VALUES(
+			#{unitScanId}
+			,#{unitId}
+			,#{unitGroupCd}
+			,#{unitName}
+			,#{unitDesc}
+			,'N'
+			,1
+			,'system'
+			,now()
+		)
+	</insert>		
+		
+	
+	<!--
+	<update id="updateNotice" parameterType="hashmap">	
+	</update>	
+	
+	<delete id="deleteNotice" parameterType="hashmap">
+	</delete>	
+	-->
+</mapper>
