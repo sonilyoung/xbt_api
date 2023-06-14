@@ -22,8 +22,8 @@
 			,#{seq}
 			,#{unitGroupCd}
 			,#{unitId}
-			now(),
-			'system'
+			,now()
+			,'system'
 		)
 	</insert>	
 	
@@ -34,19 +34,28 @@
 			UNIT_ID,
 			UNIT_GROUP_CD,
 			USE_YN,
+			OPEN_YN,
+			CLOSE_YN,
+			ACTION_DIV,
+			ACTION_DIV_NAME,
 			INSERT_DATE,
 			INSERT_ID
 		)VALUES(
 			#{bagScanId}
-			,#{studyLvl}
+			,1
 			,#{unitId}
 			,#{unitGroupCd}
 			,'N'
-			,now()
-			,'system'
-		)	
+			,#{openYn}
+			,#{closeYn}
+			,#{actionDiv}
+			,#{actionDivName}
+			,now(),
+			'system'
+		)
+	
 	</insert>	
-		
+	
 	<insert id="insertUnitTemp" parameterType="java.util.LinkedHashMap">
 		INSERT INTO XBT_UNIT_INFO_TEMP
 		(
@@ -72,12 +81,76 @@
 		)
 	</insert>		
 		
+		
+	<insert id="insertXbtBagConstUnitRename" parameterType="java.util.LinkedHashMap">
+		INSERT INTO XBT_BAG_CONST_UNIT_RENAME(
+			BAG_SCAN_ID,
+			SEQ,
+			UNIT_GROUP_CD,
+			UNIT_ID,
+			INSERT_DATE,
+			INSERT_ID
+		)VALUES(
+			#{bagScanId}
+			,#{seq}
+			,#{unitGroupCd}
+			,#{unitId}
+			,now()
+			,'system'
+		)
+	</insert>			
 	
-	<!--
-	<update id="updateNotice" parameterType="hashmap">	
-	</update>	
+	<insert id="insertXbtBagInfoRename" parameterType="java.util.LinkedHashMap">
+		INSERT INTO XBT_BAG_INFO_RENAME(
+			BAG_SCAN_ID,
+			STUDY_LVL,
+			UNIT_ID,
+			UNIT_GROUP_CD,
+			USE_YN,
+			OPEN_YN,
+			CLOSE_YN,
+			ACTION_DIV,
+			ACTION_DIV_NAME,
+			INSERT_DATE,
+			INSERT_ID
+		)VALUES(
+			#{bagScanId}
+			,1
+			,#{unitId}
+			,#{unitGroupCd}
+			,'N'
+			,#{openYn}
+			,#{closeYn}
+			,#{actionDiv}
+			,#{actionDivName}
+			,now(),
+			'system'
+		)
 	
-	<delete id="deleteNotice" parameterType="hashmap">
-	</delete>	
-	-->
+	</insert>
+	
+	<insert id="insertUnitRename" parameterType="java.util.LinkedHashMap">
+		INSERT INTO XBT_UNIT_INFO_RENAME
+		(
+			UNIT_SCAN_ID
+			,UNIT_ID
+			,UNIT_GROUP_CD
+			,UNIT_NAME
+			,UNIT_DESC
+			,USE_YN
+			,STUDY_LVL
+			,INSERT_ID
+			,INSERT_DATE 
+		)VALUES(
+			#{unitScanId}
+			,#{unitId}
+			,#{unitGroupCd}
+			,#{unitName}
+			,#{unitDesc}
+			,'N'
+			,1
+			,'system'
+			,now()
+		)
+	</insert>			
 </mapper>

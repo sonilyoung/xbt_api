@@ -61,13 +61,31 @@ public class TestServiceImpl implements TestService {
 		return testDAO.insertXbtBagInfoTemp(params);
 	}
 	
+	
 	@Override
 	public int insertUnitTemp(LinkedHashMap<String, Object> params) {
 		// TODO Auto-generated method stub
 		return testDAO.insertUnitTemp(params);
 	}
 		
+	@Override
+	public int insertXbtBagConstUnitRename(LinkedHashMap<String, Object> params) {
+		// TODO Auto-generated method stub
+		return testDAO.insertXbtBagConstUnitRename(params);
+	}
 	
+	@Override
+	public int insertXbtBagInfoRename(LinkedHashMap<String, Object> params) {
+		// TODO Auto-generated method stub
+		return testDAO.insertXbtBagInfoRename(params);
+	}
+
+
+	@Override
+	public int insertUnitRename(LinkedHashMap<String, Object> params) {
+		// TODO Auto-generated method stub
+		return testDAO.insertUnitRename(params);
+	}
 
 
 }

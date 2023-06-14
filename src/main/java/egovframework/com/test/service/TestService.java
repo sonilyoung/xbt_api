@@ -26,4 +26,11 @@ public interface TestService {
 	public int insertXbtBagInfoTemp(LinkedHashMap<String, Object> params);
 	
 	public int insertUnitTemp(LinkedHashMap<String, Object> params);
+	
+	
+	public int insertXbtBagConstUnitRename(LinkedHashMap<String, Object> params);
+	
+	public int insertXbtBagInfoRename(LinkedHashMap<String, Object> params);
+	
+	public int insertUnitRename(LinkedHashMap<String, Object> params);
 }

@@ -49,6 +49,32 @@
 		ORDER BY SORT_ORDER 
 	</select>	
 	
+	<!-- 공통코드상세 -->
+	<select id="selectCommon" parameterType="egovframework.com.common.vo.Common" resultType="egovframework.com.common.vo.Common">
+		SELECT
+			CODE_NO,
+			LANGUAGE_CODE,
+			GROUP_ID,
+			CODE_ID,
+			SORT_ORDER,
+			CODE_NAME,
+			CODE_VALUE,
+			CODE_DESC,
+			REMARKS,
+			USE_YN,
+			MAIN_YN,
+			INSERT_ID,
+			INSERT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE
+		FROM
+			XBT_COMMON_CODE
+		WHERE LANGUAGE_CODE = #{languageCode}
+		AND GROUP_ID = #{groupId}
+		AND CODE_VALUE = #{codeValue}
+	</select>	
+		
+	
 	<!-- 공통코드등록 -->
 	<insert id="insertCommonCode" parameterType="egovframework.com.common.vo.Common" useGeneratedKeys="true" keyProperty="codeId">
 		INSERT INTO XBT_COMMON_CODE

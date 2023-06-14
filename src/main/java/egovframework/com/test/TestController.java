@@ -39,6 +39,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import egovframework.com.common.service.CommonService;
+import egovframework.com.common.vo.Common;
 import egovframework.com.excel.ExcelRead;
 import egovframework.com.excel.ExcelReadOption;
 import egovframework.com.global.annotation.SkipAuth;
@@ -49,6 +51,8 @@ import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.util.FileReader;
 import egovframework.com.test.service.TestService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.MediaType;
+
 /**
  * 테스트
  */
@@ -60,9 +64,14 @@ public class TestController {
 	
     /*파일업로드 저장경로*/
     public static final String FILE_UPLOAD_PATH = GlobalsProperties.getProperty("file.upload.path");
+    
+    public static final int XBT_TARGET_NAME = 5500;
 
     @Autowired
-    private TestService testService;    
+    private TestService testService;
+    
+    @Autowired
+    private CommonService commonService;   
     
 	@GetMapping("/index.do")
 	@ApiOperation(value = "test", notes = "test")
@@ -232,7 +241,7 @@ public class TestController {
 			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
 			
 			excelFile.transferTo(destFile); // 엑셀파일 생성
-			String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			String[] coloumNm = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
 			    
 			ExcelReadOption excelReadOption = new ExcelReadOption();
 			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
@@ -297,6 +306,8 @@ public class TestController {
 	            cell = row.createCell(5);
 	            cell.setCellValue(excelData.get("F"));
 	            cell = row.createCell(6);
+	            cell.setCellValue(excelData.get("G"));
+	            cell = row.createCell(7);	            
 	            cell.setCellValue(excelData.get("H"));
 	            i++;
 	            targetValue = excelData.get("A");
@@ -347,7 +358,7 @@ public class TestController {
 			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
 			
 			excelFile.transferTo(destFile); // 엑셀파일 생성
-			String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			String[] coloumNm = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
 			    
 			ExcelReadOption excelReadOption = new ExcelReadOption();
 			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
@@ -405,7 +416,7 @@ public class TestController {
 			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
 			
 			excelFile.transferTo(destFile); // 엑셀파일 생성
-			String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			String[] coloumNm = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
 			    
 			ExcelReadOption excelReadOption = new ExcelReadOption();
 			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
@@ -420,12 +431,25 @@ public class TestController {
 			for(LinkedHashMap<String, String> excelData: excelContent){
 				params = new LinkedHashMap<String, Object>();
 	            //row.setHeight((short)1200);
-	            params.put("bagScanId", excelData.get("A"));
-	            params.put("seq", excelData.get("B"));
-	            params.put("unitGroupCd", excelData.get("C"));
-	            params.put("unitId", excelData.get("D"));
-	            
-	            result = testService.insertXbtBagInfoTemp(params);
+				
+				if("1".equals(excelData.get("B"))) {
+		            params.put("bagScanId", excelData.get("A"));
+		            params.put("unitId", excelData.get("C"));
+		            params.put("unitGroupCd", excelData.get("E"));
+		            params.put("openYn", excelData.get("F"));
+		            params.put("closeYn", excelData.get("G"));
+		            
+		            Common cp = new Common();
+		            cp.setLanguageCode("kr");
+		            cp.setGroupId("actionDiv");
+		            cp.setCodeValue(excelData.get("H"));
+		            Common cr = commonService.selectCommon(cp);
+		            params.put("actionDivName", cr.getCodeName());
+		            params.put("actionDiv", excelData.get("H"));
+		            
+		            result = testService.insertXbtBagInfoTemp(params);					
+				}
+
 			}
 			
 			
@@ -439,6 +463,7 @@ public class TestController {
 	    } 
 	    
 	}	
+	
 	
 	@PostMapping(value="/insertUnitTemp")
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
@@ -464,7 +489,194 @@ public class TestController {
 			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
 			
 			excelFile.transferTo(destFile); // 엑셀파일 생성
-			String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			String[] coloumNm = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
+			    
+			ExcelReadOption excelReadOption = new ExcelReadOption();
+			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
+			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
+			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
+			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
+           
+	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+			int result = 0;
+			for(LinkedHashMap<String, String> excelData: excelContent){
+				params = new LinkedHashMap<String, Object>();
+	            //row.setHeight((short)1200);
+				params.put("unitScanId", "U"+excelData.get("C"));
+	            params.put("unitId", excelData.get("C"));
+	            params.put("unitGroupCd", excelData.get("E"));
+	            params.put("unitName", excelData.get("D"));
+	            params.put("unitDesc", excelData.get("I"));
+	            
+	            result = testService.insertUnitTemp(params);
+			}
+			
+            if(result>0) {
+	            return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+            }else {
+            	return new BaseResponse<Integer>(BaseResponseCode.DATA_IS_NULL);
+            }
+	    }catch(Exception e) {
+	    	return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR);
+	    } 
+	    
+	}	
+	
+
+	
+	
+	//가방안에 담긴 데이터정렬 데이터추가
+	@PostMapping(value="/selctBagInfoRenameList")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public void selctBagInfoRenameList(
+			HttpServletRequest request
+			,HttpServletResponse response
+			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
+	) throws Exception{
+		LOGGER.debug("========= excelUpload ========="+ excelFile);
+
+	    try {
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmsss"); 
+			Date time = new Date(); 
+			String fmtDate=format.format(time);
+
+			//String stordFilePath = GlobalsProperties.getProperty("Globals.fileStorePath");
+			File fileDir = new File(FILE_UPLOAD_PATH);
+			// root directory 없으면 생성
+			if (!fileDir.exists()) {
+				fileDir.mkdirs(); //폴더 생성합니다.
+			}             
+			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
+			
+			excelFile.transferTo(destFile); // 엑셀파일 생성
+			String[] coloumNm = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
+			    
+			ExcelReadOption excelReadOption = new ExcelReadOption();
+			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
+			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
+			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
+			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
+           
+	        XSSFWorkbook wb = new XSSFWorkbook();
+	        XSSFSheet sheet = wb.createSheet("첫번째 시트");        
+	        
+	        Row row = null;
+	        Cell cell = null;
+	        int rowNum = 0;	
+	        
+	        
+			//스타일 설정
+			CellStyle xssfWb = wb.createCellStyle();
+			 
+			//정렬
+			xssfWb.setAlignment(CellStyle.ALIGN_CENTER);
+			xssfWb.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+			
+			//테두리 라인
+			xssfWb.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			xssfWb.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			
+			//배경색
+			//xssfWb.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
+			xssfWb.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+			xssfWb.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);   
+			
+			//폰트
+			XSSFFont font = wb.createFont();
+			font.setFontName("맑은고딕");
+			font.setBold(true);
+			xssfWb.setFont(font);
+			
+	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+	        int s = 0;
+	        int i = 0;
+	        String targetValue = "";
+	        String newName = "";
+	        String seqId = "";
+			for(LinkedHashMap<String, String> excelData: excelContent){    
+	            row = sheet.createRow(rowNum++);
+	            //row.setHeight((short)1200);
+	            cell = row.createCell(0);
+	            if(!excelData.get("A").equals(targetValue)) {
+					seqId = String.format("X%05d", (XBT_TARGET_NAME+i));
+					LOGGER.info("name:"+ excelData.get("A") +"   rename:" + seqId);
+					cell.setCellValue(seqId);		
+					i++;	            	
+					s=0;
+	            }else {
+	            	cell.setCellValue(newName);
+	            }
+	            
+	            cell = row.createCell(1);
+	            cell.setCellValue(s+1);
+	            cell = row.createCell(2);
+	            cell.setCellValue(excelData.get("C"));
+	            cell = row.createCell(3);
+	            cell.setCellValue(excelData.get("D"));
+	            cell = row.createCell(4);
+	            cell.setCellValue(excelData.get("E"));
+	            cell = row.createCell(5);
+	            cell.setCellValue(excelData.get("F"));
+	            cell = row.createCell(6);
+	            cell.setCellValue(excelData.get("G"));
+	            cell = row.createCell(7);	            
+	            cell.setCellValue(excelData.get("H"));
+	            targetValue = excelData.get("A");
+	            newName = seqId;
+	            s++;
+			}
+			
+	        // 컨텐츠 타입과 파일명 지정
+			//xls확장자로 다운로드   
+			String tempName = "xray가방데이터";
+			response.setContentType("ms-vnd/excel");
+			//response.setContentType("application/x-msdownload;charset=utf-8");
+			String fileName = URLEncoder.encode(tempName, ("UTF-8"));
+			response.setHeader("Set-Cookie", "fileDownloadToken=Y; path=/");
+			response.setHeader("Content-Disposition", "attachment; filename=\""+fileName+".xlsx\"");         
+	        // Excel File Output
+	        wb.write(response.getOutputStream());
+	        wb.close();
+	        response.getOutputStream().flush();
+	        response.getOutputStream().close();
+	        destFile.delete(); // 업로드된 엑셀파일 삭제
+	    }catch(Exception e) {
+	    	e.printStackTrace();
+	    } 
+	    
+	}	
+	
+	
+	
+	@PostMapping(value="/insertUnitRename")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public BaseResponse<Integer> insertUnitRename(
+			HttpServletRequest request
+			,HttpServletResponse response
+			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
+	) throws Exception{
+		LOGGER.debug("========= excelUpload ========="+ excelFile);
+
+	    try {
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmsss"); 
+			Date time = new Date(); 
+			String fmtDate=format.format(time);
+
+			//String stordFilePath = GlobalsProperties.getProperty("Globals.fileStorePath");
+			File fileDir = new File(FILE_UPLOAD_PATH);
+			// root directory 없으면 생성
+			if (!fileDir.exists()) {
+				fileDir.mkdirs(); //폴더 생성합니다.
+			}             
+			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
+			
+			excelFile.transferTo(destFile); // 엑셀파일 생성
+			String[] coloumNm = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
 			    
 			ExcelReadOption excelReadOption = new ExcelReadOption();
 			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
@@ -484,7 +696,7 @@ public class TestController {
 	            params.put("unitName", excelData.get("D"));
 	            params.put("unitDesc", excelData.get("D"));
 	            
-	            result = testService.insertUnitTemp(params);
+	            result = testService.insertUnitRename(params);
 			}
 			
             if(result>0) {
@@ -497,4 +709,140 @@ public class TestController {
 	    } 
 	    
 	}		
+	
+	
+	@PostMapping(value="/insertXbtBagConstUnitRename")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public BaseResponse<Integer> insertXbtBagConstUnitRename(
+			HttpServletRequest request
+			,HttpServletResponse response
+			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
+	) throws Exception{
+		LOGGER.debug("========= excelUpload ========="+ excelFile);
+
+	    try {
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmsss"); 
+			Date time = new Date(); 
+			String fmtDate=format.format(time);
+
+			//String stordFilePath = GlobalsProperties.getProperty("Globals.fileStorePath");
+			File fileDir = new File(FILE_UPLOAD_PATH);
+			// root directory 없으면 생성
+			if (!fileDir.exists()) {
+				fileDir.mkdirs(); //폴더 생성합니다.
+			}             
+			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
+			
+			excelFile.transferTo(destFile); // 엑셀파일 생성
+			String[] coloumNm = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
+			    
+			ExcelReadOption excelReadOption = new ExcelReadOption();
+			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
+			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
+			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
+			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
+           
+	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			
+			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+			int i = 0;
+			for(LinkedHashMap<String, String> excelData: excelContent){
+				params = new LinkedHashMap<String, Object>();
+	            //row.setHeight((short)1200);
+	            params.put("bagScanId", excelData.get("A"));
+	            params.put("seq", excelData.get("B"));
+	            params.put("unitGroupCd", excelData.get("C"));
+	            params.put("unitId", excelData.get("D"));
+	            
+	            testService.insertXbtBagConstUnitRename(params);
+	            i++;
+			}
+			
+			int result = 1;
+            if(result>0) {
+	            return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+            }else {
+            	return new BaseResponse<Integer>(BaseResponseCode.DATA_IS_NULL);
+            }
+	    }catch(Exception e) {
+	    	return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR);
+	    } 
+	    
+	}		
+	
+	@PostMapping(value="/insertXbtBagInfoRename")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public BaseResponse<Integer> insertXbtBagInfoRename(
+			HttpServletRequest request
+			,HttpServletResponse response
+			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
+	) throws Exception{
+		LOGGER.debug("========= insertXbtBagInfoRenameTemp ========="+ excelFile);
+
+	    try {
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmsss"); 
+			Date time = new Date(); 
+			String fmtDate=format.format(time);
+
+			//String stordFilePath = GlobalsProperties.getProperty("Globals.fileStorePath");
+			File fileDir = new File(FILE_UPLOAD_PATH);
+			// root directory 없으면 생성
+			if (!fileDir.exists()) {
+				fileDir.mkdirs(); //폴더 생성합니다.
+			}             
+			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
+			
+			excelFile.transferTo(destFile); // 엑셀파일 생성
+			String[] coloumNm = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
+			    
+			ExcelReadOption excelReadOption = new ExcelReadOption();
+			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
+			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
+			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
+			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
+			
+	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			
+			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+			int result = 0;
+			
+			int i = 0;
+			for(LinkedHashMap<String, String> excelData: excelContent){
+				params = new LinkedHashMap<String, Object>();
+	            //row.setHeight((short)1200);
+				
+				if("1".equals(excelData.get("B"))) {
+		            params.put("bagScanId", excelData.get("A"));
+		            params.put("unitId", excelData.get("C"));
+		            params.put("unitGroupCd", excelData.get("E"));
+		            params.put("openYn", excelData.get("F"));
+		            params.put("closeYn", excelData.get("G"));
+		            
+		            Common cp = new Common();
+		            cp.setLanguageCode("kr");
+		            cp.setGroupId("actionDiv");
+		            cp.setCodeValue(excelData.get("H"));
+		            Common cr = commonService.selectCommon(cp);
+		            params.put("actionDivName", cr.getCodeName());
+		            params.put("actionDiv", excelData.get("H"));
+		            
+		            result = testService.insertXbtBagInfoRename(params);
+		            i++;
+				}
+
+			}
+			
+			
+            if(result>0) {
+	            return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+            }else {
+            	return new BaseResponse<Integer>(BaseResponseCode.DATA_IS_NULL);
+            }
+	    }catch(Exception e) {
+	    	return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR);
+	    } 
+	    
+	}			
 }

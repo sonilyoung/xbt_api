@@ -53,6 +53,12 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
+	public Common selectCommon(Common params) {
+		// TODO Auto-generated method stub
+		return commonDAO.selectCommon(params);
+	}	
+	
+	@Override
 	@Transactional
 	public int insertCommonCode(Common params) {
 		// TODO Auto-generated method stub

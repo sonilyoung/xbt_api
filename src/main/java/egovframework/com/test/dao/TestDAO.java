@@ -52,6 +52,17 @@ public class TestDAO extends EgovAbstractMapper{
 		return insert(Namespace + ".insertUnitTemp", params);
 	}		
 	
+	public int insertXbtBagConstUnitRename(LinkedHashMap<String, Object> params) {
+		return insert(Namespace + ".insertXbtBagConstUnitRename", params);
+	}	
 	
+	public int insertXbtBagInfoRename(LinkedHashMap<String, Object> params) {
+		return insert(Namespace + ".insertXbtBagInfoRename", params);
+	}		
+	
+	public int insertUnitRename(LinkedHashMap<String, Object> params) {
+		return insert(Namespace + ".insertUnitRename", params);
+	}		
+		
 	
 }
