@@ -355,38 +355,6 @@ public class TestController {
 			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
 			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
            
-	        XSSFWorkbook wb = new XSSFWorkbook();
-	        XSSFSheet sheet = wb.createSheet("첫번째 시트");        
-	        
-	        Row row = null;
-	        Cell cell = null;
-	        int rowNum = 0;	
-	        
-	        
-			//스타일 설정
-			CellStyle xssfWb = wb.createCellStyle();
-			 
-			//정렬
-			xssfWb.setAlignment(CellStyle.ALIGN_CENTER);
-			xssfWb.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-			
-			//테두리 라인
-			xssfWb.setBorderRight(HSSFCellStyle.BORDER_THIN);
-			xssfWb.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-			xssfWb.setBorderTop(HSSFCellStyle.BORDER_THIN);
-			xssfWb.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-			
-			//배경색
-			//xssfWb.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
-			xssfWb.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
-			xssfWb.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);   
-			
-			//폰트
-			XSSFFont font = wb.createFont();
-			font.setFontName("맑은고딕");
-			font.setBold(true);
-			xssfWb.setFont(font);
-			
 	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
 			
 			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
@@ -444,42 +412,11 @@ public class TestController {
 			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
 			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
 			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
-           
-	        XSSFWorkbook wb = new XSSFWorkbook();
-	        XSSFSheet sheet = wb.createSheet("첫번째 시트");        
-	        
-	        Row row = null;
-	        Cell cell = null;
-	        int rowNum = 0;	
-	        
-	        
-			//스타일 설정
-			CellStyle xssfWb = wb.createCellStyle();
-			 
-			//정렬
-			xssfWb.setAlignment(CellStyle.ALIGN_CENTER);
-			xssfWb.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-			
-			//테두리 라인
-			xssfWb.setBorderRight(HSSFCellStyle.BORDER_THIN);
-			xssfWb.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-			xssfWb.setBorderTop(HSSFCellStyle.BORDER_THIN);
-			xssfWb.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-			
-			//배경색
-			//xssfWb.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
-			xssfWb.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
-			xssfWb.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);   
-			
-			//폰트
-			XSSFFont font = wb.createFont();
-			font.setFontName("맑은고딕");
-			font.setBold(true);
-			xssfWb.setFont(font);
 			
 	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
 			
 			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+			int result = 0;
 			for(LinkedHashMap<String, String> excelData: excelContent){
 				params = new LinkedHashMap<String, Object>();
 	            //row.setHeight((short)1200);
@@ -488,10 +425,10 @@ public class TestController {
 	            params.put("unitGroupCd", excelData.get("C"));
 	            params.put("unitId", excelData.get("D"));
 	            
-	            testService.insertXbtBagInfoTemp(params);
+	            result = testService.insertXbtBagInfoTemp(params);
 			}
 			
-			int result = 1;
+			
             if(result>0) {
 	            return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
             }else {
@@ -535,53 +472,21 @@ public class TestController {
 			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
 			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
            
-	        XSSFWorkbook wb = new XSSFWorkbook();
-	        XSSFSheet sheet = wb.createSheet("첫번째 시트");        
-	        
-	        Row row = null;
-	        Cell cell = null;
-	        int rowNum = 0;	
-	        
-	        
-			//스타일 설정
-			CellStyle xssfWb = wb.createCellStyle();
-			 
-			//정렬
-			xssfWb.setAlignment(CellStyle.ALIGN_CENTER);
-			xssfWb.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-			
-			//테두리 라인
-			xssfWb.setBorderRight(HSSFCellStyle.BORDER_THIN);
-			xssfWb.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-			xssfWb.setBorderTop(HSSFCellStyle.BORDER_THIN);
-			xssfWb.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-			
-			//배경색
-			//xssfWb.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
-			xssfWb.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
-			xssfWb.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);   
-			
-			//폰트
-			XSSFFont font = wb.createFont();
-			font.setFontName("맑은고딕");
-			font.setBold(true);
-			xssfWb.setFont(font);
-			
 	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
-			
 			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+			int result = 0;
 			for(LinkedHashMap<String, String> excelData: excelContent){
 				params = new LinkedHashMap<String, Object>();
 	            //row.setHeight((short)1200);
-	            params.put("bagScanId", excelData.get("A"));
-	            params.put("seq", excelData.get("B"));
-	            params.put("unitGroupCd", excelData.get("C"));
-	            params.put("unitId", excelData.get("D"));
+				params.put("unitScanId", "U"+excelData.get("C"));
+	            params.put("unitId", excelData.get("C"));
+	            params.put("unitGroupCd", excelData.get("E"));
+	            params.put("unitName", excelData.get("D"));
+	            params.put("unitDesc", excelData.get("D"));
 	            
-	            testService.insertUnitTemp(params);
+	            result = testService.insertUnitTemp(params);
 			}
 			
-			int result = 1;
             if(result>0) {
 	            return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
             }else {

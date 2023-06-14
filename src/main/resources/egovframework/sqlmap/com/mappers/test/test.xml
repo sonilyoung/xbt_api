@@ -28,7 +28,7 @@
 	</insert>	
 	
 	<insert id="insertXbtBagInfoTemp" parameterType="java.util.LinkedHashMap">
-		INSERT INTO XBT_BAG_INFO(
+		INSERT INTO XBT_BAG_INFO_TEMP(
 			BAG_SCAN_ID,
 			STUDY_LVL,
 			UNIT_ID,
@@ -48,7 +48,7 @@
 	</insert>	
 		
 	<insert id="insertUnitTemp" parameterType="java.util.LinkedHashMap">
-		INSERT INTO XBT_UNIT_INFO
+		INSERT INTO XBT_UNIT_INFO_TEMP
 		(
 			UNIT_SCAN_ID
 			,UNIT_ID

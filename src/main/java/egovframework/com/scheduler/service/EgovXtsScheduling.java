@@ -71,56 +71,62 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 				//baseline.getEvaluationTotalScore()
 				//baseline.getPracticeTotalScore()
 				
-				//이론점수
-				XbtScore theory = systemService.selectTheoryScore(xs);
-				int theoryScore = 0;
-				int evaluationScore = 0;
-				int practiceScore = 0;
-				if(theory!=null) {
-					theoryScore = (theory.getGainScore()*baseline.getTheoryTotalScore())/100;
-					LOGGER.info("==============이론==============");
-					LOGGER.info("교육생 theoryScore:" + theory.getUserId() + " : " + theory.getGainScore());
-					LOGGER.info("설정 theoryScore:" + baseline.getTheoryTotalScore());
-					LOGGER.info("theoryScore:" + theoryScore);
-					xs.setTheoryScore(theoryScore);
-					xs.setCommand("theory");
-					systemService.updateXbtScore(xs);					
+				if(baseline!=null) {
+					//이론점수
+					XbtScore theory = systemService.selectTheoryScore(xs);
+					int theoryScore = 0;
+					int evaluationScore = 0;
+					int practiceScore = 0;
+					if(theory!=null) {
+						theoryScore = (theory.getGainScore()*baseline.getTheoryTotalScore())/100;
+						LOGGER.info("==============이론==============");
+						LOGGER.info("교육생 theoryScore:" + theory.getUserId() + " : " + theory.getGainScore());
+						LOGGER.info("설정 theoryScore:" + baseline.getTheoryTotalScore());
+						LOGGER.info("theoryScore:" + theoryScore);
+						xs.setTheoryScore(theoryScore);
+						xs.setCommand("theory");
+						systemService.updateXbtScore(xs);					
+					}
+					
+					//평가점수
+					XbtScore evaluation = systemService.selectEvaluationScore(xs);
+					if(evaluation!=null) {
+						evaluationScore = (evaluation.getGainScore()*baseline.getEvaluationTotalScore())/100;
+						LOGGER.info("==============평가==============");
+						LOGGER.info("교육생 evaluationScore:" + evaluation.getUserId() + " : " + evaluation.getGainScore());
+						LOGGER.info("설정 evaluationScore:"+ baseline.getEvaluationTotalScore());
+						LOGGER.info("evaluationScore:"+ evaluationScore);
+						xs.setEvaluationScore(evaluationScore);
+						xs.setCommand("evaluation");
+						systemService.updateXbtScore(xs);
+					}
+					
+					//실습점수
+					XbtScore evaluationTotalScore = systemService.selectPracticeScore(xs);
+					if(evaluationTotalScore!=null) {
+						practiceScore = evaluationTotalScore.getPracticeScore();
+						LOGGER.info("==============실습==============");
+						LOGGER.info("교육생 evaluationScore:" + evaluationTotalScore.getUserId() + " : " + evaluationTotalScore.getPracticeScore());
+						LOGGER.info("설정 evaluationScore:"+ baseline.getPracticeTotalScore());
+						LOGGER.info("evaluationScore:"+ evaluationTotalScore.getPracticeScore());					
+					}
+
+					
+					XbtScore processScore = systemService.selectPracticeScore(xs);
+					if(processScore!=null) {
+						if("Y".equals(processScore.getTheoryYn()) && "Y".equals(processScore.getPracticeYn()) && "Y".equals(processScore.getEvaluationYn())) {
+							 int totalScore = theoryScore + evaluationScore + practiceScore;
+							 xs.setGainScore(totalScore);
+							 
+							 if(totalScore >= baseline.getEndingStdScore()) {
+								 xs.setPassYn("Y");
+							 }else {
+								 xs.setPassYn("N");
+							 }
+							 systemService.updateXbtEndScore(xs);
+						}					
+					}					
 				}
-				
-				//평가점수
-				XbtScore evaluation = systemService.selectEvaluationScore(xs);
-				if(evaluation!=null) {
-					evaluationScore = (evaluation.getGainScore()*baseline.getEvaluationTotalScore())/100;
-					LOGGER.info("==============평가==============");
-					LOGGER.info("교육생 evaluationScore:" + evaluation.getUserId() + " : " + evaluation.getGainScore());
-					LOGGER.info("설정 evaluationScore:"+ baseline.getEvaluationTotalScore());
-					LOGGER.info("evaluationScore:"+ evaluationScore);
-					xs.setEvaluationScore(evaluationScore);
-					xs.setCommand("evaluation");
-					systemService.updateXbtScore(xs);
-				}
-				
-				//실습점수
-				XbtScore evaluationTotalScore = systemService.selectPracticeScore(xs);
-				practiceScore = evaluationTotalScore.getPracticeScore();
-				LOGGER.info("==============실습==============");
-				LOGGER.info("교육생 evaluationScore:" + evaluationTotalScore.getUserId() + " : " + evaluationTotalScore.getPracticeScore());
-				LOGGER.info("설정 evaluationScore:"+ baseline.getPracticeTotalScore());
-				LOGGER.info("evaluationScore:"+ evaluationTotalScore.getPracticeScore());
-				
-				XbtScore processScore = systemService.selectPracticeScore(xs);
-				if("Y".equals(processScore.getTheoryYn()) && "Y".equals(processScore.getPracticeYn()) && "Y".equals(processScore.getEvaluationYn())) {
-					 int totalScore = theoryScore + evaluationScore + practiceScore;
-					 xs.setGainScore(totalScore);
-					 
-					 if(totalScore >= baseline.getEndingStdScore()) {
-						 xs.setPassYn("Y");
-					 }else {
-						 xs.setPassYn("N");
-					 }
-					 systemService.updateXbtEndScore(xs);
-				}
-				
 				
 			}
 		}
