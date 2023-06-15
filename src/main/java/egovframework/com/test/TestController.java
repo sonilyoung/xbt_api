@@ -289,7 +289,7 @@ public class TestController {
 	            //row.setHeight((short)1200);
 	            
 	            cell = row.createCell(0);
-	            cell.setCellValue(excelData.get("A"));
+	            cell.setCellValue(excelData.get("A")); //가방촬영id
 	            cell = row.createCell(1);
 	            
 	            if(!excelData.get("A").equals(targetValue)) {
@@ -298,17 +298,25 @@ public class TestController {
 	            
 	            cell.setCellValue(i+1);
 	            cell = row.createCell(2);
-	            cell.setCellValue(excelData.get("C"));
+	            cell.setCellValue(excelData.get("C"));//물품코드
 	            cell = row.createCell(3);
-	            cell.setCellValue(excelData.get("D"));
+	            cell.setCellValue(excelData.get("D"));//물푸몀ㅇ
 	            cell = row.createCell(4);
-	            cell.setCellValue(excelData.get("E"));
+	            cell.setCellValue(excelData.get("E"));//물품분류코드 그룹코드
 	            cell = row.createCell(5);
-	            cell.setCellValue(excelData.get("F"));
+	            cell.setCellValue(excelData.get("F"));//개봉여부 OPEN CLOSE
 	            cell = row.createCell(6);
-	            cell.setCellValue(excelData.get("G"));
-	            cell = row.createCell(7);	            
-	            cell.setCellValue(excelData.get("H"));
+	            cell.setCellValue(excelData.get("G"));//제한여부 Restricted, PASS , Prohibited
+	            cell = row.createCell(7);//actionDiv
+	            
+	            Common cp = new Common();
+	            cp.setLanguageCode("kr");
+	            cp.setGroupId("actionDiv");
+	            cp.setMemo1(excelData.get("F")); //개봉여부
+	            cp.setMemo2(excelData.get("G")); //제한여부
+	            Common cr = commonService.selectCommonDetail(cp);
+	            cell.setCellValue(cr.getCodeValue());//actionDiv
+	            
 	            i++;
 	            targetValue = excelData.get("A");
 			}
@@ -374,8 +382,8 @@ public class TestController {
 	            //row.setHeight((short)1200);
 	            params.put("bagScanId", excelData.get("A"));
 	            params.put("seq", excelData.get("B"));
-	            params.put("unitGroupCd", excelData.get("C"));
-	            params.put("unitId", excelData.get("D"));
+	            params.put("unitId", excelData.get("C"));
+	            params.put("unitGroupCd", excelData.get("E"));
 	            
 	            testService.insertXbtBagConstUnitTemp(params);
 			}
@@ -623,8 +631,16 @@ public class TestController {
 	            cell.setCellValue(excelData.get("F"));
 	            cell = row.createCell(6);
 	            cell.setCellValue(excelData.get("G"));
-	            cell = row.createCell(7);	            
-	            cell.setCellValue(excelData.get("H"));
+	            cell = row.createCell(7);//actionDiv
+	            
+	            Common cp = new Common();
+	            cp.setLanguageCode("kr");
+	            cp.setGroupId("actionDiv");
+	            cp.setMemo1(excelData.get("F")); //개봉여부
+	            cp.setMemo2(excelData.get("G")); //제한여부
+	            Common cr = commonService.selectCommonDetail(cp);
+	            cell.setCellValue(cr.getCodeValue());//actionDiv
+	            
 	            targetValue = excelData.get("A");
 	            newName = seqId;
 	            s++;

@@ -31,6 +31,8 @@ public interface CommonService {
 	
 	public Common selectCommon(Common params);
 	
+	public Common selectCommonDetail(Common params);
+	
 	public int insertCommonCode(Common params);
 	
 	public int insertCommonCodeDetail(Common params);

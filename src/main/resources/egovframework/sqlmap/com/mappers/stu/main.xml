@@ -76,7 +76,12 @@
 		AND P_MENU_CD = #{pMenuCd}
 		AND T1.USE_YN = 'Y' 
     	AND T1.MENU_CD NOT IN (
-	    	SELECT MENU_CD FROM XBT_BASELINE_EDU_DATE WHERE EDU_START_DATE <= date_format(NOW(), '%Y-%m-%d') <= EDU_END_DATE AND USER_ID = #{userId}
+	    	SELECT 
+	    		MENU_CD 
+	    	FROM XBT_BASELINE_EDU_DATE 
+	    	WHERE 
+	    		date_format(NOW(), '%Y-%m-%d') BETWEEN EDU_START_DATE AND EDU_END_DATE 
+	    		AND USER_ID = #{userId}
     	)   
 		UNION ALL
 		SELECT 
@@ -97,7 +102,12 @@
 		AND P_MENU_CD = #{pMenuCd}
 		AND T2.USE_YN = 'Y'
     	AND T2.MENU_CD IN (
-	    	SELECT MENU_CD FROM XBT_BASELINE_EDU_DATE WHERE EDU_START_DATE <= date_format(NOW(), '%Y-%m-%d') <= EDU_END_DATE AND USER_ID = #{userId}
+	    	SELECT 
+	    		MENU_CD 
+	    	FROM XBT_BASELINE_EDU_DATE 
+	    	WHERE 
+	    		date_format(NOW(), '%Y-%m-%d') BETWEEN EDU_START_DATE AND EDU_END_DATE 
+	    		AND USER_ID = #{userId}	    	
 	    )       	
 	)TOT ORDER BY P_MENU_CD, MENU_ORDER ASC    	
 	]]>		

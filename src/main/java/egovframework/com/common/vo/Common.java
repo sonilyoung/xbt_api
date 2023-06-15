@@ -19,6 +19,8 @@ public class Common implements Serializable {
 	private String sortOrder;/*정렬*/
 	private String codeName;/*코드명*/
 	private String remarks;/*비고*/
+	private String memo1;/*메모1*/
+	private String memo2;/*메모2*/
 	private String useYn;/*사용유무*/
 	private String isDelete;/*삭제*/
 	private String insertId;/*등록자*/

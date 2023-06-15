@@ -25,6 +25,10 @@ public class CommonDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectCommon", params);
 	}
 	
+	public Common selectCommonDetail(Common params) {
+		return selectOne(Namespace + ".selectCommonDetail", params);
+	}
+	
 	public Long insertCommonCode(Common params) {
 		return (long) insert(Namespace + ".insertCommonCode", params);
 	}
