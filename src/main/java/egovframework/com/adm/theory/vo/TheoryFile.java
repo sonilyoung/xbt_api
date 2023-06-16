@@ -9,8 +9,11 @@ import lombok.Data;
 public class TheoryFile {
 
 	private Long theoryNo;
+	private String eduCode;
+	private String eduName;
 	private String title;
 	private String contents;
+	private String useYn;
 	private String insertId;
 	private String insertDate;
 	private String updateId;

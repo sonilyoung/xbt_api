@@ -49,7 +49,7 @@
 		ORDER BY SORT_ORDER 
 	</select>	
 	
-	<!-- 공통코드상세 -->
+	<!-- 공통코드상세 코드값으로 확인 -->
 	<select id="selectCommon" parameterType="egovframework.com.common.vo.Common" resultType="egovframework.com.common.vo.Common">
 		SELECT
 			CODE_NO,
@@ -71,7 +71,16 @@
 			XBT_COMMON_CODE
 		WHERE LANGUAGE_CODE = #{languageCode}
 		AND GROUP_ID = #{groupId}
-		AND CODE_VALUE = #{codeValue}
+		
+		<choose>
+			<when test='command == "codeValue"'>
+				AND CODE_VALUE = #{codeValue}
+			</when>		
+			<when test='command == "codeName"'>
+				AND CODE_NAME = #{codeName}
+			</when>					
+		</choose>		
+		
 	</select>	
 	
 	<!-- 공통코드분류상세 -->

@@ -31,6 +31,7 @@ public class Common implements Serializable {
 	private String languageCode;/*언어셋*/
 	private String mainYn;/*메인그룹*/
 	private String parentsGroupId;/*부모그룹id*/
+	private String command;//조건문에서사용
 	
 	List<Common> subList;//하위목록
 	

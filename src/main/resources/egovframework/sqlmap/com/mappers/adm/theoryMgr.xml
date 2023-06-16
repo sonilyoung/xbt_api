@@ -17,10 +17,10 @@
 			XBT_THEORY_GROUP
 		WHERE GROUP_TYPE = #{groupType}
 		<choose>
-			<when test='theoryParentGroupCd != null'>
+			<when test='theoryParentGroupCd != null and theoryParentGroupCd != ""'>
 				AND THEORY_PARENT_GROUP_CD = #{theoryParentGroupCd}
 			</when>
-		</choose>		
+		</choose>
 	</select>		
 
 <!-- 이론그룹  상세 -->
@@ -198,7 +198,15 @@
 		SELECT
 			THEORY_NO,
 			TITLE,
+			EDU_CODE,
+			(
+				SELECT CODE_NAME FROM XBT_COMMON_CODE T2
+				WHERE T2.GROUP_ID = 'eduName' 
+				AND LANGUAGE_CODE = 'kr'
+				AND CODE_VALUE = EDU_CODE		
+			)as eduName,				
 			CONTENTS,
+			USE_YN,
 			INSERT_ID,
 			INSERT_DATE,
 			UPDATE_ID,
@@ -212,7 +220,15 @@
 		SELECT
 			THEORY_NO,
 			TITLE,
+			EDU_CODE,
+			(
+				SELECT CODE_NAME FROM XBT_COMMON_CODE T2
+				WHERE T2.GROUP_ID = 'eduName' 
+				AND LANGUAGE_CODE = 'kr'
+				AND CODE_VALUE = EDU_CODE		
+			)as eduName,			
 			CONTENTS,
+			USE_YN,
 			INSERT_ID,
 			INSERT_DATE,
 			UPDATE_ID,
@@ -227,13 +243,17 @@
 		INSERT INTO XBT_THEORY_FILE
 		(
 			TITLE,
+			EDU_CODE,
 			CONTENTS,
+			USE_YN,
 			INSERT_ID,
 			INSERT_DATE
 		)
 		VALUES(
 			#{title}
+			,#{eduCode}
 			,#{contents}
+			,'Y'
 			,#{insertId}
 			,now()
 		)	
@@ -245,7 +265,9 @@
 		UPDATE XBT_THEORY_FILE
 		SET 
 			TITLE = #{title}
+			, EDU_CODE = #{eduCode}
 			, CONTENTS = #{title}
+			, USE_YN = #{useYn}
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DATE = now()
 		WHERE THEORY_NO = #{theoryNo}

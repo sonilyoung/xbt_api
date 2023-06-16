@@ -63,8 +63,22 @@ public class UserMgrServiceImpl implements UserMgrService {
 		return (List<UserBaseline>) userMgrDAO.selectBaselineUserList(params);
 	}
 	
-
-
+	@Override
+	public UserBaseline selectBaselineEvaluation(UserBaseline params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.selectBaselineEvaluation(params);
+	}		
+	@Override
+	public UserBaseline selectBaselineTherory(UserBaseline params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.selectBaselineTherory(params);
+	}		
+	@Override
+	public UserBaseline selectBaselinePractice(UserBaseline params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.selectBaselinePractice(params);
+	}		
+	
 	@Override
 	public int updateBaselineUser(UserBaseline params) {
 		// TODO Auto-generated method stub
@@ -175,8 +189,7 @@ public class UserMgrServiceImpl implements UserMgrService {
 	public int deleteTeacher(TeacherInfo params) {
 		// TODO Auto-generated method stub
 		return userMgrDAO.deleteTeacher(params);
-	}	
-		
+	}
 
 
 }

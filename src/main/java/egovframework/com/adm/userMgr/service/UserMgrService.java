@@ -34,6 +34,12 @@ public interface UserMgrService{
 	
 	public List<UserBaseline> selectBaselineUserList(UserBaseline params);
 	
+	public UserBaseline selectBaselineEvaluation(UserBaseline params);
+	
+	public UserBaseline selectBaselineTherory(UserBaseline params);
+	
+	public UserBaseline selectBaselinePractice(UserBaseline params);
+	
 	public int updateBaselineUser(UserBaseline params);
 	
 	public UserInfo selectUserCheck(UserInfo params);

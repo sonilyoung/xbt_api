@@ -27,6 +27,16 @@ public class UserBaseline {
 	private String eduStartDate;
 	private String eduEndDate;
 	private String endingYn;
+	private int questionCnt;
+	private int rightCnt;
+	private int wrongCnt;
+	private int evaluationTotalScore;
+	private int theoryTotalScore;
+	private int practiceTotalScore;
+	
+	
+	
+	
 
 
 	

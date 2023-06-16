@@ -33,4 +33,6 @@ public interface TestService {
 	public int insertXbtBagInfoRename(LinkedHashMap<String, Object> params);
 	
 	public int insertUnitRename(LinkedHashMap<String, Object> params);
+	
+	public int insertTheoryExcel(LinkedHashMap<String, Object> params);
 }

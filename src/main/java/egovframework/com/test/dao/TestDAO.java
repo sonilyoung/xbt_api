@@ -62,6 +62,10 @@ public class TestDAO extends EgovAbstractMapper{
 	
 	public int insertUnitRename(LinkedHashMap<String, Object> params) {
 		return insert(Namespace + ".insertUnitRename", params);
+	}	
+	
+	public int insertTheoryExcel(LinkedHashMap<String, Object> params) {
+		return insert(Namespace + ".insertTheoryExcel", params);
 	}		
 		
 	

@@ -320,7 +320,6 @@
 			USER_NM,
 			PROC_NM,
 			COMP_NM,
-			DEPT_NM,
 			GAIN_SCORE,
 			PRACTICE_SCORE,
 			THEORY_SCORE,
@@ -332,8 +331,60 @@
 			ENDING_YN
 		FROM
 			XBT_BASELINE_STUDENT_INFO
-		WHERE USER_ID = #{userId}	
 	</select>	
+	
+	<!-- 차수 교육생 비중평가조호  -->
+	<select id="selectBaselineEvaluation" parameterType="egovframework.com.adm.userMgr.vo.UserBaseline" resultType="egovframework.com.adm.userMgr.vo.UserBaseline" >	
+		SELECT
+			T1.PROC_CD,
+			T1.PROC_NM,
+			T2.RIGHT_CNT + T2.WRONG_CNT AS questionCnt,
+			T2.RIGHT_CNT,
+			T2.WRONG_CNT,
+			T2.GAIN_SCORE AS evaluationScore,
+			(SELECT EVALUATION_TOTAL_SCORE FROM XBT_BASELINE XB WHERE XB.PROC_CD = T1.PROC_CD)AS EVALUATION_TOTAL_SCORE,
+			T1.GAIN_SCORE
+		FROM
+			XBT_BASELINE_STUDENT_INFO T1 INNER JOIN XBT_BASELINE_EVALUATION T2
+			ON T1.USER_ID = #{userId} 
+			AND T1.PROC_CD = #{procCd} 
+			AND T1.USER_ID = T2.USER_ID 
+			AND T1.PROC_CD = T2.PROC_CD 
+	</select>	
+
+	<!-- 차수 교육생 비중이론평가조회 -->
+	<select id="selectBaselineTherory" parameterType="egovframework.com.adm.userMgr.vo.UserBaseline" resultType="egovframework.com.adm.userMgr.vo.UserBaseline" >
+		SELECT
+			T1.PROC_CD,
+			T1.PROC_NM,
+			T2.RIGHT_CNT + T2.WRONG_CNT AS questionCnt,
+			T2.RIGHT_CNT,
+			T2.WRONG_CNT,
+			T2.GAIN_SCORE AS theoryScore,
+			(SELECT THEORY_TOTAL_SCORE FROM XBT_BASELINE XB WHERE XB.PROC_CD = T1.PROC_CD)AS THEORY_TOTAL_SCORE,
+			T1.GAIN_SCORE
+		FROM
+			XBT_BASELINE_STUDENT_INFO T1 INNER JOIN XBT_BASELINE_THEORY T2
+			ON T1.USER_ID = #{userId} 
+			AND T1.PROC_CD = #{procCd} 
+			AND T1.USER_ID = T2.USER_ID 
+			AND T1.PROC_CD = T2.PROC_CD 				
+	</select>
+	
+	<!-- 차수 교육생 비중실기평가조회 -->
+	<select id="selectBaselinePractice" parameterType="egovframework.com.adm.userMgr.vo.UserBaseline" resultType="egovframework.com.adm.userMgr.vo.UserBaseline" >
+		SELECT
+			T1.PROC_CD,
+			T1.PROC_NM,
+			(SELECT PRACTICE_TOTAL_SCORE FROM XBT_BASELINE XB WHERE XB.PROC_CD = T1.PROC_CD)AS PRACTICE_TOTAL_SCORE,
+			T1.PRACTICE_SCORE AS gainScore
+		FROM
+			XBT_BASELINE_STUDENT_INFO T1 
+		WHERE 			
+			T1.USER_ID = #{userId} 
+			AND T1.PROC_CD = #{procCd} 
+	</select>
+		
 	
 	<!-- 차수 교육생 수정 -->
 	<update id="updateBaselineUser" parameterType="egovframework.com.adm.userMgr.vo.UserBaseline">

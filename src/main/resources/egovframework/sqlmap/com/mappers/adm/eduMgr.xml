@@ -254,7 +254,9 @@
 				(SELECT PROC_SEQ FROM XBT_BASELINE xb WHERE xb.PROC_CD = #{procCd}) AS procSeq,				
 				EDU_START_DATE,
 				EDU_END_DATE,
-				CASE WHEN date_format(NOW(), '%Y-%m-%d') BETWEEN EDU_START_DATE AND EDU_END_DATE = 1 THEN 'true' ELSE 'false' end  learnYn
+				CASE WHEN date_format(NOW(), '%Y-%m-%d') BETWEEN EDU_START_DATE AND EDU_END_DATE = 1 THEN 'true' 
+				WHEN date_format(NOW(), '%Y-%m-%d') < EDU_END_DATE = 1 THEN 'future' 
+				ELSE 'false' end  learnYn
 			FROM XBT_BASELINE_EDU_DATE
 			WHERE PROC_CD = #{procCd}
 		]]>
@@ -295,7 +297,9 @@
 				INSERT_DATE,
 				EDU_START_DATE,
 				EDU_END_DATE,
-				CASE WHEN date_format(NOW(), '%Y-%m-%d') BETWEEN EDU_START_DATE AND EDU_END_DATE = 1 THEN 'true' ELSE 'false' end  learnYn
+				CASE WHEN date_format(NOW(), '%Y-%m-%d') BETWEEN EDU_START_DATE AND EDU_END_DATE = 1 THEN 'true' 
+				WHEN date_format(NOW(), '%Y-%m-%d') < EDU_END_DATE = 1 THEN 'future' 
+				ELSE 'false' end  learnYn
 			FROM XBT_BASELINE_EDU_DATE t1	
 			WHERE PROC_CD = #{procCd}
 			order by EDU_START_DATE , EDU_END_DATE 

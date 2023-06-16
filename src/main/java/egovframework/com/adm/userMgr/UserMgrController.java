@@ -22,6 +22,7 @@ import egovframework.com.adm.userMgr.service.UserMgrService;
 import egovframework.com.adm.userMgr.vo.TeacherInfo;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
+import egovframework.com.adm.userMgr.vo.UserBaselinePop;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
 import egovframework.com.adm.userMgr.vo.UserBaselineSubInfo;
 import egovframework.com.adm.userMgr.vo.UserInfo;
@@ -142,10 +143,6 @@ public class UserMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getUserId())){				
-			return new BaseResponse<List<UserBaseline>>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
 		try {
 			List<UserBaseline> resultList = userMgrService.selectBaselineUserList(params);
 	        return new BaseResponse<List<UserBaseline>>(resultList);
@@ -153,7 +150,47 @@ public class UserMgrController {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
-    }     
+    }  
+    
+    
+    /**
+     * 차수 교육생 비중평가팝업조호
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectBaselineUser.do")
+    @ApiOperation(value = "차수 교육생 비중평가팝업조호", notes = "차수 교육생 비중평가팝업조호")
+    public BaseResponse<UserBaselinePop> selectBaselineUser(HttpServletRequest request, @RequestBody UserBaseline params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<UserBaselinePop>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<UserBaselinePop>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		try {
+			UserBaseline evaluation = userMgrService.selectBaselineEvaluation(params);
+			UserBaseline theory = userMgrService.selectBaselineTherory(params);
+			UserBaseline practice = userMgrService.selectBaselinePractice(params);
+			
+			UserBaselinePop result = new UserBaselinePop();
+			result.setEvaluationInfo(evaluation);
+			result.setTheoryInfo(theory);
+			result.setPracticeInfo(practice);
+			
+	        return new BaseResponse<UserBaselinePop>(result);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }         
     
     /**
      * 차수 교육생 수정

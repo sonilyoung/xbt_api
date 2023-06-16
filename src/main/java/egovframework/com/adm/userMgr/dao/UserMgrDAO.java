@@ -28,6 +28,18 @@ public class UserMgrDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectBaselineUserList", params);
 	}	
 	
+	public UserBaseline selectBaselineEvaluation(UserBaseline params) {
+		return selectOne(Namespace + ".selectBaselineEvaluation", params);
+	}		
+	
+	public UserBaseline selectBaselineTherory(UserBaseline params) {
+		return selectOne(Namespace + ".selectBaselineTherory", params);
+	}	
+	
+	public UserBaseline selectBaselinePractice(UserBaseline params) {
+		return selectOne(Namespace + ".selectBaselinePractice", params);
+	}		
+	
 	public int updateBaselineUser(UserBaseline params) {
 		return update(Namespace + ".updateBaselineUser", params);
 	}		

@@ -654,7 +654,17 @@ public class TheoryController {
 		
 		try {
 			//이론조회
-	        return new BaseResponse<List<TheoryFile>>(theoryService.selectTheoryFileList(params));
+			List<TheoryFile> result = theoryService.selectTheoryFileList(params);
+			
+			
+			for(TheoryFile tf : result) {
+				
+	            AttachFile af = new AttachFile();
+	            af.setFileTarget(tf.getTheoryNo());
+	            List<AttachFile> existFileList = fileService.selectFileAll(af);				
+	            tf.setFiles(existFileList);			
+			}
+	        return new BaseResponse<List<TheoryFile>>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
@@ -688,7 +698,11 @@ public class TheoryController {
         
 		if(StringUtils.isEmpty(files)){				
 			return new BaseResponse<TheoryFile>(BaseResponseCode.PARAMS_ERROR, "Files" + BaseApiMessage.REQUIRED.getCode());
-		}	        
+		}	   
+		
+		if(StringUtils.isEmpty(params.getEduCode())){				
+			return new BaseResponse<TheoryFile>(BaseResponseCode.PARAMS_ERROR, "EduCode" + BaseApiMessage.REQUIRED.getCode());
+		}		
 		
 		if(StringUtils.isEmpty(params.getTitle())){				
 			return new BaseResponse<TheoryFile>(BaseResponseCode.PARAMS_ERROR, "Title" + BaseApiMessage.REQUIRED.getCode());
@@ -789,6 +803,10 @@ public class TheoryController {
 		if(StringUtils.isEmpty(files)){				
 			return new BaseResponse<TheoryFile>(BaseResponseCode.PARAMS_ERROR, "Files" + BaseApiMessage.REQUIRED.getCode());
 		}	
+		
+		if(StringUtils.isEmpty(params.getEduCode())){				
+			return new BaseResponse<TheoryFile>(BaseResponseCode.PARAMS_ERROR, "EduCode" + BaseApiMessage.REQUIRED.getCode());
+		}				
 		
 		if(StringUtils.isEmpty(params.getTheoryNo())){				
 			return new BaseResponse<TheoryFile>(BaseResponseCode.PARAMS_ERROR, "TheoryNo" + BaseApiMessage.REQUIRED.getCode());

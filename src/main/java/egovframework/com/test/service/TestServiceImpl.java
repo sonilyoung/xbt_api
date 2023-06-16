@@ -87,5 +87,11 @@ public class TestServiceImpl implements TestService {
 		return testDAO.insertUnitRename(params);
 	}
 
+	@Override
+	public int insertTheoryExcel(LinkedHashMap<String, Object> params) {
+		// TODO Auto-generated method stub
+		return testDAO.insertTheoryExcel(params);
+	}
+
 
 }
