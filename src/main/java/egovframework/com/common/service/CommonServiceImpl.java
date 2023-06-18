@@ -67,7 +67,6 @@ public class CommonServiceImpl implements CommonService {
 		
 	
 	@Override
-	@Transactional
 	public int insertCommonCode(Common params) {
 		// TODO Auto-generated method stub
 		//commonDAO.insertCommonCode(params);

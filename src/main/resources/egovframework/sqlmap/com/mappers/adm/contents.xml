@@ -571,9 +571,8 @@
     		 , C.PASS_YN					 /*통과여부*/
     		 , A.ANSWER_ITEM /*정답여부*/
 		FROM XBT_BAG_CONST_UNIT A INNER JOIN XBT_UNIT_INFO B INNER JOIN XBT_UNIT_GROUP C
-		ON  A.UNIT_ID=B.UNIT_ID
+		ON  A.BAG_SCAN_ID = #{bagScanId} AND A.UNIT_ID=B.UNIT_ID
       	AND B.UNIT_GROUP_CD=C.UNIT_GROUP_CD                                               												 
-        AND A.BAG_SCAN_ID = #{bagScanId}		
         ORDER BY BAG_SCAN_ID DESC
 	</select>
 	

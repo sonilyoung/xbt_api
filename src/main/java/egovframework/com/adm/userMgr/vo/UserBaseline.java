@@ -19,6 +19,7 @@ public class UserBaseline {
 	private String deptNm;
 	private String gainScore;
 	private int practiceScore;
+	private int practiceBeforeScore;
 	private String practiceYn;
 	private String theoryScore;
 	private int evaluationScore;

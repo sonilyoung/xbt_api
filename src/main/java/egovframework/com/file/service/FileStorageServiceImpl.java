@@ -56,6 +56,9 @@ public class FileStorageServiceImpl implements FileStorageService {
     /*파일업로드 저장경로*/
     public static final String FILE_UPLOAD_PATH = GlobalsProperties.getProperty("file.upload.path");
     
+    /*파일업로드 저장경로*/
+    public static final String FILE_DB_UPLOAD_PATH = GlobalsProperties.getProperty("file.db.upload.path");    
+    
     @PostConstruct
     public void initialize() {
         this.realPath = servletContext.getRealPath("/");
@@ -178,7 +181,7 @@ public class FileStorageServiceImpl implements FileStorageService {
             file.transferTo(newFile);
             attachFile = new AttachFile();
             attachFile.setFileExt(fileExtension);
-            attachFile.setFilePath(filePath);
+            attachFile.setFilePath(FILE_DB_UPLOAD_PATH);
             attachFile.setOriginalFileName(originalFileName);
             attachFile.setSaveFileName(realFileName);
             attachFile.setFileSize((int) file.getSize());

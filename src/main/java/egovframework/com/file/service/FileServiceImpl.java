@@ -50,7 +50,6 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	@Transactional
 	public int insertFile(AttachFile param) {
 		// TODO Auto-generated method stub
 		return fileDAO.insertFile(param);

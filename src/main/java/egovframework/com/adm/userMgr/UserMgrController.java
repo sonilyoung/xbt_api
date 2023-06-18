@@ -179,6 +179,22 @@ public class UserMgrController {
 			UserBaseline evaluation = userMgrService.selectBaselineEvaluation(params);
 			UserBaseline theory = userMgrService.selectBaselineTherory(params);
 			UserBaseline practice = userMgrService.selectBaselinePractice(params);
+			UserBaseline basicInfo = userMgrService.selectBaselineBasicTotalScore(params);
+			
+			if(evaluation==null) {
+				evaluation = new UserBaseline();
+				evaluation.setEvaluationTotalScore(basicInfo.getEvaluationTotalScore());  		
+			}
+			
+			if(theory==null) {
+				theory = new UserBaseline();
+				theory.setTheoryTotalScore(basicInfo.getTheoryTotalScore());
+			}
+			
+			if(practice==null) {
+				practice = new UserBaseline();
+				practice.setPracticeTotalScore(basicInfo.getPracticeTotalScore());
+			}
 			
 			UserBaselinePop result = new UserBaselinePop();
 			result.setEvaluationInfo(evaluation);
@@ -227,6 +243,7 @@ public class UserMgrController {
 			int result = 0;
 			if(baseline!=null) {
 				int practiceScore = (params.getPracticeScore() * baseline.getPracticeTotalScore())/100;
+				params.setPracticeBeforeScore(params.getPracticeScore());
 				params.setPracticeScore(practiceScore);
 				//강사등록
 				result = userMgrService.updateBaselineUser(params);

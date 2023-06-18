@@ -34,6 +34,8 @@ public interface UserMgrService{
 	
 	public List<UserBaseline> selectBaselineUserList(UserBaseline params);
 	
+	public UserBaseline selectBaselineBasicTotalScore(UserBaseline params);
+	
 	public UserBaseline selectBaselineEvaluation(UserBaseline params);
 	
 	public UserBaseline selectBaselineTherory(UserBaseline params);

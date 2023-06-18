@@ -34,7 +34,7 @@ public interface LearningMgrService {
 	
 	public List<EduModulePop> selectModuleRandom(EduModulePop params);
 	
-	public int insertModule(EduModule params);
+	public int insertModule(EduModule params)throws Exception;
 	
 	public int insertModuleQuestion(EduModule params);
 	
@@ -58,7 +58,7 @@ public interface LearningMgrService {
 	
 	public List<PointStd> selectPointStdList(PointStd params);
 	
-	public int insertPointStd(PointStd params);
+	public int insertPointStd(PointStd params)throws Exception;
 	
 	public int updatePointStd(PointStd params);
 	

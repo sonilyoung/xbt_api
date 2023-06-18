@@ -70,7 +70,7 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 	
 	@Override
 	@Transactional
-	public int insertModule(EduModule params) {
+	public int insertModule(EduModule params) throws Exception{
 		// TODO Auto-generated method stub
 		//12	학습컷	lc
 		//13	학습슬라이드	ls
@@ -183,7 +183,7 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 	@Override
 	@Transactional
 	@SuppressWarnings("unchecked")
-	public int insertPointStd(PointStd params) {
+	public int insertPointStd(PointStd params) throws Exception{
 		// TODO Auto-generated method stub
 		int result = learningMgrDAO.insertPointStd(params);
 		Common c = new Common();

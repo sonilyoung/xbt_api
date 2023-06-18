@@ -174,7 +174,7 @@
 		FROM
 			XBT_BASELINE_STUDENT_INFO
 		WHERE
-			ENDING_YN = 'N'
+			ENDING_YN = 'N' OR ENDING_YN = 'ING'
 	</select>		
 	
 	<!-- 이론평가 점수비중 정보 -->

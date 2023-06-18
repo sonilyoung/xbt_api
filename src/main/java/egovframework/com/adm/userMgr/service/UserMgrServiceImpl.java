@@ -64,15 +64,23 @@ public class UserMgrServiceImpl implements UserMgrService {
 	}
 	
 	@Override
+	public UserBaseline selectBaselineBasicTotalScore(UserBaseline params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.selectBaselineBasicTotalScore(params);
+	}	
+	
+	@Override
 	public UserBaseline selectBaselineEvaluation(UserBaseline params) {
 		// TODO Auto-generated method stub
 		return userMgrDAO.selectBaselineEvaluation(params);
-	}		
+	}	
+	
 	@Override
 	public UserBaseline selectBaselineTherory(UserBaseline params) {
 		// TODO Auto-generated method stub
 		return userMgrDAO.selectBaselineTherory(params);
 	}		
+	
 	@Override
 	public UserBaseline selectBaselinePractice(UserBaseline params) {
 		// TODO Auto-generated method stub
@@ -190,6 +198,8 @@ public class UserMgrServiceImpl implements UserMgrService {
 		// TODO Auto-generated method stub
 		return userMgrDAO.deleteTeacher(params);
 	}
+
+
 
 
 }

@@ -76,7 +76,7 @@ public interface ContentsService {
 	
 	public int deleteUnitGroupImg(UnitGroup params);
 	
-	public void updateUnitImg(UnitImg params);
+	public void updateUnitImg(UnitImg params)throws Exception;
     
     public int insertUnitMaster(UnitImg params);
     

@@ -333,6 +333,20 @@
 			XBT_BASELINE_STUDENT_INFO
 	</select>	
 	
+	
+	<!-- 차수 교육생 비중기본정보  -->
+	<select id="selectBaselineBasicTotalScore" parameterType="egovframework.com.adm.userMgr.vo.UserBaseline" resultType="egovframework.com.adm.userMgr.vo.UserBaseline" >	
+		SELECT
+			PROC_CD,
+			PRACTICE_TOTAL_SCORE, 
+			THEORY_TOTAL_SCORE ,
+			EVALUATION_TOTAL_SCORE 
+		FROM
+			XBT_BASELINE
+		WHERE
+			PROC_CD = #{procCd} 
+	</select>	
+	
 	<!-- 차수 교육생 비중평가조호  -->
 	<select id="selectBaselineEvaluation" parameterType="egovframework.com.adm.userMgr.vo.UserBaseline" resultType="egovframework.com.adm.userMgr.vo.UserBaseline" >	
 		SELECT
@@ -377,6 +391,7 @@
 			T1.PROC_CD,
 			T1.PROC_NM,
 			(SELECT PRACTICE_TOTAL_SCORE FROM XBT_BASELINE XB WHERE XB.PROC_CD = T1.PROC_CD)AS PRACTICE_TOTAL_SCORE,
+			PRACTICE_BEFORE_SCORE AS practiceScore,
 			T1.PRACTICE_SCORE AS gainScore
 		FROM
 			XBT_BASELINE_STUDENT_INFO T1 
@@ -389,7 +404,9 @@
 	<!-- 차수 교육생 수정 -->
 	<update id="updateBaselineUser" parameterType="egovframework.com.adm.userMgr.vo.UserBaseline">
 		UPDATE XBT_BASELINE_STUDENT_INFO
-		SET PRACTICE_SCORE = #{practiceScore},
+		SET
+		PRACTICE_BEFORE_SCORE = #{practiceBeforeScore}, 
+		PRACTICE_SCORE = #{practiceScore},
 		PRACTICE_YN = 'Y'
 		WHERE USER_ID = #{userId}			
 	</update>	

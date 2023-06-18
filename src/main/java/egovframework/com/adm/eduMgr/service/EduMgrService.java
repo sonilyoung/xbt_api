@@ -27,9 +27,9 @@ public interface EduMgrService {
 	
 	public List<Baseline> selectBaselineList(Baseline params);
 	
-	public int insertBaseline(Baseline params);
+	public int insertBaseline(Baseline params)throws Exception;
 	
-	public int updateBaseline(Baseline params);
+	public int updateBaseline(Baseline params)throws Exception;
 	
 	public int deleteBaseline(Baseline params);
 

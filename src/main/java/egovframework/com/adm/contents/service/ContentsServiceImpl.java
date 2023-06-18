@@ -232,7 +232,7 @@ public class ContentsServiceImpl implements ContentsService {
 	
 	@Override
 	@Transactional
-	public void updateUnitImg(UnitImg params) {
+	public void updateUnitImg(UnitImg params) throws Exception{
 		// TODO Auto-generated method stub
 		
 		if(contentsDAO.selectUnitBasicInfoCount(params) <= 0) {

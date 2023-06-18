@@ -86,6 +86,7 @@
 			STUDY_LVL,
 			LIMIT_PERSON_CNT,
 			ENDING_STD_SCORE,
+			PASS_SCORE,
 			ENDING_PROCESS_END_YN,
 			PRACTICE_TOTAL_SCORE,
 			EVALUATION_TOTAL_SCORE,
@@ -101,6 +102,7 @@
 			,#{totStudyDate}
 			,#{studyLvl}
 			,#{limitPersonCnt}
+			,#{endingStdScore}
 			,#{endingStdScore}
 			,'N'
 			,#{practiceTotalScore}
@@ -123,6 +125,7 @@
 			TOT_STUDY_DATE = #{totStudyDate},
 			LIMIT_PERSON_CNT = #{limitPersonCnt},
 			ENDING_STD_SCORE = #{endingStdScore},
+			PASS_SCORE = #{endingStdScore},
 			ENDING_PROCESS_END_YN = #{endingProcessEndYn},
 			PRACTICE_TOTAL_SCORE = #{practiceTotalScore},
 			EVALUATION_TOTAL_SCORE = #{evaluationTotalScore},
@@ -220,7 +223,7 @@
 			,#{compNm}
 			,#{deptNm}
 			,0
-			,'N'
+			,'ING'
 			,#{endingProcessDate}
 			,'N'
 			,#{eduStartDate}

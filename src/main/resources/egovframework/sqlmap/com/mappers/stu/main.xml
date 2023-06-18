@@ -30,7 +30,7 @@
 			XBT_BASELINE_STUDENT_INFO T1 INNER JOIN XBT_BASELINE T2
 			ON T1.USER_ID = #{userId} 
 			AND T1.PROC_CD = T2.PROC_CD
-			AND ENDING_YN = 'N'
+			AND (ENDING_YN = 'N' OR ENDING_YN = 'ING')
 			ORDER BY INSERT_DATE DESC
 			LIMIT 1
 	</select>	
@@ -77,7 +77,7 @@
 		AND T1.USE_YN = 'Y' 
     	AND T1.MENU_CD NOT IN (
 	    	SELECT 
-	    		MENU_CD 
+	    		DISTINCT MENU_CD 
 	    	FROM XBT_BASELINE_EDU_DATE 
 	    	WHERE 
 	    		date_format(NOW(), '%Y-%m-%d') BETWEEN EDU_START_DATE AND EDU_END_DATE 
@@ -103,7 +103,7 @@
 		AND T2.USE_YN = 'Y'
     	AND T2.MENU_CD IN (
 	    	SELECT 
-	    		MENU_CD 
+	    		DISTINCT MENU_CD 
 	    	FROM XBT_BASELINE_EDU_DATE 
 	    	WHERE 
 	    		date_format(NOW(), '%Y-%m-%d') BETWEEN EDU_START_DATE AND EDU_END_DATE 

@@ -60,7 +60,7 @@ public class EduMgrServiceImpl implements EduMgrService {
 	
 	@Override
 	@Transactional
-	public int insertBaseline(Baseline params) {
+	public int insertBaseline(Baseline params) throws Exception{
 		// TODO Auto-generated method stub
 		int result = eduMgrDAO.insertBaseline(params);
 		Baseline baseline = eduMgrDAO.selectBaseline(params);
@@ -74,7 +74,9 @@ public class EduMgrServiceImpl implements EduMgrService {
 					Menu m = new Menu();
 					m.setMenuCd(params.getMenuList().get(i).get(j));
 					Menu menu = systemDAO.selectModuleMenu(m);
-					moduleId = menu.getModuleId();
+					if(menu.getModuleId()!=null) {
+						moduleId = menu.getModuleId();
+					}
 					sl.setModuleId(moduleId);
 					sl.setProcCd(baseline.getProcCd());
 					sl.setProcNm(baseline.getProcName());
@@ -122,7 +124,7 @@ public class EduMgrServiceImpl implements EduMgrService {
 
 	@Override
 	@Transactional
-	public int updateBaseline(Baseline params) {
+	public int updateBaseline(Baseline params) throws Exception{
 		// TODO Auto-generated method stub
 		int result = eduMgrDAO.updateBaseline(params);
 		
@@ -146,7 +148,9 @@ public class EduMgrServiceImpl implements EduMgrService {
 					Menu m = new Menu();
 					m.setMenuCd(params.getMenuList().get(i).get(j));
 					Menu menu = systemDAO.selectModuleMenu(m);
-					moduleId = menu.getModuleId();
+					if(menu.getModuleId()!=null) {
+						moduleId = menu.getModuleId();
+					}
 					sl.setModuleId(moduleId);
 					sl.setProcCd(baseline.getProcCd());
 					sl.setProcNm(baseline.getProcName());
