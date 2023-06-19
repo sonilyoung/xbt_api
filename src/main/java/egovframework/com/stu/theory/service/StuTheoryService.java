@@ -34,6 +34,8 @@ public interface StuTheoryService {
 	
 	public StuTheory selectStudyLvlTheory(StuTheory params);
 
+	public int selectTheoryProcessYnCount(StuTheory params);
+	
 	public int selectTheoryProblemsCount(StuTheory params);
 	
 	public int insertTheoryProblems(StuTheory params);

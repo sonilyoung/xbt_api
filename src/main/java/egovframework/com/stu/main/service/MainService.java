@@ -27,7 +27,11 @@ public interface MainService {
 	
 	public UserStInfo selectBaselineUserInfo(UserStInfo params);
 	
+	public Schedule selectDefaultMenu(Schedule params);
+	
 	public List<Schedule> selectScheduleList(Schedule params);
+	
+	public List<Statistics> selectStatisticsMainTitleList(Statistics params);	
 	
 	public List<Statistics> selectStatisticsTitleList(Statistics params);
 	

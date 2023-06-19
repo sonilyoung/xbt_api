@@ -34,6 +34,8 @@ public interface EvaluationService {
 	
 	public Learning selectEvaluationAnswer(Learning params);
 	
+	public int selectEvaluationProcessYnCount(LearningProblem params);	
+	
 	public int updateEvaluationAnswer(Learning params);
 	
 	public int insertEvaluationResult(Learning params);

@@ -86,6 +86,14 @@ public class StuTheoryServiceImpl implements StuTheoryService {
 		// TODO Auto-generated method stub
 		return stuTheoryDAO.selectTheoryAnswer(params);
 	}
+	
+
+	@Override
+	public int selectTheoryProcessYnCount(StuTheory params) {
+		// TODO Auto-generated method stub
+		return stuTheoryDAO.selectTheoryProcessYnCount(params);
+	}
+	
 
 	@Override
 	public int updateTheoryAnswer(StuTheory params) {

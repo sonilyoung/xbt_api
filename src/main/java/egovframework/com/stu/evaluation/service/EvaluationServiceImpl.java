@@ -72,6 +72,13 @@ public class EvaluationServiceImpl implements EvaluationService {
 	}	
 
 	@Override
+	public int selectEvaluationProcessYnCount(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return evaluationDAO.selectEvaluationProcessYnCount(params);
+	}
+		
+	
+	@Override
 	public int updateEvaluationAnswer(Learning params) {
 		// TODO Auto-generated method stub
 		return evaluationDAO.updateEvaluationAnswer(params);

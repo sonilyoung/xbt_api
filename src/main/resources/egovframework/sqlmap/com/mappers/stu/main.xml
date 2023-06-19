@@ -35,6 +35,29 @@
 			LIMIT 1
 	</select>	
 	
+	<!-- 일정목록 메뉴목록정보 -->
+	<select id="selectDefaultMenu" parameterType="egovframework.com.stu.main.vo.Schedule" resultType="egovframework.com.stu.main.vo.Schedule">
+		SELECT 
+			T1.MENU_NO,
+			T1.P_MENU_CD,
+			T1.MENU_CD,
+			T1.MENU_NAME,
+			T1.MENU_URL,
+			T1.MENU_LEVEL,
+			T1.USE_YN,
+			T1.MENU_ORDER,
+			(SELECT MAX(MODULE_ID) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T1.MENU_CD) AS MODULE_ID,
+			(SELECT MAX(MODULE_TYPE) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T1.MENU_CD) AS MODULE_TYPE,
+			(SELECT MAX(LEARNING_TYPE) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T1.MENU_CD) AS LEARNING_TYPE,
+			'false' AS menuFlag
+		FROM XBT_STU_MENU T1 
+		WHERE LANGUAGE_CODE = #{languageCode}
+		AND P_MENU_CD = #{pMenuCd}
+		AND T1.USE_YN = 'Y' 
+		AND T1.MENU_CD = #{menuCd}
+		LIMIT 1
+	</select>	
+	
 	
 	<!-- 일정목록 메뉴목록정보 -->
 	<select id="selectScheduleList" parameterType="egovframework.com.stu.main.vo.Schedule" resultType="egovframework.com.stu.main.vo.Schedule">
@@ -113,8 +136,33 @@
 	]]>		
 	</select>
 
-	
+	<!-- 교육정보통계타이틀 -->
+	<select id="selectStatisticsMainTitleList" parameterType="egovframework.com.stu.main.vo.Statistics" resultType="egovframework.com.stu.main.vo.Statistics">
+		SELECT 
+			PROC_YEAR , 
+			PROC_SEQ , 
+			STUDY_LVL ,			
+			TEST_DATE,
+			(CASE WHEN PASS_YN = 'Y' THEN 'Pass' ELSE 'Fail' END)AS passYn ,
+			GAIN_SCORE,
+			(SELECT PASS_SCORE FROM XBT_BASELINE T1 WHERE T1.PROC_CD= T2.PROC_CD)AS passScore
+		FROM XBT_BASELINE_LEARNING T2
+		WHERE USER_ID = #{userId}
+		GROUP BY PROC_CD , PROC_YEAR , PROC_SEQ, STUDY_LVL
+		ORDER BY PROC_YEAR ,PROC_SEQ 	
+	</select>	
 
+	<!-- 교육정보통계데이터 -->
+	<select id="selectStatisticsContensList" parameterType="egovframework.com.stu.main.vo.Statistics" resultType="egovframework.com.stu.main.vo.Statistics">
+		SELECT PROC_YEAR , PROC_SEQ , STUDY_LVL , GAINSCORE/TOT_CNT AS gainScore FROM (
+			SELECT 
+				PROC_YEAR , PROC_SEQ , STUDY_LVL , SUM(GAIN_SCORE) AS gainScore, COUNT(GAIN_SCORE)AS TOT_CNT
+			FROM XBT_BASELINE_LEARNING
+			WHERE USER_ID =  #{userId}
+			GROUP BY PROC_CD , PROC_YEAR , PROC_SEQ
+		)TOT ORDER BY PROC_YEAR ,PROC_SEQ
+	</select>	
+	
 	<!-- 교육정보통계타이틀 -->
 	<select id="selectStatisticsTitleList" parameterType="egovframework.com.stu.main.vo.Statistics" resultType="egovframework.com.stu.main.vo.Statistics">
 		SELECT 
@@ -131,20 +179,7 @@
 		WHERE USER_ID = #{userId}
 		GROUP BY MODULE_ID, PROC_CD , PROC_YEAR , PROC_SEQ, STUDY_LVL,TRY_SEQ
 		ORDER BY TRY_SEQ DESC, STUDY_LVL	
-						
-	</select>
-
-	<!-- 교육정보통계데이터 -->
-	<select id="selectStatisticsContensList" parameterType="egovframework.com.stu.main.vo.Statistics" resultType="egovframework.com.stu.main.vo.Statistics">
-		SELECT 
-			PROC_YEAR , PROC_SEQ , STUDY_LVL , TRY_SEQ ,SUM(GAIN_SCORE) AS GAINSCORE
-		FROM XBT_BASELINE_LEARNING
-		WHERE USER_ID = #{userId}
-		GROUP BY MODULE_ID, PROC_CD , PROC_YEAR , PROC_SEQ, TRY_SEQ 
-		ORDER BY TRY_SEQ DESC, STUDY_LVL
-		LIMIT 5
 	</select>	
-	
 	
 	<!-- 오답통계정보데이터 -->
 	<select id="selectStatisticsWrongAnswerList1" parameterType="egovframework.com.stu.main.vo.Statistics" resultType="egovframework.com.stu.main.vo.Statistics">

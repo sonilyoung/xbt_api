@@ -26,6 +26,19 @@
 		AND USER_ID = #{userId}
 	</select>		
 	
+		<!-- 이론평가 유무확인 -->
+	<select id="selectEvaluationProcessYnCount" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="int">
+		SELECT 
+			COUNT(PROGRESS_NO) 
+		FROM XBT_STU_EVALUATION_PROGRESSING
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear}
+		AND PROC_SEQ = #{procSeq}
+		and TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}	
+		AND END_YN = 'Y'
+	</select>		
+	
 	<!-- 평가문제 등록 -->
 	<insert id="insertEvaluationProblems" parameterType="egovframework.com.stu.learning.vo.LearningProblem">
 		INSERT INTO XBT_STU_EVALUATION_PROGRESSING(

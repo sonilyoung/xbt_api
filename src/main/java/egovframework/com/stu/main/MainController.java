@@ -3,6 +3,8 @@ package egovframework.com.stu.main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -167,16 +169,94 @@ public class MainController {
 			params.setUserId(login.getUserId());
 			params.setPMenuCd("1");
 			List<Schedule> menu1 = mainService.selectScheduleList(params);
+			List<Schedule> menu1Result = new ArrayList<Schedule>();
+			boolean m1 = false;
+			boolean m2 = false;
+			for(Schedule m : menu1) {
+				if(m.getMenuCd().equals("12") || m.getMenuCd().equals("13")) {
+					if(m.getMenuCd().equals("12") && "false".equals(m.getMenuFlag())) {
+						m1=true;
+					}
+					if(m.getMenuCd().equals("13") && "false".equals(m.getMenuFlag())) {
+						m2=true;
+					} 		
+					if(m1 && m2) {
+						params.setMenuCd("13");
+						Schedule defaultM = mainService.selectDefaultMenu(params);
+						menu1Result.add(defaultM);
+					}
+					
+					if(m.getMenuCd().equals("12") && "true".equals(m.getMenuFlag()) || m.getMenuCd().equals("13") && "true".equals(m.getMenuFlag())){
+						menu1Result.add(m);
+					}
+				}
+			}	
+			
+			boolean m3 = false;
+			boolean m4 = false;
+			for(Schedule m : menu1) {
+				if(m.getMenuCd().equals("24") || m.getMenuCd().equals("25")) {
+					if(m.getMenuCd().equals("24") && "false".equals(m.getMenuFlag())) {
+						m3=true;
+					}
+					if(m.getMenuCd().equals("25") && "false".equals(m.getMenuFlag())) {
+						m4=true;
+					} 		
+					if(m3 && m4) {
+						params.setMenuCd("25");
+						Schedule defaultM = mainService.selectDefaultMenu(params);
+						menu1Result.add(defaultM);
+					}
+					
+					if(m.getMenuCd().equals("24") && "true".equals(m.getMenuFlag()) || m.getMenuCd().equals("25") && "true".equals(m.getMenuFlag())){
+						menu1Result.add(m);
+					}
+				}
+			}			
+			
+			List<Schedule> menu1St = menu1.stream().filter(m -> (
+				!(m.getMenuCd().equals("12"))
+				&&!(m.getMenuCd().equals("13"))
+				&&!(m.getMenuCd().equals("24"))
+				&&!(m.getMenuCd().equals("25"))
+				)
+			).collect(Collectors.toList());	
+			menu1St.addAll(menu1Result);			
+			
 			params.setPMenuCd("2");
 			List<Schedule> menu2 = mainService.selectScheduleList(params);
+			List<Schedule> menu2Result = new ArrayList<Schedule>();
+			boolean m5 = false;
+			boolean m6 = false;
+			for(Schedule m : menu2) {
+				if(m.getMenuCd().equals("21") && "false".equals(m.getMenuFlag())) {
+					m5=true;
+				}
+				if(m.getMenuCd().equals("22") && "false".equals(m.getMenuFlag())) {
+					m6=true;
+				} 		
+				if(m5 && m6) {
+					params.setMenuCd("22");
+					Schedule defaultM = mainService.selectDefaultMenu(params);
+					menu2Result.add(defaultM);
+					break;
+				}
+			}			
+			
+			List<Schedule> menu2St = menu2.stream().filter(m -> (
+				!(m.getMenuCd().equals("21") && "false".equals(m.getMenuFlag()))
+				&&!(m.getMenuCd().equals("22") && "false".equals(m.getMenuFlag())))
+			).collect(Collectors.toList());	
+			menu2Result.addAll(menu2St);
+			
 			params.setPMenuCd("3");
 			List<Schedule> menu3 = mainService.selectScheduleList(params);
 			params.setPMenuCd("4");
 			List<Schedule> menu4 = mainService.selectScheduleList(params);
 			
 			Schedule result = new Schedule();
-			result.setMenu1(menu1);
-			result.setMenu2(menu2);
+			result.setMenu1(menu1St);
+			result.setMenu2(menu2Result);
 			result.setMenu3(menu3);
 			result.setMenu4(menu4);
 	        return new BaseResponse<Schedule>(result);
@@ -219,14 +299,14 @@ public class MainController {
 			params.setUserId(login.getUserId());
 			
 			if("1".equals(params.getType())){//학습점수조회
-				List<Statistics> titleList = mainService.selectStatisticsTitleList(params);
+				List<Statistics> titleList = mainService.selectStatisticsMainTitleList(params);
 				List<Statistics> dataList = mainService.selectStatisticsContensList(params);
 				
 				if(titleList!=null) {
 					String [] categorys = new String[titleList.size()];
 					int i = 0;
 					for(Statistics s : titleList) {
-						categorys[i] = s.getProcYear() + " level" + String.valueOf(s.getStudyLvl()) + " "+s.getTrySeq(); 
+						categorys[i] = s.getProcYear() + " level" + String.valueOf(s.getStudyLvl()); 
 						i++;
 					}
 					params.setCategories(categorys);

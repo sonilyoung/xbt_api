@@ -63,6 +63,8 @@ public enum BaseResponseCode {
 			"0403", "인증된 사용자가 아닙니다."
 	), STOP_ID(
 	        "7000", "계정이 중지되었습니다."
+	), ALREADY_STARE(
+	        "ALREADY_STARE", "이미 시험에 응시했습니다."
 	), DATA_IS_NULL_LAERNPROBLEMS(
 	        "LEARN_NODATA", "학습문제가 없습니다."
 	), DATA_IS_NULL_EVALPROBLEMS(

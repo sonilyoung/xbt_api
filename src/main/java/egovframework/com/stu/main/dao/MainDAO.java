@@ -17,11 +17,19 @@ public class MainDAO extends EgovAbstractMapper{
 	
 	public UserStInfo selectBaselineUserInfo(UserStInfo params) {
 		return selectOne(Namespace + ".selectBaselineUserInfo", params);
-	}				
+	}		
+	
+	public Schedule selectDefaultMenu(Schedule params) {
+		return selectOne(Namespace + ".selectDefaultMenu", params);
+	}		
 	
 	public List<?> selectScheduleList(Schedule params) {
 		return (List<?>)selectList(Namespace + ".selectScheduleList", params);
 	}			
+	
+	public List<?> selectStatisticsMainTitleList(Statistics params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsMainTitleList", params);
+	}	
 	
 	public List<?> selectStatisticsTitleList(Statistics params) {
 		return (List<?>)selectList(Namespace + ".selectStatisticsTitleList", params);

@@ -44,6 +44,12 @@ public class MainServiceImpl implements MainService {
 		// TODO Auto-generated method stub
 		return mainDAO.selectBaselineUserInfo(params);
 	}
+	
+    @Override
+	public Schedule selectDefaultMenu(Schedule params) {
+		// TODO Auto-generated method stub
+		return mainDAO.selectDefaultMenu(params);
+	}	
 
     @Override
 	@SuppressWarnings("unchecked")
@@ -51,6 +57,12 @@ public class MainServiceImpl implements MainService {
 		// TODO Auto-generated method stub
 		return (List<Schedule>)mainDAO.selectScheduleList(params);
 	}
+    
+	@Override
+	public List<Statistics> selectStatisticsMainTitleList(Statistics params) {
+		// TODO Auto-generated method stub
+		return (List<Statistics>)mainDAO.selectStatisticsMainTitleList(params);
+	}    
 
 	@Override
 	public List<Statistics> selectStatisticsTitleList(Statistics params) {

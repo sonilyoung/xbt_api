@@ -54,8 +54,9 @@
 			XBT_THEORY_QUESTION		
 		WHERE QUESTION_ID = #{questionId}
 		
-	</select>			
+	</select>	
 	
+				
 	<!-- 등록된이론문제 횟수확인 -->
 	<select id="selectTheoryProblemsMaxkey" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="egovframework.com.stu.theory.vo.StuTheory">
 		SELECT 
@@ -65,7 +66,20 @@
 		AND PROC_YEAR = #{procYear} 
 		AND PROC_SEQ = #{procSeq}
 		AND USER_ID = #{userId}
-	</select>		
+	</select>	
+	
+	<!-- 이론평가 유무확인 -->
+	<select id="selectTheoryProcessYnCount" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="int">
+		SELECT 
+			COUNT(PROGRESS_NO) 
+		FROM XBT_STU_THEORY_PROGRESSING
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear}
+		AND PROC_SEQ = #{procSeq}
+		and TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}	
+		AND END_YN = 'Y'
+	</select>			
 	
 	<!-- 등록된이론문제 체크 -->
 	<select id="selectTheoryProblemsCount" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="int">

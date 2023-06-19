@@ -78,58 +78,59 @@ public class StuTheoryController {
 		params.setUserId(login.getUserId());
 		params.setUserName(login.getUserNm());
 		
-		try {
-			StuTheory moduleInfoData = new StuTheory();
-			
-			Learning lp = new Learning();
-			lp.setUserId(login.getUserId());
-			Learning baselineData = learningService.selectBaseline(lp);
-			if(baselineData == null) {
-				return new BaseResponse<StuTheory>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
-			}			
-			
-			params.setProcCd(baselineData.getProcCd());
-			params.setProcYear(baselineData.getProcYear());
-			params.setProcSeq(baselineData.getProcSeq());
-			params.setStudyLvl(baselineData.getStudyLvl());
-			
-			params.setQuestionCnt(baselineData.getTheoryQuestionCnt()); 						
-			//이론문제가져오기
-			List<StuTheory> problems = theoryService.selectTheoryList(params);
-			if(problems == null) {
-				return new BaseResponse<StuTheory>(BaseResponseCode.THEORY_DATA, BaseResponseCode.THEORY_DATA.getMessage());
-			}				
-			
-			//시도횟수
-			StuTheory maxKey = theoryService.selectTheoryProblemsMaxkey(params);	
-			params.setTrySeq(maxKey.getTrySeq());			
-			
-			//등록된학습문제 체크
-			params.setEndYn("N");
-			int problemsCnt = theoryService.selectTheoryProblemsCount(params);
-			
-			
-			if(problemsCnt <= 0) {
-				//문제등록
-				params.setTrySeq(maxKey.getTrySeq()+1);
-				moduleInfoData.setTrySeq(maxKey.getTrySeq()+1);
-				theoryService.insertTheoryProblems(params);				
-			}else {
-				moduleInfoData.setTrySeq(maxKey.getTrySeq());
-			}
-			
-			List<StuTheory> resultList = theoryService.selectTheoryProblemsList(params);
-			
-			if(resultList == null) {
-				return new BaseResponse<StuTheory>(BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS, BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS.getMessage());
-			}			
-			
-			params.setQuestionList(resultList);
-			return new BaseResponse<StuTheory>(params);
-        } catch (Exception e) {
-        	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
-        }
+		StuTheory moduleInfoData = new StuTheory();
+		
+		Learning lp = new Learning();
+		lp.setUserId(login.getUserId());
+		Learning baselineData = learningService.selectBaseline(lp);
+		if(baselineData == null) {
+			return new BaseResponse<StuTheory>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
+		}			
+		
+		params.setProcCd(baselineData.getProcCd());
+		params.setProcYear(baselineData.getProcYear());
+		params.setProcSeq(baselineData.getProcSeq());
+		params.setStudyLvl(baselineData.getStudyLvl());
+		
+		params.setQuestionCnt(baselineData.getTheoryQuestionCnt()); 						
+		//이론문제가져오기
+		List<StuTheory> problems = theoryService.selectTheoryList(params);
+		if(problems == null) {
+			return new BaseResponse<StuTheory>(BaseResponseCode.THEORY_DATA, BaseResponseCode.THEORY_DATA.getMessage());
+		}				
+		
+		//시도횟수
+		StuTheory maxKey = theoryService.selectTheoryProblemsMaxkey(params);	
+		params.setTrySeq(maxKey.getTrySeq());
+		
+		//평가유무확인
+		int processYn = theoryService.selectTheoryProcessYnCount(params);
+		if(processYn == baselineData.getTheoryQuestionCnt()) {
+			return new BaseResponse<StuTheory>(BaseResponseCode.ALREADY_STARE, BaseResponseCode.ALREADY_STARE.getMessage());
+		}			
+		
+		//등록된학습문제 체크
+		params.setEndYn("N");
+		int problemsCnt = theoryService.selectTheoryProblemsCount(params);
+		
+		
+		if(problemsCnt <= 0) {
+			//문제등록
+			params.setTrySeq(maxKey.getTrySeq()+1);
+			moduleInfoData.setTrySeq(maxKey.getTrySeq()+1);
+			theoryService.insertTheoryProblems(params);				
+		}else {
+			moduleInfoData.setTrySeq(maxKey.getTrySeq());
+		}
+		
+		List<StuTheory> resultList = theoryService.selectTheoryProblemsList(params);
+		
+		if(resultList == null) {
+			return new BaseResponse<StuTheory>(BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS, BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS.getMessage());
+		}			
+		
+		params.setQuestionList(resultList);
+		return new BaseResponse<StuTheory>(params);
     }       
        
     

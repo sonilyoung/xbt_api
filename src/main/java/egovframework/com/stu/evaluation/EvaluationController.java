@@ -27,6 +27,7 @@ import egovframework.com.stu.learning.service.LearningService;
 import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningProblem;
 import egovframework.com.stu.learning.vo.PointStd;
+import egovframework.com.stu.theory.vo.StuTheory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -115,7 +116,13 @@ public class EvaluationController {
 			
 			//시도횟수
 			LearningProblem maxKey = evaluationService.selectEvaluationProblemsMaxkey(lpParams);	
-			lpParams.setTrySeq(maxKey.getTrySeq());			
+			lpParams.setTrySeq(maxKey.getTrySeq());		
+			
+			//평가유무확인
+			int processYn = evaluationService.selectEvaluationProcessYnCount(lpParams);
+			if(processYn == moduleInfoData.getQuestionCnt()) {
+				return new BaseResponse<Learning>(BaseResponseCode.ALREADY_STARE, BaseResponseCode.ALREADY_STARE.getMessage());
+			}	
 			
 			//등록된평가문제 체크
 			//lpParams.setEndYn("N");

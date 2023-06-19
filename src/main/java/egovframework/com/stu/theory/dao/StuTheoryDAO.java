@@ -32,6 +32,9 @@ public class StuTheoryDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectStudyLvlTheory", params);
 	}	
 	
+	public int selectTheoryProcessYnCount(StuTheory params) {
+		return selectOne(Namespace + ".selectTheoryProcessYnCount", params);
+	}	
 	
 	public int selectTheoryProblemsCount(StuTheory params) {
 		return selectOne(Namespace + ".selectTheoryProblemsCount", params);
