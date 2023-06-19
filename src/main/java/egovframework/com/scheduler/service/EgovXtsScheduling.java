@@ -78,7 +78,7 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 					int evaluationScore = 0;
 					int practiceScore = 0;
 					if(theory!=null) {
-						theoryScore = (theory.getGainScore()*baseline.getTheoryTotalScore())/100;
+						theoryScore = Math.round((theory.getGainScore()*baseline.getTheoryTotalScore())/100);
 						LOGGER.info("==============이론==============");
 						LOGGER.info("교육생 theoryScore:" + theory.getUserId() + " : " + theory.getGainScore());
 						LOGGER.info("설정 theoryScore:" + baseline.getTheoryTotalScore());
@@ -91,7 +91,7 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 					//평가점수
 					XbtScore evaluation = systemService.selectEvaluationScore(xs);
 					if(evaluation!=null) {
-						evaluationScore = (evaluation.getGainScore()*baseline.getEvaluationTotalScore())/100;
+						evaluationScore =  Math.round((evaluation.getGainScore()*baseline.getEvaluationTotalScore())/100);
 						LOGGER.info("==============평가==============");
 						LOGGER.info("교육생 evaluationScore:" + evaluation.getUserId() + " : " + evaluation.getGainScore());
 						LOGGER.info("설정 evaluationScore:"+ baseline.getEvaluationTotalScore());

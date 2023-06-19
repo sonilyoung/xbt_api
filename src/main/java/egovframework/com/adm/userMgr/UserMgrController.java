@@ -250,9 +250,9 @@ public class UserMgrController {
 			}
 			
 			if(result>0) {
-				return new BaseResponse<UserBaseline>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+				return new BaseResponse<UserBaseline>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage(), params);
 			}else {
-				return new BaseResponse<UserBaseline>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+				return new BaseResponse<UserBaseline>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage(), params);
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);
