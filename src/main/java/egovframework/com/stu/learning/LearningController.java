@@ -563,6 +563,7 @@ public class LearningController {
 			params.setProcSeq(baselineData.getProcSeq());
 			params.setStudyLvl(moduleInfoData.getStudyLvl());
 			params.setPassScore(baselineData.getPassScore());
+			params.setQuestionCnt(moduleInfoData.getQuestionCnt());
 			
 			//시도횟수
 			LearningProblem lpParams = new LearningProblem();
@@ -973,6 +974,7 @@ public class LearningController {
 			params.setProcSeq(baselineData.getProcSeq());
 			params.setStudyLvl(moduleInfoData.getStudyLvl());
 			params.setPassScore(moduleInfoData.getPassScore());
+			params.setQuestionCnt(moduleInfoData.getQuestionCnt());
 			
 			//시도횟수
 			LearningProblem lpParams = new LearningProblem();

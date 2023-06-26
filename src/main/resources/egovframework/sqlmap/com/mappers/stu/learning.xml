@@ -320,7 +320,7 @@
 	<!-- 학습종료점수합산 -->
 	<select id="selectLeaningSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			IFNULL(SUM(GAIN_SCORE), 0)/1000*100 AS gainScore
+			IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt} AS gainScore
 		FROM XBT_STU_LEARNING_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 
@@ -546,7 +546,7 @@
 	<!-- 오답문제종료점수합산 -->
 	<select id="selectWrongAnswerSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			IFNULL(SUM(GAIN_SCORE), 0)/1000*100 AS gainScore
+			IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt} AS gainScore
 		FROM XBT_STU_WRONG_ANSWER_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 
