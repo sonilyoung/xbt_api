@@ -56,7 +56,8 @@
 			</choose>
 		FROM XBT_UNIT_INFO XUI
 		WHERE
-			UNIT_GROUP_CD = #{unitGroupCd}  			
+			UNIT_GROUP_CD = #{unitGroupCd}
+			AND XUI.USE_YN = 'Y'  			
 	</select>
 	
 	<!-- 물품연습 물품상세조회  -->
@@ -89,5 +90,6 @@
 		FROM XBT_UNIT_INFO T2 inner join XBT_UNIT_GROUP T3
 		ON T2.UNIT_GROUP_CD = T3.UNIT_GROUP_CD 
 		AND T2.UNIT_ID = #{unitId}
+		AND T2.USE_YN = 'Y'
 	</select>
 </mapper>
