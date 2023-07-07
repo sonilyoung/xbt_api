@@ -5,6 +5,7 @@ import java.util.List;
 import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.adm.eduMgr.vo.EduDate;
 import egovframework.com.adm.eduMgr.vo.Student;
+import egovframework.com.stu.learning.vo.LearningProblem;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.
@@ -29,6 +30,8 @@ public interface EduMgrService {
 	
 	public int insertBaseline(Baseline params)throws Exception;
 	
+	public int insertBaselineCopy(Baseline params)throws Exception;
+	
 	public int updateBaseline(Baseline params)throws Exception;
 	
 	public int deleteBaseline(Baseline params);
@@ -49,6 +52,8 @@ public interface EduMgrService {
 	
 	public List<EduDate> selectEduDateListPop(EduDate params);
 	
+	public EduDate selectEduModuleList(EduDate params);
+	
 	public List<EduDate> selectEduMenuList(EduDate params);
 	
 	public int insertEduDate(EduDate params);
@@ -56,5 +61,7 @@ public interface EduMgrService {
 	public int deleteEduDate(EduDate params);
 	
 	public int deleteEduDateAll(EduDate params);
+	
+	public int selectBaselineDataCount(Baseline params);
 	
 }

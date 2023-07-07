@@ -19,7 +19,7 @@ public class EgovXtsEdcReinforcementServiceImpl implements EgovXtsEdcReinforceme
 	
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovXtsEdcReinforcementServiceImpl.class);
-	
+	/*
 	@Override
 	public boolean reinforcementLearningAi() throws Exception {
 		
@@ -37,6 +37,6 @@ public class EgovXtsEdcReinforcementServiceImpl implements EgovXtsEdcReinforceme
 		response.close();
 		
 		return result;
-	}
+	}*/
 
 }

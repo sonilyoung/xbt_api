@@ -8,6 +8,7 @@ import lombok.Data;
 public class EduModule {
 	
 	private Long moduleId;
+	private Long targetModuleId;
 	private String moduleNm;
 	private String moduleDesc;
 	private int gunCnt;

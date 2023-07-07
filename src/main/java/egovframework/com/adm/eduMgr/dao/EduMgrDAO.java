@@ -5,6 +5,7 @@ import java.util.List;
 import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.adm.eduMgr.vo.EduDate;
 import egovframework.com.adm.eduMgr.vo.Student;
+import egovframework.com.stu.learning.vo.LearningProblem;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
@@ -65,6 +66,10 @@ public class EduMgrDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectEduDateListPop", params);
 	}
 	
+	public EduDate selectEduModuleList(EduDate params) {
+		return selectOne(Namespace + ".selectEduModuleList", params);
+	}	
+	
 	public List<?> selectEduMenuList(EduDate params) {
 		return (List<?>)selectList(Namespace + ".selectEduMenuList", params);
 	}	
@@ -82,4 +87,29 @@ public class EduMgrDAO extends EgovAbstractMapper{
 	public int deleteEduDateAll(EduDate params) {
 		return delete(Namespace + ".deleteEduDateAll", params);
 	}		
+	
+	public int insertBaselineCopy(Baseline params) {
+		return insert(Namespace + ".insertBaselineCopy", params);
+	}
+	
+	public int insertBaselineDateCopy(Baseline params) {
+		return insert(Namespace + ".insertBaselineDateCopy", params);
+	}
+	
+	public int insertBaselineStudentCopy(Baseline params) {
+		return insert(Namespace + ".insertBaselineStudentCopy", params);
+	}	
+	
+	public List<?> selectEduDateInfoList(Baseline params) {
+		return (List<?>)selectList(Namespace + ".selectEduDateInfoList", params);
+	}	
+	
+	public int updateBaselineEduDate(Baseline params) {
+		return update(Namespace + ".updateBaselineEduDate", params);
+	}		
+	
+	public int selectBaselineDataCount(Baseline params) {
+		return selectOne(Namespace + ".selectBaselineDataCount", params);
+	}
+			
 }

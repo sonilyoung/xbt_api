@@ -104,16 +104,8 @@
 	<!-- 모듈적용메뉴가져오기 -->
 	<select id="selectModuleMenuList" parameterType="egovframework.com.adm.system.vo.Menu" resultType="egovframework.com.adm.system.vo.Menu">
 		SELECT 
-		   (
-		      SELECT MODULE_ID FROM XBT_MODULE_INFO_MASTER T2 
-		      WHERE T2.MODULE_TYPE = T1.MODULE_TYPE
-		      AND T2.LEARNING_TYPE = T1.LEARNING_TYPE
-		   )AS moduleId,
-		   (
-		      SELECT MODULE_NM FROM XBT_MODULE_INFO_MASTER T2 
-		      WHERE T2.MODULE_TYPE = T1.MODULE_TYPE
-		      AND T2.LEARNING_TYPE = T1.LEARNING_TYPE
-		   )AS moduleNm,         
+		   '' AS moduleId,
+		   '' AS moduleNm,         
 		   MENU_CD,
 		   MENU_NAME,
 		   MODULE_TYPE,
@@ -127,15 +119,11 @@
 	<select id="selectModuleMenu" parameterType="egovframework.com.adm.system.vo.Menu" resultType="egovframework.com.adm.system.vo.Menu">
 		SELECT 
 		   (
-		      SELECT MODULE_ID FROM XBT_MODULE_INFO_MASTER T2 
-		      WHERE T2.MODULE_TYPE = T1.MODULE_TYPE
-		      AND T2.LEARNING_TYPE = T1.LEARNING_TYPE
+		      SELECT MODULE_ID FROM XBT_MODULE_INFO_MASTER T2 WHERE T2.MODULE_ID = #{moduleId}
 		   )AS moduleId,
 		   (
-		      SELECT MODULE_NM FROM XBT_MODULE_INFO_MASTER T2 
-		      WHERE T2.MODULE_TYPE = T1.MODULE_TYPE
-		      AND T2.LEARNING_TYPE = T1.LEARNING_TYPE
-		   )AS moduleNm,         
+		      SELECT MODULE_NM FROM XBT_MODULE_INFO_MASTER T2 WHERE T2.MODULE_ID = #{moduleId}
+		   )AS moduleNm,          
 		   MENU_CD,
 		   MENU_NAME,
 		   MODULE_TYPE,

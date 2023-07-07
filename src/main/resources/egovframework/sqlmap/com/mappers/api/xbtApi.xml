@@ -3,6 +3,31 @@
 <mapper namespace="egovframework.com.api.edc.dao.EgovXtsEdcApiDAO">
 	
 	
+	<!-- 학습문제조회 -->
+	<select id="selectLearningList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
+		SELECT 
+			MODULE_ID,
+			STUDY_LVL,
+			BAG_SCAN_ID ,
+			ACTION_DIV ,
+			ACTION_DIV_NAME	
+		FROM XBT_MODULE_INFO_DETAIL WHERE MODULE_ID  = #{moduleId}
+		LIMIT #{questionCnt}
+	</select>
+		
+	<!-- 학습문제조회 -->
+	<select id="selectLearningResultList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
+		SELECT 
+			MODULE_ID,
+			STUDY_LVL,
+			BAG_SCAN_ID ,
+			ACTION_DIV ,
+			ACTION_DIV_NAME	
+		FROM XBT_MODULE_INFO_DETAIL WHERE MODULE_ID  = #{moduleId}
+		LIMIT #{questionCnt}
+	</select>	
+	
+	
 	<!-- 단건 엠폴시스템 이미지 저장 및 업데이트-->
 	<update id="saveEmpUnitImage" parameterType="egovframework.com.api.edc.vo.UnitImages" >
 		INSERT INTO XBT_UNIT_IMG_INFO				

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.com.stu.learning.dao.LearningDAO">
-	
+	 
 	
 	<!-- 차수정보가져오기 -->
 	<select id="selectBaseline" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
@@ -18,7 +18,7 @@
 		AND T1.PROC_YEAR = T2.PROC_YEAR 
 		AND T1.PROC_SEQ = T2.PROC_SEQ 
 		AND T2.USER_ID = #{userId}
-		AND NOW() BETWEEN T1.EDU_START_DATE AND T1.EDU_END_DATE		 
+		AND date_format(NOW(), '%Y-%m-%d') BETWEEN T1.EDU_START_DATE AND T1.EDU_END_DATE
 		ORDER BY PROC_CD DESC
 		LIMIT 1		
 	</select>	
@@ -62,8 +62,9 @@
 			FROM XBT_BASELINE_EDU_DATE 
 			WHERE  
 			MENU_CD = #{menuCd}  
-			and USER_ID = #{userId}  
+			AND USER_ID = #{userId}  
 			AND PROC_CD = #{procCd}
+			AND date_format(NOW(), '%Y-%m-%d') BETWEEN EDU_START_DATE AND EDU_END_DATE 
 		 )	
 	</select>
 	
@@ -123,7 +124,7 @@
 			#{procYear},
 			#{procSeq},
 			#{trySeq},
-			#{studyLvl},
+			STUDY_LVL,
 			#{userId},
 			BAG_SCAN_ID ,
 			ACTION_DIV ,
@@ -440,7 +441,7 @@
 			#{procYear},
 			#{procSeq},
 			#{trySeq},
-			#{studyLvl},
+			STUDY_LVL,
 			#{userId},
 			BAG_SCAN_ID ,
 			ACTION_DIV ,

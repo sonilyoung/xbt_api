@@ -12,7 +12,8 @@ public class UserBaseline {
 	private String eduDate;   /* 교육기간 */
 	private String trainees;/* 교육인원 */
 	private String endingProcessEndYn;/* 수료처리완료여부 */
-	
+	private String eduCode;
+	private String eduName;
 	private String userId;
 	private String userNm;
 	private String compNm;
@@ -34,7 +35,7 @@ public class UserBaseline {
 	private int evaluationTotalScore;
 	private int theoryTotalScore;
 	private int practiceTotalScore;
-	
+	private String searchval;
 	
 	
 	

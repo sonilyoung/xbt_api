@@ -13,4 +13,8 @@ public class EgovXtsEdcApiDAO extends EgovAbstractMapper{
 		return update(Namespace + ".saveEmpUnitImage", params);
 	}	
 	
+	//문제정답유루
+	//selectLearnProblemsList
+	
+	//전체문제
 }

@@ -76,4 +76,8 @@ public interface LearningMgrService {
 	public int deletePointStdDetail(PointStd params);
 
 	public PointStd selectPointStdDetail(PointStd params);	
+	
+	public int insertModuleMasterCopy(EduModule params);
+	
+	public int insertModuleDetailCopy(EduModule params);
 }

@@ -82,7 +82,7 @@
 	<select id="selectUserListPop" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >	
 
 		<choose>
-			<when test='procCd == "" or procCd == null'>
+			<when test='procCd == "0" or procCd == 0'>
 				SELECT 
 					USER_NO,
 					USER_ID,
@@ -318,6 +318,8 @@
 			PROC_SEQ,
 			USER_ID,
 			USER_NM,
+			EDU_CODE,
+			EDU_NAME, 			
 			PROC_NM,
 			COMP_NM,
 			GAIN_SCORE,
@@ -331,6 +333,15 @@
 			ENDING_YN
 		FROM
 			XBT_BASELINE_STUDENT_INFO
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				WHERE PROC_NM LIKE CONCAT('%' , #{searchval} , '%')
+				OR USER_ID LIKE  CONCAT('%' , #{searchval} , '%')
+				OR USER_NM LIKE  CONCAT('%' , #{searchval} , '%')
+				OR EDU_NAME LIKE  CONCAT('%' , #{searchval} , '%')
+				OR COMP_NM LIKE  CONCAT('%' , #{searchval} , '%')
+			</when>
+		</choose>		
 	</select>	
 	
 	

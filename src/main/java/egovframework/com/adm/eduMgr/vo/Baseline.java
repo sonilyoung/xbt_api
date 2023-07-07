@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class Baseline {
 	private Long procCd;
+	private Long targetProcCd;
 	private String procYear;
 	private String procSeq;
 	private String procName;
@@ -14,6 +15,8 @@ public class Baseline {
 	private String eduDate;
 	private String eduStartDate;
 	private String eduEndDate;
+	private String eduStartDateCopy;
+	private String eduEndDateCopy;	
 	private int totStudyDate;
 	private int limitPersonCnt;
 	private int endingStdScore;
@@ -32,8 +35,10 @@ public class Baseline {
 	
 	private List<Student> stuList;
 	private List<List<String>> menuList;
+	private List<Long> modulesList;
 	private List<EduDate> scheduleList;
 	private List<String> userList;
+	private List<Long> moduleList;
 	private List<Long> procCdList;
 	
 

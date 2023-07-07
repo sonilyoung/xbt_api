@@ -16,7 +16,7 @@
 			,EDU_END_DATE
 			,TOT_STUDY_DATE /*학습일*/
 			,STUDY_LVL
-			,TIMESTAMPDIFF(DAY, EDU_START_DATE , EDU_END_DATE) AS TOT_TIME_DIFF /*전체학습일*/
+			,TIMESTAMPDIFF(DAY, EDU_START_DATE , EDU_END_DATE)+1 AS TOT_TIME_DIFF /*전체학습일*/
 			,TIMESTAMPDIFF(DAY, EDU_START_DATE , CURDATE()) AS TIME_DIFF /*진행학습일*/			
 			,LIMIT_PERSON_CNT
 			,ENDING_STD_SCORE /*수료기준점수*/
@@ -29,7 +29,7 @@
 			,UPDATE_DATE
 			,UPDATE_ID
 		FROM XBT_BASELINE			
-         
+        ORDER BY PROC_CD DESC 
         <!--
 		<choose>
 			<when test='searchType == "1"'>
@@ -265,6 +265,20 @@
 		]]>
 	</select>	
 	
+	
+	<!-- 교육일정 모듈목록-->
+	<select id="selectEduModuleList" parameterType="egovframework.com.adm.eduMgr.vo.EduDate" resultType="egovframework.com.adm.eduMgr.vo.EduDate">
+		<![CDATA[
+			SELECT DISTINCT
+				MODULE_ID,
+			   (SELECT MODULE_NM FROM XBT_MODULE_INFO_MASTER T2 WHERE T1.MODULE_ID = T2.MODULE_ID)AS MODULE_NM
+			FROM XBT_BASELINE_EDU_DATE T1
+			WHERE PROC_CD = #{procCd}
+			AND EDU_START_DATE = #{eduStartDate}
+			AND EDU_END_DATE = #{eduEndDate}	
+		]]>
+	</select>	
+	
 	<!-- 교육일정 메뉴목록-->
 	<select id="selectEduMenuList" parameterType="egovframework.com.adm.eduMgr.vo.EduDate" resultType="egovframework.com.adm.eduMgr.vo.EduDate">
 		<![CDATA[
@@ -353,6 +367,164 @@
 	</delete>	
 		
 	
-			
+	<!-- 차수복사 -->
+	<insert id="insertBaselineCopy" parameterType="egovframework.com.adm.eduMgr.vo.Baseline" useGeneratedKeys="true" keyProperty="procCd">
+		INSERT INTO XBT_BASELINE
+			(PROC_NAME
+			,PROC_YEAR
+			,PROC_SEQ
+			,STUDY_LVL
+			,EDU_START_DATE
+			,EDU_END_DATE
+			,TOT_STUDY_DATE
+			,LIMIT_PERSON_CNT
+			,THEORY_QUESTION_CNT
+			,ENDING_STD_SCORE
+			,ENDING_PROCESS_END_YN
+			,PRACTICE_TOTAL_SCORE
+			,THEORY_TOTAL_SCORE
+			,EVALUATION_TOTAL_SCORE
+			,PASS_SCORE
+			,INSERT_DATE
+			,INSERT_ID)
+		SELECT
+			#{procName}
+			,PROC_YEAR
+			,#{procSeq}
+			,STUDY_LVL
+			,#{eduStartDate}
+			,#{eduEndDate}
+			,TOT_STUDY_DATE
+			,LIMIT_PERSON_CNT
+			,THEORY_QUESTION_CNT
+			,ENDING_STD_SCORE
+			,ENDING_PROCESS_END_YN
+			,PRACTICE_TOTAL_SCORE
+			,THEORY_TOTAL_SCORE
+			,EVALUATION_TOTAL_SCORE
+			,PASS_SCORE
+			,now()
+			,#{userId}
+		FROM XBT_BASELINE
+		WHERE PROC_CD = #{targetProcCd}
+	</insert>	
+				
+	<!-- 차수데이터복사 -->
+	<insert id="insertBaselineDateCopy" parameterType="egovframework.com.adm.eduMgr.vo.Baseline">
+		INSERT INTO XBT_BASELINE_EDU_DATE(
+			PROC_CD
+			,PROC_NM
+			,MENU_CD
+			,MENU_NM
+			,MODULE_ID
+			,MODULE_TYPE
+			,LEARNING_TYPE
+			,USER_ID
+			,EDU_START_DATE
+			,EDU_END_DATE
+			,INSERT_ID
+			,INSERT_DATE
+		)
+		SELECT 
+			 #{procCd}
+			,#{procName}
+			,MENU_CD
+			,MENU_NM
+			,MODULE_ID
+			,MODULE_TYPE
+			,LEARNING_TYPE
+			,USER_ID
+			,EDU_START_DATE
+			,EDU_END_DATE
+			,#{userId}
+			,now()
+		FROM XBT_BASELINE_EDU_DATE
+		WHERE PROC_CD = #{targetProcCd}
+	</insert>	
 	
+	<!-- 차수사용자 복사 -->
+	<insert id="insertBaselineStudentCopy" parameterType="egovframework.com.adm.eduMgr.vo.Baseline">
+		INSERT INTO XBT_BASELINE_STUDENT_INFO(
+			PROC_CD
+			,PROC_YEAR
+			,PROC_SEQ
+			,EDU_CODE
+			,EDU_NAME
+			,USER_ID
+			,USER_NM
+			,PROC_NM
+			,COMP_NM
+			,DEPT_NM
+			,GAIN_SCORE
+			,PRACTICE_BEFORE_SCORE
+			,PRACTICE_SCORE
+			,PRACTICE_YN
+			,THEORY_SCORE
+			,THEORY_YN
+			,EVALUATION_SCORE
+			,EVALUATION_YN
+			,PASS_YN
+			,EDU_START_DATE
+			,EDU_END_DATE
+			,ENDING_YN
+			,INSERT_DATE
+			,INSERT_ID
+		)
+		SELECT 
+			#{procCd}
+			,PROC_YEAR
+			,#{procSeq}
+			,EDU_CODE
+			,EDU_NAME
+			,USER_ID
+			,USER_NM
+			,PROC_NM
+			,COMP_NM
+			,DEPT_NM
+			,0
+			,0
+			,0
+			,'N'
+			,0
+			,'N'
+			,0
+			,'N'
+			,'ING'
+			,EDU_START_DATE
+			,EDU_END_DATE
+			,'N'
+			,now()
+			,#{userId}
+		FROM XBT_BASELINE_STUDENT_INFO
+		WHERE PROC_CD = #{targetProcCd}
+	</insert>	
+	
+	<!-- 교육일정목록가져오기-->
+	<select id="selectEduDateInfoList" parameterType="egovframework.com.adm.eduMgr.vo.Baseline" resultType="egovframework.com.adm.eduMgr.vo.Baseline">
+		SELECT DISTINCT
+		EDU_START_DATE,
+		EDU_END_DATE 
+		FROM XBT_BASELINE_EDU_DATE
+		WHERE PROC_CD = #{procCd}
+		ORDER BY EDU_START_DATE
+	</select>			
+	
+	<!-- 차수 수정 -->
+	<update id="updateBaselineEduDate" parameterType="egovframework.com.adm.eduMgr.vo.Baseline">	
+		UPDATE XBT_BASELINE_EDU_DATE
+		SET 
+			EDU_START_DATE = #{eduStartDateCopy},
+			EDU_END_DATE = #{eduEndDateCopy}
+		WHERE PROC_CD = #{procCd}
+		AND EDU_START_DATE = #{eduStartDate}
+		AND EDU_START_DATE = #{eduEndDate}
+	</update>	
+	
+	<!-- 차수 겹치는 데이터 확인 -->
+	<select id="selectBaselineDataCount" parameterType="egovframework.com.adm.eduMgr.vo.Baseline" resultType="int">
+		SELECT 
+			COUNT(PROC_CD)
+		FROM XBT_BASELINE WHERE date_format(#{eduStartDate}, '%Y-%m-%d') BETWEEN EDU_START_DATE AND EDU_END_DATE
+	</select>	
+		
 </mapper>

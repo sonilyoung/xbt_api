@@ -1,5 +1,7 @@
 package egovframework.com.adm.eduMgr.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,11 +13,11 @@ import egovframework.com.adm.eduMgr.dao.EduMgrDAO;
 import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.adm.eduMgr.vo.EduDate;
 import egovframework.com.adm.eduMgr.vo.Student;
-import egovframework.com.adm.login.dao.UserManageDAO;
 import egovframework.com.adm.system.dao.SystemDAO;
 import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.userMgr.dao.UserMgrDAO;
 import egovframework.com.adm.userMgr.vo.UserInfo;
+import egovframework.com.stu.learning.vo.LearningProblem;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -60,7 +62,7 @@ public class EduMgrServiceImpl implements EduMgrService {
 	
 	@Override
 	@Transactional
-	public int insertBaseline(Baseline params) throws Exception{
+	public int insertBaseline(Baseline params) {
 		// TODO Auto-generated method stub
 		int result = eduMgrDAO.insertBaseline(params);
 		Baseline baseline = eduMgrDAO.selectBaseline(params);
@@ -73,6 +75,10 @@ public class EduMgrServiceImpl implements EduMgrService {
 					EduDate sl = new EduDate();
 					Menu m = new Menu();
 					m.setMenuCd(params.getMenuList().get(i).get(j));
+					
+					//모듈정보추가
+					m.setModuleId(params.getModuleList().get(i));
+					
 					Menu menu = systemDAO.selectModuleMenu(m);
 					if(menu.getModuleId()!=null) {
 						moduleId = menu.getModuleId();
@@ -124,7 +130,7 @@ public class EduMgrServiceImpl implements EduMgrService {
 
 	@Override
 	@Transactional
-	public int updateBaseline(Baseline params) throws Exception{
+	public int updateBaseline(Baseline params) {
 		// TODO Auto-generated method stub
 		int result = eduMgrDAO.updateBaseline(params);
 		
@@ -147,6 +153,10 @@ public class EduMgrServiceImpl implements EduMgrService {
 					EduDate sl = new EduDate();
 					Menu m = new Menu();
 					m.setMenuCd(params.getMenuList().get(i).get(j));
+					
+					//모듈정보추가
+					m.setModuleId(params.getModuleList().get(i));
+					
 					Menu menu = systemDAO.selectModuleMenu(m);
 					if(menu.getModuleId()!=null) {
 						moduleId = menu.getModuleId();
@@ -254,6 +264,14 @@ public class EduMgrServiceImpl implements EduMgrService {
 		return (List<EduDate>)eduMgrDAO.selectEduDateListPop(params);
 	}
 	
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public EduDate selectEduModuleList(EduDate params) {
+		// TODO Auto-generated method stub
+		return eduMgrDAO.selectEduModuleList(params);
+	}	
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<EduDate> selectEduMenuList(EduDate params) {
@@ -280,5 +298,49 @@ public class EduMgrServiceImpl implements EduMgrService {
 		return eduMgrDAO.deleteEduDateAll(params);
 	}
 
+	@Override
+	@Transactional
+	public int insertBaselineCopy(Baseline params) {
+		// TODO Auto-generated method stub
+		int result = eduMgrDAO.insertBaselineCopy(params);
+		eduMgrDAO.insertBaselineDateCopy(params);
+		eduMgrDAO.insertBaselineStudentCopy(params);
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/d");
+		String targetStartDate = params.getEduStartDate();
+		String targetEndDate = params.getEduEndDate();
+		LocalDate startDate = LocalDate.parse(targetStartDate.replaceAll("-", "/"), formatter);
+		LocalDate endDate = LocalDate.parse(targetEndDate.replaceAll("-", "/"), formatter);
+		List<LocalDate> bdate = egovframework.com.global.util.ComUtils.getDatesBetweenTwoDates(startDate, endDate);
+		for(LocalDate ld : bdate) {
+			System.out.println(String.valueOf(ld));
+		}
+		
+		List<Baseline> dateLit = (List<Baseline>) eduMgrDAO.selectEduDateInfoList(params);
+		
+		int i = 0;
+		for(Baseline b : dateLit) {
+			b.setProcCd(params.getProcCd());
+			
+			if(i<=dateLit.size()){
+				b.setEduStartDateCopy(String.valueOf(bdate.get(i)));
+				b.setEduEndDateCopy(String.valueOf(bdate.get(i)));
+				eduMgrDAO.updateBaselineEduDate(b);
+			}else {
+				b.setEduStartDateCopy("");
+				b.setEduEndDateCopy("");
+				eduMgrDAO.updateBaselineEduDate(b);
+			}
+			i++;						
+			
 
+		}				
+		
+		return result;
+	}
+
+
+	public int selectBaselineDataCount(Baseline params) {
+		return eduMgrDAO.selectBaselineDataCount(params);
+	}
 }

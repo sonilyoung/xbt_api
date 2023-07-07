@@ -245,6 +245,21 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 	public PointStd selectPointStdDetail(PointStd params) {
 		// TODO Auto-generated method stub
 		return learningMgrDAO.selectPointStdDetail(params);
+	}
+
+	@Override
+	@Transactional
+	public int insertModuleMasterCopy(EduModule params){
+		// TODO Auto-generated method stub
+		int result = learningMgrDAO.insertModuleMasterCopy(params);
+		learningMgrDAO.insertModuleDetailCopy(params);
+		return result;
+	}
+
+	@Override
+	public int insertModuleDetailCopy(EduModule params) {
+		// TODO Auto-generated method stub
+		return learningMgrDAO.insertModuleDetailCopy(params);
 	}	
 	
 }

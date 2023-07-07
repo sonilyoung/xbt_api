@@ -1,4 +1,4 @@
-package egovframework.com.api.edc.web;
+package egovframework.com.api.edc;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -90,27 +90,41 @@ public class EgovXtsEdcApiController {
      * 
      * @param param
      * @return Company
-     */	
+    
 	@ResponseBody
-	@RequestMapping(value = {"/reinforcement.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+	@RequestMapping(value = {"/selectLearningList.do"}, method = RequestMethod.GET)
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
-    public  BaseResponse<JsonNode> aiReinforcement(HttpServletRequest request
+    public  BaseResponse<JsonNode> selectLearningList(HttpServletRequest request
     		,@RequestBody Baseline params) throws Exception{		
 		JsonNode json = null;
 		ObjectMapper mapper = new ObjectMapper();
-		HashMap<String, Boolean> hash = new HashMap<String, Boolean>();
-		boolean result = false;
+		Map<String, Object> result = egovXtsEdcApiService.selectLearningList(params);
+		json = mapper.convertValue(result, JsonNode.class);
 		
-		result = egovXtsEdcReinforcementService.reinforcementLearningAi();
-		hash.put("Response", result);
-		
-		json = mapper.convertValue(hash, JsonNode.class);
-		
-		LOGGER.info(result + "");
-		
+		//LOGGER.info(result + "");
 		return new BaseResponse<JsonNode>(json);
-	}
+	} */	
 	
+	
+	   /**
+     * 강화학습 api
+     * 
+     * @param param
+     * @return Company
+     
+	@ResponseBody
+	@RequestMapping(value = {"/selectLearningResultList.do"}, method = RequestMethod.GET)
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public  BaseResponse<JsonNode> selectLearningResultList(HttpServletRequest request
+    		,@RequestBody Baseline params) throws Exception{		
+		JsonNode json = null;
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> result = egovXtsEdcApiService.selectLearningResultList(params);
+		json = mapper.convertValue(result, JsonNode.class);
+		
+		//LOGGER.info(result + "");
+		return new BaseResponse<JsonNode>(json);
+	}*/		
 	
     /**
      * 엘폴 api

@@ -58,7 +58,7 @@
 			#{procYear},
 			#{procSeq},
 			#{trySeq},
-			#{studyLvl},
+			STUDY_LVL,
 			#{userId},
 			BAG_SCAN_ID ,
 			ACTION_DIV ,

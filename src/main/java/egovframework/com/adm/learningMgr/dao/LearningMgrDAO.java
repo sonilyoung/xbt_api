@@ -113,4 +113,12 @@ public class LearningMgrDAO extends EgovAbstractMapper{
 	public PointStd selectPointStdDetail(PointStd params) {
 		return selectOne(Namespace + ".selectPointStdDetail", params);
 	}		
+	
+	public int insertModuleMasterCopy(EduModule params) {
+		return insert(Namespace + ".insertModuleMasterCopy", params);
+	}
+	
+	public int insertModuleDetailCopy(EduModule params) {
+		return insert(Namespace + ".insertModuleDetailCopy", params);
+	}		
 }

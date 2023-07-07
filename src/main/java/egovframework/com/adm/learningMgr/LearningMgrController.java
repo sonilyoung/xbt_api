@@ -366,7 +366,48 @@ public class LearningMgrController {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
-    }     
+    }
+	
+	   
+    /**
+     * 모듈복사
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertModuleCopy.do")
+    @ApiOperation(value = "모듈복사", notes = "모듈복사.")
+    public BaseResponse<Integer> insertModuleCopy(HttpServletRequest request, @RequestBody EduModule params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getTargetModuleId())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "getTargetModuleId" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getModuleNm())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ModuleNm" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		try {
+			//모듈문제삭제
+			params.setInsertId(login.getUserId());
+			int result = learningMgrService.insertModuleMasterCopy(params);
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }      
+    
     
     /**
      * 학습관리-xray판독모듈 랜덤추출 가져오기
