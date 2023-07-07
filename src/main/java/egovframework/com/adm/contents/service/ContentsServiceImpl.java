@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -18,6 +19,8 @@ import egovframework.com.adm.contents.vo.UnitInformation;
 import egovframework.com.adm.contents.vo.XbtSeq;
 import egovframework.com.adm.contents.vo.XrayContents;
 import egovframework.com.adm.contents.vo.XrayImgContents;
+import egovframework.com.common.service.CommonService;
+import egovframework.com.common.vo.Common;
 import egovframework.com.common.vo.SeqGroupCode;
 import lombok.extern.log4j.Log4j2;
 
@@ -47,6 +50,9 @@ public class ContentsServiceImpl implements ContentsService {
     @Resource(name = "ContentsDAO")
 	private ContentsDAO contentsDAO;
 
+    @Autowired
+    private CommonService commonService;    
+    
 	@Override
 	public List<Language> selectLanguageList(Language params) {
 		// TODO Auto-generated method stub
@@ -383,6 +389,13 @@ public class ContentsServiceImpl implements ContentsService {
 		
 		for(XrayContents x : params.getParamList()) {
 			x.setUpdateId(params.getUpdateId());
+			
+            Common cp = new Common();
+            cp.setLanguageCode("kr");
+            cp.setGroupId("actionDiv");
+            Common cr = commonService.selectCommonDetail(cp);			
+			x.setOpenYn(cr.getMemo1());
+			x.setPassYn(cr.getMemo2());
 			contentsDAO.updateXrayContents(x);
 		}
 		

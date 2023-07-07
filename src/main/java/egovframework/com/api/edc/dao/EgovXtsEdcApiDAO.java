@@ -1,5 +1,9 @@
 package egovframework.com.api.edc.dao;
 
+import java.util.List;
+
+import egovframework.com.api.edc.vo.AiForceLearning;
+import egovframework.com.api.edc.vo.AiForceLearningResult;
 import egovframework.com.api.edc.vo.UnitImages;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -12,9 +16,13 @@ public class EgovXtsEdcApiDAO extends EgovAbstractMapper{
 	public int saveEmpUnitImage(UnitImages params) {
 		return update(Namespace + ".saveEmpUnitImage", params);
 	}	
+
+	public List<?> selectLearningList(AiForceLearning params) {
+		return (List<?>)selectList(Namespace + ".selectLearningList", params);
+	}	
 	
-	//문제정답유루
-	//selectLearnProblemsList
+	public List<?> selectLearningResultList(AiForceLearningResult params) {
+		return (List<?>)selectList(Namespace + ".selectLearningResultList", params);
+	}		
 	
-	//전체문제
 }

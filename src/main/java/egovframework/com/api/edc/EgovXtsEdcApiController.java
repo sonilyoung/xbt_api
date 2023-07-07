@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.api.edc.service.EgovXtsEdcApiService;
 import egovframework.com.api.edc.service.EgovXtsEdcPseudoFilterService;
 import egovframework.com.api.edc.service.EgovXtsEdcReinforcementService;
 import egovframework.com.api.edc.service.EgovXtsEdcThreeDimensionService;
+import egovframework.com.api.edc.vo.AiForceLearning;
+import egovframework.com.api.edc.vo.AiForceLearningResult;
 import egovframework.com.api.edc.vo.UnitImages;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
@@ -48,7 +48,6 @@ public class EgovXtsEdcApiController {
 	@Autowired
 	private EgovXtsEdcReinforcementService egovXtsEdcReinforcementService;
 	
-	@Autowired
 	private EgovXtsEdcApiService egovXtsEdcApiService;	
 	
 	@ResponseBody
@@ -90,20 +89,20 @@ public class EgovXtsEdcApiController {
      * 
      * @param param
      * @return Company
-    
+    */
 	@ResponseBody
 	@RequestMapping(value = {"/selectLearningList.do"}, method = RequestMethod.GET)
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
     public  BaseResponse<JsonNode> selectLearningList(HttpServletRequest request
-    		,@RequestBody Baseline params) throws Exception{		
+    		,@RequestBody AiForceLearning params) throws Exception{		
 		JsonNode json = null;
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> result = egovXtsEdcApiService.selectLearningList(params);
+		List<AiForceLearning> result = egovXtsEdcReinforcementService.selectLearningList(params);
 		json = mapper.convertValue(result, JsonNode.class);
 		
 		//LOGGER.info(result + "");
 		return new BaseResponse<JsonNode>(json);
-	} */	
+	} 	
 	
 	
 	   /**
@@ -111,20 +110,20 @@ public class EgovXtsEdcApiController {
      * 
      * @param param
      * @return Company
-     
+     */	
 	@ResponseBody
 	@RequestMapping(value = {"/selectLearningResultList.do"}, method = RequestMethod.GET)
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
     public  BaseResponse<JsonNode> selectLearningResultList(HttpServletRequest request
-    		,@RequestBody Baseline params) throws Exception{		
+    		,@RequestBody AiForceLearningResult params) throws Exception{		
 		JsonNode json = null;
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> result = egovXtsEdcApiService.selectLearningResultList(params);
+		List<AiForceLearningResult> result = egovXtsEdcReinforcementService.selectLearningResultList(params);
 		json = mapper.convertValue(result, JsonNode.class);
 		
 		//LOGGER.info(result + "");
 		return new BaseResponse<JsonNode>(json);
-	}*/		
+	}	
 	
     /**
      * 엘폴 api

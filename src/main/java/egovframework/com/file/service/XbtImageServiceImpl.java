@@ -132,8 +132,9 @@ public class XbtImageServiceImpl implements XbtImageService {
 		return result;
 	}
 	
-	
-	
+	/**
+		공통 이미지 조회 (단껀씩 조회 가능)
+	**/
 	@Override
 	public LearningImg selectLeaningImg(LearningImg params) {
 		// TODO Auto-generated method stub

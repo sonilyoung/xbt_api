@@ -488,6 +488,9 @@
 		UPDATE XBT_BAG_INFO
 		SET 
 			STUDY_LVL = #{studyLvl}
+			, ACTION_DIV = #{actionDiv}
+			, OEPN_YN = #{openYn}
+			, CLOSE_YN = #{closeYn}
 			, USE_YN = #{useYn}
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DATE = now()

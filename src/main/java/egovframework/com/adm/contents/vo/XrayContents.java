@@ -29,7 +29,7 @@ public class XrayContents{
 	private String updateDate;
 	private String updateId;	
 	private String languageCode;	
-	
+	private byte[] imgReal;//실사
 	private List<XrayContents> paramList;
 	
 }

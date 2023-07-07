@@ -802,12 +802,44 @@ public class ContentsController {
 		
 		try {
 			List<XrayContents> resultList = contentsService.selectXrayContentsList(params);
+			
 	        return new BaseResponse<List<XrayContents>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }  
+	
+    /**
+     * 의사색체이미지
+     * 
+     * @param param
+     * @return Company
+    */  
+    @PostMapping("/selectImg.do")
+    @ApiOperation(value = "의사색체이미지", notes = "의사색체이미지")
+    public BaseResponse<LearningImg> selectImg(HttpServletRequest request, @RequestBody LearningImg params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getBagScanId())){				
+			return new BaseResponse<LearningImg>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getMessage());
+		}
+		
+		if(StringUtils.isEmpty(params.getCommand())){				
+			return new BaseResponse<LearningImg>(BaseResponseCode.PARAMS_ERROR, "Command" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		try {
+			LearningImg result = xbtImageService.selectLeaningImg(params); 
+			return new BaseResponse<LearningImg>(result);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }   	
 
     
     

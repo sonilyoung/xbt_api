@@ -97,6 +97,8 @@
 			REMARKS,
 			USE_YN,
 			MAIN_YN,
+			MEMO1,
+			MEMO2,
 			INSERT_ID,
 			INSERT_DATE,
 			UPDATE_ID,
@@ -105,8 +107,16 @@
 			XBT_COMMON_CODE
 		WHERE LANGUAGE_CODE = #{languageCode}
 		AND GROUP_ID = #{groupId}
-		AND MEMO1 = #{memo1}
-		AND MEMO2 = #{memo2}		
+		
+		<choose>
+			<when test='memo1 != "" and memo1 != null'>
+				AND MEMO1 = #{memo1}
+			</when>		
+			<when test='memo2 != "" and memo2 != null'>
+				AND MEMO2 = #{memo2}	
+			</when>					
+		</choose>	
+					
 	</select>		
 		
 	

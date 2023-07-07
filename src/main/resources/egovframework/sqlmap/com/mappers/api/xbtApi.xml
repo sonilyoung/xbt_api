@@ -4,27 +4,74 @@
 	
 	
 	<!-- 학습문제조회 -->
-	<select id="selectLearningList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
-		SELECT 
-			MODULE_ID,
+	<select id="selectLearningList" parameterType="egovframework.com.api.edc.vo.AiForceLearning" resultType="egovframework.com.api.edc.vo.AiForceLearning">			
+		SELECT
+			BAG_SCAN_NO,
+			BAG_SCAN_ID,
 			STUDY_LVL,
-			BAG_SCAN_ID ,
-			ACTION_DIV ,
-			ACTION_DIV_NAME	
-		FROM XBT_MODULE_INFO_DETAIL WHERE MODULE_ID  = #{moduleId}
-		LIMIT #{questionCnt}
+			UNIT_ID,
+			(SELECT MAX(UNIT_NAME) FROM XBT_UNIT_INFO T2 WHERE T2.UNIT_ID = T1.UNIT_ID) AS UNIT_NAME ,
+			UNIT_GROUP_CD,
+			(SELECT MAX(GROUP_NAME) FROM XBT_UNIT_GROUP T2 WHERE T2.UNIT_GROUP_CD = T1.UNIT_GROUP_CD) AS UNIT_GROUP_NAME ,
+			USE_YN,
+			OPEN_YN,
+			CLOSE_YN,
+			ACTION_DIV,
+			ACTION_DIV_NAME,
+			INSERT_DATE,
+			INSERT_ID,
+			UPDATE_DATE,
+			UPDATE_ID
+		FROM
+			XBT_BAG_INFO T1
+		ORDER BY BAG_SCAN_ID 
 	</select>
 		
 	<!-- 학습문제조회 -->
-	<select id="selectLearningResultList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
-		SELECT 
-			MODULE_ID,
-			STUDY_LVL,
-			BAG_SCAN_ID ,
-			ACTION_DIV ,
-			ACTION_DIV_NAME	
-		FROM XBT_MODULE_INFO_DETAIL WHERE MODULE_ID  = #{moduleId}
-		LIMIT #{questionCnt}
+	<select id="selectLearningResultList" parameterType="egovframework.com.api.edc.vo.AiForceLearningResult" resultType="egovframework.com.api.edc.vo.AiForceLearningResult">			
+		SELECT  
+				PROGRESS_NO,
+				MODULE_ID, 
+				PROC_CD, 
+				PROC_YEAR, 
+				PROC_SEQ, 
+				TRY_SEQ ,
+				STUDY_LVL ,
+				USER_ID,
+				BAG_SCAN_ID,			
+				UNIT_ID ,
+				UNIT_NAME ,
+				UNIT_GROUP_CD ,
+				(SELECT MAX(GROUP_NAME) FROM XBT_UNIT_GROUP T2 WHERE T2.UNIT_GROUP_CD = TOT.UNIT_GROUP_CD) AS UNIT_GROUP_NAME ,
+				ACTION_DIV_NAME ,
+				ACTION_DIV,
+				USER_ACTION_DIV,
+				GAIN_SCORE ,
+				answerYn,  
+				INSERT_DATE		
+		FROM (	
+			SELECT 
+				PROGRESS_NO,
+				MODULE_ID, 
+				PROC_CD, 
+				PROC_YEAR, 
+				PROC_SEQ, 
+				TRY_SEQ ,
+				STUDY_LVL ,
+				USER_ID,
+				BAG_SCAN_ID,			
+				(SELECT MAX(UNIT_ID) FROM XBT_BAG_INFO T2 WHERE T2.BAG_SCAN_ID = T1.BAG_SCAN_ID) AS UNIT_ID ,
+				(SELECT MAX(UNIT_NAME) FROM XBT_UNIT_INFO T2 WHERE T2.UNIT_ID = T1.UNIT_ID) AS UNIT_NAME ,
+				(SELECT MAX(UNIT_GROUP_CD) FROM XBT_BAG_INFO T2 WHERE T2.BAG_SCAN_ID = T1.BAG_SCAN_ID) AS UNIT_GROUP_CD ,
+				(SELECT MAX(ACTION_DIV_NAME) FROM XBT_BAG_INFO T2 WHERE T2.BAG_SCAN_ID = T1.BAG_SCAN_ID) AS ACTION_DIV_NAME ,
+				ACTION_DIV,
+				USER_ACTION_DIV,
+				GAIN_SCORE ,
+				CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 'Y' ELSE 'N' END AS answerYn,  
+				INSERT_DATE
+			FROM XBT_STU_LEARNING_PROGRESSING T1
+		) TOT
+		
 	</select>	
 	
 	
