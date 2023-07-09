@@ -114,7 +114,10 @@
 			</when>		
 			<when test='memo2 != "" and memo2 != null'>
 				AND MEMO2 = #{memo2}	
-			</when>					
+			</when>		
+			<when test='codeValue != "" and codeValue != null'>
+				AND CODE_VALUE = #{codeValue}
+			</when>								
 		</choose>	
 					
 	</select>		

@@ -1077,8 +1077,8 @@ public class ContentsController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getBagContNo())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BagContNo" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getBagConstList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "BagConstList" + BaseApiMessage.REQUIRED.getCode());
 		}				
 		
 		try {

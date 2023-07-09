@@ -393,6 +393,7 @@ public class ContentsServiceImpl implements ContentsService {
             Common cp = new Common();
             cp.setLanguageCode("kr");
             cp.setGroupId("actionDiv");
+            cp.setCodeValue(x.getActionDiv());
             Common cr = commonService.selectCommonDetail(cp);			
 			x.setOpenYn(cr.getMemo1());
 			x.setPassYn(cr.getMemo2());
@@ -453,7 +454,14 @@ public class ContentsServiceImpl implements ContentsService {
 	@Override
 	public int deleteXrayUnit(XrayContents params) {
 		// TODO Auto-generated method stub
-		return contentsDAO.deleteXrayUnit(params);
+		if(params.getBagConstList().size() > 0) {
+			for(Long p : params.getBagConstList()) {
+				params.setBagContNo(p);
+				contentsDAO.deleteXrayUnit(params);
+			}
+		}
+		
+		return 1;		
 	}
 	
 	@Override

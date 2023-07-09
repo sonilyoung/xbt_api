@@ -24,7 +24,7 @@ public class UnitInformation{
 	private String openYn;
 	private String passYn;
 	private String actionDiv;
-	
+	private String searchval;
 	
 	List<UnitInformation> updateList;//수정목록
 }

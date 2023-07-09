@@ -376,10 +376,10 @@
 			T1.BAG_SCAN_ID,
 			T1.UNIT_ID,/*정답물품아이디*/
 			(SELECT UNIT_NAME FROM XBT_UNIT_INFO WHERE UNIT_ID = T1.UNIT_ID) as unitName,/*정답물품명*/
-			(SELECT OPEN_YN FROM XBT_UNIT_GROUP T3 WHERE T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD)as OPEN_YN,/*개봉여부*/
-			(SELECT PASS_YN FROM XBT_UNIT_GROUP T3 WHERE T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD)as PASS_YN,/*통과여부*/
-			(SELECT ACTION_DIV FROM XBT_UNIT_GROUP T3 WHERE T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD)as ACTION_DIV,
-			(SELECT ACTION_DIV_NAME FROM XBT_UNIT_GROUP T3 WHERE T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD)as ACTION_DIV_NAME,
+			OPEN_YN,/*개봉여부*/
+			PASS_YN,/*통과여부*/
+			ACTION_DIV,
+			ACTION_DIV_NAME,
 			T1.STUDY_LVL, /*학습레벨*/
 			T1.USE_YN ,/*사용여부*/
 			T1.INSERT_ID, 
@@ -489,8 +489,8 @@
 		SET 
 			STUDY_LVL = #{studyLvl}
 			, ACTION_DIV = #{actionDiv}
-			, OEPN_YN = #{openYn}
-			, CLOSE_YN = #{closeYn}
+			, OPEN_YN = #{openYn}
+			, PASS_YN = #{passYn}
 			, USE_YN = #{useYn}
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DATE = now()
@@ -560,8 +560,9 @@
 	
 	<!-- xray콘텐츠관리-하위목록-가방에포함된 아이템 -->
 	<select id="selectXrayUnitList" parameterType="egovframework.com.adm.contents.vo.XrayContents" resultType="egovframework.com.adm.contents.vo.XrayContents" >
-         SELECT                                       											
-     		A.BAG_SCAN_ID                 /*가방촬영ID*/        
+         SELECT 
+         	A.BAG_CONST_NO                                      											
+     		 , A.BAG_SCAN_ID                 /*가방촬영ID*/        
 		     , A.SEQ                         /*순번*/        
 		     , A.UNIT_ID                     /*물품ID*/   
 		     , B.UNIT_NAME                     /*물품명*/
@@ -629,6 +630,15 @@
 			, FN_CODE_NAME('0005', T2.ACTION_DIV,'KOR') AS actionDiv 
 		FROM XBT_UNIT_INFO T1 JOIN XBT_UNIT_GROUP T2
 		ON T1.UNIT_GROUP_CD = T2.UNIT_GROUP_CD 
+		
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				WHERE T1.UNIT_ID LIKE CONCAT('%' , #{searchval} , '%')
+				OR T1.UNIT_SCAN_ID LIKE  CONCAT('%' , #{searchval} , '%')
+				OR T1.UNIT_GROUP_CD LIKE  CONCAT('%' , #{searchval} , '%')
+				OR T1.UNIT_NAME LIKE  CONCAT('%' , #{searchval} , '%')
+			</when>
+		</choose>				
 	</select>		
 	
 	
