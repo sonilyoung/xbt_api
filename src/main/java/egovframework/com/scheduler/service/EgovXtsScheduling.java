@@ -112,7 +112,7 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 					}
 
 					
-					XbtScore processScore = systemService.selectPracticeScore(xs);
+					XbtScore processScore = systemService.selectProcessScore(xs);
 					if(processScore!=null) {
 						if("Y".equals(processScore.getTheoryYn()) && "Y".equals(processScore.getPracticeYn()) && "Y".equals(processScore.getEvaluationYn())) {
 							
