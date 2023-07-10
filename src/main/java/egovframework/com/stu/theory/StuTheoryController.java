@@ -328,7 +328,7 @@ public class StuTheoryController {
 
 			StuTheory gainScore = theoryService.selectTheorySum(params);
 			params.setGainScore(gainScore.getGainScore());
-			if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassScore())) {//통과
+			if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassTheoryScore())) {//통과
 				params.setPassYn("Y");
 			}else {//과락
 				params.setPassYn("N");

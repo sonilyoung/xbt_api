@@ -238,6 +238,7 @@ public class MainController {
 				if(m5 && m6) {
 					params.setMenuCd("22");
 					Schedule defaultM = mainService.selectDefaultMenu(params);
+					defaultM.setMenuFlag("true");
 					menu2Result.add(defaultM);
 					break;
 				}

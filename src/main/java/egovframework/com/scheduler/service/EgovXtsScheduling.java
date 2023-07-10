@@ -115,15 +115,33 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 					XbtScore processScore = systemService.selectPracticeScore(xs);
 					if(processScore!=null) {
 						if("Y".equals(processScore.getTheoryYn()) && "Y".equals(processScore.getPracticeYn()) && "Y".equals(processScore.getEvaluationYn())) {
-							 int totalScore = theoryScore + evaluationScore + practiceScore;
-							 xs.setGainScore(totalScore);
-							 
-							 if(totalScore >= baseline.getEndingStdScore()) {
-								 xs.setPassYn("Y");
-							 }else {
-								 xs.setPassYn("N");
-							 }
-							 systemService.updateXbtEndScore(xs);
+							
+							 //커트라인비교 추가
+							if(evaluationScore < baseline.getPassScore()) {//평가커트라인비교
+								xs.setPassYn("N");
+							}else if(theoryScore < baseline.getPassTheoryScore()) {//이론평가커트라인비교
+								xs.setPassYn("N");
+							}else if(practiceScore < baseline.getPassPracticeScore()) {//실기커트라인비교
+								xs.setPassYn("N");	
+							}
+							
+							if(evaluationScore < baseline.getPassScore() || theoryScore < baseline.getPassTheoryScore() || practiceScore < baseline.getPassPracticeScore()) {
+								systemService.updateXbtEndScore(xs); //과락처리
+							}
+							
+							
+							if(evaluationScore >= baseline.getPassScore() && theoryScore >= baseline.getPassTheoryScore() && practiceScore >= baseline.getPassPracticeScore()) {
+								int totalScore = theoryScore + evaluationScore + practiceScore;
+								xs.setGainScore(totalScore);
+								 
+								if(totalScore >= baseline.getEndingStdScore()) {
+									xs.setPassYn("Y");
+								}else {
+									xs.setPassYn("N");
+								}
+								systemService.updateXbtEndScore(xs);								
+							}
+
 						}					
 					}					
 				}

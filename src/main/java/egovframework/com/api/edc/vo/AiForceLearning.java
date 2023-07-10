@@ -13,7 +13,7 @@ public class AiForceLearning{
 	private String unitGroupName;
 	private String useYn;
 	private String openYn;
-	private String closeYn;
+	private String passYn;
 	private String actionDiv;
 	private String actionDivName;
 	private String insertDate;

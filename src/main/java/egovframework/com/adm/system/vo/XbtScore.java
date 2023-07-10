@@ -19,7 +19,12 @@ public class XbtScore {
 	private String procNm;
 	private String compNm;
 	private String deptNm;
+	
 	private int gainScore;
+	private int passScore;
+	private int passTheoryScore;
+	private int passPracticeScore;
+	
 	private String practiceYn;
 	private String theoryYn;
 	private String evaluationYn;

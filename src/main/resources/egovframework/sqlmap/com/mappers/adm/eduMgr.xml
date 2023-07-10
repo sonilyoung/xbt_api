@@ -62,6 +62,9 @@
 			,TIMESTAMPDIFF(DAY, EDU_START_DATE , CURDATE()) AS TIME_DIFF /*진행학습일*/			
 			,LIMIT_PERSON_CNT
 			,IFNULL(ENDING_STD_SCORE, 0)AS ENDING_STD_SCORE /*수료기준점수*/
+			,IFNULL(PASS_SCORE, 0)AS PASS_SCORE /*평가커트라인점수*/
+			,IFNULL(PASS_THEORY_SCORE, 0)AS PASS_THEORY_SCORE /*이론커트라인기준점수*/
+			,IFNULL(PASS_PRACTICE_SCORE, 0)AS PASS_PRACTICE_SCORE /*실기커트라인기준점수*/
 			,ENDING_PROCESS_END_YN /*수료완료유무*/
 			,IFNULL(PRACTICE_TOTAL_SCORE, 0)AS practiceTotalScore /*실기가중치*/
 			,IFNULL(EVALUATION_TOTAL_SCORE, 0)AS evaluationTotalScore	/*평가가중치*/		
@@ -87,6 +90,8 @@
 			LIMIT_PERSON_CNT,
 			ENDING_STD_SCORE,
 			PASS_SCORE,
+			PASS_THEORY_SCORE,
+			PASS_PRACTICE_SCORE,
 			ENDING_PROCESS_END_YN,
 			PRACTICE_TOTAL_SCORE,
 			EVALUATION_TOTAL_SCORE,
@@ -103,7 +108,9 @@
 			,#{studyLvl}
 			,#{limitPersonCnt}
 			,#{endingStdScore}
-			,#{endingStdScore}
+			,#{passScore}
+			,#{passTheoryScore}
+			,#{passPracticeScore}
 			,'N'
 			,#{practiceTotalScore}
 			,#{evaluationTotalScore}
@@ -125,7 +132,9 @@
 			TOT_STUDY_DATE = #{totStudyDate},
 			LIMIT_PERSON_CNT = #{limitPersonCnt},
 			ENDING_STD_SCORE = #{endingStdScore},
-			PASS_SCORE = #{endingStdScore},
+			PASS_SCORE = #{passScore},
+			PASS_THEORY_SCORE = #{passTheoryScore},
+			PASS_PRACTICE_SCORE = #{passPracticeScore},
 			ENDING_PROCESS_END_YN = #{endingProcessEndYn},
 			PRACTICE_TOTAL_SCORE = #{practiceTotalScore},
 			EVALUATION_TOTAL_SCORE = #{evaluationTotalScore},

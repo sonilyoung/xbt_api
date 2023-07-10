@@ -94,7 +94,7 @@ public class EgovXtsEdcApiController {
 	@RequestMapping(value = {"/selectLearningList.do"}, method = RequestMethod.GET)
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
     public  BaseResponse<JsonNode> selectLearningList(HttpServletRequest request
-    		,@RequestBody AiForceLearning params) throws Exception{		
+    		,AiForceLearning params) throws Exception{		
 		JsonNode json = null;
 		ObjectMapper mapper = new ObjectMapper();
 		List<AiForceLearning> result = egovXtsEdcReinforcementService.selectLearningList(params);
@@ -115,7 +115,7 @@ public class EgovXtsEdcApiController {
 	@RequestMapping(value = {"/selectLearningResultList.do"}, method = RequestMethod.GET)
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
     public  BaseResponse<JsonNode> selectLearningResultList(HttpServletRequest request
-    		,@RequestBody AiForceLearningResult params) throws Exception{		
+    		,AiForceLearningResult params) throws Exception{		
 		JsonNode json = null;
 		ObjectMapper mapper = new ObjectMapper();
 		List<AiForceLearningResult> result = egovXtsEdcReinforcementService.selectLearningResultList(params);

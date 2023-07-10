@@ -973,7 +973,7 @@ public class LearningController {
 			params.setProcYear(baselineData.getProcYear());
 			params.setProcSeq(baselineData.getProcSeq());
 			params.setStudyLvl(moduleInfoData.getStudyLvl());
-			params.setPassScore(moduleInfoData.getPassScore());
+			params.setPassScore(baselineData.getPassScore());
 			params.setQuestionCnt(moduleInfoData.getQuestionCnt());
 			
 			//시도횟수
@@ -995,7 +995,7 @@ public class LearningController {
 
 			Learning gainScore = learningService.selectWrongAnswerSum(params);
 			params.setGainScore(gainScore.getGainScore());
-			if(gainScore.getGainScore()>=Double.valueOf(moduleInfoData.getPassScore())) {//통과
+			if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassScore())) {//통과
 				params.setPassYn("Y");
 			}else {//과락
 				params.setPassYn("N");

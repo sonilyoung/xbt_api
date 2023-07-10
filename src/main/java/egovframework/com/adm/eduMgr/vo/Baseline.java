@@ -26,6 +26,11 @@ public class Baseline {
 	private int practiceTotalScore;
 	private int evaluationTotalScore;
 	private int theoryTotalScore;
+	
+	private int passScore;
+	private int passTheoryScore;
+	private int passPracticeScore;	
+	
 	private String timeDiff;
 	private String insertDate;
 	private String insertId;
