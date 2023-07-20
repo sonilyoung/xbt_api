@@ -23,6 +23,8 @@ import java.util.List;
 public interface TestService {
 	public int insertXbtBagConstUnitTemp(LinkedHashMap<String, Object> params);
 	
+	public int insertXbtBagConstUnitReal(LinkedHashMap<String, Object> params);
+	
 	public int insertXbtBagInfoTemp(LinkedHashMap<String, Object> params);
 	
 	public int insertUnitTemp(LinkedHashMap<String, Object> params);

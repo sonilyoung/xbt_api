@@ -15,13 +15,15 @@
 			SEQ,
 			UNIT_GROUP_CD,
 			UNIT_ID,
+			ANSWER_ITEM,
 			INSERT_DATE,
 			INSERT_ID
 		)VALUES(
 			#{bagScanId}
 			,#{seq}
-			,#{unitGroupCd}
+			,(SELECT UNIT_GROUP_CD FROM XBT_UNIT_INFO WHERE UNIT_ID = #{unitId}) 
 			,#{unitId}
+			,#{unitName}
 			,now()
 			,'system'
 		)

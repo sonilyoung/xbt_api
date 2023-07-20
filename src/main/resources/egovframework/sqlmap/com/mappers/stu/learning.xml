@@ -204,16 +204,16 @@
 		SELECT 
 			<choose>
 				<when test='languageCode == "kr"'>
-					(SELECT UNIT_NAME FROM XBT_UNIT_INFO T2 WHERE T2.UNIT_ID = T3.UNIT_ID) AS unitName,
+					ANSWER_ITEM AS unitName,
 				</when>
 				<when test='languageCode == "en"'>
-					(SELECT UNIT_NAME_EN FROM XBT_UNIT_INFO T2 WHERE T2.UNIT_ID = T3.UNIT_ID) AS unitName,				
+					ANSWER_ITEM_EN AS unitName,				
 				</when>
 				<when test='languageCode == "ch"'>
-					(SELECT UNIT_NAME_CH FROM XBT_UNIT_INFO T2 WHERE T2.UNIT_ID = T3.UNIT_ID) AS unitName,
+					ANSWER_ITEM_CH AS unitName,
 				</when>				
 				<when test='languageCode == "jp"'>
-					(SELECT UNIT_NAME_JP FROM XBT_UNIT_INFO T2 WHERE T2.UNIT_ID = T3.UNIT_ID) AS unitName,
+					ANSWER_ITEM AS unitName,
 				</when>
 				<otherwise>
 					, UNIT_NAME /*물품명*/
@@ -323,7 +323,7 @@
 	<!-- 학습종료점수합산 -->
 	<select id="selectLeaningSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt} AS gainScore
+			floor(IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt}) AS gainScore
 		FROM XBT_STU_LEARNING_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 
@@ -549,7 +549,7 @@
 	<!-- 오답문제종료점수합산 -->
 	<select id="selectWrongAnswerSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt} AS gainScore
+			floor(IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt}) AS gainScore
 		FROM XBT_STU_WRONG_ANSWER_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 

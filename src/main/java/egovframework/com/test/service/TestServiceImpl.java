@@ -54,6 +54,13 @@ public class TestServiceImpl implements TestService {
 		// TODO Auto-generated method stub
 		return testDAO.insertXbtBagConstUnitTemp(params);
 	}
+	
+	@Transactional
+	@Override
+	public int insertXbtBagConstUnitReal(LinkedHashMap<String,Object> params) {
+		// TODO Auto-generated method stub
+		return testDAO.insertXbtBagConstUnitTemp(params);
+	}	
 
 	@Override
 	public int insertXbtBagInfoTemp(LinkedHashMap<String, Object> params) {

@@ -873,6 +873,69 @@ public class TestController {
 	}			
 	
 	
+	//CONST UNIT GROUP코드 조회 INSERT
+	@PostMapping(value="/insertXbtBagConstUnitReal")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public BaseResponse<Integer> insertXbtBagConstUnitReal(
+			HttpServletRequest request
+			,HttpServletResponse response
+			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
+	) throws Exception{
+		LOGGER.debug("========= excelUpload ========="+ excelFile);
+
+		LOGGER.debug("========= excelUpload ========="+ excelFile);
+
+	    try {
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmsss"); 
+			Date time = new Date(); 
+			String fmtDate=format.format(time);
+
+			//String stordFilePath = GlobalsProperties.getProperty("Globals.fileStorePath");
+			File fileDir = new File(FILE_UPLOAD_PATH);
+			// root directory 없으면 생성
+			if (!fileDir.exists()) {
+				fileDir.mkdirs(); //폴더 생성합니다.
+			}             
+			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
+			
+			excelFile.transferTo(destFile); // 엑셀파일 생성
+			String[] coloumNm = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
+			    
+			ExcelReadOption excelReadOption = new ExcelReadOption();
+			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
+			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
+			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
+			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
+           
+	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			
+			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+			for(LinkedHashMap<String, String> excelData: excelContent){
+				params = new LinkedHashMap<String, Object>();
+	            //row.setHeight((short)1200);
+	            params.put("bagScanId", excelData.get("B"));
+	            params.put("seq", excelData.get("C"));
+	            params.put("unitId", excelData.get("E")+targetUnit);
+	            params.put("unitName", excelData.get("G"));
+	            //params.put("unitGroupCd", excelData.get("E"));
+	            
+	            testService.insertXbtBagConstUnitTemp(params);
+			}
+			
+			int result = 1;
+            if(result>0) {
+	            return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+            }else {
+            	return new BaseResponse<Integer>(BaseResponseCode.DATA_IS_NULL);
+            }
+	    }catch(Exception e) {
+	    	return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR);
+	    } 
+	     
+	    
+	}			
+	
 	
 	//이론문제 등록
 	@PostMapping(value="/insertTheoryExcel")
