@@ -165,7 +165,7 @@
 	<!-- 평가종료점수합산 -->
 	<select id="selectEvaluationSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt} AS gainScore 
+			floor(IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt}) AS gainScore 
 		FROM XBT_STU_EVALUATION_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 
