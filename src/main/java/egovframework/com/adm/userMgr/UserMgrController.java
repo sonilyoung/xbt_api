@@ -324,6 +324,183 @@ public class UserMgrController {
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
+    
+    
+    
+/**
+ * 교육생등록 (교육생이 직접등록) 
+ * 
+ * @param param
+ * @return Company
+ */
+@PostMapping("/insertStuUser.do")
+@ApiOperation(value = "교육생", notes = "교육생등록.")
+public BaseResponse<Integer> insertStuUser(HttpServletRequest request, @RequestBody UserInfo params) {
+	
+	if(StringUtils.isEmpty(params.getEduName())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
+	}
+	
+	if(StringUtils.isEmpty(params.getUserId())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userId" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getUserNm())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userNm" + BaseApiMessage.REQUIRED.getCode());
+	}
+	
+	if(StringUtils.isEmpty(params.getUserNmCh())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userNmCh" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getUserNmEn())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userNmEn" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getSex())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "sex" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getBirthDay())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "birthDay" + BaseApiMessage.REQUIRED.getCode());
+	}		
+
+	if(StringUtils.isEmpty(params.getAge())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "age" + BaseApiMessage.REQUIRED.getCode());
+	}		
+
+
+	if(StringUtils.isEmpty(params.getAddress())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "address" + BaseApiMessage.REQUIRED.getCode());
+	}		
+
+	if(StringUtils.isEmpty(params.getUserPw())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userPw" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getDept())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "dept" + BaseApiMessage.REQUIRED.getCode());
+	}		
+	
+	if(StringUtils.isEmpty(params.getPosition())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "position" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getWork())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "work" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getRegistNumber())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "registNumber" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getEmployStatusYn())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "employStatusYn" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getLastEdu())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEdu" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getWriteDate())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "writeDate" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getCompany())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "company" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getHpNo())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "hpNo" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+
+	if(StringUtils.isEmpty(params.getEmail())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "email" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if(StringUtils.isEmpty(params.getCareerYn())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerYn" + BaseApiMessage.REQUIRED.getCode());
+	}
+
+	if("Y".equals(params.getCareerYn())) {
+		if(StringUtils.isEmpty(params.getCareer1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "career1" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		if(StringUtils.isEmpty(params.getCareerStartDate1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerStartDate1" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		if(StringUtils.isEmpty(params.getCareerEndDate1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerEndDate1" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getCareerCompany1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerCompany1" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		if(StringUtils.isEmpty(params.getCareerPosition1())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "careerPosition1" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+	}
+
+
+	if(StringUtils.isEmpty(params.getLastEduName())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduName" + BaseApiMessage.REQUIRED.getCode());
+	}	
+	if(StringUtils.isEmpty(params.getLastEduDept())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduDept" + BaseApiMessage.REQUIRED.getCode());
+	}			
+	
+	if(StringUtils.isEmpty(params.getLastEduYear())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduYear" + BaseApiMessage.REQUIRED.getCode());
+	}	
+	
+	if(StringUtils.isEmpty(params.getLastEduEnd())){				
+		return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "lastEduEnd" + BaseApiMessage.REQUIRED.getCode());
+	}	
+	
+	
+	UserInfo userInfo = userMgrService.selectUser(params);
+	if(userInfo!=null) {
+		return new BaseResponse<Integer>(BaseResponseCode.EXGIST_USERS, BaseResponseCode.EXGIST_USERS.getMessage());
+	}
+	
+	try {
+		
+		Common cp = new Common();
+		cp.setGroupId("eduName");
+		List<Common> clist = commonService.selectCommonList(cp);
+		
+		if(clist!=null) {
+			for(Common c : clist) {
+				if(params.getEduName().equals(c.getCodeName())){
+					params.setEduCode(c.getCodeValue());
+				} 
+			}
+		}
+		
+		//교육생등록
+		params.setInsertId(params.getUserId());
+    	AES256Util aesUtil = new AES256Util();
+        String pwEnc = aesUtil.encrypt(params.getUserPw());
+        params.setUserPw(pwEnc);
+		int result = userMgrService.insertUser(params);
+		
+		if(result>0) {
+			return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+		}else {
+			return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+		}
+		
+    } catch (Exception e) {
+    	LOGGER.error("error:", e);
+        throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+    }
+}    
+    
             
         
     /**
