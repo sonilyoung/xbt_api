@@ -22,7 +22,6 @@ import egovframework.com.adm.eduMgr.vo.Student;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.userMgr.service.UserMgrService;
-import egovframework.com.adm.userMgr.vo.UserInfo;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
@@ -47,16 +46,12 @@ public class EduMgrController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EduMgrController.class);
 
-    private OfficeMessageSource officeMessageSource;
-
     @Autowired
     private LoginService loginService;
     
     @Autowired
     private EduMgrService eduMgrService;
     
-    @Autowired
-    private UserMgrService userMgrService;    
     
     
     /**
@@ -137,7 +132,7 @@ public class EduMgrController {
 				if(menuList!=null) {
 					mlist.add(menuList.getModuleId());
 				}else {
-					mlist.add(new Long(0));
+					mlist.add(Long.valueOf(0));
 				}
 					 
 			}

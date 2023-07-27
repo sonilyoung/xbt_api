@@ -20,6 +20,7 @@
 				(SELECT MAX(MODULE_ID) FROM XBT_BASELINE_EDU_DATE WHERE MENU_CD = T1.MENU_CD) AS MODULE_ID
 		FROM XBT_STU_MENU T1 
 		WHERE T1.LANGUAGE_CODE =  #{languageCode}
+		AND USE_YN = 'Y'
 	</select>	
 	
 	<!-- 메뉴 상세 -->
@@ -112,6 +113,7 @@
 		   LEARNING_TYPE
 		FROM XBT_STU_MENU T1
 		WHERE LANGUAGE_CODE = 'kr'
+		AND USE_YN = 'Y'
 		ORDER BY P_MENU_CD, MENU_ORDER ASC
 	</select>		
 	
@@ -130,6 +132,7 @@
 		   LEARNING_TYPE
 		FROM XBT_STU_MENU T1
 		WHERE LANGUAGE_CODE = 'kr'
+		AND USE_YN = 'Y'
 		AND MENU_CD = #{menuCd}
 	</select>		
 	

@@ -266,7 +266,6 @@ public class EduMgrServiceImpl implements EduMgrService {
 	
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public EduDate selectEduModuleList(EduDate params) {
 		// TODO Auto-generated method stub
 		return eduMgrDAO.selectEduModuleList(params);
