@@ -70,11 +70,11 @@
 	</insert>		
 	
 	
-	<!-- 평가문제 초기화-->
-	<update id="updateEvaluationProblems" parameterType="egovframework.com.stu.learning.vo.LearningProblem">	
+	<!-- 평가문제 종료-->
+	<update id="updateEvaluationEnd" parameterType="egovframework.com.stu.learning.vo.Learning">	
 		UPDATE 
-			XBT_BASELINE_EVALUATION 
-		SET END_YN = 'N'
+			XBT_STU_EVALUATION_PROGRESSING 
+		SET END_YN = #{endYn}
 		WHERE PROC_CD = #{procCd} 
 		AND PROC_YEAR = #{procYear} 
 		AND PROC_SEQ = #{procSeq}

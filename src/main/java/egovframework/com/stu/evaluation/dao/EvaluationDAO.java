@@ -22,11 +22,11 @@ public class EvaluationDAO extends EgovAbstractMapper{
 	}		
 	
 	public int selectEvaluationProcessYnCount(LearningProblem params) {
-		return insert(Namespace + ".selectEvaluationProcessYnCount", params);
+		return selectOne(Namespace + ".selectEvaluationProcessYnCount", params);
 	}	
 	
-	public int updateEvaluationProblems(LearningProblem params) {
-		return update(Namespace + ".updateEvaluationProblems", params);
+	public int updateEvaluationEnd(Learning params) {
+		return update(Namespace + ".updateEvaluationEnd", params);
 	}		
 	
 	public List<?> selectEvaluationProblemsList(LearningProblem params) {

@@ -28,7 +28,7 @@ public interface EvaluationService {
 	
 	public int insertEvaluationProblems(LearningProblem params);
 	
-	public int updateEvaluationProblems(LearningProblem params);
+	public int updateEvaluationEnd(Learning params);
 	
 	public List<LearningProblem> selectEvaluationProblemsList(LearningProblem params);
 	

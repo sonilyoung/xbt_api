@@ -74,10 +74,17 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 				if(baseline!=null) {
 					//이론점수
 					XbtScore theory = systemService.selectTheoryScore(xs);
+					//비중반영전
+					int tgtTheoryScore = 0;
+					int tgtEvaluationScore = 0;
+					int tgtPracticeScore = 0;					
+					
+					//비중반영후
 					int theoryScore = 0;
 					int evaluationScore = 0;
 					int practiceScore = 0;
 					if(theory!=null) {
+						tgtTheoryScore = theory.getGainScore();
 						theoryScore = Math.round((theory.getGainScore()*baseline.getTheoryTotalScore())/100);
 						LOGGER.info("==============이론==============");
 						LOGGER.info("교육생 theoryScore:" + theory.getUserId() + " : " + theory.getGainScore());
@@ -91,6 +98,7 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 					//평가점수
 					XbtScore evaluation = systemService.selectEvaluationScore(xs);
 					if(evaluation!=null) {
+						tgtEvaluationScore = evaluation.getGainScore();
 						evaluationScore =  Math.round((evaluation.getGainScore()*baseline.getEvaluationTotalScore())/100);
 						LOGGER.info("==============평가==============");
 						LOGGER.info("교육생 evaluationScore:" + evaluation.getUserId() + " : " + evaluation.getGainScore());
@@ -102,13 +110,14 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 					}
 					
 					//실습점수
-					XbtScore evaluationTotalScore = systemService.selectPracticeScore(xs);
-					if(evaluationTotalScore!=null) {
-						practiceScore = evaluationTotalScore.getPracticeScore();
+					XbtScore practiceTotalScore = systemService.selectPracticeScore(xs);
+					if(practiceTotalScore!=null) {
+						tgtPracticeScore = practiceTotalScore.getPracticeScore();
+						practiceScore =  Math.round((practiceTotalScore.getPracticeScore()*baseline.getPracticeTotalScore())/100);
 						LOGGER.info("==============실습==============");
-						LOGGER.info("교육생 evaluationScore:" + evaluationTotalScore.getUserId() + " : " + evaluationTotalScore.getPracticeScore());
+						LOGGER.info("교육생 evaluationScore:" + practiceTotalScore.getUserId() + " : " + practiceTotalScore.getPracticeScore());
 						LOGGER.info("설정 evaluationScore:"+ baseline.getPracticeTotalScore());
-						LOGGER.info("evaluationScore:"+ evaluationTotalScore.getPracticeScore());					
+						LOGGER.info("evaluationScore:"+ practiceTotalScore.getPracticeScore());					
 					}
 
 					
@@ -117,20 +126,20 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 						if("Y".equals(processScore.getTheoryYn()) && "Y".equals(processScore.getPracticeYn()) && "Y".equals(processScore.getEvaluationYn())) {
 							
 							 //커트라인비교 추가
-							if(evaluationScore < baseline.getPassScore()) {//평가커트라인비교
+							if(tgtEvaluationScore < baseline.getPassScore()) {//평가커트라인비교
 								xs.setPassYn("N");
-							}else if(theoryScore < baseline.getPassTheoryScore()) {//이론평가커트라인비교
+							}else if(tgtTheoryScore < baseline.getPassTheoryScore()) {//이론평가커트라인비교
 								xs.setPassYn("N");
-							}else if(practiceScore < baseline.getPassPracticeScore()) {//실기커트라인비교
+							}else if(tgtPracticeScore < baseline.getPassPracticeScore()) {//실기커트라인비교
 								xs.setPassYn("N");	
 							}
 							
-							if(evaluationScore < baseline.getPassScore() || theoryScore < baseline.getPassTheoryScore() || practiceScore < baseline.getPassPracticeScore()) {
+							if(tgtEvaluationScore < baseline.getPassScore() || tgtTheoryScore < baseline.getPassTheoryScore() || tgtPracticeScore < baseline.getPassPracticeScore()) {
 								systemService.updateXbtEndScore(xs); //과락처리
 							}
 							
 							
-							if(evaluationScore >= baseline.getPassScore() && theoryScore >= baseline.getPassTheoryScore() && practiceScore >= baseline.getPassPracticeScore()) {
+							if(tgtEvaluationScore >= baseline.getPassScore() && tgtTheoryScore >= baseline.getPassTheoryScore() && tgtPracticeScore >= baseline.getPassPracticeScore()) {
 								int totalScore = theoryScore + evaluationScore + practiceScore;
 								xs.setGainScore(totalScore);
 								 

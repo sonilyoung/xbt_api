@@ -502,6 +502,7 @@ public class UserMgrController {
 		try {
 			
 			Common cp = new Common();
+			cp.setLanguageCode("kr");
 			cp.setGroupId("eduName");
 			List<Common> clist = commonService.selectCommonList(cp);
 			
@@ -682,6 +683,7 @@ public class UserMgrController {
 		try {
 			
 			Common cp = new Common();
+			cp.setLanguageCode("kr");
 			cp.setGroupId("eduName");
 			List<Common> clist = commonService.selectCommonList(cp);
 			
@@ -855,6 +857,7 @@ public class UserMgrController {
 		
 		try {
 			Common cp = new Common();
+			cp.setLanguageCode("kr");
 			cp.setGroupId("eduName");
 			List<Common> clist = commonService.selectCommonList(cp);
 			

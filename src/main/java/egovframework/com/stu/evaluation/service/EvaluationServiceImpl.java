@@ -52,9 +52,9 @@ public class EvaluationServiceImpl implements EvaluationService {
 	
 	
 	@Override
-	public int updateEvaluationProblems(LearningProblem params) {
+	public int updateEvaluationEnd(Learning params) {
 		// TODO Auto-generated method stub
-		return evaluationDAO.updateEvaluationProblems(params);
+		return evaluationDAO.updateEvaluationEnd(params);
 	}
 
 	@Override

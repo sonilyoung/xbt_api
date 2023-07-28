@@ -82,75 +82,70 @@ public class EvaluationController {
 			return new BaseResponse<Learning>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getMessage());
 		}			
 		
-		try {
-			Learning baselineData = learningService.selectBaseline(params);
-			if(baselineData == null) {
-				return new BaseResponse<Learning>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
-			}
-			
-			params.setProcCd(baselineData.getProcCd()); 
-			List<Learning> learningData = learningService.selectLearning(params);
-			if(learningData == null) {
-				return new BaseResponse<Learning>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
-			}
-			
-			Learning moduleInfoData = learningService.selectModuleInfo(params);
-			if(moduleInfoData == null) {
-				return new BaseResponse<Learning>(BaseResponseCode.MODULE_DATA, BaseResponseCode.MODULE_DATA.getMessage());
-			}
-			moduleInfoData.setUserId(login.getUserId());
-			moduleInfoData.setUserName(login.getUserNm());
-			LearningProblem lpParams = new LearningProblem();
-			lpParams.setUserId(login.getUserId());
-			lpParams.setModuleId(moduleInfoData.getModuleId());
-			lpParams.setProcCd(baselineData.getProcCd());
-			lpParams.setProcYear(baselineData.getProcYear());
-			lpParams.setProcSeq(baselineData.getProcSeq());			
-			lpParams.setQuestionCnt(moduleInfoData.getQuestionCnt());
-			
-			//평가문제가져오기
-			List<LearningProblem> problems = learningService.selectLearningProblems(lpParams);	
-			if(problems == null) {
-				return new BaseResponse<Learning>(BaseResponseCode.EVALUATIONPROBLEM_DATA, BaseResponseCode.LEARNINGPROBLEM_DATA.getMessage());
-			}				
-			
-			//시도횟수
-			LearningProblem maxKey = evaluationService.selectEvaluationProblemsMaxkey(lpParams);	
-			lpParams.setTrySeq(maxKey.getTrySeq());		
-			
-			//평가유무확인
-			int processYn = evaluationService.selectEvaluationProcessYnCount(lpParams);
-			if(processYn == moduleInfoData.getQuestionCnt()) {
-				return new BaseResponse<Learning>(BaseResponseCode.ALREADY_STARE, BaseResponseCode.ALREADY_STARE.getMessage());
-			}	
-			
-			//등록된평가문제 체크
-			//lpParams.setEndYn("N");
-			int problemsCnt = evaluationService.selectEvaluationProblemsCount(lpParams);
-			
-			//시도횟수
-			//LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);			
-			if(problemsCnt <= 0) {
-				//문제등록
-				lpParams.setTrySeq(maxKey.getTrySeq());
-				moduleInfoData.setTrySeq(maxKey.getTrySeq());			
-				evaluationService.insertEvaluationProblems(lpParams);				
-			}else {
-				moduleInfoData.setTrySeq(maxKey.getTrySeq());
-			}			
-			
-			List<LearningProblem> resultList = evaluationService.selectEvaluationProblemsList(lpParams);
-			
-			if(resultList == null) {
-				return new BaseResponse<Learning>(BaseResponseCode.DATA_IS_NULL_EVALPROBLEMS, BaseResponseCode.DATA_IS_NULL_EVALPROBLEMS.getMessage());
-			}					
-			List<LearningProblem> result = xbtImageService.selectLeaningImgList(resultList);
-			moduleInfoData.setLearningProblemList(result);
-			return new BaseResponse<Learning>(moduleInfoData);
-        } catch (Exception e) {
-        	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
-        }
+		Learning baselineData = learningService.selectBaseline(params);
+		if(baselineData == null) {
+			return new BaseResponse<Learning>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
+		}
+		
+		params.setProcCd(baselineData.getProcCd()); 
+		List<Learning> learningData = learningService.selectLearning(params);
+		if(learningData == null) {
+			return new BaseResponse<Learning>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
+		}
+		
+		Learning moduleInfoData = learningService.selectModuleInfo(params);
+		if(moduleInfoData == null) {
+			return new BaseResponse<Learning>(BaseResponseCode.MODULE_DATA, BaseResponseCode.MODULE_DATA.getMessage());
+		}
+		moduleInfoData.setUserId(login.getUserId());
+		moduleInfoData.setUserName(login.getUserNm());
+		LearningProblem lpParams = new LearningProblem();
+		lpParams.setUserId(login.getUserId());
+		lpParams.setModuleId(moduleInfoData.getModuleId());
+		lpParams.setProcCd(baselineData.getProcCd());
+		lpParams.setProcYear(baselineData.getProcYear());
+		lpParams.setProcSeq(baselineData.getProcSeq());			
+		lpParams.setQuestionCnt(moduleInfoData.getQuestionCnt());
+		
+		//평가문제가져오기
+		List<LearningProblem> problems = learningService.selectLearningProblems(lpParams);	
+		if(problems == null) {
+			return new BaseResponse<Learning>(BaseResponseCode.EVALUATIONPROBLEM_DATA, BaseResponseCode.LEARNINGPROBLEM_DATA.getMessage());
+		}				
+		
+		//시도횟수
+		LearningProblem maxKey = evaluationService.selectEvaluationProblemsMaxkey(lpParams);	
+		lpParams.setTrySeq(maxKey.getTrySeq());		
+		
+		//평가유무확인
+		int processYn = evaluationService.selectEvaluationProcessYnCount(lpParams);
+		if(processYn == moduleInfoData.getQuestionCnt()) {
+			return new BaseResponse<Learning>(BaseResponseCode.ALREADY_STARE, BaseResponseCode.ALREADY_STARE.getMessage());
+		}	
+		
+		//등록된평가문제 체크
+		//lpParams.setEndYn("N");
+		int problemsCnt = evaluationService.selectEvaluationProblemsCount(lpParams);
+		
+		//시도횟수
+		//LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);			
+		if(problemsCnt <= 0) {
+			//문제등록
+			lpParams.setTrySeq(maxKey.getTrySeq());
+			moduleInfoData.setTrySeq(maxKey.getTrySeq());			
+			evaluationService.insertEvaluationProblems(lpParams);				
+		}else {
+			moduleInfoData.setTrySeq(maxKey.getTrySeq());
+		}			
+		
+		List<LearningProblem> resultList = evaluationService.selectEvaluationProblemsList(lpParams);
+		
+		if(resultList == null) {
+			return new BaseResponse<Learning>(BaseResponseCode.DATA_IS_NULL_EVALPROBLEMS, BaseResponseCode.DATA_IS_NULL_EVALPROBLEMS.getMessage());
+		}					
+		List<LearningProblem> result = xbtImageService.selectLeaningImgList(resultList);
+		moduleInfoData.setLearningProblemList(result);
+		return new BaseResponse<Learning>(moduleInfoData);
     }    
        
     
@@ -319,8 +314,13 @@ public class EvaluationController {
 			Learning resultCnt = evaluationService.selectEvaluationResultCount(params);
 			params.setQuestionCnt(resultCnt.getQuestionCnt());
 			params.setWrongCnt(resultCnt.getWrongCnt());
-			params.setRightCnt(resultCnt.getRightCnt());				
+			params.setRightCnt(resultCnt.getRightCnt());
 			
+			//문제종료처리
+			params.setEndYn("Y");
+			evaluationService.updateEvaluationEnd(params);			
+			
+			//결과데이터저장
 			evaluationService.updateEvaluationResult(params);
 			
 			//평가자평균가져오기
