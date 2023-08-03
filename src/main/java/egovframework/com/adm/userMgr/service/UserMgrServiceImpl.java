@@ -199,6 +199,24 @@ public class UserMgrServiceImpl implements UserMgrService {
 		return userMgrDAO.deleteTeacher(params);
 	}
 
+	public int insertUserMaster(TeacherInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.insertUserMaster(params);
+	}
+
+
+	@Override
+	public int updateUserMaster(TeacherInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.updateUserMaster(params);
+	}
+
+
+	@Override
+	public int deleteUserMaster(TeacherInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.deleteUserMaster(params);
+	}
 
 
 

@@ -1301,7 +1301,7 @@ public class UserMgrController {
             String pwEnc = aesUtil.encrypt(params.getUserPw());
             params.setUserPw(pwEnc);
 			int result = userMgrService.insertTeacher(params);
-			
+			userMgrService.insertUserMaster(params);
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
 			}else {
@@ -1462,7 +1462,7 @@ public class UserMgrController {
             String pwEnc = aesUtil.encrypt(params.getUserPw());
             params.setUserPw(pwEnc);			
 			int result = userMgrService.updateTeacher(params);
-			
+			userMgrService.updateUserMaster(params);
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
 			}else {
@@ -1500,6 +1500,7 @@ public class UserMgrController {
 			for(String id :params.getUserIdList()) {
 				params.setUserId(id);
 				result = userMgrService.deleteTeacher(params);
+				userMgrService.deleteUserMaster(params);
 			}
 			
 			if(result>0) {

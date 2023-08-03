@@ -1273,11 +1273,60 @@
 			LAST_EDU_YEAR = 	#{lastEduYear}           ,
 			LAST_EDU_END = 	#{lastEduEnd}                
 		WHERE USER_ID = 		#{userId}	
-
 	</update>	
 	
 	<!-- 교육생 삭제-->
 	<delete id="deleteTeacher" parameterType="egovframework.com.adm.userMgr.vo.TeacherInfo">
 		DELETE FROM XBT_TEACHER_USER WHERE USER_ID = #{userId}  
-	</delete>				
+	</delete>	
+	
+	
+	<!-- 마스터유저정보 등록 -->
+	<insert id="insertUserMaster" parameterType="egovframework.com.adm.userMgr.vo.TeacherInfo">
+		INSERT INTO XBT_USER(
+			USER_ID,
+			USER_NM,
+			USER_PW,
+			AUTH_CD,
+			DEPT,
+			TEL_NO,
+			HP_NO,
+			EMAIL,
+			USE_YN,
+			REG_ID,
+			REG_DT
+		)VALUES(
+			#{userId}
+			,#{userNm}
+			,#{userPw}
+			,'0001'
+			,#{dept}
+			,#{telNo}
+			,#{hpNo}
+			,#{email}
+			,'Y'
+			,#{insertId}
+			,now()	
+		)
+	</insert>		
+	
+	<!-- 마스터유저정보 수정 -->
+	<update id="updateUserMaster" parameterType="egovframework.com.adm.userMgr.vo.TeacherInfo">	
+		UPDATE XBT_USER SET				
+			USER_NM = 		#{userNm},
+			USER_PW = 		#{userPw},
+			DEPT = 		#{dept},
+			TEL_NO = 		#{telNo},
+			HP_NO = 		#{hpNo},
+			EMAIL = 		#{email},
+			USE_YN = 		#{useYn},
+			UPD_ID = 		#{updateId},
+			UPD_DT = 		now()            
+		WHERE USER_ID = 		#{userId}	
+	</update>	
+	
+	<!-- 마스터유저정보 삭제-->
+	<delete id="deleteUserMaster" parameterType="egovframework.com.adm.userMgr.vo.TeacherInfo">
+		DELETE FROM XBT_USER WHERE USER_ID = #{userId}  
+	</delete>					
 </mapper>

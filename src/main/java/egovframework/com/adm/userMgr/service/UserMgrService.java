@@ -73,5 +73,11 @@ public interface UserMgrService{
 	
 	public int updateTeacher(TeacherInfo params);
 	
-	public int deleteTeacher(TeacherInfo params);		
+	public int deleteTeacher(TeacherInfo params);
+	
+	public int insertUserMaster(TeacherInfo params);
+	
+	public int updateUserMaster(TeacherInfo params);
+	
+	public int deleteUserMaster(TeacherInfo params);	
 }

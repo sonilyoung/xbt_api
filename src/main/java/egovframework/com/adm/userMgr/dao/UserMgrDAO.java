@@ -112,4 +112,16 @@ public class UserMgrDAO extends EgovAbstractMapper{
 	public int deleteTeacher(TeacherInfo params) {
 		return delete(Namespace + ".deleteTeacher", params);
 	}		
+	
+	public int insertUserMaster(TeacherInfo params) {
+		return insert(Namespace + ".insertUserMaster", params);
+	}
+	
+	public int updateUserMaster(TeacherInfo params) {
+		return update(Namespace + ".updateUserMaster", params);
+	}	
+	
+	public int deleteUserMaster(TeacherInfo params) {
+		return delete(Namespace + ".deleteUserMaster", params);
+	}		
 }
