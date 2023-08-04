@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.adm.statistics.dao.StatisticsDAO">
+	
+	<!-- 통계 - 학습실적조회 -->
+	<select id="selectStatisticsLearningList" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformance" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformance">
+		SELECT 
+			PROC_CD ,
+			PROC_YEAR,
+			PROC_NAME ,
+			PROC_SEQ,	 
+			floor(IFNULL(SUM(GAIN_SCORE)/COUNT(*), 0))AS AVERAGE_SCORE,
+			STUDENT_CNT
+		FROM (
+			SELECT		
+				PROC_CD,
+				PROC_YEAR ,
+				(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME , 
+				PROC_SEQ , 
+				GAIN_SCORE,
+				(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT
+			FROM XBT_BASELINE_LEARNING T1
+		)TOT 
+		GROUP BY 
+			PROC_CD ,
+			PROC_YEAR,
+			PROC_NAME,
+			PROC_SEQ
+	</select>	
+	
+	<!-- 통계 - 사용자별 학습실적조회 -->
+	<select id="selectStatisticsLearning" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformance" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformance">
+		SELECT 
+			PROC_CD ,
+			PROC_YEAR,
+			PROC_NAME ,
+			PROC_SEQ,	
+			USER_ID,
+			floor(IFNULL(SUM(GAIN_SCORE)/COUNT(*), 0))AS AVERAGE_SCORE,
+			STUDENT_CNT
+		FROM (
+			SELECT		
+				PROC_CD,
+				PROC_YEAR ,
+				(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME , 
+				PROC_SEQ , 
+				USER_ID,
+				GAIN_SCORE,
+				(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT
+			FROM XBT_BASELINE_LEARNING T1
+			WHERE PROC_CD = '91'
+		)TOT 
+		GROUP BY 
+			PROC_CD ,
+			PROC_YEAR,
+			PROC_NAME,
+			PROC_SEQ
+	</select>		
+	
+	
+	<!-- 통계-학습컨텐츠그룹조회 -->
+	<select id="selectStatisticsLearningGroupList" parameterType="egovframework.com.adm.statistics.vo.StatisticsGroup" resultType="egovframework.com.adm.statistics.vo.StatisticsGroup">
+		SELECT 
+			PROC_CD,
+			PROC_YEAR,
+			PROC_NAME , 
+			PROC_SEQ,
+			(SELECT GROUP_NAME FROM XBT_UNIT_GROUP WHERE UNIT_GROUP_CD = TOT.UNIT_GROUP_CD) AS GROUP_NAME,	
+			RIGHT_CNT,
+			WRONG_CNT,
+			(RIGHT_CNT+WRONG_CNT)AS TOTAL_CNT
+		FROM (	
+			SELECT
+				T1.PROC_CD,
+				T1.PROC_YEAR,
+				T1.PROC_NAME , 
+				T1.PROC_SEQ,
+				T2.TRY_SEQ,
+				T2.STUDY_LVL,
+				(SELECT UNIT_GROUP_CD FROM XBT_BAG_INFO WHERE BAG_SCAN_ID = T2.BAG_SCAN_ID) AS UNIT_GROUP_CD,	
+				SUM(CASE WHEN T2.ACTION_DIV = T2.USER_ACTION_DIV THEN 1 ELSE 0 END) AS RIGHT_CNT,
+				SUM(CASE WHEN T2.ACTION_DIV != T2.USER_ACTION_DIV THEN 1 ELSE 0 END) AS WRONG_CNT
+			FROM
+				XBT_BASELINE T1 INNER JOIN XBT_STU_LEARNING_PROGRESSING T2
+				ON T1.PROC_CD = T2.PROC_CD 
+			GROUP BY PROC_CD, PROC_YEAR, PROC_NAME
+		)TOT 
+	</select>	
+		
+</mapper>

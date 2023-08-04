@@ -4,6 +4,7 @@ import java.util.List;
 
 import egovframework.com.api.edc.vo.AiForceLearning;
 import egovframework.com.api.edc.vo.AiForceLearningResult;
+import egovframework.com.api.edc.vo.AiForceUserScore;
 import egovframework.com.api.edc.vo.UnitImages;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -23,6 +24,11 @@ public class EgovXtsEdcApiDAO extends EgovAbstractMapper{
 	
 	public List<?> selectLearningResultList(AiForceLearningResult params) {
 		return (List<?>)selectList(Namespace + ".selectLearningResultList", params);
+	}		
+	
+	
+	public List<?> selectUserScoreResultList(AiForceUserScore params) {
+		return (List<?>)selectList(Namespace + ".selectUserScoreResultList", params);
 	}		
 	
 }

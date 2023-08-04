@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.api.edc.dao.EgovXtsEdcApiDAO;
 import egovframework.com.api.edc.vo.AiForceLearning;
 import egovframework.com.api.edc.vo.AiForceLearningResult;
+import egovframework.com.api.edc.vo.AiForceUserScore;
 import egovframework.com.stu.learning.vo.LearningProblem;
 
 @Service("egovCbtEdcReinforcementService")
@@ -57,4 +58,12 @@ public class EgovXtsEdcReinforcementServiceImpl implements EgovXtsEdcReinforceme
 		return (List<AiForceLearningResult>)egovXtsEdcApiDAO.selectLearningResultList(params);
 	}
 
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<AiForceUserScore> selectUserScoreResultList(AiForceUserScore params) {
+		// TODO Auto-generated method stub
+		return (List<AiForceUserScore>)egovXtsEdcApiDAO.selectUserScoreResultList(params);
+	}
+	
 }

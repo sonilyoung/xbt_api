@@ -26,6 +26,7 @@ import egovframework.com.api.edc.service.EgovXtsEdcReinforcementService;
 import egovframework.com.api.edc.service.EgovXtsEdcThreeDimensionService;
 import egovframework.com.api.edc.vo.AiForceLearning;
 import egovframework.com.api.edc.vo.AiForceLearningResult;
+import egovframework.com.api.edc.vo.AiForceUserScore;
 import egovframework.com.api.edc.vo.UnitImages;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
@@ -124,6 +125,29 @@ public class EgovXtsEdcApiController {
 		//LOGGER.info(result + "");
 		return new BaseResponse<JsonNode>(json);
 	}	
+	
+	
+	   /**
+  * 강화학습 api
+  * 
+  * @param param
+  * @return Company
+  */	
+	@ResponseBody
+	@RequestMapping(value = {"/selectUserScoreResultList.do"}, method = RequestMethod.GET)
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public  BaseResponse<JsonNode> selectUserScoreResultList(HttpServletRequest request
+ 		,AiForceUserScore params) throws Exception{		
+		JsonNode json = null;
+		ObjectMapper mapper = new ObjectMapper();
+		List<AiForceUserScore> result = egovXtsEdcReinforcementService.selectUserScoreResultList(params);
+		json = mapper.convertValue(result, JsonNode.class);
+		
+		//LOGGER.info(result + "");
+		return new BaseResponse<JsonNode>(json);
+	}	
+	
+	
 	
     /**
      * 엘폴 api

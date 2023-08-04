@@ -74,6 +74,28 @@
 		
 	</select>	
 	
+	<!-- 학습문제조회 -->
+	<select id="selectUserScoreResultList" parameterType="egovframework.com.api.edc.vo.AiForceUserScore" resultType="egovframework.com.api.edc.vo.AiForceUserScore">
+		SELECT
+			LEARN_NO,
+			PROC_CD,
+			PROC_YEAR,
+			PROC_SEQ,
+			USER_ID,
+			TEST_DATE,
+			STUDY_LVL,
+			MODULE_ID,
+			(SELECT MODULE_NM FROM XBT_MODULE_INFO_MASTER WHERE MODULE_ID = T1.MODULE_ID)AS MODULE_NM,
+			GAIN_SCORE,
+			RIGHT_CNT,
+			WRONG_CNT,
+			END_YN,
+			PASS_YN,
+			TRY_SEQ,
+			INSERT_DATE
+		FROM
+			XBT_BASELINE_LEARNING T1	
+	</select>	
 	
 	<!-- 단건 엠폴시스템 이미지 저장 및 업데이트-->
 	<update id="saveEmpUnitImage" parameterType="egovframework.com.api.edc.vo.UnitImages" >
