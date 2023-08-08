@@ -156,4 +156,10 @@ public class SystemServiceImpl implements SystemService {
 		// TODO Auto-generated method stub
 		return systemDAO.updateXbtEndScore(params);
 	}
+	
+	@Override
+	public int updateBaselineStatus(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.updateBaselineStatus(params);
+	}
 }

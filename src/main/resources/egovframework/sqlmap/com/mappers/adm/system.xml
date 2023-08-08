@@ -244,4 +244,12 @@
 		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId}
 		
 	</update>	
+	
+	<!--일정종료처리-->
+	<update id="updateBaselineStatus" parameterType="egovframework.com.adm.system.vo.XbtScore">			
+		UPDATE XBT_BASELINE_STUDENT_INFO            
+		SET ENDING_YN = 'Y'
+		WHERE ENDING_YN = 'N'
+		AND date_format(NOW(), '%Y-%m-%d') > EDU_END_DATE	
+	</update>
 </mapper>

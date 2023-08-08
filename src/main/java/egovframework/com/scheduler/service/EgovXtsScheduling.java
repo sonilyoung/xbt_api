@@ -152,7 +152,10 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 							}
 
 						}					
-					}					
+					}			
+					
+					//기간이 지난 차수 ENDING_YN = 'Y'
+					systemService.updateBaselineStatus(xs);
 				}
 				
 			}

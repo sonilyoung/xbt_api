@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class StatisticsGroup {
 	
-	private String procCd;
+	private Long procCd;
 	private String procYear;
 	private String procName ;
 	private String groupName;

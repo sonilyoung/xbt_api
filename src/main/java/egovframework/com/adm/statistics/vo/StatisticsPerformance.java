@@ -5,10 +5,12 @@ import lombok.Data;
 @Data
 public class StatisticsPerformance {
 	
-	private String procCd;
+	private Long procCd;
 	private String procYear;
 	private String procName;
 	private int procSeq;
 	private int averageScore;
 	private int studentCnt;
+	private int playStudentCnt;
+	
 }

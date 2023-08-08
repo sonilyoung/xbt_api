@@ -63,5 +63,7 @@ public interface SystemService {
 	public XbtScore selectProcessScore(XbtScore params);
 	
 	public int updateXbtEndScore(XbtScore params);
+	
+	public int updateBaselineStatus(XbtScore params);
 		
 }

@@ -10,7 +10,8 @@
 			PROC_NAME ,
 			PROC_SEQ,	 
 			floor(IFNULL(SUM(GAIN_SCORE)/COUNT(*), 0))AS AVERAGE_SCORE,
-			STUDENT_CNT
+			STUDENT_CNT,
+			PLAY_STUDENT_CNT
 		FROM (
 			SELECT		
 				PROC_CD,
@@ -18,7 +19,8 @@
 				(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME , 
 				PROC_SEQ , 
 				GAIN_SCORE,
-				(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT
+				(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT,
+				(SELECT COUNT(DISTINCT(USER_ID)) FROM XBT_BASELINE_LEARNING WHERE PROC_CD = T1.PROC_CD)AS PLAY_STUDENT_CNT
 			FROM XBT_BASELINE_LEARNING T1
 		)TOT 
 		GROUP BY 
@@ -29,33 +31,47 @@
 	</select>	
 	
 	<!-- 통계 - 사용자별 학습실적조회 -->
-	<select id="selectStatisticsLearning" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformance" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformance">
+	<select id="selectStatisticsLearning" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail">
 		SELECT 
-			PROC_CD ,
-			PROC_YEAR,
-			PROC_NAME ,
-			PROC_SEQ,	
-			USER_ID,
-			floor(IFNULL(SUM(GAIN_SCORE)/COUNT(*), 0))AS AVERAGE_SCORE,
-			STUDENT_CNT
-		FROM (
-			SELECT		
-				PROC_CD,
-				PROC_YEAR ,
-				(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME , 
-				PROC_SEQ , 
-				USER_ID,
-				GAIN_SCORE,
-				(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT
-			FROM XBT_BASELINE_LEARNING T1
-			WHERE PROC_CD = '91'
-		)TOT 
-		GROUP BY 
-			PROC_CD ,
-			PROC_YEAR,
 			PROC_NAME,
-			PROC_SEQ
+			USER_ID,
+			USER_NAME,
+			RIGHT_CNT,
+			WRONG_CNT,
+			TOTAL_CNT,
+			TRY_CNT,
+			TRY_SEQ
+		FROM (	
+			SELECT		
+				(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME ,
+				USER_ID, 
+				(SELECT USER_NM FROM XBT_STU_USER WHERE USER_ID = T1.USER_ID) as USER_NAME,
+				SUM(RIGHT_CNT)AS RIGHT_CNT,
+				SUM(WRONG_CNT)AS WRONG_CNT,
+				SUM(RIGHT_CNT+WRONG_CNT) AS TOTAL_CNT,
+				COUNT(TRY_SEQ) AS TRY_CNT,
+				MAX(TRY_SEQ) AS TRY_SEQ
+			FROM XBT_BASELINE_LEARNING T1
+			WHERE PROC_CD = #{procCd} 
+			GROUP BY 
+				PROC_NAME,
+				USER_NAME		
+		) TOT
 	</select>		
+	
+	<!-- 통계 - 사용자별 학습실적조회 -->
+	<select id="selectStatisticsLearningDetail" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail">
+		SELECT		
+			RIGHT_CNT,
+			WRONG_CNT,
+			RIGHT_CNT+WRONG_CNT AS TOTAL_CNT,
+			TRY_SEQ,
+			GAIN_SCORE
+		FROM XBT_BASELINE_LEARNING T1
+		WHERE
+		PROC_CD = #{procCd} 
+		AND USER_ID = #{userId}
+	</select>			
 	
 	
 	<!-- 통계-학습컨텐츠그룹조회 -->
@@ -86,5 +102,145 @@
 			GROUP BY PROC_CD, PROC_YEAR, PROC_NAME
 		)TOT 
 	</select>	
+	
+	
+	
+	<!-- 통계 - 평가실적조회 -->
+	<select id="selectStatisticsEvaluationList" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformance" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformance">
+		SELECT 
+			PROC_CD ,
+			PROC_YEAR,
+			PROC_NAME ,
+			PROC_SEQ,	 
+			floor(IFNULL(SUM(GAIN_SCORE)/COUNT(*), 0))AS AVERAGE_SCORE,
+			STUDENT_CNT,
+			PLAY_STUDENT_CNT
+		FROM (
+			SELECT		
+				PROC_CD,
+				PROC_YEAR ,
+				(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME , 
+				PROC_SEQ , 
+				GAIN_SCORE,
+				(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT,
+				(SELECT COUNT(DISTINCT(USER_ID)) FROM XBT_BASELINE_EVALUATION WHERE PROC_CD = T1.PROC_CD)AS PLAY_STUDENT_CNT
+			FROM XBT_BASELINE_EVALUATION T1
+		)TOT 
+		GROUP BY 
+			PROC_CD ,
+			PROC_YEAR,
+			PROC_NAME,
+			PROC_SEQ
+	</select>	
+	
+	
+	<!-- 통계 - 사용자별 평가실적조회 -->
+	<select id="selectStatisticsEvaluation" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail">
+		SELECT 
+			PROC_NAME,
+			USER_ID,
+			USER_NAME,
+			RIGHT_CNT,
+			WRONG_CNT,
+			TOTAL_CNT,
+			GAIN_SCORE
+		FROM (	
+			SELECT		
+				(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME ,
+				USER_ID, 
+				(SELECT USER_NM FROM XBT_STU_USER WHERE USER_ID = T1.USER_ID) as USER_NAME,
+				RIGHT_CNT,
+				WRONG_CNT,
+				RIGHT_CNT+WRONG_CNT AS TOTAL_CNT,
+				GAIN_SCORE
+			FROM XBT_BASELINE_EVALUATION T1
+			WHERE PROC_CD = #{procCd}
+		) TOT
+	</select>	
+		
+	
+	<!-- 통계-평가컨텐츠그룹조회 -->
+	<select id="selectStatisticsEvaluationGroupList" parameterType="egovframework.com.adm.statistics.vo.StatisticsGroup" resultType="egovframework.com.adm.statistics.vo.StatisticsGroup">
+		SELECT 
+			PROC_CD,
+			PROC_YEAR,
+			PROC_NAME , 
+			PROC_SEQ,
+			(SELECT GROUP_NAME FROM XBT_UNIT_GROUP WHERE UNIT_GROUP_CD = TOT.UNIT_GROUP_CD) AS GROUP_NAME,	
+			RIGHT_CNT,
+			WRONG_CNT,
+			(RIGHT_CNT+WRONG_CNT)AS TOTAL_CNT
+		FROM (	
+			SELECT
+				T1.PROC_CD,
+				T1.PROC_YEAR,
+				T1.PROC_NAME , 
+				T1.PROC_SEQ,
+				T2.TRY_SEQ,
+				T2.STUDY_LVL,
+				(SELECT UNIT_GROUP_CD FROM XBT_BAG_INFO WHERE BAG_SCAN_ID = T2.BAG_SCAN_ID) AS UNIT_GROUP_CD,	
+				SUM(CASE WHEN T2.ACTION_DIV = T2.USER_ACTION_DIV THEN 1 ELSE 0 END) AS RIGHT_CNT,
+				SUM(CASE WHEN T2.ACTION_DIV != T2.USER_ACTION_DIV THEN 1 ELSE 0 END) AS WRONG_CNT
+			FROM
+				XBT_BASELINE T1 INNER JOIN XBT_STU_EVALUATION_PROGRESSING T2
+				ON T1.PROC_CD = T2.PROC_CD 
+			GROUP BY PROC_CD, PROC_YEAR, PROC_NAME
+		)TOT 
+	</select>	
+	
+	
+			
+	<!-- 통계-이론평가그룹조회 -->
+	<select id="selectStatisticsTheoryList" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformance" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformance">
+		SELECT 
+			PROC_CD ,
+			PROC_YEAR,
+			PROC_NAME ,
+			PROC_SEQ,	 
+			floor(IFNULL(SUM(GAIN_SCORE)/COUNT(*), 0))AS AVERAGE_SCORE,
+			STUDENT_CNT,
+			PLAY_STUDENT_CNT
+		FROM (
+			SELECT		
+				PROC_CD,
+				PROC_YEAR ,
+				(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME , 
+				PROC_SEQ , 
+				GAIN_SCORE,
+				(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT,
+				(SELECT COUNT(DISTINCT(USER_ID)) FROM XBT_BASELINE_THEORY WHERE PROC_CD = T1.PROC_CD)AS PLAY_STUDENT_CNT
+			FROM XBT_BASELINE_THEORY T1
+		)TOT 
+		GROUP BY 
+			PROC_CD ,
+			PROC_YEAR,
+			PROC_NAME,
+			PROC_SEQ
+	</select>		
+	
+	<!-- 통계 - 사용자별 이론평가실적조회 -->
+	<select id="selectStatisticsTheory" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail">
+		SELECT 
+			PROC_NAME,
+			USER_ID,
+			USER_NAME,
+			RIGHT_CNT,
+			WRONG_CNT,
+			TOTAL_CNT,
+			GAIN_SCORE
+		FROM (	
+			SELECT		
+				(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME ,
+				USER_ID, 
+				(SELECT USER_NM FROM XBT_STU_USER WHERE USER_ID = T1.USER_ID) as USER_NAME,
+				RIGHT_CNT,
+				WRONG_CNT,
+				RIGHT_CNT+WRONG_CNT AS TOTAL_CNT,
+				GAIN_SCORE
+			FROM XBT_BASELINE_THEORY T1
+			WHERE PROC_CD = #{procCd}
+		) TOT
+	</select>		
+	
 		
 </mapper>

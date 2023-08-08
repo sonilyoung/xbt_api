@@ -87,5 +87,9 @@ public class SystemDAO extends EgovAbstractMapper{
 	
 	public int updateXbtEndScore(XbtScore params) {
 		return update(Namespace + ".updateXbtEndScore", params);
+	}
+	
+	public int updateBaselineStatus(XbtScore params) {
+		return update(Namespace + ".updateBaselineStatus", params);
 	}			
 }

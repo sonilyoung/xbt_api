@@ -4,6 +4,7 @@ import java.util.List;
 
 import egovframework.com.adm.statistics.vo.StatisticsGroup;
 import egovframework.com.adm.statistics.vo.StatisticsPerformance;
+import egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.
@@ -26,8 +27,19 @@ public interface StatisticsService {
 	
 	public List<StatisticsPerformance> selectStatisticsLearningList(StatisticsPerformance params);
 	
+	public List<StatisticsPerformanceDetail> selectStatisticsLearning(StatisticsPerformanceDetail params);
+	
+	public List<StatisticsPerformanceDetail> selectStatisticsLearningDetail(StatisticsPerformanceDetail params);
+	
 	public List<StatisticsGroup> selectStatisticsLearningGroupList(StatisticsGroup params);
 	
-		
+	public List<StatisticsPerformance> selectStatisticsEvaluationList(StatisticsPerformance params);
 	
+	public List<StatisticsPerformanceDetail> selectStatisticsEvaluation(StatisticsPerformanceDetail params);
+	
+	public List<StatisticsGroup> selectStatisticsEvaluationGroupList(StatisticsGroup params);		
+	
+	public List<StatisticsPerformance> selectStatisticsTheoryList(StatisticsPerformance params);
+	
+	public List<StatisticsPerformanceDetail> selectStatisticsTheory(StatisticsPerformanceDetail params);
 }

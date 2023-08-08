@@ -4,6 +4,7 @@ import java.util.List;
 
 import egovframework.com.adm.statistics.vo.StatisticsGroup;
 import egovframework.com.adm.statistics.vo.StatisticsPerformance;
+import egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
@@ -16,10 +17,39 @@ public class StatisticsDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectStatisticsLearningList", params);
 	}
 	
+	public List<?> selectStatisticsLearning(StatisticsPerformanceDetail params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsLearning", params);
+	}	
+	
+	public List<?> selectStatisticsLearningDetail(StatisticsPerformanceDetail params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsLearningDetail", params);
+	}		
+	
 	public List<?> selectStatisticsLearningGroupList(StatisticsGroup params) {
 		return (List<?>)selectList(Namespace + ".selectStatisticsLearningGroupList", params);
 	}
 		
+	public List<?> selectStatisticsEvaluationList(StatisticsPerformance params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsEvaluationList", params);
+	}
 	
 	
+	public List<?> selectStatisticsEvaluation(StatisticsPerformanceDetail params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsEvaluation", params);
+	}	
+		
+	
+	public List<?> selectStatisticsEvaluationGroupList(StatisticsGroup params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsEvaluationGroupList", params);
+	}	
+
+	public List<?> selectStatisticsTheoryList(StatisticsPerformance params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsTheoryList", params);
+	}	
+	
+	
+	public List<?> selectStatisticsTheory(StatisticsPerformanceDetail params) {
+		return (List<?>)selectList(Namespace + ".selectStatisticsTheory", params);
+	}	
+		
 }
