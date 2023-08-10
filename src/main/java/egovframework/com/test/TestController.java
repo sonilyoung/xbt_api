@@ -32,15 +32,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.com.adm.contents.service.ContentsService;
 import egovframework.com.adm.contents.vo.XbtSeq;
+import egovframework.com.adm.login.vo.Login;
+import egovframework.com.adm.system.vo.Notice;
 import egovframework.com.common.service.CommonService;
 import egovframework.com.common.vo.Common;
 import egovframework.com.common.vo.SeqGroupCode;
@@ -51,6 +55,7 @@ import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
+import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.global.util.FileReader;
 import egovframework.com.test.service.TestService;
 import io.swagger.annotations.ApiOperation;
@@ -1019,4 +1024,36 @@ public class TestController {
 	    } 
 	    
 	}			
+	
+	
+    /**
+     * 가방데이터 정규화
+     * 
+     * @param param
+     * @return Company
+     
+	@ResponseBody
+	@RequestMapping(value = {"/updateXrayBagData.do"}, method = RequestMethod.GET)
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public BaseResponse<List<LinkedHashMap<String, Object>>> updateXrayBagData(HttpServletRequest request) {
+		
+		try {
+			
+			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+			List<LinkedHashMap<String, Object>> resultList = testService.selectXrayBagData(params);
+			
+			//int result = testService.insertXbtBagConstUnitTemp(params);
+			
+            //if(result>0) {
+	            //return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+            //}else {
+            	//return new BaseResponse<Integer>(BaseResponseCode.DATA_IS_NULL);
+           // }
+			return new BaseResponse<List<LinkedHashMap<String, Object>>>(resultList);
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    } */	
 }

@@ -193,5 +193,31 @@
 			,'admin'
 			,now()
 		)
-	</insert>		
+	</insert>	
+	
+	<select id="selectXrayBagData" parameterType="java.util.LinkedHashMap" resultType="java.util.LinkedHashMap">
+		SELECT
+			BAG_SCAN_NO,
+			BAG_SCAN_ID,
+			STUDY_LVL,
+			UNIT_ID,
+			UNIT_GROUP_CD,
+			USE_YN,
+			OPEN_YN,
+			PASS_YN,
+			ACTION_DIV,
+			ACTION_DIV_NAME,
+			DECIP_MACHINE_CD,
+			DUPLEX_YN,
+			INSERT_DATE,
+			INSERT_ID,
+			UPDATE_DATE,
+			UPDATE_ID
+		FROM
+			XBT_DB.XBT_BAG_INFO
+	</select>
+	
+	<!-- 가방데이터 정규화-->
+	<update id="updateXrayBagData" parameterType="java.util.LinkedHashMap">
+	</update>			
 </mapper>

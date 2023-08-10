@@ -42,6 +42,7 @@ public class Learning{
 	private int userAverage;
 	private int rightCnt;
 	private int wrongCnt;
+	private int banCnt;
 	private int trySeq;
 	
 	private List<LearningProblem> learningProblemList; 

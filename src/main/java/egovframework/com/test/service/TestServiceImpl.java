@@ -1,6 +1,5 @@
 package egovframework.com.test.service;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -8,18 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import egovframework.com.adm.contents.dao.ContentsDAO;
-import egovframework.com.adm.contents.vo.Language;
-import egovframework.com.adm.contents.vo.UnitGroup;
-import egovframework.com.adm.contents.vo.UnitImg;
-import egovframework.com.adm.contents.vo.UnitInformation;
-import egovframework.com.adm.contents.vo.XbtSeq;
-import egovframework.com.adm.contents.vo.XrayContents;
-import egovframework.com.adm.contents.vo.XrayImgContents;
-import egovframework.com.common.vo.SeqGroupCode;
 import egovframework.com.test.dao.TestDAO;
 import lombok.extern.log4j.Log4j2;
 
@@ -98,6 +86,19 @@ public class TestServiceImpl implements TestService {
 	public int insertTheoryExcel(LinkedHashMap<String, Object> params) {
 		// TODO Auto-generated method stub
 		return testDAO.insertTheoryExcel(params);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<LinkedHashMap<String, Object>> selectXrayBagData(LinkedHashMap<String, Object> params) {
+		// TODO Auto-generated method stub
+		return (List<LinkedHashMap<String, Object>>)testDAO.selectXrayBagData(params);
+	}	
+
+	@Override
+	public int updateXrayBagData(LinkedHashMap<String, Object> params) {
+		// TODO Auto-generated method stub
+		return testDAO.updateXrayBagData(params);
 	}
 
 

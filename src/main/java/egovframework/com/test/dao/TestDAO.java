@@ -68,5 +68,11 @@ public class TestDAO extends EgovAbstractMapper{
 		return insert(Namespace + ".insertTheoryExcel", params);
 	}		
 		
+	public List<?> selectXrayBagData(LinkedHashMap<String, Object> params) {
+		return (List<?>)selectList(Namespace + ".selectXrayBagData", params);
+	}	
 	
+	public int updateXrayBagData(LinkedHashMap<String, Object> params) {
+		return update(Namespace + ".updateXrayBagData", params);
+	}	
 }

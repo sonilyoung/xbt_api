@@ -37,4 +37,8 @@ public interface TestService {
 	public int insertUnitRename(LinkedHashMap<String, Object> params);
 	
 	public int insertTheoryExcel(LinkedHashMap<String, Object> params);
+	
+	public List<LinkedHashMap<String, Object>> selectXrayBagData(LinkedHashMap<String, Object> params);
+	
+	public int updateXrayBagData(LinkedHashMap<String, Object> params);
 }

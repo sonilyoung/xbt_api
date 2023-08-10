@@ -10,6 +10,7 @@ public class StatisticsPerformanceDetail {
 	private String userName;
 	private int rightCnt;
 	private int wrongCnt;
+	private int banCnt;
 	private int totalCnt;
 	private int gainScore;
 	private int trySeq;

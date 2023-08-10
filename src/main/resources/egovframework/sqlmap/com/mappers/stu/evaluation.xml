@@ -182,7 +182,8 @@
 		SELECT
 			COUNT(*)AS questionCnt,
 			COUNT(CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 1 END) AS rightCnt,
-			COUNT(CASE WHEN ACTION_DIV != USER_ACTION_DIV || USER_ACTION_DIV IS NULL THEN 1 END) AS wrongCnt	
+			COUNT(CASE WHEN ACTION_DIV != USER_ACTION_DIV || USER_ACTION_DIV IS NULL THEN 1 END) AS wrongCnt,
+			COUNT(CASE WHEN ACTION_DIV = '1' and USER_ACTION_DIV = '0' THEN 1 END) as banCnt	
 		FROM
 			XBT_STU_EVALUATION_PROGRESSING
 		WHERE 
@@ -213,7 +214,8 @@
 			GAIN_SCORE = #{gainScore},
 			PASS_YN = #{passYn},
 			RIGHT_CNT = #{rightCnt},
-			WRONG_CNT = #{wrongCnt}			
+			WRONG_CNT = #{wrongCnt},	
+			BAN_CNT = #{banCnt}	
 		WHERE PROC_CD = #{procCd} 
 		AND PROC_YEAR = #{procYear} 
 		AND PROC_SEQ = #{procSeq}

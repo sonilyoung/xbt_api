@@ -315,6 +315,7 @@ public class EvaluationController {
 			params.setQuestionCnt(resultCnt.getQuestionCnt());
 			params.setWrongCnt(resultCnt.getWrongCnt());
 			params.setRightCnt(resultCnt.getRightCnt());
+			params.setBanCnt(resultCnt.getBanCnt());
 			
 			//문제종료처리
 			params.setEndYn("Y");

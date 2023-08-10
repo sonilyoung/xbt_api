@@ -594,7 +594,8 @@ public class LearningController {
 			Learning resultCnt = learningService.selectLearningResultCount(params);
 			params.setQuestionCnt(resultCnt.getQuestionCnt());
 			params.setWrongCnt(resultCnt.getWrongCnt());
-			params.setRightCnt(resultCnt.getRightCnt());		
+			params.setRightCnt(resultCnt.getRightCnt());
+			params.setBanCnt(resultCnt.getBanCnt());		
 			
 			//문제종료처리
 			params.setEndYn("Y");
@@ -1005,7 +1006,8 @@ public class LearningController {
 			Learning resultCnt = learningService.selectWrongAnswerResultCount(params);
 			params.setQuestionCnt(resultCnt.getQuestionCnt());
 			params.setWrongCnt(resultCnt.getWrongCnt());
-			params.setRightCnt(resultCnt.getRightCnt());		
+			params.setRightCnt(resultCnt.getRightCnt());
+			params.setBanCnt(resultCnt.getBanCnt());		
 			
 			//문제종료처리
 			params.setEndYn("Y");
