@@ -12,6 +12,8 @@ import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
 import egovframework.com.adm.userMgr.vo.UserBaselineSubInfo;
+import egovframework.com.adm.userMgr.vo.UserCertificate;
+import egovframework.com.adm.userMgr.vo.UserCertificateDetail;
 import egovframework.com.adm.userMgr.vo.UserInfo;
 import lombok.extern.log4j.Log4j2;
 
@@ -216,6 +218,18 @@ public class UserMgrServiceImpl implements UserMgrService {
 	public int deleteUserMaster(TeacherInfo params) {
 		// TODO Auto-generated method stub
 		return userMgrDAO.deleteUserMaster(params);
+	}
+
+	@Override
+	public List<UserCertificate> selectCertificationUserList(UserCertificate params) {
+		// TODO Auto-generated method stub
+		return (List<UserCertificate>) userMgrDAO.selectCertificationUserList(params);
+	}
+
+	@Override
+	public UserCertificateDetail selectCertificationUser(UserCertificateDetail params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.selectCertificationUser(params);
 	}
 
 

@@ -7,6 +7,8 @@ import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
 import egovframework.com.adm.userMgr.vo.UserBaselineSubInfo;
+import egovframework.com.adm.userMgr.vo.UserCertificate;
+import egovframework.com.adm.userMgr.vo.UserCertificateDetail;
 import egovframework.com.adm.userMgr.vo.UserInfo;
 
 /**
@@ -80,4 +82,8 @@ public interface UserMgrService{
 	public int updateUserMaster(TeacherInfo params);
 	
 	public int deleteUserMaster(TeacherInfo params);	
+	
+	public List<UserCertificate> selectCertificationUserList(UserCertificate params);
+	
+	public UserCertificateDetail selectCertificationUser(UserCertificateDetail params);
 }

@@ -25,6 +25,8 @@ import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
 import egovframework.com.adm.userMgr.vo.UserBaselinePop;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
 import egovframework.com.adm.userMgr.vo.UserBaselineSubInfo;
+import egovframework.com.adm.userMgr.vo.UserCertificate;
+import egovframework.com.adm.userMgr.vo.UserCertificateDetail;
 import egovframework.com.adm.userMgr.vo.UserInfo;
 import egovframework.com.common.service.CommonService;
 import egovframework.com.common.vo.Common;
@@ -501,18 +503,30 @@ public class UserMgrController {
 		
 		try {
 			
+			/*
+			 * 보안검색 초기 : 5일 / 40시간
+			             정기 : 5일 / 40시간
+			             인증평가 : 1일 / 4시간
+			
+			   항공경비 초기 : 4일 / 30시간
+			             정기 : 5일 / 40시간
+			             인증평가 : 1일 / 4시간
+			 * */			
+			params.setEduCode(params.getEduName());
+			
 			Common cp = new Common();
 			cp.setLanguageCode("kr");
 			cp.setGroupId("eduName");
 			List<Common> clist = commonService.selectCommonList(cp);
-			
 			if(clist!=null) {
 				for(Common c : clist) {
-					if(params.getEduName().equals(c.getCodeName())){
-						params.setEduCode(c.getCodeValue());
+					if(params.getEduName().equals(c.getCodeValue())){
+						params.setEduName(c.getCodeName());
+						params.setEduDay(c.getMemo1());
+						params.setEduTime(c.getMemo2());						
 					} 
 				}
-			}
+			}	
 			
 			//교육생등록
 			params.setInsertId(params.getUserId());
@@ -682,18 +696,30 @@ public class UserMgrController {
 		
 		try {
 			
+			/*
+			 * 보안검색 초기 : 5일 / 40시간
+			             정기 : 5일 / 40시간
+			             인증평가 : 1일 / 4시간
+			
+			   항공경비 초기 : 4일 / 30시간
+			             정기 : 5일 / 40시간
+			             인증평가 : 1일 / 4시간
+			 * */			
+			params.setEduCode(params.getEduName());
+			
 			Common cp = new Common();
 			cp.setLanguageCode("kr");
 			cp.setGroupId("eduName");
 			List<Common> clist = commonService.selectCommonList(cp);
-			
 			if(clist!=null) {
 				for(Common c : clist) {
-					if(params.getEduName().equals(c.getCodeName())){
-						params.setEduCode(c.getCodeValue());
+					if(params.getEduName().equals(c.getCodeValue())){
+						params.setEduName(c.getCodeName());
+						params.setEduDay(c.getMemo1());
+						params.setEduTime(c.getMemo2());
 					} 
 				}
-			}
+			}	
 			
 			//교육생등록
 			params.setInsertId(login.getUserId());
@@ -856,15 +882,27 @@ public class UserMgrController {
 		
 		
 		try {
+			/*
+			 * 보안검색 초기 : 5일 / 40시간
+			             정기 : 5일 / 40시간
+			             인증평가 : 1일 / 4시간
+			
+			   항공경비 초기 : 4일 / 30시간
+			             정기 : 5일 / 40시간
+			             인증평가 : 1일 / 4시간
+			 * */			
+			params.setEduCode(params.getEduName());
+			
 			Common cp = new Common();
 			cp.setLanguageCode("kr");
 			cp.setGroupId("eduName");
 			List<Common> clist = commonService.selectCommonList(cp);
-			
 			if(clist!=null) {
 				for(Common c : clist) {
-					if(params.getEduName().equals(c.getCodeName())){
-						params.setEduCode(c.getCodeValue());
+					if(params.getEduName().equals(c.getCodeValue())){
+						params.setEduName(c.getCodeName());
+						params.setEduDay(c.getMemo1());
+						params.setEduTime(c.getMemo2());						
 					} 
 				}
 			}			
@@ -1512,6 +1550,74 @@ public class UserMgrController {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
-    }      
+    }    
+    
+    
+    /**
+     * 이수증명서학생목록
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectCertificationUserList.do")
+    @ApiOperation(value = "이수증명서학생목록", notes = "이수증명서학생목록")
+    public BaseResponse<List<UserCertificate>> selectCertificationUserList(HttpServletRequest request, @RequestBody UserCertificate params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<List<UserCertificate>>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		try {
+			List<UserCertificate> resultList = userMgrService.selectCertificationUserList(params);
+			
+	        return new BaseResponse<List<UserCertificate>>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }    
+        
+    
+    
+    /**
+     * 이수증명서학생
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectCertificationUser.do")
+    @ApiOperation(value = "이수증명서학생", notes = "이수증명서학생")
+    public BaseResponse<UserCertificateDetail> selectCertificationUser(HttpServletRequest request, @RequestBody UserCertificateDetail params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<UserCertificateDetail>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<UserCertificateDetail>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getProcSeq())){				
+			return new BaseResponse<UserCertificateDetail>(BaseResponseCode.PARAMS_ERROR, "ProcSeq" + BaseApiMessage.REQUIRED.getCode());
+		}				
+		
+		try {
+			UserCertificateDetail result = userMgrService.selectCertificationUser(params);
+			
+	        return new BaseResponse<UserCertificateDetail>(result);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }    
+            
         
 }

@@ -35,6 +35,8 @@
 			CODE_NAME,
 			CODE_VALUE,
 			CODE_DESC,
+			MEMO1,
+			MEMO2,
 			REMARKS,
 			USE_YN,
 			MAIN_YN,

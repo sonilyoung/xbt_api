@@ -7,6 +7,8 @@ import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
 import egovframework.com.adm.userMgr.vo.UserBaselineSubInfo;
+import egovframework.com.adm.userMgr.vo.UserCertificate;
+import egovframework.com.adm.userMgr.vo.UserCertificateDetail;
 import egovframework.com.adm.userMgr.vo.UserInfo;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -123,5 +125,13 @@ public class UserMgrDAO extends EgovAbstractMapper{
 	
 	public int deleteUserMaster(TeacherInfo params) {
 		return delete(Namespace + ".deleteUserMaster", params);
+	}		
+	
+	public List<?> selectCertificationUserList(UserCertificate params) {
+		return (List<?>)selectList(Namespace + ".selectCertificationUserList", params);
+	}	
+	
+	public UserCertificateDetail selectCertificationUser(UserCertificateDetail params) {
+		return selectOne(Namespace + ".selectCertificationUser", params);
 	}		
 }

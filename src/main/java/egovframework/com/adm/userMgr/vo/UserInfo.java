@@ -84,6 +84,8 @@ public class UserInfo {
 	private String lastEduDept;
 	private String lastEduYear;
 	private String lastEduEnd;
+	private String eduDay;
+	private String eduTime;
 	
 	private List<String> userIdList;
 	

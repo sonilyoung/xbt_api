@@ -341,7 +341,8 @@
 				OR EDU_NAME LIKE  CONCAT('%' , #{searchval} , '%')
 				OR COMP_NM LIKE  CONCAT('%' , #{searchval} , '%')
 			</when>
-		</choose>		
+		</choose>
+		ORDER BY INSERT_DATE DESC		
 	</select>	
 	
 	
@@ -425,7 +426,8 @@
 		PRACTICE_BEFORE_SCORE = #{practiceBeforeScore}, 
 		PRACTICE_SCORE = #{practiceScore},
 		PRACTICE_YN = 'Y'
-		WHERE USER_ID = #{userId}			
+		WHERE USER_ID = #{userId}
+		AND PROC_CD = #{procCd}			
 	</update>	
 	
 	<!-- 교육생 상세조회-->
@@ -582,7 +584,9 @@
 			LAST_EDU_NAME,
 			LAST_EDU_DEPT,
 			LAST_EDU_YEAR,
-			LAST_EDU_END
+			LAST_EDU_END,
+			EDU_DAY,
+			EDU_TIME
 		)VALUES(
 			#{userId}
 			,#{userNm}
@@ -651,6 +655,8 @@
 			,#{lastEduDept}
 			,#{lastEduYear}
 			,#{lastEduEnd}
+			,#{eduDay}
+			,#{eduTime}			
 		)
 	
 	</insert>	
@@ -661,7 +667,7 @@
 		UPDATE XBT_STU_USER SET				
 			USER_NM = 		#{userNm},
 			USER_PW = 		#{userPw},
-			eduCode = 		#{eduCode},
+			EDU_CODE = 		#{eduCode},
 			EDU_NAME = 		#{eduName},
 			USER_NM_CH = 		#{userNmCh},
 			USER_NM_EN = 		#{userNmEn},
@@ -723,7 +729,9 @@
 			LAST_EDU_NAME = 	#{lastEduName}           ,
 			LAST_EDU_DEPT = 	#{lastEduDept}           ,
 			LAST_EDU_YEAR = 	#{lastEduYear}           ,
-			LAST_EDU_END = 	#{lastEduEnd}                
+			LAST_EDU_END = 	#{lastEduEnd}                ,
+			EDU_DAY = 		#{eduDay}					 ,
+			EDU_TIME = 	#{eduTime}
 		WHERE USER_ID = 		#{userId}	
 
 	</update>	
@@ -1328,5 +1336,52 @@
 	<!-- 마스터유저정보 삭제-->
 	<delete id="deleteUserMaster" parameterType="egovframework.com.adm.userMgr.vo.TeacherInfo">
 		DELETE FROM XBT_USER WHERE USER_ID = #{userId}  
-	</delete>					
+	</delete>	
+	
+	
+	<!--이수증명서학생목록-->
+	<select id="selectCertificationUserList" parameterType="egovframework.com.adm.userMgr.vo.UserCertificate" resultType="egovframework.com.adm.userMgr.vo.UserCertificate" >
+		SELECT
+			PROC_CD,
+			PROC_YEAR,
+			PROC_SEQ,
+			EDU_NAME,
+			USER_ID,
+			USER_NM,
+			PRACTICE_SCORE,
+			THEORY_SCORE,
+			EVALUATION_SCORE,
+			PASS_YN,
+			EDU_START_DATE,
+			EDU_END_DATE,
+			ENDING_YN
+		FROM
+			XBT_BASELINE_STUDENT_INFO
+		WHERE USER_ID = #{userId}
+		AND PASS_YN != 'ING'
+		ORDER BY PROC_CD DESC, PROC_SEQ ASC
+	</select>	
+	
+	<!--이수증명서학생-->
+	<select id="selectCertificationUser" parameterType="egovframework.com.adm.userMgr.vo.UserCertificateDetail" resultType="egovframework.com.adm.userMgr.vo.UserCertificateDetail" >
+		SELECT
+			T1.PROC_CD,
+			T1.PROC_SEQ,
+			T2.EDU_NAME,
+			T2.USER_NM,	
+			T2.USER_NM_EN,
+			T2.BIRTH_DAY,
+			T2.ADDRESS,
+			T1.EDU_START_DATE,
+			T1.EDU_END_DATE,
+			date_format(NOW(), '%Y-%m-%d')AS TO_DAY,
+			EDU_TIME
+		FROM
+			XBT_BASELINE_STUDENT_INFO T1 INNER JOIN XBT_STU_USER T2
+			ON T1.USER_ID = T2.USER_ID 
+		WHERE T1.USER_ID = #{userId}
+		AND T1.PROC_CD = #{procCd}
+		AND T1.PROC_SEQ = #{procSeq}	
+		AND T1.PASS_YN != 'ING'
+	</select>	
 </mapper>

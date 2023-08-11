@@ -992,13 +992,16 @@ public class TestController {
 	            params.put("studyLvl", excelData.get("C"));//C학습레벨
 	            params.put("useYn", excelData.get("D"));//D사용여부
 	            
+	            /*
 	            Common cp = new Common();
 	            cp.setLanguageCode("kr");
 	            cp.setGroupId("eduName");
 	            cp.setCodeName(excelData.get("E"));
 	            cp.setCommand("codeName");
 	            Common cr = commonService.selectCommon(cp);
-	            params.put("lageGroupCd", cr.getCodeValue());//대그룹
+	            */
+	            
+	            params.put("lageGroupCd", excelData.get("E"));//대그룹
 	            
 	            params.put("middleGroupCd", excelData.get("F"));//F중그룹
 	            params.put("smallGroupCd", excelData.get("G"));//G소그룹
