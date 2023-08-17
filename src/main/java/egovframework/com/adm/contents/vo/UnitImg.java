@@ -30,6 +30,7 @@ public class UnitImg {
 	private String seqInfo;
 	private String imgType;//이미지유형 (real, front, side)
 	private String languageCode;
+	private String searchval;
 
 	private MultipartFile realmImg;//실사
 	private MultipartFile frontmImg;//정면이미지

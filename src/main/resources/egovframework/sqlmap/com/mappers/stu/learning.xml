@@ -467,7 +467,22 @@
 			AND PROC_SEQ = #{procSeq}
 			AND USER_ID = #{userId}
 			AND END_YN = 'Y'
-			LIMIT #{questionCnt}
+			AND TRY_SEQ = (
+				SELECT
+					MIN(TRY_SEQ)
+				FROM 
+					XBT_STU_LEARNING_PROGRESSING 
+				WHERE 
+					ACTION_DIV != USER_ACTION_DIV
+					AND USER_ACTION_DIV IS NOT NULL
+					AND MODULE_ID = #{moduleId}
+					AND PROC_CD = #{procCd} 
+					AND PROC_YEAR = #{procYear} 
+					AND PROC_SEQ = #{procSeq}
+					AND USER_ID = #{userId}
+					AND END_YN = 'Y'				
+			)
+			<!-- LIMIT #{questionCnt} -->
 	</insert>		
 				
 	<!-- 오답문제출제목록가져오기 -->
@@ -493,7 +508,7 @@
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
 		AND END_YN = #{endYn}
-		LIMIT #{questionCnt}
+		<!-- LIMIT #{questionCnt} -->
 	</select>		
 	
 	<!-- 오답정답확인 -->

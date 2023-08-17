@@ -75,12 +75,14 @@
 				A.INSERT_DATE,
 				A.UPDATE_ID,
 				A.UPDATE_DATE      
-         FROM XBT_STU_USER A LEFT JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD			
+         FROM XBT_STU_USER A LEFT JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD
+         ORDER BY A.INSERT_DATE DESC			
 	</select>	
 	
 	<!-- 교육생 정보조회팝업-->
 	<select id="selectUserListPop" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >	
 
+		SELECT * FROM (
 		<choose>
 			<when test='procCd == "0" or procCd == 0'>
 				SELECT 
@@ -304,10 +306,10 @@
 	         FROM XBT_STU_USER A LEFT JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD	         
 	         WHERE USER_ID IN (
 		         SELECT USER_ID FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = #{procCd} 
-	         )			
+	         ) 
 			</otherwise>
 		</choose>         
-         
+        )TOT ORDER BY INSERT_DATE DESC
 	</select>		
 
 	<!-- 차수 교육생 정보조회-->

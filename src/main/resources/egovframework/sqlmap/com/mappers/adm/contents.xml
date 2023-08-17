@@ -38,7 +38,13 @@
 		, USE_YN
 		, INSERT_ID
 		, date_format(insert_date , '%Y-%m-%d %T' )as  INSERT_DATE
-		FROM XBT_LANGUAGE_CODE_MASTER
+		FROM XBT_LANGUAGE_CODE_MASTER WHERE 1=1
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				AND (LANGUAGE_NAME LIKE CONCAT('%' , #{searchval} , '%')
+				OR LANGUAGE_CODE LIKE  CONCAT('%' , #{searchval} , '%'))
+			</when>
+		</choose>
 	</select>	
 
 	<!-- 언어셋상세 -->
@@ -153,6 +159,22 @@
 			       IMG_FILE
 			FROM XBT_UNIT_GROUP XUG  
 			WHERE XUG.USE_YN = 'Y'
+			<choose>
+				<when test='searchval != "" and searchval != null'>
+					AND (
+						XUG.UNIT_GROUP_CD LIKE CONCAT('%' , #{searchval} , '%')
+						OR GROUP_NAME LIKE  CONCAT('%' , #{searchval} , '%')
+						OR GROUP_DESC LIKE  CONCAT('%' , #{searchval} , '%')
+						OR GROUP_NAME_EN LIKE  CONCAT('%' , #{searchval} , '%')
+						OR GROUP_DESC_EN LIKE  CONCAT('%' , #{searchval} , '%')
+						OR GROUP_NAME_CH LIKE  CONCAT('%' , #{searchval} , '%')
+						OR GROUP_DESC_CH LIKE  CONCAT('%' , #{searchval} , '%')										
+						OR GROUP_NAME_JP LIKE  CONCAT('%' , #{searchval} , '%')
+						OR GROUP_DESC_JP LIKE  CONCAT('%' , #{searchval} , '%')										
+					)
+				</when>
+			</choose>
+			
 			ORDER BY XUG.UNIT_GROUP_CD ASC
 	</select>	
 	
@@ -318,6 +340,24 @@
 			, USE_YN/*사용여부*/
 			, XUI.LANGUAGE_CODE
 		FROM XBT_UNIT_INFO XUI
+		WHERE 1=1
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					UNIT_ID LIKE CONCAT('%' , #{searchval} , '%')
+					OR UNIT_GROUP_CD LIKE  CONCAT('%' , #{searchval} , '%')
+					OR GROUP_DESC LIKE  CONCAT('%' , #{searchval} , '%')
+					OR UNIT_NAME LIKE  CONCAT('%' , #{searchval} , '%')
+					OR UNIT_DESC LIKE  CONCAT('%' , #{searchval} , '%')
+					OR UNIT_NAME_EN LIKE  CONCAT('%' , #{searchval} , '%')
+					OR UNIT_DESC_EN LIKE  CONCAT('%' , #{searchval} , '%')					
+					OR UNIT_NAME_CH LIKE  CONCAT('%' , #{searchval} , '%')
+					OR UNIT_DESC_CH LIKE  CONCAT('%' , #{searchval} , '%')										
+					OR UNIT_NAME_JP LIKE  CONCAT('%' , #{searchval} , '%')
+					OR UNIT_DESC_JP LIKE  CONCAT('%' , #{searchval} , '%')										
+				)
+			</when>
+		</choose>
 	</select>	
 	
 	
@@ -370,22 +410,35 @@
 	
 	
 	<!-- xray콘텐츠관리-정보관리 -->
-	<select id="selectXrayContentsList" parameterType="egovframework.com.adm.contents.vo.XrayContents" resultType="egovframework.com.adm.contents.vo.XrayContents" >	
-		SELECT 
-			T1.BAG_SCAN_NO,
-			T1.BAG_SCAN_ID,
-			T1.UNIT_ID,/*정답물품아이디*/
-			(SELECT UNIT_NAME FROM XBT_UNIT_INFO WHERE UNIT_ID = T1.UNIT_ID) as unitName,/*정답물품명*/
-			OPEN_YN,/*개봉여부*/
-			PASS_YN,/*통과여부*/
-			ACTION_DIV,
-			ACTION_DIV_NAME,
-			T1.STUDY_LVL, /*학습레벨*/
-			T1.USE_YN ,/*사용여부*/
-			T1.INSERT_ID, 
-			T1.INSERT_DATE 
-		FROM XBT_BAG_INFO T1
-		ORDER BY T1.BAG_SCAN_ID ASC		  		 	
+	<select id="selectXrayContentsList" parameterType="egovframework.com.adm.contents.vo.XrayContents" resultType="egovframework.com.adm.contents.vo.XrayContents" >
+		SELECT * FROM (	
+			SELECT 
+				T1.BAG_SCAN_NO,
+				T1.BAG_SCAN_ID,
+				T1.UNIT_ID,/*정답물품아이디*/
+				(SELECT UNIT_NAME FROM XBT_UNIT_INFO WHERE UNIT_ID = T1.UNIT_ID) as unitName,/*정답물품명*/
+				OPEN_YN,/*개봉여부*/
+				PASS_YN,/*통과여부*/
+				ACTION_DIV,
+				ACTION_DIV_NAME,
+				T1.STUDY_LVL, /*학습레벨*/
+				T1.USE_YN ,/*사용여부*/
+				T1.INSERT_ID, 
+				T1.INSERT_DATE 
+			FROM XBT_BAG_INFO T1
+			WHERE 1=1
+			ORDER BY T1.BAG_SCAN_ID ASC
+		)TOT WHERE 1=1
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					BAG_SCAN_ID LIKE CONCAT('%' , #{searchval} , '%')
+					OR UNIT_ID LIKE  CONCAT('%' , #{searchval} , '%')
+					OR unitName LIKE  CONCAT('%' , #{searchval} , '%')
+				)
+			</when>
+		</choose>		
+			  		 	
 	</select>
 	
 	

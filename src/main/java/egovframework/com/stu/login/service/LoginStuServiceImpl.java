@@ -126,22 +126,22 @@ public class LoginStuServiceImpl implements LoginStuService {
         		+ login.getUserNm() + "|" 
         		+ login.getUserPw() + "|"
                 + login.getAuthCd() + "|"
-                + login.getCompany() + "|"
-                + login.getDept() + "|"
-                + login.getTelNo() + "|"
-                + login.getEmail() + "|"
+                + (StringUtils.isEmpty(login.getCompany()) ? "null" : login.getCompany()) + "|"
+                + (StringUtils.isEmpty(login.getDept()) ? "null" : login.getDept()) + "|"
+                + (StringUtils.isEmpty(login.getTelNo()) ? "null" : login.getTelNo()) + "|"
+                + (StringUtils.isEmpty(login.getEmail()) ? "null" : login.getEmail()) + "|"
                 + login.getLoginStart() + "|"
                 + login.getLoginLast() + "|"
                 + login.getPwPrior() + "|"
                 + login.getPwChange() + "|"
                 + login.getPwUpdate() + "|"
                 + login.getPwPeriod() + "|"
-                + login.getUseYn() + "|"
+                + (StringUtils.isEmpty(login.getUseYn()) ? "null" : login.getUseYn()) + "|"
                 + login.getInsertId() + "|"
                 + login.getInsertDate() + "|"
                 + login.getUpdateId() + "|"
                 + login.getUpdateDate() + "|"
-                + login.getPosition();
+                + (StringUtils.isEmpty(login.getPosition()) ? "null" : login.getPosition());
         return str;
     }
 

@@ -27,7 +27,8 @@
 			UPDATE_DATE,
 			`POSITION`
 			FROM XBT_STU_USER
-		WHERE USER_ID = #{userId}  
+		WHERE USER_ID = #{userId} 
+		AND USE_YN = 'Y' 
 	</select>
 
 	<update id="updateStuLoginTime" parameterType="String">

@@ -975,7 +975,7 @@ public class LearningController {
 			params.setProcSeq(baselineData.getProcSeq());
 			params.setStudyLvl(moduleInfoData.getStudyLvl());
 			params.setPassScore(baselineData.getPassScore());
-			params.setQuestionCnt(moduleInfoData.getQuestionCnt());
+			//params.setQuestionCnt(moduleInfoData.getQuestionCnt());
 			
 			//시도횟수
 			LearningProblem lpParams = new LearningProblem();
@@ -983,11 +983,18 @@ public class LearningController {
 			lpParams.setProcYear(params.getProcYear());
 			lpParams.setProcSeq(params.getProcSeq());
 			lpParams.setUserId(params.getUserId());
+			
 			LearningProblem maxKey = learningService.selectWrongAnswerProblemsMaxkey(lpParams);
 			params.setTrySeq(maxKey.getTrySeq());				
+			lpParams.setTrySeq(maxKey.getTrySeq());
 			
 			//오답문제종료데이터확인
 			int baselineCnt = learningService.selectWrongAnswerBaselineResultCount(params);
+			
+			//등록된학습문제 체크
+			lpParams.setEndYn("N");			
+			List<LearningProblem> resultList = learningService.selectWrongAnswerProblemsList(lpParams);
+			params.setQuestionCnt(resultList.size());
 			
 			//오답문제종료데이터등록
 			if(baselineCnt <= 0) {

@@ -193,7 +193,7 @@
 	
 	
 	
-<!-- 이론파일강사 목록 -->
+	<!-- 이론파일강사 목록 -->
 	<select id="selectTheoryFileList" parameterType="egovframework.com.adm.theory.vo.TheoryFile" resultType="egovframework.com.adm.theory.vo.TheoryFile">
 		SELECT
 			THEORY_NO,
@@ -213,6 +213,11 @@
 			UPDATE_DATE
 		FROM
 			XBT_THEORY_FILE
+		<choose>
+			<when test='eduCode != "" and eduCode != null'>
+				WHERE EDU_CODE = #{eduCode}
+			</when>
+		</choose>		
 	</select>		
 
 <!-- 이론파일강사 상세 -->

@@ -57,7 +57,7 @@
 			WHERE PROC_CD = #{procCd} 
 			GROUP BY 
 				PROC_NAME,
-				USER_NAME		
+				USER_ID		
 		) TOT
 	</select>		
 	
@@ -74,6 +74,7 @@
 		WHERE
 		PROC_CD = #{procCd} 
 		AND USER_ID = #{userId}
+		ORDER BY TRY_SEQ DESC
 	</select>			
 	
 	

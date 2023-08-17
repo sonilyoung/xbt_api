@@ -20,5 +20,6 @@ public class Language implements Serializable {
 	private String insertDate;
 	private String codeName;
 	private String codeDesc;
+	private String searchval;
 	
 }

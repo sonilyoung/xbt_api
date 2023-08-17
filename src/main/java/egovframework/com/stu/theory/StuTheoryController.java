@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
+import egovframework.com.adm.theory.service.TheoryService;
 import egovframework.com.adm.theory.vo.Theory;
+import egovframework.com.adm.theory.vo.TheoryFile;
+import egovframework.com.file.service.FileService;
 import egovframework.com.file.service.XbtImageService;
+import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.exception.BaseResponse;
 import egovframework.com.global.http.BaseApiMessage;
@@ -52,7 +56,7 @@ public class StuTheoryController {
     private LoginService loginService;
     
     @Autowired
-    private StuTheoryService theoryService;
+    private StuTheoryService stuTheoryService;
     
     @Autowired
     private LearningService learningService;    
@@ -60,6 +64,11 @@ public class StuTheoryController {
     @Autowired
     private XbtImageService xbtImageService;    
     
+    @Autowired
+    private FileService fileService;          
+    
+    @Autowired
+    private TheoryService theoryService;      
     
     /**
      * 이론정보
@@ -94,36 +103,36 @@ public class StuTheoryController {
 		
 		params.setQuestionCnt(baselineData.getTheoryQuestionCnt()); 						
 		//이론문제가져오기
-		List<StuTheory> problems = theoryService.selectTheoryList(params);
+		List<StuTheory> problems = stuTheoryService.selectTheoryList(params);
 		if(problems == null) {
 			return new BaseResponse<StuTheory>(BaseResponseCode.THEORY_DATA, BaseResponseCode.THEORY_DATA.getMessage());
 		}				
 		
 		//시도횟수
-		StuTheory maxKey = theoryService.selectTheoryProblemsMaxkey(params);	
+		StuTheory maxKey = stuTheoryService.selectTheoryProblemsMaxkey(params);	
 		params.setTrySeq(maxKey.getTrySeq());
 		
 		//평가유무확인
-		int processYn = theoryService.selectTheoryProcessYnCount(params);
+		int processYn = stuTheoryService.selectTheoryProcessYnCount(params);
 		if(processYn == baselineData.getTheoryQuestionCnt()) {
 			return new BaseResponse<StuTheory>(BaseResponseCode.ALREADY_STARE, BaseResponseCode.ALREADY_STARE.getMessage());
 		}			
 		
 		//등록된학습문제 체크
 		params.setEndYn("N");
-		int problemsCnt = theoryService.selectTheoryProblemsCount(params);
+		int problemsCnt = stuTheoryService.selectTheoryProblemsCount(params);
 		
 		
 		if(problemsCnt <= 0) {
 			//문제등록
 			params.setTrySeq(maxKey.getTrySeq()+1);
 			moduleInfoData.setTrySeq(maxKey.getTrySeq()+1);
-			theoryService.insertTheoryProblems(params);				
+			stuTheoryService.insertTheoryProblems(params);				
 		}else {
 			moduleInfoData.setTrySeq(maxKey.getTrySeq());
 		}
 		
-		List<StuTheory> resultList = theoryService.selectTheoryProblemsList(params);
+		List<StuTheory> resultList = stuTheoryService.selectTheoryProblemsList(params);
 		
 		if(resultList == null) {
 			return new BaseResponse<StuTheory>(BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS, BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS.getMessage());
@@ -156,7 +165,7 @@ public class StuTheoryController {
 		
 		try {
 			//이론조회
-			StuTheory result = theoryService.selectTheory(params);
+			StuTheory result = stuTheoryService.selectTheory(params);
 			Theory tr = new Theory();
 			tr.setQuestionId(params.getQuestionId());
 			xbtImageService.selectTheoryImg(tr);
@@ -206,7 +215,7 @@ public class StuTheoryController {
 					return new BaseResponse<Integer>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
 				}	
 				
-				StuTheory answer = theoryService.selectTheoryAnswer(s);
+				StuTheory answer = stuTheoryService.selectTheoryAnswer(s);
 				s.setAnswerDiv(answer.getAnswerDiv());
 				
 				if("1".equals(answer.getAnswer())) {//정답
@@ -215,7 +224,7 @@ public class StuTheoryController {
 					answer.setGainScore(0);
 				}
 				
-				result = theoryService.updateTheoryAnswer(answer);
+				result = stuTheoryService.updateTheoryAnswer(answer);
 			}
 			
 			if(result>0) {
@@ -267,7 +276,7 @@ public class StuTheoryController {
 			
 			params.setQuestionCnt(baselineData.getTheoryQuestionCnt()); 
 			//이론문제가져오기
-			List<StuTheory> problems = theoryService.selectTheoryList(params);
+			List<StuTheory> problems = stuTheoryService.selectTheoryList(params);
 			int problemsCnt = 0;
 			if(problems!=null) {
 				problemsCnt = problems.size();	
@@ -275,7 +284,7 @@ public class StuTheoryController {
 			 
 			
 			//시도횟수
-			StuTheory maxKey = theoryService.selectTheoryProblemsMaxkey(params);
+			StuTheory maxKey = stuTheoryService.selectTheoryProblemsMaxkey(params);
 			params.setTrySeq(maxKey.getTrySeq());			
 			
 			for(StuTheory s : params.getTheoryList()) {
@@ -284,7 +293,7 @@ public class StuTheoryController {
 				s.setProcYear(baselineData.getProcYear());
 				s.setProcSeq(baselineData.getProcSeq());
 				s.setTrySeq(maxKey.getTrySeq());
-				StuTheory answer = theoryService.selectTheoryAnswer(s);
+				StuTheory answer = stuTheoryService.selectTheoryAnswer(s);
 				s.setAnswerDiv(answer.getAnswerDiv());
 				answer.setQuestionId(s.getQuestionId());
 				params.setQuestionId(s.getQuestionId());
@@ -303,7 +312,7 @@ public class StuTheoryController {
 				answer.setProcSeq(baselineData.getProcSeq());
 				answer.setTrySeq(maxKey.getTrySeq());
 				answer.setUserActionDiv(s.getUserActionDiv());
-				theoryService.updateTheoryAnswer(answer);
+				stuTheoryService.updateTheoryAnswer(answer);
 			}			
 			
 			lp.setProcCd(baselineData.getProcCd()); 
@@ -317,16 +326,16 @@ public class StuTheoryController {
 			}
 			
 			//학습종료데이터확인
-			int baselineCnt = theoryService.selectTheoryBaselineResultCount(params);
+			int baselineCnt = stuTheoryService.selectTheoryBaselineResultCount(params);
 			
 			//학습종료데이터등록
 			if(baselineCnt <= 0) {
-				StuTheory studyLvl = theoryService.selectStudyLvlTheory(params);
+				StuTheory studyLvl = stuTheoryService.selectStudyLvlTheory(params);
 				params.setStudyLvl(studyLvl.getTrySeq()); 
-				theoryService.insertTheoryResult(params);				
+				stuTheoryService.insertTheoryResult(params);				
 			}
 
-			StuTheory gainScore = theoryService.selectTheorySum(params);
+			StuTheory gainScore = stuTheoryService.selectTheorySum(params);
 			params.setGainScore(gainScore.getGainScore());
 			if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassTheoryScore())) {//통과
 				params.setPassYn("Y");
@@ -335,17 +344,17 @@ public class StuTheoryController {
 			}
 			
 			//학습종료 틀린갯수 맞은갯수 확인 
-			StuTheory resultCnt = theoryService.selectTheoryResultCount(params);
+			StuTheory resultCnt = stuTheoryService.selectTheoryResultCount(params);
 			params.setQuestionCnt(resultCnt.getQuestionCnt());
 			params.setWrongCnt(resultCnt.getWrongCnt());
 			params.setRightCnt(resultCnt.getRightCnt());		
 			
 			//문제종료처리
 			params.setEndYn("Y");
-			theoryService.updateTheoryEnd(params);
+			stuTheoryService.updateTheoryEnd(params);
 			
 			//결과데이터저장
-			int result = theoryService.updateTheoryResult(params);
+			int result = stuTheoryService.updateTheoryResult(params);
 			
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
@@ -356,6 +365,41 @@ public class StuTheoryController {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
-    }          
-    	      
+    }       
+    
+    
+    
+    /**
+     * 이론파일조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectTheoryFileList.do")
+    @ApiOperation(value = "이론파일조회", notes = "이론파일조회")
+    public BaseResponse<List<TheoryFile>> selectTheoryFileList(HttpServletRequest request, @RequestBody TheoryFile params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			//이론조회
+			List<TheoryFile> result = theoryService.selectTheoryFileList(params);
+			
+			
+			for(TheoryFile tf : result) {
+				
+	            AttachFile af = new AttachFile();
+	            af.setFileTarget(tf.getTheoryNo());
+	            List<AttachFile> existFileList = fileService.selectFileAll(af);				
+	            tf.setFiles(existFileList);			
+			}
+	        return new BaseResponse<List<TheoryFile>>(result);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }   
+        	      
 }

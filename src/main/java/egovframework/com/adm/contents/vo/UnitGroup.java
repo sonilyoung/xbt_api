@@ -36,5 +36,5 @@ public class UnitGroup implements Serializable {
 	private String languageCode;/*언어셋*/
 	private String languageCodeName;/*언어셋명*/
 	private byte[] imgFile;/*이미지*/
-	
+	private String searchval;
 }

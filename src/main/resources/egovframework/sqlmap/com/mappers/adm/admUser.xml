@@ -31,6 +31,7 @@
 		     , DEL_DT                      /*삭제일시*/        
 		FROM XBT_USER                                             								 
 		WHERE USER_ID = #{userId}
+		AND USE_YN = 'Y'
 	</select>
 
 	<update id="updateLoginTime" parameterType="String">

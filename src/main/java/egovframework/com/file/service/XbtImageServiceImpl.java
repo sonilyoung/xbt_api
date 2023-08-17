@@ -103,7 +103,7 @@ public class XbtImageServiceImpl implements XbtImageService {
             //////System.out.println("result count : " + fileList.length);
             
             if(fileList==null) {
-            	return result;
+            	continue;
             }            
             
             //byte변환
@@ -158,7 +158,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         //byte변환
         byte[] tempFileByte = null;/*정면이미지*/
         for( int i = 0; i < fileList.length; i++ ) { 
-        	System.out.println("result : "+fileList[i]);
+        	//System.out.println("result : "+fileList[i]);
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
         		//System.out.println("fileByte : "+fileByte);
@@ -292,7 +292,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         
         //byte변환
         for( int i = 0; i < fileList.length; i++ ) { 
-        	System.out.println("result : "+fileList[i]);
+        	//System.out.println("result : "+fileList[i]);
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
         		//System.out.println("fileByte : "+fileByte);
@@ -419,7 +419,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         
         //byte변환
         for( int i = 0; i < fileList.length; i++ ) { 
-        	System.out.println("result : "+fileList[i]);
+        	//System.out.println("result : "+fileList[i]);
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
         		//System.out.println("fileByte : "+fileByte);
