@@ -15,4 +15,5 @@ public class StatisticsPerformanceDetail {
 	private int gainScore;
 	private int trySeq;
 	private int tryCnt;
+	private String searchval;
 }

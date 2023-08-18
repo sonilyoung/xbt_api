@@ -4,30 +4,41 @@
 	
 	<!-- 통계 - 학습실적조회 -->
 	<select id="selectStatisticsLearningList" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformance" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformance">
-		SELECT 
-			PROC_CD ,
-			PROC_YEAR,
-			PROC_NAME ,
-			PROC_SEQ,	 
-			floor(IFNULL(SUM(GAIN_SCORE)/COUNT(*), 0))AS AVERAGE_SCORE,
-			STUDENT_CNT,
-			PLAY_STUDENT_CNT
-		FROM (
-			SELECT		
-				PROC_CD,
-				PROC_YEAR ,
-				(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME , 
-				PROC_SEQ , 
-				GAIN_SCORE,
-				(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT,
-				(SELECT COUNT(DISTINCT(USER_ID)) FROM XBT_BASELINE_LEARNING WHERE PROC_CD = T1.PROC_CD)AS PLAY_STUDENT_CNT
-			FROM XBT_BASELINE_LEARNING T1
-		)TOT 
-		GROUP BY 
-			PROC_CD ,
-			PROC_YEAR,
-			PROC_NAME,
-			PROC_SEQ
+		SELECT * FROM (
+			SELECT 
+				PROC_CD ,
+				PROC_YEAR,
+				PROC_NAME ,
+				PROC_SEQ,	 
+				floor(IFNULL(SUM(GAIN_SCORE)/COUNT(*), 0))AS AVERAGE_SCORE,
+				STUDENT_CNT,
+				PLAY_STUDENT_CNT
+			FROM (
+				SELECT		
+					PROC_CD,
+					PROC_YEAR ,
+					(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME , 
+					PROC_SEQ , 
+					GAIN_SCORE,
+					(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT,
+					(SELECT COUNT(DISTINCT(USER_ID)) FROM XBT_BASELINE_LEARNING WHERE PROC_CD = T1.PROC_CD)AS PLAY_STUDENT_CNT
+				FROM XBT_BASELINE_LEARNING T1
+			)TOT 
+			GROUP BY 
+				PROC_CD ,
+				PROC_YEAR,
+				PROC_NAME,
+				PROC_SEQ
+		)TOT WHERE 1=1
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					PROC_YEAR LIKE CONCAT('%' , #{searchval} , '%')
+					OR PROC_NAME LIKE  CONCAT('%' , #{searchval} , '%')
+					OR PROC_SEQ LIKE  CONCAT('%' , #{searchval} , '%')
+				)
+			</when>
+		</choose>	
 	</select>	
 	
 	<!-- 통계 - 사용자별 학습실적조회 -->
@@ -106,37 +117,57 @@
 				XBT_BASELINE T1 INNER JOIN XBT_STU_LEARNING_PROGRESSING T2
 				ON T1.PROC_CD = T2.PROC_CD 
 			GROUP BY PROC_CD, PROC_YEAR, PROC_NAME
-		)TOT 
+		)TOT WHERE 1=1
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					PROC_YEAR LIKE CONCAT('%' , #{searchval} , '%')
+					OR PROC_NAME LIKE  CONCAT('%' , #{searchval} , '%')
+					OR PROC_SEQ LIKE  CONCAT('%' , #{searchval} , '%')
+				)
+			</when>
+		</choose>			
 	</select>	
 	
 	
 	
 	<!-- 통계 - 평가실적조회 -->
 	<select id="selectStatisticsEvaluationList" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformance" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformance">
-		SELECT 
-			PROC_CD ,
-			PROC_YEAR,
-			PROC_NAME ,
-			PROC_SEQ,	 
-			floor(IFNULL(SUM(GAIN_SCORE)/COUNT(*), 0))AS AVERAGE_SCORE,
-			STUDENT_CNT,
-			PLAY_STUDENT_CNT
-		FROM (
-			SELECT		
-				PROC_CD,
-				PROC_YEAR ,
-				(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME , 
-				PROC_SEQ , 
-				GAIN_SCORE,
-				(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT,
-				(SELECT COUNT(DISTINCT(USER_ID)) FROM XBT_BASELINE_EVALUATION WHERE PROC_CD = T1.PROC_CD)AS PLAY_STUDENT_CNT
-			FROM XBT_BASELINE_EVALUATION T1
-		)TOT 
-		GROUP BY 
-			PROC_CD ,
-			PROC_YEAR,
-			PROC_NAME,
-			PROC_SEQ
+		SELECT * FROM (
+			SELECT 
+				PROC_CD ,
+				PROC_YEAR,
+				PROC_NAME ,
+				PROC_SEQ,	 
+				floor(IFNULL(SUM(GAIN_SCORE)/COUNT(*), 0))AS AVERAGE_SCORE,
+				STUDENT_CNT,
+				PLAY_STUDENT_CNT
+			FROM (
+				SELECT		
+					PROC_CD,
+					PROC_YEAR ,
+					(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME , 
+					PROC_SEQ , 
+					GAIN_SCORE,
+					(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT,
+					(SELECT COUNT(DISTINCT(USER_ID)) FROM XBT_BASELINE_EVALUATION WHERE PROC_CD = T1.PROC_CD)AS PLAY_STUDENT_CNT
+				FROM XBT_BASELINE_EVALUATION T1
+			)TOT 
+			GROUP BY 
+				PROC_CD ,
+				PROC_YEAR,
+				PROC_NAME,
+				PROC_SEQ
+		)TOT WHERE 1=1
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					PROC_YEAR LIKE CONCAT('%' , #{searchval} , '%')
+					OR PROC_NAME LIKE  CONCAT('%' , #{searchval} , '%')
+					OR PROC_SEQ LIKE  CONCAT('%' , #{searchval} , '%')
+				)
+			</when>
+		</choose>			
 	</select>	
 	
 	
@@ -195,37 +226,58 @@
 				XBT_BASELINE T1 INNER JOIN XBT_STU_EVALUATION_PROGRESSING T2
 				ON T1.PROC_CD = T2.PROC_CD 
 			GROUP BY PROC_CD, PROC_YEAR, PROC_NAME
-		)TOT 
+		)TOT WHERE 1=1
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					PROC_YEAR LIKE CONCAT('%' , #{searchval} , '%')
+					OR PROC_NAME LIKE  CONCAT('%' , #{searchval} , '%')
+					OR PROC_SEQ LIKE  CONCAT('%' , #{searchval} , '%')
+				)
+			</when>
+		</choose>			
+		
 	</select>	
 	
 	
 			
 	<!-- 통계-이론평가그룹조회 -->
 	<select id="selectStatisticsTheoryList" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformance" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformance">
-		SELECT 
-			PROC_CD ,
-			PROC_YEAR,
-			PROC_NAME ,
-			PROC_SEQ,	 
-			floor(IFNULL(SUM(GAIN_SCORE)/COUNT(*), 0))AS AVERAGE_SCORE,
-			STUDENT_CNT,
-			PLAY_STUDENT_CNT
-		FROM (
-			SELECT		
-				PROC_CD,
-				PROC_YEAR ,
-				(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME , 
-				PROC_SEQ , 
-				GAIN_SCORE,
-				(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT,
-				(SELECT COUNT(DISTINCT(USER_ID)) FROM XBT_BASELINE_THEORY WHERE PROC_CD = T1.PROC_CD)AS PLAY_STUDENT_CNT
-			FROM XBT_BASELINE_THEORY T1
-		)TOT 
-		GROUP BY 
-			PROC_CD ,
-			PROC_YEAR,
-			PROC_NAME,
-			PROC_SEQ
+		SELECT * FROM(
+			SELECT 
+				PROC_CD ,
+				PROC_YEAR,
+				PROC_NAME ,
+				PROC_SEQ,	 
+				floor(IFNULL(SUM(GAIN_SCORE)/COUNT(*), 0))AS AVERAGE_SCORE,
+				STUDENT_CNT,
+				PLAY_STUDENT_CNT
+			FROM (
+				SELECT		
+					PROC_CD,
+					PROC_YEAR ,
+					(SELECT PROC_NAME FROM XBT_BASELINE WHERE PROC_CD = T1.PROC_CD) AS PROC_NAME , 
+					PROC_SEQ , 
+					GAIN_SCORE,
+					(SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = T1.PROC_CD)AS STUDENT_CNT,
+					(SELECT COUNT(DISTINCT(USER_ID)) FROM XBT_BASELINE_THEORY WHERE PROC_CD = T1.PROC_CD)AS PLAY_STUDENT_CNT
+				FROM XBT_BASELINE_THEORY T1
+			)TOT 
+			GROUP BY 
+				PROC_CD ,
+				PROC_YEAR,
+				PROC_NAME,
+				PROC_SEQ
+		)TOT WHERE 1=1
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					PROC_YEAR LIKE CONCAT('%' , #{searchval} , '%')
+					OR PROC_NAME LIKE  CONCAT('%' , #{searchval} , '%')
+					OR PROC_SEQ LIKE  CONCAT('%' , #{searchval} , '%')
+				)
+			</when>
+		</choose>			
 	</select>		
 	
 	<!-- 통계 - 사용자별 이론평가실적조회 -->

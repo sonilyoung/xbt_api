@@ -12,5 +12,6 @@ public class StatisticsPerformance {
 	private int averageScore;
 	private int studentCnt;
 	private int playStudentCnt;
+	private String searchval;
 	
 }

@@ -346,7 +346,6 @@
 				AND (
 					UNIT_ID LIKE CONCAT('%' , #{searchval} , '%')
 					OR UNIT_GROUP_CD LIKE  CONCAT('%' , #{searchval} , '%')
-					OR GROUP_DESC LIKE  CONCAT('%' , #{searchval} , '%')
 					OR UNIT_NAME LIKE  CONCAT('%' , #{searchval} , '%')
 					OR UNIT_DESC LIKE  CONCAT('%' , #{searchval} , '%')
 					OR UNIT_NAME_EN LIKE  CONCAT('%' , #{searchval} , '%')
@@ -629,7 +628,18 @@
     		 , A.ANSWER_ITEM /*정답여부*/
 		FROM XBT_BAG_CONST_UNIT A INNER JOIN XBT_UNIT_INFO B INNER JOIN XBT_UNIT_GROUP C
 		ON  A.BAG_SCAN_ID = #{bagScanId} AND A.UNIT_ID=B.UNIT_ID
-      	AND B.UNIT_GROUP_CD=C.UNIT_GROUP_CD                                               												 
+      	AND B.UNIT_GROUP_CD=C.UNIT_GROUP_CD
+      	WHERE 1=1
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					A.BAG_SCAN_ID LIKE CONCAT('%' , #{searchval} , '%')
+					OR A.UNIT_ID LIKE  CONCAT('%' , #{searchval} , '%')
+					OR B.UNIT_NAME LIKE  CONCAT('%' , #{searchval} , '%')
+					OR B.UNIT_DESC LIKE  CONCAT('%' , #{searchval} , '%')
+				)
+			</when>
+		</choose>      	                                               												 
         ORDER BY BAG_SCAN_ID DESC
 	</select>
 	

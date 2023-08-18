@@ -21,6 +21,7 @@
 				AND THEORY_PARENT_GROUP_CD = #{theoryParentGroupCd}
 			</when>
 		</choose>
+		ORDER BY INSERT_DATE DESC 
 	</select>		
 
 <!-- 이론그룹  상세 -->
@@ -98,7 +99,19 @@
 			INSERT_ID,
 			INSERT_DATE
 		FROM
-			XBT_THEORY_QUESTION		
+			XBT_THEORY_QUESTION	
+		WHERE 1=1	
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					QUESTION_ID LIKE CONCAT('%' , #{searchval} , '%')
+					OR QUESTION_TYPE LIKE  CONCAT('%' , #{searchval} , '%')
+					OR STUDY_LVL LIKE  CONCAT('%' , #{searchval} , '%')
+					OR QUESTION LIKE  CONCAT('%' , #{searchval} , '%')
+				)
+			</when>
+		</choose>		
+		ORDER BY INSERT_DATE DESC
 	</select>		
 
 <!-- 이론  상세 -->
@@ -195,29 +208,42 @@
 	
 	<!-- 이론파일강사 목록 -->
 	<select id="selectTheoryFileList" parameterType="egovframework.com.adm.theory.vo.TheoryFile" resultType="egovframework.com.adm.theory.vo.TheoryFile">
-		SELECT
-			THEORY_NO,
-			TITLE,
-			EDU_CODE,
-			(
-				SELECT CODE_NAME FROM XBT_COMMON_CODE T2
-				WHERE T2.GROUP_ID = 'eduName' 
-				AND LANGUAGE_CODE = 'kr'
-				AND CODE_VALUE = EDU_CODE		
-			)as eduName,				
-			CONTENTS,
-			USE_YN,
-			INSERT_ID,
-			INSERT_DATE,
-			UPDATE_ID,
-			UPDATE_DATE
-		FROM
-			XBT_THEORY_FILE
+		SELECT * FROM (
+			SELECT
+				THEORY_NO,
+				TITLE,
+				EDU_CODE,
+				(
+					SELECT CODE_NAME FROM XBT_COMMON_CODE T2
+					WHERE T2.GROUP_ID = 'eduName' 
+					AND LANGUAGE_CODE = 'kr'
+					AND CODE_VALUE = EDU_CODE		
+				)as eduName,				
+				CONTENTS,
+				USE_YN,
+				INSERT_ID,
+				INSERT_DATE,
+				UPDATE_ID,
+				UPDATE_DATE
+			FROM
+				XBT_THEORY_FILE
+			<choose>
+				<when test='eduCode != "" and eduCode != null'>
+					WHERE EDU_CODE = #{eduCode}
+				</when>
+			</choose>	
+			ORDER BY INSERT_DATE DESC	
+		)TOT WHERE 1=1
 		<choose>
-			<when test='eduCode != "" and eduCode != null'>
-				WHERE EDU_CODE = #{eduCode}
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					TITLE LIKE CONCAT('%' , #{searchval} , '%')
+					OR eduName LIKE  CONCAT('%' , #{searchval} , '%')
+					OR CONTENTS LIKE  CONCAT('%' , #{searchval} , '%')
+				)
 			</when>
 		</choose>		
+	
 	</select>		
 
 <!-- 이론파일강사 상세 -->

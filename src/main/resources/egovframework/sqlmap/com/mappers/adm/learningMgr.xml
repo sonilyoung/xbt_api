@@ -35,6 +35,17 @@
 			,UPDATE_DATE
 			,MENU_CD
 		FROM XBT_MODULE_INFO_MASTER
+		WHERE 1=1
+			<choose>
+				<when test='searchval != "" and searchval != null'>
+					AND (
+						MODULE_NM LIKE CONCAT('%' , #{searchval} , '%')
+						OR MODULE_TYPE LIKE  CONCAT('%' , #{searchval} , '%')
+						OR LEARNING_TYPE LIKE  CONCAT('%' , #{searchval} , '%')
+						OR STUDY_LVL LIKE  CONCAT('%' , #{searchval} , '%')
+					)
+				</when>
+			</choose>		
 		ORDER BY MODULE_ID DESC
 				
 	</select>		

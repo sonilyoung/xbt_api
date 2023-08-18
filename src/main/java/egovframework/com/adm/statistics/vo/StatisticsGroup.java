@@ -13,5 +13,5 @@ public class StatisticsGroup {
 	private int rightCnt;
 	private int wrongCnt;
 	private int totalCnt;
-
+	private String searchval;
 }

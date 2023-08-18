@@ -65,4 +65,5 @@ public class EduModule {
 	private String passYn;
 	private String actionDivName;                  /*action구분*/
 	private int menuCd;
+	private String searchval;
 }

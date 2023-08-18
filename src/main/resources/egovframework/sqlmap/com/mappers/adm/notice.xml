@@ -13,7 +13,9 @@
 			, UPDATE_ID
 			, UPDATE_DATE
 			, LANGUAGE_CODE
+			, USE_YN
 		FROM XBT_NOTICE
+		ORDER BY INSERT_DATE DESC
 	</select>	
 	
 	<!-- 공지사항 상세 -->
@@ -27,6 +29,7 @@
 			, UPDATE_ID
 			, UPDATE_DATE
 			, LANGUAGE_CODE
+			, USE_YN
 		FROM XBT_NOTICE
 		WHERE NOTICE_ID = #{noticeId}
 	</select>		
@@ -40,13 +43,14 @@
 			, LANGUAGE_CODE
 			, INSERT_ID
 			, INSERT_DATE
-			
+			, USE_YN
 		)
 		VALUES(
 			#{title}
 			,#{contents}
 			,#{languageCode}
 			,#{insertId}
+			,'Y'
 			,now()
 		)	
 	</insert>	
@@ -59,6 +63,7 @@
 			TITLE = #{title}
 			, CONTENTS = #{title}
 			, UPDATE_ID = #{updateId}
+			, USE_YN = #{useYn}
 			, UPDATE_DATE = now()
 		WHERE NOTICE_ID = #{noticeId}
 	</update>	

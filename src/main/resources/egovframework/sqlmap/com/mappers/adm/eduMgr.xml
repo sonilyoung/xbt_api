@@ -28,22 +28,19 @@
 			,INSERT_ID
 			,UPDATE_DATE
 			,UPDATE_ID
-		FROM XBT_BASELINE			
-        ORDER BY PROC_CD DESC 
-        <!--
+		FROM XBT_BASELINE	
+		WHERE 1=1
 		<choose>
-			<when test='searchType == "1"'>
-	            AND TA1.PARENT_PROC_GROUP_CD = '*'                                                  /* 상위과정분류코드 */
-	            AND TA1.TOP_PROC_GROUP_CD    = '*'                                                  /* 최상위과정분류코드 */			
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					PROC_NAME LIKE CONCAT('%' , #{searchval} , '%')
+					OR PROC_SEQ LIKE  CONCAT('%' , #{searchval} , '%')
+					OR EDU_START_DATE LIKE  CONCAT('%' , #{searchval} , '%')
+					OR EDU_END_DATE LIKE  CONCAT('%' , #{searchval} , '%')
+				)
 			</when>
-			<when test='searchType == "2"'>
-				AND TA1.PARENT_PROC_GROUP_CD = #{procGroupCd}/* 상위과정분류코드 */
-			</when>
-			<when test='searchType == "1"'>
-				AND TA1.PARENT_PROC_GROUP_CD = #{procGroupCd}                                                  /* 상위과정분류코드 */	
-			</when>			
-		</choose>	
-		  --> 	         
+		</choose>		
+        ORDER BY PROC_CD DESC 
 	</select>  
 	
 	

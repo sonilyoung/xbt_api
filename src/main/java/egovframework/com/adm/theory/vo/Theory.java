@@ -30,6 +30,7 @@ public class Theory {
 	private String insertId;
 	private String insertDate;
 	private String command;
+	private String searchval;
 	
 	private List<String> questionIdList;
 

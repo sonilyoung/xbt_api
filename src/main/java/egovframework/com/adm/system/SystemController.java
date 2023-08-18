@@ -225,13 +225,18 @@ public class SystemController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getNoticeId())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "NoticeId" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getNoticeIdList())){				
+			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "NoticeIdList" + BaseApiMessage.REQUIRED.getCode());
 		}				
 		
 		try {
 			//공지사항삭제
-			int result = systemService.deleteNotice(params);
+			int result = 0;
+			
+			for(Long id : params.getNoticeIdList()) {
+				params.setNoticeId(id);
+				result = systemService.deleteNotice(params);
+			}
 			
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.DELETE_SUCCESS, BaseResponseCode.DELETE_SUCCESS.getMessage());

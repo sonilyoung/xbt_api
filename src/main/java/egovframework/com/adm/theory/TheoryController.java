@@ -275,6 +275,26 @@ public class TheoryController {
 		}
 		
 		try {
+			
+			if(!StringUtils.isEmpty(params.getSearchval())){
+				if("사지선다".contains(params.getSearchval())){
+					params.setSearchval("A");
+				}
+				
+				if("O/X".contains(params.getSearchval())){
+					params.setSearchval("B");
+				}
+				
+				if("이미지선다".contains(params.getSearchval())){
+					params.setSearchval("C");
+				}
+				
+				if("이미지+사지선다".contains(params.getSearchval())){
+					params.setSearchval("D");
+				}
+			}
+				
+			
 			//이론조회
 	        return new BaseResponse<List<Theory>>(theoryService.selectTheoryList(params));
         } catch (Exception e) {

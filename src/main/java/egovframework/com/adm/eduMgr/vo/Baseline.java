@@ -37,6 +37,7 @@ public class Baseline {
 	private String updateDate;
 	private String updateId;
 	private String userId;
+	private String searchval;
 	
 	private List<Student> stuList;
 	private List<List<String>> menuList;

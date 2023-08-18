@@ -18,6 +18,7 @@ public class TheoryFile {
 	private String insertDate;
 	private String updateId;
 	private String updateDate;
+	private String searchval;
 	
 	private List<Long> theoryNoList;
 	private List<AttachFile> files;

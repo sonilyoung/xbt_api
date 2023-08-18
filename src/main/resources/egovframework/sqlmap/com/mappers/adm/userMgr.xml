@@ -75,7 +75,20 @@
 				A.INSERT_DATE,
 				A.UPDATE_ID,
 				A.UPDATE_DATE      
-         FROM XBT_STU_USER A LEFT JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD
+         FROM XBT_STU_USER A INNER JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					USER_ID LIKE CONCAT('%' , #{searchval} , '%')
+					OR USER_NM LIKE CONCAT('%' , #{searchval} , '%')
+					OR EDU_NAME LIKE  CONCAT('%' , #{searchval} , '%')
+					OR DEPT LIKE  CONCAT('%' , #{searchval} , '%')
+					OR POSITION LIKE  CONCAT('%' , #{searchval} , '%')
+					OR COMPANY LIKE  CONCAT('%' , #{searchval} , '%')
+					OR WRITE_DATE LIKE  CONCAT('%' , #{searchval} , '%')
+				)
+			</when>
+		</choose>         
          ORDER BY A.INSERT_DATE DESC			
 	</select>	
 	
@@ -987,7 +1000,18 @@
 				A.INSERT_DATE,
 				A.UPDATE_ID,
 				A.UPDATE_DATE      
-         FROM XBT_TEACHER_USER A LEFT JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD			
+         FROM XBT_TEACHER_USER A LEFT JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD
+         WHERE 1=1
+			<choose>
+				<when test='searchval != "" and searchval != null'>
+					AND (
+						USER_ID LIKE CONCAT('%' , #{searchval} , '%')
+						OR USER_NM LIKE  CONCAT('%' , #{searchval} , '%')
+						OR EDU_NAME LIKE  CONCAT('%' , #{searchval} , '%')
+					)
+				</when>
+			</choose>         
+         ORDER BY A.INSERT_DATE DESC			
 	</select>	
 	
 	<!-- 교육생 상세조회-->

@@ -83,7 +83,7 @@ public class TeacherInfo {
 	private String lastEduDept;
 	private String lastEduYear;
 	private String lastEduEnd;
-	
+	private String searchval;
 	private List<String> userIdList;
 	
 	

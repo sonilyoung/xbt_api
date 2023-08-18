@@ -20,6 +20,7 @@ public class Notice implements Serializable {
 	private String updateId;
 	private String updateDate;
 	private String languageCode;
-	
+	private String useYn;
+	private List<Long> noticeIdList;
 	
 }
