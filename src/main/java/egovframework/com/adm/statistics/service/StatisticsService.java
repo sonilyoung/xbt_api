@@ -3,6 +3,8 @@ package egovframework.com.adm.statistics.service;
 import java.util.List;
 
 import egovframework.com.adm.statistics.vo.StatisticsGroup;
+import egovframework.com.adm.statistics.vo.StatisticsMainEdu;
+import egovframework.com.adm.statistics.vo.StatisticsMainYear;
 import egovframework.com.adm.statistics.vo.StatisticsPerformance;
 import egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail;
 
@@ -24,6 +26,10 @@ import egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail;
  *      </pre>
  */
 public interface StatisticsService {
+	
+	public List<StatisticsMainEdu> selectMainEduStatistics(StatisticsMainEdu params);
+	
+	public List<StatisticsMainYear> selectMainYearStatistics(StatisticsMainYear params);
 	
 	public List<StatisticsPerformance> selectStatisticsLearningList(StatisticsPerformance params);
 	

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.adm.statistics.dao.StatisticsDAO;
 import egovframework.com.adm.statistics.vo.StatisticsGroup;
+import egovframework.com.adm.statistics.vo.StatisticsMainEdu;
+import egovframework.com.adm.statistics.vo.StatisticsMainYear;
 import egovframework.com.adm.statistics.vo.StatisticsPerformance;
 import egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail;
 import lombok.extern.log4j.Log4j2;
@@ -39,6 +41,20 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private StatisticsDAO statisticsDAO;
 
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<StatisticsMainEdu> selectMainEduStatistics(StatisticsMainEdu params){
+		// TODO Auto-generated method stub
+		return (List<StatisticsMainEdu>) statisticsDAO.selectMainEduStatistics(params);
+	}    
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<StatisticsMainYear> selectMainYearStatistics(StatisticsMainYear params){
+		// TODO Auto-generated method stub
+		return (List<StatisticsMainYear>) statisticsDAO.selectMainYearStatistics(params);
+	}    
+    
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatisticsPerformance> selectStatisticsLearningList(StatisticsPerformance params) {

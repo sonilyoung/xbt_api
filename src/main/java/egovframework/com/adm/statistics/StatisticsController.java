@@ -1,6 +1,7 @@
 
 package egovframework.com.adm.statistics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import egovframework.com.adm.contents.vo.Language;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.statistics.service.StatisticsService;
 import egovframework.com.adm.statistics.vo.StatisticsGroup;
+import egovframework.com.adm.statistics.vo.StatisticsMainEdu;
+import egovframework.com.adm.statistics.vo.StatisticsMainYear;
 import egovframework.com.adm.statistics.vo.StatisticsPerformance;
 import egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail;
 import egovframework.com.global.http.BaseApiMessage;
@@ -50,6 +52,79 @@ public class StatisticsController {
     @Autowired
     private StatisticsService statisticsService;
 
+    
+    
+    /**
+     * 메인통계 교육상황
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectMainEduStatistics.do")
+    @ApiOperation(value = "메인통계 교육상황", notes = "메인통계 교육상황.")
+    public BaseResponse<List<StatisticsMainEdu>> selectMainEduStatistics(HttpServletRequest request, @RequestBody StatisticsMainEdu params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		
+		try {
+			params.setUserId(login.getUserId());
+			params.setAuthCd(login.getAuthCd()); 
+			//통계학습실적조회
+	        return new BaseResponse<List<StatisticsMainEdu>>(statisticsService.selectMainEduStatistics(params));
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }   
+    
+    
+    /**
+     * 메인통계 연도별 합격건
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectMainYearStatistics.do")
+    @ApiOperation(value = "메인통계 연도별 합격건", notes = "메인통계 연도별 합격건.")
+    public BaseResponse<StatisticsMainYear> selectMainYearStatistics(HttpServletRequest request, @RequestBody StatisticsMainYear params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		
+		try {
+			//통계학습실적조회
+			List<StatisticsMainYear> resultList = statisticsService.selectMainYearStatistics(params);
+			StatisticsMainYear result = new StatisticsMainYear();
+			List<String> categories = new ArrayList<String>();
+			List<Long> totCntList = new ArrayList<Long>();
+			List<Long> passCntList = new ArrayList<Long>();
+			List<Long> passPercentList = new ArrayList<Long>();
+			for(StatisticsMainYear r : resultList) {
+				categories.add(r.getProcYear());
+				totCntList.add(r.getTotCnt());
+				passCntList.add(r.getPassCnt());
+				passPercentList.add(r.getPassPercent());
+			}
+			
+			result.setCategories(categories);
+			result.setTotCntList(totCntList);
+			result.setPassCntList(passCntList);
+			result.setPassPercentList(passPercentList);
+			
+	        return new BaseResponse<StatisticsMainYear>(result);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }       
+    
+    
+    
     
   
     /**

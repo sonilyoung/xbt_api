@@ -3,6 +3,8 @@ package egovframework.com.adm.statistics.dao;
 import java.util.List;
 
 import egovframework.com.adm.statistics.vo.StatisticsGroup;
+import egovframework.com.adm.statistics.vo.StatisticsMainEdu;
+import egovframework.com.adm.statistics.vo.StatisticsMainYear;
 import egovframework.com.adm.statistics.vo.StatisticsPerformance;
 import egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
@@ -12,6 +14,14 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 public class StatisticsDAO extends EgovAbstractMapper{
 	
 	private static final String Namespace = "egovframework.com.adm.statistics.dao.StatisticsDAO";
+	
+	public List<?> selectMainEduStatistics(StatisticsMainEdu params) {
+		return (List<?>)selectList(Namespace + ".selectMainEduStatistics", params);
+	}
+	
+	public List<?> selectMainYearStatistics(StatisticsMainYear params) {
+		return (List<?>)selectList(Namespace + ".selectMainYearStatistics", params);
+	}
 	
 	public List<?> selectStatisticsLearningList(StatisticsPerformance params) {
 		return (List<?>)selectList(Namespace + ".selectStatisticsLearningList", params);

@@ -1031,6 +1031,7 @@
 				USER_PW,
 				A.AUTH_CD,
 				EDU_NAME,
+				EDU_CODE,
 				USER_NM_CH,
 				USER_NM_EN,
 				SEX,
@@ -1106,6 +1107,7 @@
 			USER_PW,
 			AUTH_CD,
 			EDU_NAME,
+			EDU_CODE,
 			USER_NM_CH,
 			USER_NM_EN,
 			SEX,
@@ -1173,6 +1175,7 @@
 			,#{userPw}
 			,'0001'
 			,#{eduName}
+			,#{eduCode}
 			,#{userNmCh}
 			,#{userNmEn}
 			,#{sex}
@@ -1245,6 +1248,7 @@
 			USER_NM = 		#{userNm},
 			USER_PW = 		#{userPw},
 			EDU_NAME = 		#{eduName},
+			EDU_CODE = 		#{eduCode},
 			USER_NM_CH = 		#{userNmCh},
 			USER_NM_EN = 		#{userNmEn},
 			SEX = 		#{sex},

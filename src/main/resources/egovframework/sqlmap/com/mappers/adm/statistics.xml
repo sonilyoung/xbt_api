@@ -1,6 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.com.adm.statistics.dao.StatisticsDAO">
+
+	<!-- 통계 - 학습실적조회 -->
+	<select id="selectMainEduStatistics" parameterType="egovframework.com.adm.statistics.vo.StatisticsMainEdu" resultType="egovframework.com.adm.statistics.vo.StatisticsMainEdu">
+		<![CDATA[
+		SELECT 
+			USER_NM,
+			PROC_NAME ,
+			PROC_YEAR ,
+			PROC_SEQ ,
+			LIMIT_PERSON_CNT ,
+			EDU_START_DATE ,
+			EDU_END_DATE ,
+			CASE WHEN 
+				NOW_DIFF < 0 THEN 100 
+			ELSE 
+				FLOOR(100/TOT_DATE * (TOT_DATE-NOW_DIFF))  
+			END AS EDU_PERCENT
+		FROM (
+			SELECT  
+				USER_NM,
+				T1.PROC_NAME ,
+				T1.PROC_YEAR ,
+				T1.PROC_SEQ ,
+				T1.LIMIT_PERSON_CNT ,
+				T1.EDU_START_DATE ,
+				T1.EDU_END_DATE ,
+				DATEDIFF(T1.EDU_END_DATE, T1.EDU_START_DATE)+1 AS TOT_DATE ,
+				DATEDIFF(T1.EDU_END_DATE , NOW())+1 AS NOW_DIFF
+			FROM
+			XBT_BASELINE T1 INNER JOIN XBT_TEACHER_USER T2
+			ON T1.TEACHER_ID = T2.USER_ID
+		]]>
+			<choose>
+				<when test='authCd != "0000"'>
+					AND T1.TEACHER_ID = #{userId}							
+				</when>
+			</choose>			 
+		)TOT
+	</select>
+
+	<!-- 통계 - 학습실적조회 -->
+	<select id="selectMainYearStatistics" parameterType="egovframework.com.adm.statistics.vo.StatisticsMainYear" resultType="egovframework.com.adm.statistics.vo.StatisticsMainYear">
+		SELECT 
+			PROC_YEAR,
+			TOT_CNT,
+			PASS_CNT,
+			FLOOR((100/TOT_CNT)*PASS_CNT)  AS PASS_PERCENT
+		FROM (       
+			SELECT 
+				T1.PROC_YEAR ,
+				SUM(T1.LIMIT_PERSON_CNT) AS TOT_CNT,
+				SUM((SELECT COUNT(*) FROM XBT_BASELINE_STUDENT_INFO T2 WHERE T2.PROC_YEAR = T1.PROC_YEAR AND PASS_YN = 'Y'))AS PASS_CNT
+			FROM XBT_BASELINE T1
+		)TOT	
+	</select>
+
 	
 	<!-- 통계 - 학습실적조회 -->
 	<select id="selectStatisticsLearningList" parameterType="egovframework.com.adm.statistics.vo.StatisticsPerformance" resultType="egovframework.com.adm.statistics.vo.StatisticsPerformance">

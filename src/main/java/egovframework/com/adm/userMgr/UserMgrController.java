@@ -1332,6 +1332,29 @@ public class UserMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.EXGIST_USERS, BaseResponseCode.EXGIST_USERS.getMessage());
 		}
 		
+		/*
+		 * 보안검색 초기 : 5일 / 40시간
+		             정기 : 5일 / 40시간
+		             인증평가 : 1일 / 4시간
+		
+		   항공경비 초기 : 4일 / 30시간
+		             정기 : 5일 / 40시간
+		             인증평가 : 1일 / 4시간
+		 * */			
+		params.setEduCode(params.getEduName());
+		
+		Common cp = new Common();
+		cp.setLanguageCode("kr");
+		cp.setGroupId("eduName");
+		List<Common> clist = commonService.selectCommonList(cp);
+		if(clist!=null) {
+			for(Common c : clist) {
+				if(params.getEduName().equals(c.getCodeValue())){
+					params.setEduName(c.getCodeName());
+				} 
+			}
+		}			
+		
 		try {
 			//강사등록
 			params.setInsertId(login.getUserId());

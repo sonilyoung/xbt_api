@@ -70,6 +70,7 @@
 			,INSERT_ID
 			,UPDATE_DATE
 			,UPDATE_ID
+			,TEACHER_ID
 		FROM XBT_BASELINE	
 		WHERE PROC_CD = #{procCd}
 	</select>		
@@ -94,7 +95,8 @@
 			EVALUATION_TOTAL_SCORE,
 			THEORY_TOTAL_SCORE,
 			INSERT_DATE,
-			INSERT_ID
+			INSERT_ID,
+			TEACHER_ID
 		)VALUES(
 			 DATE_FORMAT(NOW(),'%Y')
 			,#{procSeq}
@@ -114,6 +116,7 @@
 			,#{theoryTotalScore}
 			,now()
 			,#{insertId}
+			,#{teacherId}
 		)
 	</insert>	
 	
@@ -138,7 +141,8 @@
 			THEORY_TOTAL_SCORE = #{theoryTotalScore},
 			STUDY_LVL = #{studyLvl},
 			UPDATE_DATE = #{insertId},
-			UPDATE_ID = now()
+			UPDATE_ID = now(),
+			TEACHER_ID = #{teacherId}
 		WHERE PROC_CD = #{procCd}
 	</update>	
 	

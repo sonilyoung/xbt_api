@@ -38,6 +38,7 @@ public class Baseline {
 	private String updateId;
 	private String userId;
 	private String searchval;
+	private String teacherId;
 	
 	private List<Student> stuList;
 	private List<List<String>> menuList;
