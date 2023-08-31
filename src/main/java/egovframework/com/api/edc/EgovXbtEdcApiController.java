@@ -28,6 +28,8 @@ import egovframework.com.api.edc.vo.AiForceLearning;
 import egovframework.com.api.edc.vo.AiForceLearningResult;
 import egovframework.com.api.edc.vo.AiForceUserScore;
 import egovframework.com.api.edc.vo.UnitImages;
+import egovframework.com.api.login.service.ApiLoginService;
+import egovframework.com.api.login.vo.ApiLogin;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.http.BaseResponse;
@@ -36,9 +38,9 @@ import io.swagger.annotations.Api;
 @Controller
 @RequestMapping("/api")
 @Api(tags = "XTS external API")
-public class EgovXtsEdcApiController {
+public class EgovXbtEdcApiController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovXtsEdcApiController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovXbtEdcApiController.class);
 	
 	@Autowired
 	private EgovXtsEdcPseudoFilterService egovXtsEdcPseudoFilterService;
@@ -49,7 +51,36 @@ public class EgovXtsEdcApiController {
 	@Autowired
 	private EgovXtsEdcReinforcementService egovXtsEdcReinforcementService;
 	
-	private EgovXtsEdcApiService egovXtsEdcApiService;	
+	private EgovXtsEdcApiService egovXtsEdcApiService;
+	
+	@Autowired
+	private ApiLoginService apiLoginService;	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = {"/sudoImgUpload.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public BaseResponse<JsonNode> sudoImgUpload(@RequestBody final LinkedHashMap<String, Object> linkedHashMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+        ApiLogin login = apiLoginService.getLoginInfo(request);
+        
+		
+		LOGGER.info("imgUpload : " + login);
+		
+		
+		long testTime = System.currentTimeMillis();
+		JsonNode jsonNode = null;
+		HashMap<String, Object> hash = new HashMap<String, Object>();//리턴 객체 생성
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		LOGGER.info("End Current Time : " + (System.currentTimeMillis() - testTime ) + "ms");
+		return new BaseResponse<JsonNode>(jsonNode);
+	}		
+	
 	
 	@ResponseBody
 	@RequestMapping(value = {"/thngManagetApi.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
