@@ -42,26 +42,22 @@ public class ApiLoginServiceImpl implements ApiLoginService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiLoginServiceImpl.class);
     private static final String secretKey = "secretsecretsecretsecretsecret";
     private static final long validityInMilliseconds = 3600000 * 24;
-    private static final String CLIENT_ID = "kist_xbt_api1";
+    private static final String CLIENT_ID = "xbt_api";
 
-    public String createToken(HttpServletRequest request, ApiLogin loginRequest) {
+    public ApiLogin createToken(HttpServletRequest request) {
         ApiLogin login = new ApiLogin();
         String tokenStr = null;
-
-        LOGGER.debug("loginRequest.getLoginId()    ]" + loginRequest.getLoginId() + "[");
         login.setLoginId(CLIENT_ID);
-
         try {
             tokenStr = toString(login);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }       	
-
-
         LOGGER.debug("tokenStr                  ]" + tokenStr + "[");
-
-        return createToken(tokenStr);
+        String token = createToken(tokenStr);
+        login.setAccessToken(token);
+        return login;
     }
 
     public ApiLogin getLoginInfo(HttpServletRequest request) {
@@ -117,7 +113,7 @@ public class ApiLoginServiceImpl implements ApiLoginService {
     }
 
     // 유효한 토큰인지 확인
-    private boolean validateToken(String token) {
+    public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             if (claims.getBody().getExpiration().before(new Date())) {

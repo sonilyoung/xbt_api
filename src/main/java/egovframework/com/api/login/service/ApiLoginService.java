@@ -23,8 +23,9 @@ import egovframework.com.api.login.vo.ApiLogin;
  */
 public interface ApiLoginService {
 
-    public String createToken(HttpServletRequest request, ApiLogin loginRequest);
+    public ApiLogin createToken(HttpServletRequest request);
 
-    public ApiLogin getLoginInfo(HttpServletRequest request);    
-	
+    public ApiLogin getLoginInfo(HttpServletRequest request);
+    
+    public boolean validateToken(String token);
 }

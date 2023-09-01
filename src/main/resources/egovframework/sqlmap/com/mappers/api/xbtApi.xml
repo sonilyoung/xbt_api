@@ -139,4 +139,29 @@
 				,UPDATE_ID			= #{updateId}                        //수정자			
 	</update>	
 	
+	<!-- 단건 엠폴시스템 이미지 저장 및 업데이트-->
+	<insert id="insertApiLog" parameterType="egovframework.com.api.edc.vo.ApiLog" >
+		INSERT INTO XBT_API_LOG(
+			SEQ_ID,
+			API_URL,
+			API_COMMAND,
+			PROGRESS_PER,
+			REQUEST_CONTENTS,
+			RESPONSE_CODE,
+			RESPONSE_CONTENTS,
+			INSERT_ID,
+			INSERT_DATE
+		)VALUES(
+			#{seqId}
+			,#{apiUrl}
+			,#{apiCommand}
+			,#{progressPer}
+			,#{requestContents}
+			,#{responseCode}
+			,#{responseContents}
+			,#{insertId}
+			,now()
+		)		
+	</insert>	
+	
 </mapper>

@@ -4,7 +4,6 @@ package egovframework.com.stu.main;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,7 +30,6 @@ import egovframework.com.stu.main.vo.Schedule;
 import egovframework.com.stu.main.vo.Statistics;
 import egovframework.com.stu.main.vo.UserStInfo;
 import egovframework.com.stu.practice.service.PracticeService;
-import egovframework.com.stu.practice.vo.UnitGroup;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 

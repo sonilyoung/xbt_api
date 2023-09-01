@@ -11,5 +11,6 @@ public class ApiLogin implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String loginId;                     //식별아이디        
-    private String regDt;                      //등록일        
+    private String regDt;                      //등록일
+    private String accessToken;                      //token
 }

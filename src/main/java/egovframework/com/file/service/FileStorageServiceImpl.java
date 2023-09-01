@@ -57,7 +57,10 @@ public class FileStorageServiceImpl implements FileStorageService {
     public static final String FILE_UPLOAD_PATH = GlobalsProperties.getProperty("file.upload.path");
     
     /*파일업로드 저장경로*/
-    public static final String FILE_DB_UPLOAD_PATH = GlobalsProperties.getProperty("file.db.upload.path");    
+    public static final String FILE_DB_UPLOAD_PATH = GlobalsProperties.getProperty("file.db.upload.path");
+    
+    /*kist xray 저장경로*/
+    public static final String KIST_XRAY_ROOT_DIR = GlobalsProperties.getProperty("kist.xray.img.path");    
     
     @PostConstruct
     public void initialize() {
@@ -374,6 +377,52 @@ public class FileStorageServiceImpl implements FileStorageService {
         return attachFile;
 	}
 
+	@Override
+	public AttachFile createKistXrayImageFiles(String targetName, String fileNameWithoutExtension, XrayImgContents params, MultipartFile file) throws Exception {
+		// TODO Auto-generated method stub
+        AttachFile attachFile = null;
+        File newFile = null;
+        String originalFileName = file.getOriginalFilename();
+        //String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
+        //String fileExtension = StringUtils.getFilenameExtension(originalFileName);
+        String fileExtension = "jpg";
+        
+        String filePath = KIST_XRAY_ROOT_DIR;
+        
+        File fileDir = new File(filePath);
+        // root directory 없으면 생성
+    	if (!fileDir.exists()) {
+    		fileDir.mkdirs(); //폴더 생성합니다.
+    	}        
+        
+    	String targetFilePath = filePath+File.separator+targetName;
+    	File imgDir = new File(filePath+File.separator+targetName);
+    	if (!imgDir.exists()) {
+    		imgDir.mkdirs(); //폴더 생성합니다.
+    	}        	
+    	
+        // 실제 파일명_현재시간 으로 rename
+        StringBuilder sb = new StringBuilder();
+        //X00353-204.jpg
+        
+        sb.append(targetName).append("-").append(fileNameWithoutExtension).append(".").append(fileExtension);
+        String realFileName = sb.toString();
+        try {
+            newFile = new File(targetFilePath, realFileName);
+            file.transferTo(newFile);
+            attachFile = new AttachFile();
+            attachFile.setFileExt(fileExtension);
+            attachFile.setFilePath(filePath);
+            attachFile.setOriginalFileName(originalFileName);
+            attachFile.setSaveFileName(realFileName);
+            attachFile.setFileSize((int) file.getSize());
+        } catch (IllegalStateException e) {
+            throw e;
+        } catch (IOException e) {
+            throw e;
+        }
+        return attachFile;
+	}	
 
 
 }
