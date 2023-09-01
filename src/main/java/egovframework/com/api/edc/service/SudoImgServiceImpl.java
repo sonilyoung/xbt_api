@@ -147,9 +147,13 @@ public class SudoImgServiceImpl implements SudoImgService {
 
 		// 요청 실행
 		Response response = client.newCall(request).execute();
-		LOGGER.info("=========sudoImg end=========");
-		LOGGER.info("response:" + response);
 		
+        // 수신한 JSON 데이터 읽기
+        String jsonData = response.body().string();
+		LOGGER.info("=========sudoImg end=========");
+		System.out.println("response: " + response);
+		System.out.println("Received JSON data: " + jsonData);		
+		LOGGER.info("=========sudoImg end=========");
 		return aipLog;
 	}
 
