@@ -74,7 +74,7 @@ public class SudoImgServiceImpl implements SudoImgService {
 		result1.setApiUrl(inetAddress.toString());
 		result1.setApiCommand("transImages");
 		result1.setRequestContents("슈도컬러 정면 이미지업로드 종료");
-		result1.setProgressPer(5);
+		result1.setProgressPer(10);
 		insertApiLog(apiLog);		
 		
 		
@@ -129,7 +129,7 @@ public class SudoImgServiceImpl implements SudoImgService {
 
 		// JSON 데이터 생성
 		JSONObject json = new JSONObject();
-		XrayImgContents params = new XrayImgContents();
+		json.put("bagScanId", oj.getBagScanId());
 		json.put("imgFront", imageData);
 		//json.put("imageData", encodedImageData);
 
