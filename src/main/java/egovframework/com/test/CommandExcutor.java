@@ -10,7 +10,7 @@ public class CommandExcutor {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommandExcutor.class);
 	
-    public void excutor() {
+    public String excutor() {
             // 실행할 쉘 명령어
         	// ProcessBuilder에 넣어줄 커맨드 준비
         	
@@ -44,13 +44,13 @@ public class CommandExcutor {
 
             // 프로세스 종료
             process.waitFor();
-            //return output.toString();
             LOGGER.info("=============CommandExcutor5============="+output.toString());
             process.destroy();
+            return output.toString();
             
         } catch (Exception e) {
             e.printStackTrace();
-            //return "Error occurred while executing the shell command";
+            return "Error occurred while executing the shell command";
         }
 
   

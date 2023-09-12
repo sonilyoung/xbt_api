@@ -41,6 +41,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import egovframework.com.adm.contents.service.ContentsService;
 import egovframework.com.adm.contents.vo.XbtSeq;
 import egovframework.com.adm.login.vo.Login;
@@ -1066,12 +1069,15 @@ public class TestController {
 	 * */
 	@RequestMapping(value = "/commandExcute.do", method = RequestMethod.GET)
     @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
-	public void commandExcute(
+	public BaseResponse<JsonNode> commandExcute(
 			HttpServletRequest request
 			, HttpServletResponse response) throws Exception {
 		
-		
 		CommandExcutor ce = new CommandExcutor();
-		ce.excutor();
+		String result = ce.excutor();
+		
+		ObjectMapper mapper = new ObjectMapper();		
+		JsonNode json = mapper.convertValue(result, JsonNode.class);
+		return new BaseResponse<JsonNode>(json);
 	}	
 }
