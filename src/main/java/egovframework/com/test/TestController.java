@@ -1059,4 +1059,19 @@ public class TestController {
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     } */	
+	
+	
+	/*
+	 * 의사색체테스트
+	 * */
+	@RequestMapping(value = "/commandExcute.do", method = RequestMethod.GET)
+    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public void commandExcute(
+			HttpServletRequest request
+			, HttpServletResponse response) throws Exception {
+		
+		
+		CommandExcutor ce = new CommandExcutor();
+		ce.excutor();
+	}	
 }
