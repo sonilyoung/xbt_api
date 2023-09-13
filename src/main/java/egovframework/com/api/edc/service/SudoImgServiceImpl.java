@@ -131,6 +131,8 @@ public class SudoImgServiceImpl implements SudoImgService {
 		JSONObject json = new JSONObject();
 		json.put("bagScanId", oj.getBagScanId());
 		json.put("imgFront", imageData);
+		json.put("fileName", af.getOriginalFileName());
+		
 		//json.put("imageData", encodedImageData);
 
 		// JSON 데이터를 문자열로 변환
