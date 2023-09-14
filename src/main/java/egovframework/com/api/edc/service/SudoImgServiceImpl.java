@@ -3,30 +3,31 @@ package egovframework.com.api.edc.service;
 import java.io.File;
 import java.net.InetAddress;
 import java.nio.file.Files;
-import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.api.edc.dao.EgovXtsEdcApiDAO;
 import egovframework.com.api.edc.vo.ApiLog;
-import egovframework.com.api.login.service.ApiLoginService;
 import egovframework.com.api.login.vo.ApiLogin;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.http.BaseResponse;
-import egovframework.com.global.http.BaseResponseCode;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -52,31 +53,37 @@ public class SudoImgServiceImpl implements SudoImgService {
     public static final String KIST_XRAY_ROOT_DIR = GlobalsProperties.getProperty("kist.xray.img.path");	
 	
 	@Override
-	public BaseResponse<Integer> sudoImgExcute(XrayImgContents oj, ApiLogin al, MultipartFile frontImg, MultipartFile sideImg) throws Exception {
+	public JsonNode sudoImgExcute(XrayImgContents oj, ApiLogin al, MultipartFile frontImg, MultipartFile sideImg) throws Exception {
 		
-		AttachFile af = fileStorageService.createKistXrayImageFiles(oj.getBagScanId(), "101", oj, frontImg);
+		AttachFile af1 = fileStorageService.createKistXrayImageFiles(oj.getBagScanId(), "101", oj, frontImg);
+		AttachFile af2 = fileStorageService.createKistXrayImageFiles(oj.getBagScanId(), "201", oj, sideImg);
 		
 		//1.정면이미지전송
 		InetAddress inetAddress = InetAddress.getLocalHost();
-		ApiLog apiLog = new ApiLog();
-		apiLog.setSeqId(oj.getBagScanId());
-		apiLog.setInsertId(al.getLoginId());		
-		apiLog.setApiUrl(inetAddress.toString());
-		apiLog.setApiCommand("transImages");
-		apiLog.setRequestContents("슈도컬러 정면 이미지업로드 시작");
-		apiLog.setProgressPer(5);
-		insertApiLog(apiLog);
+		ApiLog apiLog1 = new ApiLog();
+		apiLog1.setSeqId(oj.getBagScanId());
+		apiLog1.setInsertId(al.getLoginId());		
+		apiLog1.setApiUrl(inetAddress.toString());
+		apiLog1.setApiCommand("sudoImgExcute");
+		apiLog1.setRequestContents("슈도컬러 정면 측면 이미지업로드 시작");
+		apiLog1.setProgressPer(15);
+		insertApiLog(apiLog1);
 
-		ApiLog result1 = transImages(oj, al, af);
+		String resultData = transImages(oj, al, af1, af2);
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> result = new HashMap<String, Object>();
+		JsonNode json = mapper.readTree(resultData);
+		result.put("result", json);
 		
-		result1.setSeqId(oj.getBagScanId());
-		result1.setInsertId(al.getLoginId());		
-		result1.setApiUrl(inetAddress.toString());
-		result1.setApiCommand("transImages");
-		result1.setRequestContents("슈도컬러 정면 이미지업로드 종료");
-		result1.setProgressPer(10);
-		insertApiLog(apiLog);		
-		
+		ApiLog apiLog2 = new ApiLog();
+		apiLog2.setSeqId(oj.getBagScanId());
+		apiLog2.setInsertId(al.getLoginId());		
+		apiLog2.setApiUrl(inetAddress.toString());
+		apiLog2.setApiCommand("sudoImgExcute");
+		apiLog2.setResponseCode(json.get("RET_CODE").asText());
+		apiLog2.setResponseContents(json.get("RET_DESC").asText());
+		apiLog2.setProgressPer(30);
+		insertApiLog(apiLog2);		
 		
 		
 		//fileStorageService.createXrayImageFiles(oj.getBagScanId(), "101", oj, frontImg);
@@ -106,11 +113,11 @@ public class SudoImgServiceImpl implements SudoImgService {
 		insertApiLog(apiLog);
 		*/
 		
-		return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+		return json;
 	}
 
 	@Override
-	public ApiLog transImages(XrayImgContents oj, ApiLogin al, AttachFile af) throws Exception {
+	public String transImages(XrayImgContents oj, ApiLogin al, AttachFile af1, AttachFile af2) throws Exception {
 		// TODO Auto-generated method stub
 		ApiLog aipLog = new ApiLog();
 		String result = "";
@@ -123,16 +130,22 @@ public class SudoImgServiceImpl implements SudoImgService {
 		OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.HOURS).build();
 		
 		// 이미지 파일을 읽고, Base64로 인코딩하여 JSON 데이터에 포함시킴
-		File imageFile = new File(KIST_XRAY_ROOT_DIR+File.separator+oj.getBagScanId()+File.separator+af.getSaveFileName());
-		byte[] imageData = Files.readAllBytes(imageFile.toPath());
+		File imageFile1 = new File(KIST_XRAY_ROOT_DIR+File.separator+oj.getBagScanId()+File.separator+af1.getSaveFileName());
+		byte[] imageData1 = Files.readAllBytes(imageFile1.toPath());
+		
+		File imageFile2 = new File(KIST_XRAY_ROOT_DIR+File.separator+oj.getBagScanId()+File.separator+af2.getSaveFileName());
+		byte[] imageData2 = Files.readAllBytes(imageFile2.toPath());		
 		//String encodedImageData = Base64.getEncoder().encodeToString(imageData);
 
 		// JSON 데이터 생성
 		JSONObject json = new JSONObject();
 		json.put("bagScanId", oj.getBagScanId());
-		json.put("imgFront", imageData);
-		json.put("fileName", af.getOriginalFileName());
+		json.put("imgFront", imageData1);
+		json.put("imgFrontName", af1.getOriginalFileName());
 		
+		json.put("imgSide", imageData2);
+		
+		json.put("imgSideName", af2.getOriginalFileName());		
 		//json.put("imageData", encodedImageData);
 
 		// JSON 데이터를 문자열로 변환
@@ -156,7 +169,8 @@ public class SudoImgServiceImpl implements SudoImgService {
 		System.out.println("response: " + response);
 		System.out.println("Received JSON data: " + jsonData);		
 		LOGGER.info("=========sudoImg end=========");
-		return aipLog;
+		
+		return jsonData;
 	}
 
 
@@ -177,5 +191,11 @@ public class SudoImgServiceImpl implements SudoImgService {
 	public int insertApiLog(ApiLog oj) throws Exception {
 		// TODO Auto-generated method stub
 		return egovXtsEdcApiDAO.insertApiLog(oj);
+	}
+
+	@Override
+	public ApiLog selectProgressPer(ApiLog params) throws Exception {
+		// TODO Auto-generated method stub
+		return egovXtsEdcApiDAO.selectProgressPer(params);
 	}
 }

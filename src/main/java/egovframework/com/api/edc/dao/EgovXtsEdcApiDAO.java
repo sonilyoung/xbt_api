@@ -34,5 +34,9 @@ public class EgovXtsEdcApiDAO extends EgovAbstractMapper{
 	
 	public int insertApiLog(ApiLog params) {
 		return insert(Namespace + ".insertApiLog", params);
+	}
+	
+	public ApiLog selectProgressPer(ApiLog params) {
+		return selectOne(Namespace + ".selectProgressPer", params);
 	}		
 }

@@ -164,4 +164,10 @@
 		)		
 	</insert>	
 	
+	<!-- 학습문제조회 -->
+	<select id="selectProgressPer" parameterType="egovframework.com.api.edc.vo.ApiLog" resultType="egovframework.com.api.edc.vo.ApiLog">
+		SELECT SEQ_ID, MAX(PROGRESS_PER)AS PROGRESS_PER FROM XBT_API_LOG
+		WHERE SEQ_ID = #{seqId} 
+	</select>	
+	
 </mapper>
