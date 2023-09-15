@@ -52,6 +52,7 @@ import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.stu.main.vo.Schedule;
 import egovframework.com.stu.main.vo.UserStInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Controller
 @RequestMapping("/api")
@@ -84,10 +85,11 @@ public class EgovXbtEdcApiController {
     @Autowired
     private LoginService loginService;	
 
-	//kist 진행률가져오기
+    
+	//kaist 진행률가져오기
 	@ResponseBody
-	@PostMapping(value="/sudoImgExcute.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-	public BaseResponse<ApiLog> sudoImgExcute(
+	@PostMapping(value="/selectProgressPer.do")
+	public BaseResponse<ApiLog> selectProgressPer(
 			HttpServletRequest request, HttpServletResponse response
 			,@RequestBody ApiLog params) throws Exception {
 		
@@ -104,7 +106,7 @@ public class EgovXbtEdcApiController {
 		return new BaseResponse<ApiLog>(ai);		
 	}		
 	
-	//kist 슈도이미지업로드실행 
+	//kaist 슈도이미지업로드실행 
 	@ResponseBody
 	@PostMapping(value="/sudoImgExcute.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
@@ -126,9 +128,9 @@ public class EgovXbtEdcApiController {
 		return new BaseResponse<JsonNode>(resultData);		
 	}		
 	
-	//kist 슈도이미지 생성수행실행
+	//kaist 슈도이미지 생성수행실행
 	
-	//kist 슈도이미지 가져오기 
+	//kaist 슈도이미지 가져오기 
 	
 	
 	

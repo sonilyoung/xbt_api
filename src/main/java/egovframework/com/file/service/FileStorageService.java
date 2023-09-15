@@ -26,7 +26,7 @@ public interface FileStorageService {
 	
 	AttachFile createXrayImageFiles(String targetName, String fileNameWithoutExtension, XrayImgContents params,MultipartFile file) throws Exception;
 	
-	AttachFile createKistXrayImageFiles(String targetName, String fileNameWithoutExtension, XrayImgContents params, MultipartFile file) throws Exception;
+	AttachFile createKaistXrayImageFiles(String targetName, String fileNameWithoutExtension, XrayImgContents params, MultipartFile file) throws Exception;
 		
     File getFile(AttachFile AttachFile);
 

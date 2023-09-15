@@ -39,7 +39,7 @@ import okhttp3.Response;
 public class SudoImgServiceImpl implements SudoImgService {
 	
     /*카이스트api*/
-    public static final String url = GlobalsProperties.getProperty("kist.target.api");
+    public static final String url = GlobalsProperties.getProperty("kaist.target.api");
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SudoImgServiceImpl.class);
 
@@ -49,14 +49,14 @@ public class SudoImgServiceImpl implements SudoImgService {
 	@Autowired
 	private FileStorageService fileStorageService;    
 	
-    /*kist xray 저장경로*/
-    public static final String KIST_XRAY_ROOT_DIR = GlobalsProperties.getProperty("kist.xray.img.path");	
+    /*kaist xray 저장경로*/
+    public static final String KAIST_XRAY_ROOT_DIR = GlobalsProperties.getProperty("kaist.xray.img.path");	
 	
 	@Override
 	public JsonNode sudoImgExcute(XrayImgContents oj, ApiLogin al, MultipartFile frontImg, MultipartFile sideImg) throws Exception {
 		
-		AttachFile af1 = fileStorageService.createKistXrayImageFiles(oj.getBagScanId(), "101", oj, frontImg);
-		AttachFile af2 = fileStorageService.createKistXrayImageFiles(oj.getBagScanId(), "201", oj, sideImg);
+		AttachFile af1 = fileStorageService.createKaistXrayImageFiles(oj.getBagScanId(), "101", oj, frontImg);
+		AttachFile af2 = fileStorageService.createKaistXrayImageFiles(oj.getBagScanId(), "201", oj, sideImg);
 		
 		//1.정면이미지전송
 		InetAddress inetAddress = InetAddress.getLocalHost();
@@ -130,10 +130,10 @@ public class SudoImgServiceImpl implements SudoImgService {
 		OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.HOURS).build();
 		
 		// 이미지 파일을 읽고, Base64로 인코딩하여 JSON 데이터에 포함시킴
-		File imageFile1 = new File(KIST_XRAY_ROOT_DIR+File.separator+oj.getBagScanId()+File.separator+af1.getSaveFileName());
+		File imageFile1 = new File(KAIST_XRAY_ROOT_DIR+File.separator+oj.getBagScanId()+File.separator+af1.getSaveFileName());
 		byte[] imageData1 = Files.readAllBytes(imageFile1.toPath());
 		
-		File imageFile2 = new File(KIST_XRAY_ROOT_DIR+File.separator+oj.getBagScanId()+File.separator+af2.getSaveFileName());
+		File imageFile2 = new File(KAIST_XRAY_ROOT_DIR+File.separator+oj.getBagScanId()+File.separator+af2.getSaveFileName());
 		byte[] imageData2 = Files.readAllBytes(imageFile2.toPath());		
 		//String encodedImageData = Base64.getEncoder().encodeToString(imageData);
 

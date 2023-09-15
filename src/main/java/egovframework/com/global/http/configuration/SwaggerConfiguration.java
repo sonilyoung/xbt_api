@@ -30,7 +30,7 @@ public class SwaggerConfiguration {
 	@Bean
 	public Docket docket() {
 		ApiInfoBuilder apiInfo = new ApiInfoBuilder();
-		apiInfo.title("RISK-FREE API server documentation");
+		apiInfo.title("XBT API server documentation");
 		apiInfo.description("API server documentation.");
 
 	     Docket docket = new Docket(DocumentationType.SWAGGER_2);
