@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,6 +25,7 @@ import egovframework.com.global.session.SessionUserInfoHolder;
  * @author : YeongJun Lee
  * @date : 2022.06.08
  */
+@Service
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
@@ -32,6 +34,12 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler) throws Exception {
+    	
+		String url = request.getRequestURI();
+		if (url.contains("swagger") || url.contains("api-docs") || url.contains("webjars")) {
+			return true;
+		}    	
+    	
         // RequestMapping 에 해당하지 않는 요청은 통과
         if (!(handler instanceof HandlerMethod)) {
             return true;

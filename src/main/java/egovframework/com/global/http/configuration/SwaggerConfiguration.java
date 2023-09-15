@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -33,7 +35,7 @@ public class SwaggerConfiguration {
 		apiInfo.title("XBT API server documentation");
 		apiInfo.description("API server documentation.");
 
-	     Docket docket = new Docket(DocumentationType.SWAGGER_2);
+	     	Docket docket = new Docket(DocumentationType.SWAGGER_2).pathMapping("/");
 	        docket.apiInfo(apiInfo.build()).securityContexts(Arrays.asList(securityContext()))
 	                .securitySchemes(Arrays.asList(apiKey()));
 	        ApiSelectorBuilder apis = docket.select()
@@ -58,4 +60,5 @@ public class SwaggerConfiguration {
 	    private ApiKey apiKey() {
 	        return new ApiKey("Authorization", "Authorization", "header");
 	    }
+	    
 }

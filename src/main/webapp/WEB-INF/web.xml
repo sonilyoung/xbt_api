@@ -3,7 +3,7 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
-	<display-name>egov.sample</display-name>
+	<display-name>egov.framework</display-name>
     
     
 	<filter>
@@ -45,6 +45,17 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>*</url-pattern>
 	</filter-mapping>
+    
+    
+	<filter>
+        <filter-name>LOGGER</filter-name>
+        <filter-class>egovframework.com.global.logger.MethodLogger</filter-class>
+    </filter>    
+    
+    <filter-mapping>
+        <filter-name>LOGGER</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>	    
     
 	<filter>
 		<filter-name>HTMLTagFilter</filter-name>
@@ -102,14 +113,25 @@
 		<servlet-name>action</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
-    
-	<welcome-file-list>
+	<servlet>
+		<servlet-name>swagger</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/egovframework/springmvc/swagger-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>swagger</servlet-name>
+		<url-pattern>/swagger-ui.html</url-pattern>
+		<url-pattern>/webjars/**</url-pattern>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>   
+	<!--<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>
+	</welcome-file-list>-->
     
-	<login-config>
-		<auth-method>BASIC</auth-method>
-	</login-config>
     
 	<!-- <error-page>
 		<exception-type>java.lang.Throwable</exception-type>
