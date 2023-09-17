@@ -2,11 +2,12 @@ package egovframework.com.global.http.configuration;
 
 import java.util.Arrays;
 import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
+import io.swagger.annotations.Api;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -39,7 +40,8 @@ public class SwaggerConfiguration {
 	        docket.apiInfo(apiInfo.build()).securityContexts(Arrays.asList(securityContext()))
 	                .securitySchemes(Arrays.asList(apiKey()));
 	        ApiSelectorBuilder apis = docket.select()
-	                .apis(RequestHandlerSelectors.basePackage("egovframework.com"));
+	        .apis(RequestHandlerSelectors.basePackage("egovframework.com"));
+	        //.apis(RequestHandlerSelectors.withMethodAnnotation(Api.class));
 	        apis.paths(PathSelectors.ant("/**"));
 
 	        return apis.build();

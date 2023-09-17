@@ -30,6 +30,7 @@
 			<mvc:exclude-mapping path="/swagger-resources/**"/>
 			<mvc:exclude-mapping path="/swagger-ui.html"/>
 			<mvc:exclude-mapping path="/webjars/**"/>
+			<mvc:exclude-mapping path="/resources/**"/>
 			<beans:bean id="authInterceptor" class="egovframework.com.global.interceptor.AuthInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>-->
