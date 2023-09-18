@@ -55,8 +55,8 @@ public class SudoImgServiceImpl implements SudoImgService {
 	@Override
 	public JsonNode sudoImgExcute(XrayImgContents oj, ApiLogin al, MultipartFile frontImg, MultipartFile sideImg) throws Exception {
 		
-		AttachFile af1 = fileStorageService.createKaistXrayImageFiles(oj.getBagScanId(), "101", oj, frontImg);
-		AttachFile af2 = fileStorageService.createKaistXrayImageFiles(oj.getBagScanId(), "201", oj, sideImg);
+		AttachFile af1 = fileStorageService.createKaistXrayImageFiles(oj.getBagScanId(), "F", oj, frontImg);
+		AttachFile af2 = fileStorageService.createKaistXrayImageFiles(oj.getBagScanId(), "S", oj, sideImg);
 		
 		//1.정면이미지전송
 		InetAddress inetAddress = InetAddress.getLocalHost();
@@ -182,7 +182,7 @@ public class SudoImgServiceImpl implements SudoImgService {
 	}
 
 	@Override
-	public ApiLog getImages(XrayImgContents oj, ApiLogin al) throws Exception {
+	public ApiLog selectSudoImg(XrayImgContents oj, ApiLogin al) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

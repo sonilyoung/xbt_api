@@ -43,16 +43,14 @@ import egovframework.com.api.edc.vo.UnitImages;
 import egovframework.com.api.login.service.ApiLoginService;
 import egovframework.com.api.login.vo.ApiLogin;
 import egovframework.com.common.vo.SeqGroupCode;
+import egovframework.com.file.service.FileStorageService;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
-import egovframework.com.stu.main.vo.Schedule;
-import egovframework.com.stu.main.vo.UserStInfo;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 @Controller
 @RequestMapping("/api")
@@ -84,6 +82,9 @@ public class EgovXbtEdcApiController {
 	
     @Autowired
     private LoginService loginService;	
+    
+    @Autowired
+    private FileStorageService fileStorageService;    
 
     
 	//kaist 진행률가져오기
@@ -131,7 +132,50 @@ public class EgovXbtEdcApiController {
 	//kaist 슈도이미지 생성수행실행
 	
 	//kaist 슈도이미지 가져오기 
-	
+    /**
+     * 엘폴 api
+     * 
+     * @param param
+     * @return Company
+     */	
+	@ResponseBody
+	@RequestMapping(value = {"/selectSudoImg.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public  BaseResponse<Integer> selectSudoImg(HttpServletRequest request
+    		,@RequestBody XrayImgContents params) throws Exception{		
+	       ApiLogin login = apiLoginService.getLoginInfo(request);
+	        LOGGER.info("login : " + login);
+			if (login == null) {
+				throw new BaseException(BaseResponseCode.AUTH_FAIL);
+			}
+			
+			LOGGER.info("params : " + params);
+			
+			//JsonNode json = null;
+			//ObjectMapper mapper = new ObjectMapper();
+			
+			try {
+				//LOGGER.info("=========정면이미지 가져오기");
+				//if(!StringUtils.isEmpty(params.getImgFront())){
+					//fileStorageService.ByteToFile(params.getImgFront(), params.getImgFrontName());
+				//}
+				
+				//LOGGER.info("=========측면이미지 가져오기");
+				//if(!StringUtils.isEmpty(params.getImgSide())){
+					//fileStorageService.ByteToFile(params.getImgSide(), params.getImgSideName());
+				//}		
+				
+				return new BaseResponse<Integer>(BaseResponseCode.UPLOAD_SUCCESS, BaseResponseCode.UPLOAD_SUCCESS.getMessage());
+				
+				//json = mapper.convertValue(result, JsonNode.class);
+				//return new BaseResponse<JsonNode>(json);			
+			}catch(Exception e) {
+				e.printStackTrace();
+				return new BaseResponse<Integer>(BaseResponseCode.UPLOAD_FAIL, BaseResponseCode.UPLOAD_FAIL.getMessage());
+				//json = mapper.convertValue(result, JsonNode.class);
+				//return new BaseResponse<JsonNode>(json);			
+			}
+	}
 	
 	
 	

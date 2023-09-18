@@ -18,7 +18,7 @@ public interface SudoImgService {
 	
 	public ApiLog sudoImgCmd(XrayImgContents oj, ApiLogin al) throws Exception;
 	
-	public ApiLog getImages(XrayImgContents oj, ApiLogin al) throws Exception;
+	public ApiLog selectSudoImg(XrayImgContents oj, ApiLogin al) throws Exception;
 	
 	//public String sudoImg(XrayImgContents oj, ApiLogin al) throws Exception;
 	

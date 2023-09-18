@@ -12,7 +12,9 @@ public enum BaseResponseCode {
 	), SAVE_SUCCESS(
 			"0100", "저장완료"
 	), UPLOAD_SUCCESS(
-			"0100", "업로드완료"			
+			"0100", "업로드완료"
+	), UPLOAD_FAIL(
+			"UPLOAD_FAIL", "업로드실패"		
 	), UPDATE_SUCCESS(
 			"0200", "수정완료"
 	), DELETE_SUCCESS(
