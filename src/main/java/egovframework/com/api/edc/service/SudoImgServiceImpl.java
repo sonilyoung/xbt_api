@@ -24,6 +24,7 @@ import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.api.edc.dao.EgovXtsEdcApiDAO;
 import egovframework.com.api.edc.vo.ApiLog;
 import egovframework.com.api.login.vo.ApiLogin;
+import egovframework.com.common.vo.LearningImg;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.common.GlobalsProperties;
@@ -151,7 +152,7 @@ public class SudoImgServiceImpl implements SudoImgService {
 		// JSON 데이터를 문자열로 변환
 		String jsonString = json.toString();
 
-		String tgtUrl = url+File.separator+"api"+File.separator+"transImages.do";
+		String tgtUrl = url+File.separator+"api"+File.separator+"transKaistImages.do";
 		
 		// 요청 생성
 		Request request = new Request.Builder()
@@ -174,7 +175,6 @@ public class SudoImgServiceImpl implements SudoImgService {
 	}
 
 
-
 	@Override
 	public ApiLog sudoImgCmd(XrayImgContents oj, ApiLogin al) throws Exception {
 		// TODO Auto-generated method stub
@@ -182,9 +182,71 @@ public class SudoImgServiceImpl implements SudoImgService {
 	}
 
 	@Override
-	public ApiLog selectSudoImg(XrayImgContents oj, ApiLogin al) throws Exception {
+	public JsonNode selectSudoImg(LearningImg oj, ApiLogin al) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		
+		//1.정면이미지전송
+		InetAddress inetAddress = InetAddress.getLocalHost();
+		ApiLog apiLog1 = new ApiLog();
+		apiLog1.setSeqId(oj.getBagScanId());
+		apiLog1.setInsertId(al.getLoginId());		
+		apiLog1.setApiUrl(inetAddress.toString());
+		apiLog1.setApiCommand("selectSudoImg");
+		apiLog1.setRequestContents("슈도컬러 이미지 가져오기 시작");
+		//apiLog1.setProgressPer(15);
+		insertApiLog(apiLog1);
+
+		LOGGER.info("=========selectSudoImages start=========");
+		
+		//long testTime = System.currentTimeMillis();
+		
+		OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.HOURS).build();
+		
+		// JSON 데이터 생성
+		JSONObject jsonData = new JSONObject();
+		jsonData.put("bagScanId", oj.getBagScanId());
+		//json.put("imageData", encodedImageData);
+
+		// JSON 데이터를 문자열로 변환
+		String jsonString = jsonData.toString();
+
+		String tgtUrl = url+File.separator+"api"+File.separator+"selectKaistSudoImg.do";
+		
+		// 요청 생성
+		Request request = new Request.Builder()
+				.header("Authorization", "Bearer " + al.getAccessToken()) // 토큰을 헤더에 추가
+		        .url(tgtUrl)
+		        .post(RequestBody.create(jsonString, MediaType.parse("application/json")))
+		        .build();
+
+		// 요청 실행
+		Response response = client.newCall(request).execute();
+		
+        // 수신한 JSON 데이터 읽기
+        String resultData = response.body().string();
+		LOGGER.info("=========selectSudoImages end=========");
+		System.out.println("response: " + response);
+		System.out.println("Received JSON data: " + jsonData);		
+		LOGGER.info("=========selectSudoImages end=========");
+		
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> result = new HashMap<String, Object>();
+		JsonNode json = mapper.readTree(resultData);
+		result.put("result", json);
+		
+		ApiLog apiLog2 = new ApiLog();
+		apiLog2.setSeqId(oj.getBagScanId());
+		apiLog2.setInsertId(al.getLoginId());		
+		apiLog2.setApiUrl(inetAddress.toString());
+		apiLog2.setRequestContents("슈도컬러 이미지 가져오기 완료");
+		apiLog2.setApiCommand("selectSudoImg");
+		apiLog2.setResponseCode(json.get("RET_CODE").asText());
+		apiLog2.setResponseContents(json.get("RET_DESC").asText());
+		apiLog2.setProgressPer(30);
+		insertApiLog(apiLog2);	
+		
+		return json;
 	}
 
 	@Override

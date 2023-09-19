@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.com.adm.contents.service.ContentsService;
+import egovframework.com.adm.contents.vo.UnitInformation;
 import egovframework.com.adm.contents.vo.XbtSeq;
 import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.login.service.LoginService;
@@ -42,6 +43,7 @@ import egovframework.com.api.edc.vo.ApiLog;
 import egovframework.com.api.edc.vo.UnitImages;
 import egovframework.com.api.login.service.ApiLoginService;
 import egovframework.com.api.login.vo.ApiLogin;
+import egovframework.com.common.vo.LearningImg;
 import egovframework.com.common.vo.SeqGroupCode;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.global.annotation.SkipAuth;
@@ -141,18 +143,17 @@ public class EgovXbtEdcApiController {
 	@ResponseBody
 	@RequestMapping(value = {"/selectSudoImg.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
-    public  BaseResponse<Integer> selectSudoImg(HttpServletRequest request
-    		,@RequestBody XrayImgContents params) throws Exception{		
-	       ApiLogin login = apiLoginService.getLoginInfo(request);
-	        LOGGER.info("login : " + login);
-			if (login == null) {
-				throw new BaseException(BaseResponseCode.AUTH_FAIL);
-			}
-			
+    public  BaseResponse<JsonNode> selectSudoImg(HttpServletRequest request
+    		,@RequestBody LearningImg params) throws Exception{		
+			ApiLogin login = apiLoginService.createToken(request);
 			LOGGER.info("params : " + params);
 			
 			//JsonNode json = null;
 			//ObjectMapper mapper = new ObjectMapper();
+			
+			if(StringUtils.isEmpty(params.getBagScanId())){
+				return new BaseResponse<JsonNode>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getMessage());
+			}				
 			
 			try {
 				//LOGGER.info("=========정면이미지 가져오기");
@@ -165,13 +166,15 @@ public class EgovXbtEdcApiController {
 					//fileStorageService.ByteToFile(params.getImgSide(), params.getImgSideName());
 				//}		
 				
-				return new BaseResponse<Integer>(BaseResponseCode.UPLOAD_SUCCESS, BaseResponseCode.UPLOAD_SUCCESS.getMessage());
+				JsonNode resultData = sudoImgService.selectSudoImg(params, login);
+				
+				return new BaseResponse<JsonNode>(resultData);
 				
 				//json = mapper.convertValue(result, JsonNode.class);
 				//return new BaseResponse<JsonNode>(json);			
 			}catch(Exception e) {
 				e.printStackTrace();
-				return new BaseResponse<Integer>(BaseResponseCode.UPLOAD_FAIL, BaseResponseCode.UPLOAD_FAIL.getMessage());
+				return new BaseResponse<JsonNode>(BaseResponseCode.UPLOAD_FAIL, BaseResponseCode.UPLOAD_FAIL.getMessage());
 				//json = mapper.convertValue(result, JsonNode.class);
 				//return new BaseResponse<JsonNode>(json);			
 			}
