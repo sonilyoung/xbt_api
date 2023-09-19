@@ -42,6 +42,7 @@ import egovframework.com.api.edc.vo.ApiLog;
 import egovframework.com.api.edc.vo.UnitImages;
 import egovframework.com.api.login.service.ApiLoginService;
 import egovframework.com.api.login.vo.ApiLogin;
+import egovframework.com.common.vo.LearningImg;
 import egovframework.com.common.vo.SeqGroupCode;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.global.annotation.SkipAuth;
@@ -115,13 +116,13 @@ public class EgovXbtEdcApiController {
 			HttpServletRequest request, HttpServletResponse response
 			,@RequestPart(value = "frontImg", required = true) MultipartFile frontImg
 			,@RequestPart(value = "sideImg", required = true) MultipartFile sideImg
-			,@RequestPart(value = "params", required = true )XrayImgContents params) throws Exception {
+			,@RequestPart(value = "params", required = true )LearningImg params) throws Exception {
 		
 		ApiLogin login = apiLoginService.createToken(request);
 		
 		XbtSeq seq = new XbtSeq();
 		seq.setSeqInfo(SeqGroupCode.XBT_BAG_ID.getCode());
-		XbtSeq unitId = contentsService.selectXbtSeq(seq);
+		XbtSeq unitId = contentsService.selectXbtSeq(seq);	
 		params.setBagScanId(unitId.getSeqId());
 
 		//정면이미지처리

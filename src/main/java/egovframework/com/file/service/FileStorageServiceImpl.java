@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.theory.vo.Theory;
+import egovframework.com.common.vo.LearningImg;
 import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.http.BaseResponseCode;
@@ -332,7 +333,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	}
 
 	@Override
-	public AttachFile createXrayImageFiles(String targetName, String fileNameWithoutExtension, XrayImgContents params, MultipartFile file) throws Exception {
+	public AttachFile createXrayImageFiles(String targetName, String fileNameWithoutExtension, LearningImg params, MultipartFile file) throws Exception {
 		// TODO Auto-generated method stub
         AttachFile attachFile = null;
         File newFile = null;
@@ -378,7 +379,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	}
 
 	@Override
-	public AttachFile createKaistXrayImageFiles(String targetName, String fileNameWithoutExtension, XrayImgContents params, MultipartFile file) throws Exception {
+	public AttachFile createKaistXrayImageFiles(String targetName, String fileNameWithoutExtension, LearningImg params, MultipartFile file) throws Exception {
 		// TODO Auto-generated method stub
         AttachFile attachFile = null;
         File newFile = null;
