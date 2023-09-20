@@ -171,13 +171,13 @@ public class EgovXbtEdcApiController {
 				//kaist 이미지 데이터생성
 				fileStorageService.makeKaistSudoImages(resultData);
 				
-				return new BaseResponse<JsonNode>(resultData);
+				return new BaseResponse<JsonNode>(BaseResponseCode.GET_IMAGE_SUCCESS, BaseResponseCode.GET_IMAGE_SUCCESS.getMessage());
 				
 				//json = mapper.convertValue(result, JsonNode.class);
 				//return new BaseResponse<JsonNode>(json);			
 			}catch(Exception e) {
 				e.printStackTrace();
-				return new BaseResponse<JsonNode>(BaseResponseCode.UPLOAD_FAIL, BaseResponseCode.UPLOAD_FAIL.getMessage());
+				return new BaseResponse<JsonNode>(BaseResponseCode.GET_IMAGE_FAIL, BaseResponseCode.GET_IMAGE_FAIL.getMessage());
 				//json = mapper.convertValue(result, JsonNode.class);
 				//return new BaseResponse<JsonNode>(json);			
 			}

@@ -43,5 +43,6 @@ public interface FileStorageService {
     AttachFile createKaistXrayImageFiles(String targetName, String fileNameWithoutExtension, LearningImg params, MultipartFile file) throws Exception;
     
     public void makeKaistSudoImages(JsonNode jdata) throws Exception;
+    
    
 }

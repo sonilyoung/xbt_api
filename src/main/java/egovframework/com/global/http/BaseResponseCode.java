@@ -12,9 +12,13 @@ public enum BaseResponseCode {
 	), SAVE_SUCCESS(
 			"0100", "저장완료"
 	), UPLOAD_SUCCESS(
-			"0100", "업로드완료"
+			"UPLOAD_SUCCESS", "업로드완료"
 	), UPLOAD_FAIL(
 			"UPLOAD_FAIL", "업로드실패"		
+	), GET_IMAGE_SUCCESS(
+			"GET_IMAGE_SUCCESS", "이미지가져오기완료"
+	), GET_IMAGE_FAIL(
+			"GET_IMAGE_FAIL", "이미지가져오기실패"					
 	), UPDATE_SUCCESS(
 			"0200", "수정완료"
 	), DELETE_SUCCESS(

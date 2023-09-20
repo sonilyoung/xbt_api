@@ -64,7 +64,7 @@ public class SudoImgServiceImpl implements SudoImgService {
 		apiLog1.setApiUrl(inetAddress.toString());
 		apiLog1.setApiCommand("sudoImgExcute");
 		apiLog1.setRequestContents("슈도컬러 정면 측면 이미지업로드 시작");
-		//apiLog1.setProgressPer(15);
+		apiLog1.setProgressPer(50);
 		insertApiLog(apiLog1);
 
 		String resultData = transImages(oj, al, af1, af2);
@@ -84,12 +84,13 @@ public class SudoImgServiceImpl implements SudoImgService {
 			apiLog2.setApiCommand("sudoImgExcute");
 			apiLog2.setResponseCode(json.get("RET_CODE").asText());
 			apiLog2.setResponseContents(json.get("RET_DESC").asText());
-			//apiLog2.setProgressPer(50);			
+			apiLog1.setProgressPer(100);			
 		}else {
 			apiLog2.setRequestContents("슈도컬러 정면 측면 이미지업로드 실패");
 			apiLog2.setApiCommand("selectSudoImg");
 			apiLog2.setResponseCode(json.get("RET_CODE").asText());
-			apiLog2.setResponseContents(json.get("RET_DESC").asText());			
+			apiLog2.setResponseContents(json.get("RET_DESC").asText());	
+			apiLog1.setProgressPer(0);	
 		}
 				
 		
@@ -199,7 +200,7 @@ public class SudoImgServiceImpl implements SudoImgService {
 		apiLog1.setApiUrl(inetAddress.toString());
 		apiLog1.setApiCommand("selectSudoImg");
 		apiLog1.setRequestContents("슈도컬러 이미지 가져오기 시작");
-		//apiLog1.setProgressPer(50);
+		apiLog1.setProgressPer(50);
 		insertApiLog(apiLog1);
 
 		LOGGER.info("=========selectSudoImages start=========");
@@ -247,20 +248,6 @@ public class SudoImgServiceImpl implements SudoImgService {
 		apiLog2.setApiUrl(inetAddress.toString());
 
 		if(json.get("RET_CODE").asText()=="0000") {
-			apiLog2.setRequestContents("슈도컬러 이미지 가져오기 완료");
-			apiLog2.setApiCommand("selectSudoImg");
-			apiLog2.setResponseCode(json.get("RET_CODE").asText());
-			apiLog2.setResponseContents(json.get("RET_DESC").asText());
-			//apiLog2.setProgressPer(50);			
-		}else {
-			apiLog2.setRequestContents("슈도컬러 이미지 가져오기 실패");
-			apiLog2.setApiCommand("selectSudoImg");
-			apiLog2.setResponseCode(json.get("RET_CODE").asText());
-			apiLog2.setResponseContents(json.get("RET_DESC").asText());			
-		}
-		insertApiLog(apiLog2);
-		
-		if(json.get("RET_CODE").asText()=="0000") {
 			//이미지데이터생성
 			//this.makeKaistSudoImages(json.get("RET_DATA"));			
 			
@@ -268,8 +255,16 @@ public class SudoImgServiceImpl implements SudoImgService {
 			apiLog2.setApiCommand("selectSudoImg");
 			apiLog2.setResponseCode(json.get("RET_CODE").asText());
 			apiLog2.setResponseContents(json.get("RET_DESC").asText());
-			insertApiLog(apiLog2);
+			apiLog1.setProgressPer(100);
+		}else {
+			apiLog2.setRequestContents("슈도컬러 이미지 가져오기 실패");
+			apiLog2.setApiCommand("selectSudoImg");
+			apiLog2.setResponseCode(json.get("RET_CODE").asText());
+			apiLog2.setResponseContents(json.get("RET_DESC").asText());
+			apiLog1.setProgressPer(0);
 		}
+		
+		insertApiLog(apiLog2);
 		
 		return json;
 	}
