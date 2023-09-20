@@ -166,7 +166,7 @@ public class EgovXbtEdcApiController {
 				//}		
 				
 				JsonNode resultData = sudoImgService.selectSudoImg(params, login);
-				
+				System.out.println(resultData.get("RET_DATA"));
 				return new BaseResponse<JsonNode>(resultData);
 				
 				//json = mapper.convertValue(result, JsonNode.class);
