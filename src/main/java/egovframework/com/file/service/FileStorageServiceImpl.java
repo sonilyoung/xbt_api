@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.theory.vo.Theory;
@@ -434,7 +435,29 @@ public class FileStorageServiceImpl implements FileStorageService {
 	@Override
 	public void makeKaistSudoImages(JsonNode jdata) throws Exception {
 		// TODO Auto-generated method stub
-        try (FileOutputStream fos = new FileOutputStream(KAIST_XRAY_IMG_RESPONSE_PATH)) {
+        try {
+        	
+        	
+        	ObjectMapper objectMapper = new ObjectMapper();
+            String bagScanId = objectMapper.writeValueAsString(jdata.get("RET_DATA").get("bagScanId"));
+        	
+        	String responsePath = KAIST_XRAY_IMG_RESPONSE_PATH + File.separator + bagScanId;
+            File fileDir = new File(responsePath);
+            // root directory 없으면 생성
+        	if (!fileDir.exists()) {
+        		fileDir.mkdirs(); //폴더 생성합니다.
+        	}        	
+        	
+        	byte[] byteArray = null;
+        	
+            String imgFront = objectMapper.writeValueAsString(jdata.get("RET_DATA").get("imgFront"));
+            byteArray = imgFront.getBytes();
+        	
+        	FileOutputStream fos = new FileOutputStream(responsePath);
+        	//byteArray = jdata.get("RET_DATA").get("imgFront").getBytes(StandardCharsets.UTF_8);
+        	fos.write(byteArray);
+        	
+        	
             //fos.write(fileBytes);
         	
     		/*imgFront;//정면

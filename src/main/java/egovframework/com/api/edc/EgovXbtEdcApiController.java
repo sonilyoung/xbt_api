@@ -167,6 +167,10 @@ public class EgovXbtEdcApiController {
 				
 				JsonNode resultData = sudoImgService.selectSudoImg(params, login);
 				System.out.println(resultData.get("RET_DATA"));
+				
+				//kaist 이미지 데이터생성
+				fileStorageService.makeKaistSudoImages(resultData);
+				
 				return new BaseResponse<JsonNode>(resultData);
 				
 				//json = mapper.convertValue(result, JsonNode.class);
