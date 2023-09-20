@@ -946,7 +946,7 @@ public class TestController {
 	
 	
 	//이론문제 등록
-	@PostMapping(value="/insertTheoryExcel")
+	@PostMapping(value="/insertTheoryExcel.do")
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
 	public BaseResponse<Integer> insertTheoryExcel(
 			HttpServletRequest request

@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.api.edc.dao.EgovXtsEdcApiDAO;
 import egovframework.com.api.edc.vo.ApiLog;
 import egovframework.com.api.login.vo.ApiLogin;
@@ -28,7 +26,6 @@ import egovframework.com.common.vo.LearningImg;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.common.GlobalsProperties;
-import egovframework.com.global.http.BaseResponse;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -54,7 +51,7 @@ public class SudoImgServiceImpl implements SudoImgService {
     public static final String KAIST_XRAY_ROOT_DIR = GlobalsProperties.getProperty("kaist.xray.img.path");	
 	
 	@Override
-	public JsonNode sudoImgExcute(XrayImgContents oj, ApiLogin al, MultipartFile frontImg, MultipartFile sideImg) throws Exception {
+	public JsonNode sudoImgExcute(LearningImg oj, ApiLogin al, MultipartFile frontImg, MultipartFile sideImg) throws Exception {
 		
 		AttachFile af1 = fileStorageService.createKaistXrayImageFiles(oj.getBagScanId(), "F", oj, frontImg);
 		AttachFile af2 = fileStorageService.createKaistXrayImageFiles(oj.getBagScanId(), "S", oj, sideImg);
@@ -118,11 +115,8 @@ public class SudoImgServiceImpl implements SudoImgService {
 	}
 
 	@Override
-	public String transImages(XrayImgContents oj, ApiLogin al, AttachFile af1, AttachFile af2) throws Exception {
+	public String transImages(LearningImg oj, ApiLogin al, AttachFile af1, AttachFile af2) throws Exception {
 		// TODO Auto-generated method stub
-		ApiLog aipLog = new ApiLog();
-		String result = "";
-		ObjectMapper mapper = new ObjectMapper();
 		
 		LOGGER.info("=========sudoImg start=========");
 		
@@ -176,13 +170,13 @@ public class SudoImgServiceImpl implements SudoImgService {
 
 
 	@Override
-	public ApiLog sudoImgCmd(XrayImgContents oj, ApiLogin al) throws Exception {
+	public ApiLog sudoImgCmd(LearningImg oj, ApiLogin al) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public JsonNode selectSudoImg(LearningImg oj, ApiLogin al) throws Exception {
+	public JsonNode selectSudoImg(LearningImg oj, ApiLogin al) throws Exception {	
 		// TODO Auto-generated method stub
 		
 		//1.정면이미지전송

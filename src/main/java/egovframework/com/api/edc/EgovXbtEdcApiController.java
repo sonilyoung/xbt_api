@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.com.adm.contents.service.ContentsService;
-import egovframework.com.adm.contents.vo.UnitInformation;
 import egovframework.com.adm.contents.vo.XbtSeq;
 import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.login.service.LoginService;
@@ -117,13 +116,13 @@ public class EgovXbtEdcApiController {
 			HttpServletRequest request, HttpServletResponse response
 			,@RequestPart(value = "frontImg", required = true) MultipartFile frontImg
 			,@RequestPart(value = "sideImg", required = true) MultipartFile sideImg
-			,@RequestPart(value = "params", required = true )XrayImgContents params) throws Exception {
+			,@RequestPart(value = "params", required = true )LearningImg params) throws Exception {
 		
 		ApiLogin login = apiLoginService.createToken(request);
 		
 		XbtSeq seq = new XbtSeq();
 		seq.setSeqInfo(SeqGroupCode.XBT_BAG_ID.getCode());
-		XbtSeq unitId = contentsService.selectXbtSeq(seq);
+		XbtSeq unitId = contentsService.selectXbtSeq(seq);	
 		params.setBagScanId(unitId.getSeqId());
 
 		//정면이미지처리
