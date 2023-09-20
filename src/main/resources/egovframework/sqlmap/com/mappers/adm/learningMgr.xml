@@ -253,13 +253,13 @@
 			T1.BAG_SCAN_ID,
 			T1.UNIT_ID,/*정답물품아이디*/
 			(SELECT UNIT_NAME FROM XBT_UNIT_INFO WHERE UNIT_ID = T1.UNIT_ID) as unitName,/*정답물품명*/
-			T3.OPEN_YN,/*개봉여부*/
-			T3.PASS_YN,/*통과여부*/
+			T1.OPEN_YN,/*개봉여부*/
+			T1.PASS_YN,/*통과여부*/
 			T3.UNIT_GROUP_CD,
 			T3.GROUP_NAME,
-			T3.ACTION_DIV,
+			T1.ACTION_DIV,
 			(SELECT CODE_NAME FROM XBT_COMMON_CODE T2 WHERE T2.GROUP_ID = 'actionDiv' 
-			 AND T2.CODE_VALUE = T3.ACTION_DIV AND T2.USE_YN = 'Y' AND T2.LANGUAGE_CODE = 'kr')AS actionDivName,
+			 AND T2.CODE_VALUE = T1.ACTION_DIV AND T2.USE_YN = 'Y' AND T2.LANGUAGE_CODE = 'kr')AS actionDivName,
 			T1.STUDY_LVL, /*학습레벨*/
 			T1.USE_YN ,/*사용여부*/
 			T1.INSERT_ID, 
