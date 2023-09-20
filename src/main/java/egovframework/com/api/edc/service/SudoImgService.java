@@ -13,27 +13,11 @@ public interface SudoImgService {
 	
 	public JsonNode sudoImgExcute(LearningImg oj, ApiLogin al, MultipartFile frontImg, MultipartFile sideImg) throws Exception;
 	
-<<<<<<< HEAD
-	public JsonNode selectSudoImg(LearningImg oj, ApiLogin al) throws Exception;
-	
-	public String transImages(XrayImgContents oj, ApiLogin al, AttachFile af1, AttachFile af2) throws Exception;
-=======
 	public String transImages(LearningImg oj, ApiLogin al, AttachFile af1, AttachFile af2) throws Exception;
->>>>>>> branch 'master' of https://github.com/sonilyoung/xbt_api.git
 	
 	public ApiLog sudoImgCmd(LearningImg oj, ApiLogin al) throws Exception;
 	
-<<<<<<< HEAD
-=======
-	public ApiLog selectSudoImg(LearningImg oj, ApiLogin al) throws Exception;
->>>>>>> branch 'master' of https://github.com/sonilyoung/xbt_api.git
-	
-<<<<<<< HEAD
-		
-	//public String sudoImg(XrayImgContents oj, ApiLogin al) throws Exception;
-=======
-	//public String sudoImg(LearningImg oj, ApiLogin al) throws Exception;
->>>>>>> branch 'master' of https://github.com/sonilyoung/xbt_api.git
+	public JsonNode selectSudoImg(LearningImg oj, ApiLogin al) throws Exception;
 	
 	//public String sudoImg(LearningImg oj, ApiLogin al) throws Exception;
 	

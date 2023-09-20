@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.theory.vo.Theory;
@@ -60,8 +63,11 @@ public class FileStorageServiceImpl implements FileStorageService {
     /*파일업로드 저장경로*/
     public static final String FILE_DB_UPLOAD_PATH = GlobalsProperties.getProperty("file.db.upload.path");
     
-    /*kaist xray 저장경로*/
-    public static final String KAIST_XRAY_ROOT_DIR = GlobalsProperties.getProperty("kaist.xray.img.path");    
+    /*kaist xray API업로드 저장경로*/
+    public static final String KAIST_XRAY_IMG_REQUEST_PATH = GlobalsProperties.getProperty("kaist.xray.img.request.path");    
+    
+    /*kaist xray API RESPONSE 저장경로*/
+    public static final String KAIST_XRAY_IMG_RESPONSE_PATH = GlobalsProperties.getProperty("kaist.xray.img.response.path");    
     
     @PostConstruct
     public void initialize() {
@@ -386,9 +392,9 @@ public class FileStorageServiceImpl implements FileStorageService {
         String originalFileName = file.getOriginalFilename();
         //String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
         //String fileExtension = StringUtils.getFilenameExtension(originalFileName);
-        String fileExtension = "jpg";
+        String fileExtension = "png";
         
-        String filePath = KAIST_XRAY_ROOT_DIR;
+        String filePath = KAIST_XRAY_IMG_REQUEST_PATH;
         
         File fileDir = new File(filePath);
         // root directory 없으면 생성
@@ -423,7 +429,69 @@ public class FileStorageServiceImpl implements FileStorageService {
             throw e;
         }
         return attachFile;
+	}
+
+	@Override
+	public void makeKaistSudoImages(JsonNode jdata) throws Exception {
+		// TODO Auto-generated method stub
+        try (FileOutputStream fos = new FileOutputStream(KAIST_XRAY_IMG_RESPONSE_PATH)) {
+            //fos.write(fileBytes);
+        	
+    		/*imgFront;//정면
+    		imgSide;//측면
+    		imgThreed;//3d이미지
+    		imgThreedAngle;//각조조절된3d이미지
+
+    		imgFrontColor; //정면컬러 101
+    		imgFrontColorMineral;//정면무기물 102
+    		imgFrontColorOrganism;//정면유기물 103
+    		imgFrontColorReversal;//정면반전 104
+    		imgFrontColorBwRate1;//정면채도 105
+    		imgFrontColorBwRate2;//정면채도 106
+    		imgFrontColorBwRate3;//정면채도 107
+    		imgFrontColorBwRate4;//정면채도 108
+    		imgFrontColorBwRate5;//정면채도 109
+    		imgFrontColorBwRate6;//정면채도 110
+
+    		imgFrontBw;//정면흑백 111
+    		imgFrontBwMineral;//정면흑백무기물 112
+    		imgFrontBwOrganism;//정면흑백유기물 113
+    		imgFrontBwReversal;//정면흑백반전 114
+    		imgFrontBwBwRate1;//정면흑백채도 115
+    		imgFrontBwBwRate2;//정면흑백채도 116
+    		imgFrontBwBwRate3;//정면흑백채도 117
+    		imgFrontBwBwRate4;// 정면흑백채도118
+    		imgFrontBwBwRate5;//정면흑백채도 119
+    		imgFrontBwBwRate6;//정면흑백채도 120
+
+    		imgSideColor;//측면컬러 201
+    		imgSideColorMineral;//측면무기물 202
+    		imgSideColorOrganism;//측면유기물 203
+    		imgSideColorReversal;//측면반전 204
+    		imgSideColorBwRate1;//측면채도 205
+    		imgSideColorBwRate2;//측면채도206
+    		imgSideColorBwRate3;//측면채도207
+    		imgSideColorBwRate4;//측면채도208
+    		imgSideColorBwRate5;//측면채도209
+    		imgSideColorBwRate6;//측면채도210
+
+    		imgSideBw;//측면흑백211
+    		imgSideBwMinerals;//측면흑백무기물212
+    		imgSideBwOrganism;//측면흑백유기물213
+    		imgSideBwReversal;//측면흑백반전214
+    		imgSideBwBwRate1;//측면흑백채도215
+    		imgSideBwBwRate2;//측면흑백채도216
+    		imgSideBwBwRate3;//측면흑백채도217
+    		imgSideBwBwRate4;//측면흑백채도218
+    		imgSideBwBwRate5;//측면흑백채도219
+    		imgSideBwBwRate6;//측면흑백채도220
+    		*/	        	
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
 	}	
 
+	
 
 }

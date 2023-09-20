@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.theory.vo.Theory;
 import egovframework.com.common.vo.LearningImg;
@@ -27,8 +29,6 @@ public interface FileStorageService {
 	
 	AttachFile createXrayImageFiles(String targetName, String fileNameWithoutExtension, XrayImgContents params,MultipartFile file) throws Exception;
 	
-	AttachFile createKaistXrayImageFiles(String targetName, String fileNameWithoutExtension, LearningImg params, MultipartFile file) throws Exception;
-		
     File getFile(AttachFile AttachFile);
 
     AttachFile createFile(MultipartFile file) throws Exception;
@@ -38,5 +38,10 @@ public interface FileStorageService {
     void getImage(String filePath, HttpServletResponse response) throws Exception;
 
     AttachFile createTheoryImageFile(String fileNameWithoutExtension, Theory params ,MultipartFile file) throws Exception;
+    
+    
+    AttachFile createKaistXrayImageFiles(String targetName, String fileNameWithoutExtension, LearningImg params, MultipartFile file) throws Exception;
+    
+    public void makeKaistSudoImages(JsonNode jdata) throws Exception;
    
 }
