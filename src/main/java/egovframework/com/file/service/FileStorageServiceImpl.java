@@ -333,7 +333,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	}
 
 	@Override
-	public AttachFile createXrayImageFiles(String targetName, String fileNameWithoutExtension, LearningImg params, MultipartFile file) throws Exception {
+	public AttachFile createXrayImageFiles(String targetName, String fileNameWithoutExtension, XrayImgContents params, MultipartFile file) throws Exception {
 		// TODO Auto-generated method stub
         AttachFile attachFile = null;
         File newFile = null;
