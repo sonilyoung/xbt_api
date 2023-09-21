@@ -146,6 +146,7 @@
 			API_URL,
 			API_COMMAND,
 			PROGRESS_PER,
+			REQUEST_CODE,
 			REQUEST_CONTENTS,
 			RESPONSE_CODE,
 			RESPONSE_CONTENTS,
@@ -156,6 +157,7 @@
 			,#{apiUrl}
 			,#{apiCommand}
 			,#{progressPer}
+			,#{requestCode}
 			,#{requestContents}
 			,#{responseCode}
 			,#{responseContents}
@@ -166,8 +168,10 @@
 	
 	<!-- 학습문제조회 -->
 	<select id="selectProgressPer" parameterType="egovframework.com.api.edc.vo.ApiLog" resultType="egovframework.com.api.edc.vo.ApiLog">
-		SELECT SEQ_ID, MAX(PROGRESS_PER)AS PROGRESS_PER FROM XBT_API_LOG
+		SELECT PROGRESS_PER FROM XBT_API_LOG
 		WHERE SEQ_ID = #{seqId} 
+		ORDER BY INSERT_DATE DESC, REQUEST_CODE DESC
+		LIMIT 1		
 	</select>	
 	
 </mapper>

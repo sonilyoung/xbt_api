@@ -9,6 +9,7 @@ public class ApiLog {
 	private String apiUrl;
 	private String apiCommand;
 	private int progressPer;
+	private String requestCode;
 	private String requestContents;
 	private String responseCode;
 	private String responseContents;

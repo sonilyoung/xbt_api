@@ -66,10 +66,10 @@ public class FileStorageServiceImpl implements FileStorageService {
     public static final String FILE_DB_UPLOAD_PATH = GlobalsProperties.getProperty("file.db.upload.path");
     
     /*kaist xray API업로드 저장경로*/
-    public static final String KAIST_XRAY_IMG_REQUEST_PATH = GlobalsProperties.getProperty("kaist.xray.img.request.path");    
+    public static final String KAIST_SUDO_IMG_REQUEST_PATH = GlobalsProperties.getProperty("kaist.sudo.img.request.path");    
     
     /*kaist xray API RESPONSE 저장경로*/
-    public static final String KAIST_XRAY_IMG_RESPONSE_PATH = GlobalsProperties.getProperty("kaist.xray.img.response.path");    
+    public static final String KAIST_SUDO_IMG_RESPONSE_PATH = GlobalsProperties.getProperty("kaist.sudo.img.response.path");    
     
     @PostConstruct
     public void initialize() {
@@ -396,7 +396,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         //String fileExtension = StringUtils.getFilenameExtension(originalFileName);
         String fileExtension = "png";
         
-        String filePath = KAIST_XRAY_IMG_REQUEST_PATH;
+        String filePath = KAIST_SUDO_IMG_REQUEST_PATH;
         
         File fileDir = new File(filePath);
         // root directory 없으면 생성
@@ -440,9 +440,9 @@ public class FileStorageServiceImpl implements FileStorageService {
         	
         	
         	//ObjectMapper objectMapper = new ObjectMapper();
-            //String bagScanId = objectMapper.writeValueAsString(jdata.get("RET_DATA").get("bagScanId")).asText();;
-        	String bagScanId = jdata.get("RET_DATA").get("bagScanId").asText();
-        	String responsePath = KAIST_XRAY_IMG_RESPONSE_PATH + File.separator + bagScanId;
+            //String bagScanId = objectMapper.writeValueAsString(jdata.get("bagScanId")).asText();;
+        	String bagScanId = jdata.get("bagScanId").asText();
+        	String responsePath = KAIST_SUDO_IMG_RESPONSE_PATH + File.separator + bagScanId;
         	String fileExtension = ".png";
             File fileDir = new File(responsePath);
             // root directory 없으면 생성
@@ -453,259 +453,259 @@ public class FileStorageServiceImpl implements FileStorageService {
         	String targetFile = responsePath + File.separator + bagScanId;
         	byte[] byteArray = null;
         	
-            String imgFrontColor = jdata.get("RET_DATA").get("imgFrontColor").asText();
+            String imgFrontColor = jdata.get("imgFrontColor").asText();
             byteArray = Base64.getDecoder().decode(imgFrontColor);
         	FileOutputStream fos = new FileOutputStream(targetFile + "-101" + fileExtension);
         	fos.write(byteArray);
         	fos.close();
         	
-            String imgFrontColorMineral = jdata.get("RET_DATA").get("imgFrontColorMineral").asText();
+            String imgFrontColorMineral = jdata.get("imgFrontColorMineral").asText();
             byteArray = Base64.getDecoder().decode(imgFrontColorMineral);
             fos = new FileOutputStream(targetFile + "-102" + fileExtension);
             fos.write(byteArray);        	
             fos.close();        	
         	
-            String imgFrontColorOrganism = jdata.get("RET_DATA").get("imgFrontColorOrganism").asText();
+            String imgFrontColorOrganism = jdata.get("imgFrontColorOrganism").asText();
             byteArray = Base64.getDecoder().decode(imgFrontColorOrganism);
             fos = new FileOutputStream(targetFile + "-103" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontColorReversal = jdata.get("RET_DATA").get("imgFrontColorReversal").asText();
+            String imgFrontColorReversal = jdata.get("imgFrontColorReversal").asText();
             byteArray = Base64.getDecoder().decode(imgFrontColorReversal);
             fos = new FileOutputStream(targetFile + "-104" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontColorBwRate1 = jdata.get("RET_DATA").get("imgFrontColorBwRate1").asText();
+            String imgFrontColorBwRate1 = jdata.get("imgFrontColorBwRate1").asText();
             byteArray = Base64.getDecoder().decode(imgFrontColorBwRate1);
             fos = new FileOutputStream(targetFile + "-105" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontColorBwRate2 = jdata.get("RET_DATA").get("imgFrontColorBwRate2").asText();
+            String imgFrontColorBwRate2 = jdata.get("imgFrontColorBwRate2").asText();
             byteArray = Base64.getDecoder().decode(imgFrontColorBwRate2);
             fos = new FileOutputStream(targetFile + "-106" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontColorBwRate3 = jdata.get("RET_DATA").get("imgFrontColorBwRate3").asText();
+            String imgFrontColorBwRate3 = jdata.get("imgFrontColorBwRate3").asText();
             byteArray = Base64.getDecoder().decode(imgFrontColorBwRate3);
             fos = new FileOutputStream(targetFile + "-107" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontColorBwRate4 = jdata.get("RET_DATA").get("imgFrontColorBwRate4").asText();
+            String imgFrontColorBwRate4 = jdata.get("imgFrontColorBwRate4").asText();
             byteArray = Base64.getDecoder().decode(imgFrontColorBwRate4);
             fos = new FileOutputStream(targetFile + "-108" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontColorBwRate5 = jdata.get("RET_DATA").get("imgFrontColorBwRate5").asText();
+            String imgFrontColorBwRate5 = jdata.get("imgFrontColorBwRate5").asText();
             byteArray = Base64.getDecoder().decode(imgFrontColorBwRate5);
             fos = new FileOutputStream(targetFile + "-109" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontColorBwRate6 = jdata.get("RET_DATA").get("imgFrontColorBwRate6").asText();
+            String imgFrontColorBwRate6 = jdata.get("imgFrontColorBwRate6").asText();
             byteArray = Base64.getDecoder().decode(imgFrontColorBwRate6);
             fos = new FileOutputStream(targetFile + "-110" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontBw = jdata.get("RET_DATA").get("imgFrontBw").asText();
+            String imgFrontBw = jdata.get("imgFrontBw").asText();
             byteArray = Base64.getDecoder().decode(imgFrontBw);
             fos = new FileOutputStream(targetFile + "-111" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontBwMineral = jdata.get("RET_DATA").get("imgFrontBwMineral").asText();
+            String imgFrontBwMineral = jdata.get("imgFrontBwMineral").asText();
             byteArray = Base64.getDecoder().decode(imgFrontBwMineral);
             fos = new FileOutputStream(targetFile + "-112" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontBwOrganism = jdata.get("RET_DATA").get("imgFrontBwOrganism").asText();
+            String imgFrontBwOrganism = jdata.get("imgFrontBwOrganism").asText();
             byteArray = Base64.getDecoder().decode(imgFrontBwOrganism);
             fos = new FileOutputStream(targetFile + "-113" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontBwReversal = jdata.get("RET_DATA").get("imgFrontBwReversal").asText();
+            String imgFrontBwReversal = jdata.get("imgFrontBwReversal").asText();
             byteArray = Base64.getDecoder().decode(imgFrontBwReversal);
             fos = new FileOutputStream(targetFile + "-114" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontBwBwRate1 = jdata.get("RET_DATA").get("imgFrontBwBwRate1").asText();
+            String imgFrontBwBwRate1 = jdata.get("imgFrontBwBwRate1").asText();
             byteArray = Base64.getDecoder().decode(imgFrontBwBwRate1);
             fos = new FileOutputStream(targetFile + "-115" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontBwBwRate2 = jdata.get("RET_DATA").get("imgFrontBwBwRate2").asText();
+            String imgFrontBwBwRate2 = jdata.get("imgFrontBwBwRate2").asText();
             byteArray = Base64.getDecoder().decode(imgFrontBwBwRate2);
             fos = new FileOutputStream(targetFile + "-116" + fileExtension);
             fos.write(byteArray);        	
             fos.close();    
             
-            String imgFrontBwBwRate3 = jdata.get("RET_DATA").get("imgFrontBwBwRate3").asText();
+            String imgFrontBwBwRate3 = jdata.get("imgFrontBwBwRate3").asText();
             byteArray = Base64.getDecoder().decode(imgFrontBwBwRate3);
             fos = new FileOutputStream(targetFile + "-117" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgFrontBwBwRate4 = jdata.get("RET_DATA").get("imgFrontBwBwRate4").asText();
+            String imgFrontBwBwRate4 = jdata.get("imgFrontBwBwRate4").asText();
             byteArray = Base64.getDecoder().decode(imgFrontBwBwRate4);
             fos = new FileOutputStream(targetFile + "-118" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgFrontBwBwRate5 = jdata.get("RET_DATA").get("imgFrontBwBwRate5").asText();
+            String imgFrontBwBwRate5 = jdata.get("imgFrontBwBwRate5").asText();
             byteArray = Base64.getDecoder().decode(imgFrontBwBwRate5);
             fos = new FileOutputStream(targetFile + "-119" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgFrontBwBwRate6 = jdata.get("RET_DATA").get("imgFrontBwBwRate6").asText();
+            String imgFrontBwBwRate6 = jdata.get("imgFrontBwBwRate6").asText();
             byteArray = Base64.getDecoder().decode(imgFrontBwBwRate6);
             fos = new FileOutputStream(targetFile + "-120" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideColor = jdata.get("RET_DATA").get("imgSideColor").asText();
+            String imgSideColor = jdata.get("imgSideColor").asText();
             byteArray = Base64.getDecoder().decode(imgSideColor);
             fos = new FileOutputStream(targetFile + "-201" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideColorMineral = jdata.get("RET_DATA").get("imgSideColorMineral").asText();
+            String imgSideColorMineral = jdata.get("imgSideColorMineral").asText();
             byteArray = Base64.getDecoder().decode(imgSideColorMineral);
             fos = new FileOutputStream(targetFile + "-202" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideColorOrganism = jdata.get("RET_DATA").get("imgSideColorOrganism").asText();
+            String imgSideColorOrganism = jdata.get("imgSideColorOrganism").asText();
             byteArray = Base64.getDecoder().decode(imgSideColorOrganism);
             fos = new FileOutputStream(targetFile + "-203" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideColorReversal = jdata.get("RET_DATA").get("imgSideColorReversal").asText();
+            String imgSideColorReversal = jdata.get("imgSideColorReversal").asText();
             byteArray = Base64.getDecoder().decode(imgSideColorReversal);
             fos = new FileOutputStream(targetFile + "-204" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideColorBwRate1 = jdata.get("RET_DATA").get("imgSideColorBwRate1").asText();
+            String imgSideColorBwRate1 = jdata.get("imgSideColorBwRate1").asText();
             byteArray = Base64.getDecoder().decode(imgSideColorBwRate1);
             fos = new FileOutputStream(targetFile + "-205" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideColorBwRate2 = jdata.get("RET_DATA").get("imgSideColorBwRate2").asText();
+            String imgSideColorBwRate2 = jdata.get("imgSideColorBwRate2").asText();
             byteArray = Base64.getDecoder().decode(imgSideColorBwRate2);
             fos = new FileOutputStream(targetFile + "-206" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideColorBwRate3 = jdata.get("RET_DATA").get("imgSideColorBwRate3").asText();
+            String imgSideColorBwRate3 = jdata.get("imgSideColorBwRate3").asText();
             byteArray = Base64.getDecoder().decode(imgSideColorBwRate3);
             fos = new FileOutputStream(targetFile + "-207" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideColorBwRate4 = jdata.get("RET_DATA").get("imgSideColorBwRate4").asText();
+            String imgSideColorBwRate4 = jdata.get("imgSideColorBwRate4").asText();
             byteArray = Base64.getDecoder().decode(imgSideColorBwRate4);
             fos = new FileOutputStream(targetFile + "-208" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideColorBwRate5 = jdata.get("RET_DATA").get("imgSideColorBwRate5").asText();
+            String imgSideColorBwRate5 = jdata.get("imgSideColorBwRate5").asText();
             byteArray = Base64.getDecoder().decode(imgSideColorBwRate5);
             fos = new FileOutputStream(targetFile + "-209" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideColorBwRate6 = jdata.get("RET_DATA").get("imgSideColorBwRate6").asText();
+            String imgSideColorBwRate6 = jdata.get("imgSideColorBwRate6").asText();
             byteArray = Base64.getDecoder().decode(imgSideColorBwRate6);
             fos = new FileOutputStream(targetFile + "-210" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideBw = jdata.get("RET_DATA").get("imgSideBw").asText();
+            String imgSideBw = jdata.get("imgSideBw").asText();
             byteArray = Base64.getDecoder().decode(imgSideBw);
             fos = new FileOutputStream(targetFile + "-211" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideBwMinerals = jdata.get("RET_DATA").get("imgSideBwMinerals").asText();
+            String imgSideBwMinerals = jdata.get("imgSideBwMinerals").asText();
             byteArray = Base64.getDecoder().decode(imgSideBwMinerals);
             fos = new FileOutputStream(targetFile + "-212" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideBwOrganism = jdata.get("RET_DATA").get("imgSideBwOrganism").asText();
+            String imgSideBwOrganism = jdata.get("imgSideBwOrganism").asText();
             byteArray = Base64.getDecoder().decode(imgSideBwOrganism);
             fos = new FileOutputStream(targetFile + "-213" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideBwReversal = jdata.get("RET_DATA").get("imgSideBwReversal").asText();
+            String imgSideBwReversal = jdata.get("imgSideBwReversal").asText();
             byteArray = Base64.getDecoder().decode(imgSideBwReversal);
             fos = new FileOutputStream(targetFile + "-214" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
-            String imgSideBwBwRate1 = jdata.get("RET_DATA").get("imgSideBwBwRate1").asText();
+            String imgSideBwBwRate1 = jdata.get("imgSideBwBwRate1").asText();
             byteArray = Base64.getDecoder().decode(imgSideBwBwRate1);
             fos = new FileOutputStream(targetFile + "-215" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
             
-            String imgSideBwBwRate2 = jdata.get("RET_DATA").get("imgSideBwBwRate2").asText();
+            String imgSideBwBwRate2 = jdata.get("imgSideBwBwRate2").asText();
             byteArray = Base64.getDecoder().decode(imgSideBwBwRate2);
             fos = new FileOutputStream(targetFile + "-216" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
-            String imgSideBwBwRate3 = jdata.get("RET_DATA").get("imgSideBwBwRate3").asText();
+            String imgSideBwBwRate3 = jdata.get("imgSideBwBwRate3").asText();
             byteArray = Base64.getDecoder().decode(imgSideBwBwRate3);
             fos = new FileOutputStream(targetFile + "-217" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
-            String imgSideBwBwRate4 = jdata.get("RET_DATA").get("imgSideBwBwRate4").asText();
+            String imgSideBwBwRate4 = jdata.get("imgSideBwBwRate4").asText();
             byteArray = Base64.getDecoder().decode(imgSideBwBwRate4);
             fos = new FileOutputStream(targetFile + "-218" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
-            String imgSideBwBwRate5 = jdata.get("RET_DATA").get("imgSideBwBwRate5").asText();
+            String imgSideBwBwRate5 = jdata.get("imgSideBwBwRate5").asText();
             byteArray = Base64.getDecoder().decode(imgSideBwBwRate5);
             fos = new FileOutputStream(targetFile + "-219" + fileExtension);
             fos.write(byteArray);        	
             fos.close();     
             
-            String imgSideBwBwRate6 = jdata.get("RET_DATA").get("imgSideBwBwRate6").asText();
+            String imgSideBwBwRate6 = jdata.get("imgSideBwBwRate6").asText();
             byteArray = Base64.getDecoder().decode(imgSideBwBwRate6);
             fos = new FileOutputStream(targetFile + "-220" + fileExtension);
             fos.write(byteArray);        	

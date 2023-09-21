@@ -9,6 +9,8 @@ package egovframework.com.global.http;
 public enum BaseResponseCode {
 	SUCCESS(
 			"0000", "성공"
+	), FAIL(
+			"0001", "실패"			
 	), SAVE_SUCCESS(
 			"0100", "저장완료"
 	), UPLOAD_SUCCESS(
@@ -75,10 +77,8 @@ public enum BaseResponseCode {
 	        "LEARN_NODATA", "학습문제가 없습니다."
 	), DATA_IS_NULL_EVALPROBLEMS(
 	        "EVALUATION_NODATA", "평가문제가 없습니다."
-	), PASS(
-	        "pass", "합격"
-	), FAIL(
-	        "fail", "불합격"	        
+	), KAIST_EXEPTION(
+	        "KAIST_EXEPTION", "KAIST모듈에서 오류가발생했습니다."	        
 	), UNKONWN_ERROR(
 	        "9999", "내부 오류가 발생");			
 	

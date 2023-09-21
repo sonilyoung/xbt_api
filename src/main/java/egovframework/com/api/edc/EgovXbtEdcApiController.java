@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +40,7 @@ import egovframework.com.api.edc.vo.AiForceLearning;
 import egovframework.com.api.edc.vo.AiForceLearningResult;
 import egovframework.com.api.edc.vo.AiForceUserScore;
 import egovframework.com.api.edc.vo.ApiLog;
+import egovframework.com.api.edc.vo.CommandExcute;
 import egovframework.com.api.edc.vo.UnitImages;
 import egovframework.com.api.login.service.ApiLoginService;
 import egovframework.com.api.login.vo.ApiLogin;
@@ -51,6 +53,7 @@ import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
+import egovframework.com.test.CommandExcutor;
 import io.swagger.annotations.Api;
 
 @Controller
@@ -130,7 +133,26 @@ public class EgovXbtEdcApiController {
 		return new BaseResponse<JsonNode>(resultData);		
 	}		
 	
-	//kaist 슈도이미지 생성수행실행
+	/*
+	 * kaist 슈도이미지 명렁어실행
+	 * */
+	@ResponseBody
+	@RequestMapping(value = {"/commandExcute.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public BaseResponse<Integer> commandExcute(
+			HttpServletRequest request, HttpServletResponse response
+			,@RequestBody CommandExcute command) throws Exception {
+		ApiLogin login = apiLoginService.createToken(request);
+		
+		JsonNode result = sudoImgService.commandExcute(command, login);
+		if("0000".equals(result.get("RET_CODE").asText())) {
+			return new BaseResponse<Integer>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage());
+		}else {
+			return new BaseResponse<Integer>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage());
+		}
+		
+	}		
+	
 	
 	//kaist 슈도이미지 가져오기 
     /**
@@ -155,21 +177,8 @@ public class EgovXbtEdcApiController {
 			}				
 			
 			try {
-				//LOGGER.info("=========정면이미지 가져오기");
-				//if(!StringUtils.isEmpty(params.getImgFront())){
-					//fileStorageService.ByteToFile(params.getImgFront(), params.getImgFrontName());
-				//}
-				
-				//LOGGER.info("=========측면이미지 가져오기");
-				//if(!StringUtils.isEmpty(params.getImgSide())){
-					//fileStorageService.ByteToFile(params.getImgSide(), params.getImgSideName());
-				//}		
-				
-				JsonNode resultData = sudoImgService.selectSudoImg(params, login);
-				System.out.println(resultData.get("RET_DATA"));
-				
-				//kaist 이미지 데이터생성
-				fileStorageService.makeKaistSudoImages(resultData);
+				//JsonNode resultData = sudoImgService.selectSudoImg(params, login);
+				sudoImgService.selectSudoImg(params, login);
 				
 				return new BaseResponse<JsonNode>(BaseResponseCode.GET_IMAGE_SUCCESS, BaseResponseCode.GET_IMAGE_SUCCESS.getMessage());
 				

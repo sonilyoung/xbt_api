@@ -10,13 +10,13 @@ public class CommandExcutor {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommandExcutor.class);
 	
-    public String excutor() {
+    public String excutor(String command) {
             // 실행할 쉘 명령어
         	// ProcessBuilder에 넣어줄 커맨드 준비
         	
         try {
             // 실행할 쉘 명령어
-            String command = "ls -l";
+            //String command = "ls -l";
 
             // 프로세스 빌더 생성
             ProcessBuilder processBuilder = new ProcessBuilder();

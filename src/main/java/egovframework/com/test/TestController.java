@@ -1067,14 +1067,15 @@ public class TestController {
 	/*
 	 * 의사색체테스트
 	 * */
-	@RequestMapping(value = "/commandExcute.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/commandExcuteTest.do", method = RequestMethod.GET)
     @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
 	public BaseResponse<JsonNode> commandExcute(
 			HttpServletRequest request
 			, HttpServletResponse response) throws Exception {
 		
 		CommandExcutor ce = new CommandExcutor();
-		String result = ce.excutor();
+		String command = "ls -l";
+		String result = ce.excutor(command);
 		
 		ObjectMapper mapper = new ObjectMapper();		
 		JsonNode json = mapper.convertValue(result, JsonNode.class);
