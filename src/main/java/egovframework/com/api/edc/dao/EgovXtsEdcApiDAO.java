@@ -2,6 +2,7 @@ package egovframework.com.api.edc.dao;
 
 import java.util.List;
 
+import egovframework.com.adm.contents.vo.XrayContents;
 import egovframework.com.api.edc.vo.AiForceLearning;
 import egovframework.com.api.edc.vo.AiForceLearningResult;
 import egovframework.com.api.edc.vo.AiForceUserScore;
@@ -39,4 +40,12 @@ public class EgovXtsEdcApiDAO extends EgovAbstractMapper{
 	public ApiLog selectProgressPer(ApiLog params) {
 		return selectOne(Namespace + ".selectProgressPer", params);
 	}		
+	
+	public List<?> selectKaistXrayContentsList(XrayContents params) {
+		return (List<?>)selectList(Namespace + ".selectKaistXrayContentsList", params);
+	}
+	
+	public int insertKaistXrayContents(XrayContents params) {
+		return insert(Namespace + ".insertKaistXrayContents", params);
+	}	
 }

@@ -1,9 +1,12 @@
 package egovframework.com.common.vo;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 @Data
-public class LearningImg{
+public class LearningImg implements Serializable{
+	private static final long serialVersionUID = -7403289726465589312L;
 	private Long bagScanNo;
 	private String bagScanId;
 	private String unitScanId;
@@ -68,5 +71,6 @@ public class LearningImg{
 	private String insertId;
 	private String insertDate;
 	private String updateId;	
-	private String updateDate;	
+	private String updateDate;
+	private String[] kaistCommand;	
 }

@@ -99,6 +99,7 @@
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
 		AND END_YN = 'N'
+		ORDER BY RAND() 
 	</select>	
 	
 	<!-- 평가정답확인 -->

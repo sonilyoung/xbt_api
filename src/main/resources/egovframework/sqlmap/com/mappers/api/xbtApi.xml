@@ -168,10 +168,67 @@
 	
 	<!-- 학습문제조회 -->
 	<select id="selectProgressPer" parameterType="egovframework.com.api.edc.vo.ApiLog" resultType="egovframework.com.api.edc.vo.ApiLog">
-		SELECT PROGRESS_PER FROM XBT_API_LOG
+		SELECT SEQ_ID, PROGRESS_PER FROM XBT_API_LOG
 		WHERE SEQ_ID = #{seqId} 
 		ORDER BY INSERT_DATE DESC, REQUEST_CODE DESC
 		LIMIT 1		
 	</select>	
 	
+	<!-- xray가방 등록 -->
+	<insert id="insertKaistXrayContents" parameterType="egovframework.com.adm.contents.vo.XrayContents">
+		INSERT INTO XBT_BAG_INFO(
+			BAG_SCAN_ID,
+			STUDY_LVL,
+			UNIT_ID,
+			UNIT_GROUP_CD,
+			USE_YN,
+			INSERT_DATE,
+			INSERT_ID,
+			KAIST_YN
+		)VALUES(
+			#{bagScanId}
+			,#{studyLvl}
+			,#{unitId}
+			,#{unitGroupCd}
+			,'Y'
+			,now()
+			,#{insertId}
+			,'Y'
+		)
+	</insert>		
+	
+	
+	<!-- xray콘텐츠관리-정보관리 -->
+	<select id="selectKaistXrayContentsList" parameterType="egovframework.com.adm.contents.vo.XrayContents" resultType="egovframework.com.adm.contents.vo.XrayContents" >
+		SELECT * FROM (	
+			SELECT 
+				T1.BAG_SCAN_NO,
+				T1.BAG_SCAN_ID,
+				T1.UNIT_ID,/*정답물품아이디*/
+				(SELECT UNIT_NAME FROM XBT_UNIT_INFO WHERE UNIT_ID = T1.UNIT_ID) as unitName,/*정답물품명*/
+				OPEN_YN,/*개봉여부*/
+				PASS_YN,/*통과여부*/
+				ACTION_DIV,
+				ACTION_DIV_NAME,
+				T1.STUDY_LVL, /*학습레벨*/
+				T1.USE_YN ,/*사용여부*/
+				T1.INSERT_ID, 
+				T1.INSERT_DATE,
+				T1.KAIST_YN 
+			FROM XBT_BAG_INFO T1
+			WHERE 1=1
+			ORDER BY T1.BAG_SCAN_ID ASC
+		)TOT WHERE 1=1 
+		AND TOT.KAIST_YN = 'Y'
+		<choose>
+			<when test='searchval != "" and searchval != null'>
+				AND (
+					BAG_SCAN_ID LIKE CONCAT('%' , #{searchval} , '%')
+					OR UNIT_ID LIKE  CONCAT('%' , #{searchval} , '%')
+					OR unitName LIKE  CONCAT('%' , #{searchval} , '%')
+				)
+			</when>
+		</choose>		
+			  		 	
+	</select>	
 </mapper>

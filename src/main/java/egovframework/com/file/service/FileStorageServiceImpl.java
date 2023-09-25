@@ -1,14 +1,24 @@
 package egovframework.com.file.service;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
+import java.util.EnumSet;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -23,15 +33,17 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.theory.vo.Theory;
+import egovframework.com.api.edc.vo.ThreedGeneration;
 import egovframework.com.common.vo.LearningImg;
 import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 /**
  * FileStorageService 구현체로 서블릿 설치 경로에 파일 저장 (※파일 Storage 결정 시까지 임시로 사용)
@@ -69,7 +81,16 @@ public class FileStorageServiceImpl implements FileStorageService {
     public static final String KAIST_SUDO_IMG_REQUEST_PATH = GlobalsProperties.getProperty("kaist.sudo.img.request.path");    
     
     /*kaist xray API RESPONSE 저장경로*/
-    public static final String KAIST_SUDO_IMG_RESPONSE_PATH = GlobalsProperties.getProperty("kaist.sudo.img.response.path");    
+    public static final String KAIST_SUDO_IMG_RESPONSE_PATH = GlobalsProperties.getProperty("kaist.sudo.img.response.path"); 
+    
+    /*kaist xray API RESPONSE 저장경로*/
+    public static final String KAIST_TWOD_IMG_RESPONSE_PATH = GlobalsProperties.getProperty("kaist.twod.img.response.path");  
+    
+    /*kaist xray API REQUEST 저장경로*/
+    public static final String KAIST_REQUEST_IMG_REQUEST_PATH = GlobalsProperties.getProperty("kaist.threed.img.request.path");
+    
+    /*kaist xray API REQUEST 저장경로*/
+    public static final String KAIST_RESPONSE_IMG_REQUEST_PATH = GlobalsProperties.getProperty("kaist.threed.img.response.path");   
     
     @PostConstruct
     public void initialize() {
@@ -767,8 +788,173 @@ public class FileStorageServiceImpl implements FileStorageService {
             e.printStackTrace();
         }
 		
-	}	
+	}
 
+	@Override
+	public void fileCopy() throws Exception {
+		// TODO Auto-generated method stub
+        Path sourceDir = Paths.get(KAIST_SUDO_IMG_RESPONSE_PATH);
+        Path targetDir = Paths.get(XRAY_ROOT_DIR);
+
+        try {
+
+            // 소스 디렉토리의 파일 및 하위 디렉토리 복사
+            Files.walkFileTree(sourceDir, EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    Path tg = targetDir.resolve(sourceDir.relativize(dir));
+                    if (!Files.exists(tg)) {
+                        Files.createDirectory(tg);
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Path tf = targetDir.resolve(sourceDir.relativize(file));
+                    Files.copy(file, tf, StandardCopyOption.REPLACE_EXISTING);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+		
+	@Override
+	public void makeKaistTwodImages(JsonNode jdata) throws Exception {
+		// TODO Auto-generated method stub
+        try {
+        	//ObjectMapper objectMapper = new ObjectMapper();
+            //String bagScanId = objectMapper.writeValueAsString(jdata.get("bagScanId")).asText();;
+        	String fileName = jdata.get("fileName").asText();
+        	String responsePath = KAIST_TWOD_IMG_RESPONSE_PATH + File.separator + fileName;
+        	String fileExtension = ".png";
+            File fileDir = new File(responsePath);
+            // root directory 없으면 생성
+        	if (!fileDir.exists()) {
+        		fileDir.mkdirs(); //폴더 생성합니다.
+        	}        	
+        	
+        	String targetFile = responsePath + File.separator + fileName;
+        	byte[] byteArray = null;
+        	
+        	if(jdata.get("towdGenList")!=null) {
+            	for(int i=0; i < jdata.get("towdGenList").size(); i++) {
+            		
+            		String twodImg = jdata.get("towdGenList").get(i).asText();
+            		byteArray = Base64.getDecoder().decode(twodImg);
+                	FileOutputStream fos = new FileOutputStream(targetFile + "-" + i + fileExtension);
+                	fos.write(byteArray);
+                	fos.close();            		
+            	}        		
+        	}
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
+	}	
 	
+	@Override
+	public AttachFile createKaistThreedImageFiles(String targetName, String fileNameWithoutExtension, ThreedGeneration params, MultipartFile file) throws Exception {
+		// TODO Auto-generated method stub
+        AttachFile attachFile = null;
+        File newFile = null;
+        String originalFileName = file.getOriginalFilename();
+        //String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
+        //String fileExtension = StringUtils.getFilenameExtension(originalFileName);
+        String fileExtension = "raw";
+        
+        String filePath = KAIST_REQUEST_IMG_REQUEST_PATH;
+        
+        File fileDir = new File(filePath);
+        // root directory 없으면 생성
+    	if (!fileDir.exists()) {
+    		fileDir.mkdirs(); //폴더 생성합니다.
+    	}        
+        
+    	String targetFilePath = filePath+File.separator+targetName;
+    	File imgDir = new File(filePath+File.separator+targetName);
+    	if (!imgDir.exists()) {
+    		imgDir.mkdirs(); //폴더 생성합니다.
+    	}        	
+    	
+        // 실제 파일명_현재시간 으로 rename
+        StringBuilder sb = new StringBuilder();
+        //X00353-204.jpg
+        sb.append(targetName).append("-").append(fileNameWithoutExtension).append(".").append(fileExtension);
+        String realFileName = sb.toString();
+        
+        try {
+            
+            // PNG 파일 로드
+            newFile = new File(targetFilePath + File.separator + realFileName);
+            file.transferTo(newFile);
+            
+            attachFile = new AttachFile();
+            attachFile.setFileExt(fileExtension);
+            attachFile.setFilePath(filePath);
+            attachFile.setOriginalFileName(originalFileName);
+            attachFile.setSaveFileName(realFileName);
+            attachFile.setFileSize((int) file.getSize());
+        } catch (IllegalStateException e) {
+            throw e;
+        } catch (IOException e) {
+            throw e;
+        }
+        return attachFile;
+	}	
+	
+	@Override
+	public void makeKaistThreedImages(JsonNode jdata) throws Exception {
+		// TODO Auto-generated method stub
+        try {
+        	//ObjectMapper objectMapper = new ObjectMapper();
+            //String bagScanId = objectMapper.writeValueAsString(jdata.get("bagScanId")).asText();;
+        	String fileName = jdata.get("unitId").asText();
+        	String responsePath = KAIST_RESPONSE_IMG_REQUEST_PATH + File.separator + fileName;
+        	String fileExtension = ".png";
+        	String fileGifExtension = ".gif";
+            File fileDir = new File(responsePath);
+            // root directory 없으면 생성
+        	if (!fileDir.exists()) {
+        		fileDir.mkdirs(); //폴더 생성합니다.
+        	}        	
+        	
+        	String targetFile = responsePath + File.separator + fileName;
+        	byte[] byteArray = null;
+        	
+        	if(jdata.get("threedGenList")!=null) {
+            	for(int i=0; i < jdata.get("threedGenList").size(); i++) {
+            		
+            		String twodImg = jdata.get("threedGenList").get(i).asText();
+            		byteArray = Base64.getDecoder().decode(twodImg);
+                	FileOutputStream fos = new FileOutputStream(targetFile + "-" + i + fileExtension);
+                	fos.write(byteArray);
+                	fos.close();            		
+            	}        		
+        	}
+        	
+    		String outputh = jdata.get("outputh").asText();
+    		byteArray = Base64.getDecoder().decode(outputh);
+        	//FileOutputStream fos = new FileOutputStream(targetFile + "-" + "3d" + fileExtension);
+        	//fos.write(byteArray);
+        	//fos.close();  
+        	
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                // byte 배열을 FileOutputStream을 사용하여 새로운 파일로 저장
+                FileOutputStream fileOutputStream = new FileOutputStream(new File(targetFile + "-" + "3d" + fileGifExtension));
+                fileOutputStream.write(byteArray);
+                fileOutputStream.close();
+            }
+        	
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
+	}		
 
 }

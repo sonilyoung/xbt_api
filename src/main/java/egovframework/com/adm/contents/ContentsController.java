@@ -1158,7 +1158,7 @@ public class ContentsController {
 			
 			LearningImg li = new LearningImg();
 			li.setBagScanId(params.getBagScanId());
-			LearningImg resultImg = xbtImageService.selectAdmAllBagImg(li);
+			LearningImg resultImg = xbtImageService.selectAdmAllBagImg(li, "xbt");
 			params.setResultImg(resultImg);
 	        return new BaseResponse<XrayImgContents>(params);
         } catch (Exception e) {

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.adm.theory.vo.Theory;
+import egovframework.com.api.edc.vo.ThreedGeneration;
 import egovframework.com.common.vo.LearningImg;
 import egovframework.com.file.vo.AttachFile;
 
@@ -39,10 +40,15 @@ public interface FileStorageService {
 
     AttachFile createTheoryImageFile(String fileNameWithoutExtension, Theory params ,MultipartFile file) throws Exception;
     
-    
     AttachFile createKaistXrayImageFiles(String targetName, String fileNameWithoutExtension, LearningImg params, MultipartFile file) throws Exception;
     
     public void makeKaistSudoImages(JsonNode jdata) throws Exception;
     
-   
+    public void fileCopy() throws Exception;
+    
+    public void makeKaistTwodImages(JsonNode jdata) throws Exception;
+    
+    public AttachFile createKaistThreedImageFiles(String targetName, String fileNameWithoutExtension, ThreedGeneration params, MultipartFile file) throws Exception ;
+    
+    public void makeKaistThreedImages(JsonNode jdata) throws Exception;
 }

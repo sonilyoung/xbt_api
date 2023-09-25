@@ -31,6 +31,7 @@ public class XrayContents{
 	private String updateId;	
 	private String languageCode;	
 	private String searchval;	
+	private String kaistYn;	
 	private byte[] imgReal;//실사
 	private List<XrayContents> paramList;
 	private List<Long> bagConstList;

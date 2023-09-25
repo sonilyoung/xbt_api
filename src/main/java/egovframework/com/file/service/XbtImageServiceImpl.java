@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.adm.theory.vo.Theory;
+import egovframework.com.api.edc.vo.TowdGeneration;
 import egovframework.com.common.vo.LearningImg;
 import egovframework.com.common.vo.LearningMainImg;
 import egovframework.com.global.common.GlobalsProperties;
@@ -85,11 +86,28 @@ public class XbtImageServiceImpl implements XbtImageService {
 					//측면흑백채도219
 					//측면흑백채도220
 	*/
+	
+	//복합물품 xray이미지
+	public static final String XRAY_IMG_PATH = GlobalsProperties.getProperty("xray.img.path");
+	
+	//단품이미지
+	public static final String XRAY_UNITIMG_PATH = GlobalsProperties.getProperty("xray.unitImg.path");
+	
+	//이론이미지
+	public static final String THEORY_IMG_PATH = GlobalsProperties.getProperty("theory.img.path");
+    
+	/*kaist xray API RESPONSE 저장경로*/
+    public static final String KAIST_SUDO_IMG_RESPONSE_PATH = GlobalsProperties.getProperty("kaist.sudo.img.response.path");
+   
+    /*kaist xray API RESPONSE 저장경로*/
+    public static final String KAIST_TWOD_IMG_RESPONSE_PATH = GlobalsProperties.getProperty("kaist.twod.img.response.path"); 
+    
+    
 	@Override
 	public List<LearningProblem> selectLeaningImgList(List<LearningProblem> pList) {
 		// TODO Auto-generated method stub
 		
-    	String xrayPath = GlobalsProperties.getProperty("xray.img.path");
+    	String xrayPath = XRAY_IMG_PATH;
     	List<LearningProblem> result = new ArrayList<LearningProblem>();
     	for(LearningProblem p : pList) {
     		String scanId = p.getBagScanId();	
@@ -139,7 +157,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	public LearningImg selectLeaningImg(LearningImg params) {
 		// TODO Auto-generated method stub
 		
-    	String xrayPath = GlobalsProperties.getProperty("xray.img.path");
+    	String xrayPath = XRAY_IMG_PATH;
     	
     	String scanId = params.getBagScanId();
         String strDirPath = xrayPath+File.separator+scanId; 
@@ -274,7 +292,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	public LearningImg selectPracticeImg(LearningImg params) {
 		// TODO Auto-generated method stub
 		
-    	String xrayPath = GlobalsProperties.getProperty("xray.unitImg.path");
+    	String xrayPath = XRAY_UNITIMG_PATH;
     	
     	String scanId = params.getBagScanId();
         String strDirPath = xrayPath+File.separator+scanId; 
@@ -401,7 +419,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	public LearningImg selectThreedAngle(LearningImg params) {
 		// TODO Auto-generated method stub
 		
-    	String xrayPath = GlobalsProperties.getProperty("xray.unitImg.path");
+    	String xrayPath = XRAY_UNITIMG_PATH;
     	
     	String scanId = params.getUnitId();
         String strDirPath = xrayPath+File.separator+scanId; 
@@ -528,7 +546,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	public LearningMainImg selectCommonLearningImg(LearningImg params) {
 		// TODO Auto-generated method stub
 		LearningMainImg result = new LearningMainImg();
-    	String xrayPath = GlobalsProperties.getProperty("xray.img.path");
+    	String xrayPath = XRAY_IMG_PATH;
     	
     	String scanId = params.getBagScanId();
         String strDirPath = xrayPath+File.separator+scanId; 
@@ -586,7 +604,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	public LearningMainImg selectCommonPracticeImg(LearningImg params) {
 		// TODO Auto-generated method stub
 		LearningMainImg result = new LearningMainImg();
-    	String xrayPath = GlobalsProperties.getProperty("xray.unitImg.path");
+    	String xrayPath = XRAY_UNITIMG_PATH;
     	
     	String scanId = params.getUnitId();
         String strDirPath = xrayPath+File.separator+scanId; 
@@ -634,7 +652,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	@Override
 	public LearningImg selectAdmAllUnitImg(LearningImg params) {
 		// TODO Auto-generated method stub
-		String xrayPath = GlobalsProperties.getProperty("xray.unitImg.path");
+		String xrayPath = XRAY_UNITIMG_PATH;
 		String scanId = params.getUnitId();	
         String strDirPath = xrayPath+File.separator+scanId; 
         File[] fileList = null;
@@ -747,9 +765,16 @@ public class XbtImageServiceImpl implements XbtImageService {
 
 
 	@Override
-	public LearningImg selectAdmAllBagImg(LearningImg params) {
+	public LearningImg selectAdmAllBagImg(LearningImg params, String command) {
 		// TODO Auto-generated method stub
-    	String xrayPath = GlobalsProperties.getProperty("xray.img.path");
+    	String xrayPath = XRAY_IMG_PATH;
+    	if("kaist".equals(command)) {
+    		xrayPath = KAIST_SUDO_IMG_RESPONSE_PATH;
+    	}else {
+    		xrayPath = XRAY_IMG_PATH;
+    	}
+    	
+    	
 		String scanId = params.getBagScanId();	
         String strDirPath = xrayPath+File.separator+scanId; 
         File[] fileList = null;
@@ -868,7 +893,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	@Override
 	public Theory selectTheoryImg(Theory params) {
 		// TODO Auto-generated method stub
-    	String xrayPath = GlobalsProperties.getProperty("theory.img.path");
+    	String xrayPath = THEORY_IMG_PATH;
 		String scanId = params.getQuestionId();	
         String strDirPath = xrayPath+File.separator+scanId; 
         File[] fileList = null;
@@ -905,4 +930,34 @@ public class XbtImageServiceImpl implements XbtImageService {
 		
 	
 
+	@Override
+	public TowdGeneration selectKaistTwodImg(TowdGeneration params) {
+		// TODO Auto-generated method stub
+    	String xrayPath = KAIST_TWOD_IMG_RESPONSE_PATH;
+		String scanId = params.getFileName();	
+        String strDirPath = xrayPath+File.separator+scanId; 
+        File[] fileList = null;
+        List<byte[]> towdGenList = new ArrayList<byte[]>();  
+		fileList = FileReader.ListFile( strDirPath );
+			
+        byte[] fileByte = null;/*이미지*/
+        
+        if(fileList==null) {
+        	return params;
+        }   
+        
+        //결과유기물
+        for( int i = 0; i < fileList.length; i++ ) { 
+        	try {
+        		fileByte = Files.readAllBytes(fileList[i].toPath());
+        			towdGenList.add(fileByte);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        params.setTowdGenList(towdGenList);
+        return params;
+	}	
+		
 }
