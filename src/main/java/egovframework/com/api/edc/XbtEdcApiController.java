@@ -154,9 +154,9 @@ public class XbtEdcApiController {
 		LOGGER.info("슈도이미지가져오기 수행결과:" + result3);
 		
 		if("0000".equals(result3.get("RET_CODE").asText())) {
-			return new BaseResponse<JsonNode>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage(), result3);
+			return new BaseResponse<LearningImg>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage(), params);
 		}else {
-			return new BaseResponse<JsonNode>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage(), result3);
+			return new BaseResponse<LearningImg>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage(), params);
 		}	
 	}		
 	
