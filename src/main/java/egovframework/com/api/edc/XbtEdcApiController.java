@@ -120,7 +120,7 @@ public class XbtEdcApiController {
 	@ResponseBody
 	@PostMapping(value="/sudoImgExcute.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
-	public BaseResponse<JsonNode> sudoImgExcute(
+	public BaseResponse<LearningImg> sudoImgExcute(
 			HttpServletRequest request, HttpServletResponse response
 			,@RequestPart(value = "frontImg", required = true) MultipartFile frontImg
 			,@RequestPart(value = "sideImg", required = true) MultipartFile sideImg
