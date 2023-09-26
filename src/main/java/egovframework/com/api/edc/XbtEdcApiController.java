@@ -120,7 +120,7 @@ public class XbtEdcApiController {
 	@ResponseBody
 	@PostMapping(value="/sudoImgExcute.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
-	public BaseResponse<JsonNode> sudoImgExcute(
+	public BaseResponse<LearningImg> sudoImgExcute(
 			HttpServletRequest request, HttpServletResponse response
 			,@RequestPart(value = "frontImg", required = true) MultipartFile frontImg
 			,@RequestPart(value = "sideImg", required = true) MultipartFile sideImg
@@ -154,9 +154,9 @@ public class XbtEdcApiController {
 		LOGGER.info("슈도이미지가져오기 수행결과:" + result3);
 		
 		if("0000".equals(result3.get("RET_CODE").asText())) {
-			return new BaseResponse<JsonNode>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage());
+			return new BaseResponse<LearningImg>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage(), params);
 		}else {
-			return new BaseResponse<JsonNode>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage());
+			return new BaseResponse<LearningImg>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage(), params);
 		}	
 	}		
 	
