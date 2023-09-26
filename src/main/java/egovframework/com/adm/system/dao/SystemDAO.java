@@ -85,6 +85,10 @@ public class SystemDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectProcessScore", params);
 	}	
 	
+	public XbtScore selectTheoryProcessScore(XbtScore params) {
+		return selectOne(Namespace + ".selectTheoryProcessScore", params);
+	}	
+	
 	public int updateXbtEndScore(XbtScore params) {
 		return update(Namespace + ".updateXbtEndScore", params);
 	}

@@ -152,7 +152,36 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 							}
 
 						}					
-					}			
+					}	
+					
+					XbtScore processTheoryScore = systemService.selectTheoryProcessScore(xs);
+					if(processTheoryScore!=null) {
+						if("Y".equals(processTheoryScore.getTheoryYn()) && "Y".equals(processTheoryScore.getPracticeYn()) && "Y".equals(processTheoryScore.getEvaluationYn())) {
+							
+							 //커트라인비교 추가
+							if(tgtTheoryScore < baseline.getPassTheoryScore()) {//이론평가커트라인비교
+								xs.setPassYn("N");
+							}
+							
+							if(tgtTheoryScore < baseline.getPassTheoryScore()) {
+								systemService.updateXbtEndScore(xs); //과락처리
+							}
+							
+							
+							if(tgtTheoryScore >= baseline.getPassTheoryScore()) {
+								int totalScore = theoryScore;
+								xs.setGainScore(totalScore);
+								 
+								if(totalScore >= baseline.getEndingStdScore()) {
+									xs.setPassYn("Y");
+								}else {
+									xs.setPassYn("N");
+								}
+								systemService.updateXbtEndScore(xs);								
+							}
+
+						}					
+					}						
 					
 					//기간이 지난 차수 ENDING_YN = 'Y'
 					systemService.updateBaselineStatus(xs);

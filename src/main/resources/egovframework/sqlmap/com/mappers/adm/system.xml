@@ -222,6 +222,13 @@
 		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId}
 	</select>		
 	
+	<!-- 교육생첨수처리현황(이론특화) 항공경비 초기교육 (4일 / 30시간) , 항공경비 인증평가교육 (1일 / 4시간) -->
+	<select id="selectTheoryProcessScore" parameterType="egovframework.com.adm.system.vo.XbtScore" resultType="egovframework.com.adm.system.vo.XbtScore">
+		SELECT THEORY_YN, EVALUATION_YN, PRACTICE_YN  FROM XBT_BASELINE_STUDENT_INFO
+		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId}
+		AND EDU_CODE IN (4, 6)
+	</select>		
+	
 	<!-- 최종 점수 처리-->
 	<update id="updateXbtEndScore" parameterType="egovframework.com.adm.system.vo.XbtScore">
 		UPDATE XBT_BASELINE_STUDENT_INFO SET

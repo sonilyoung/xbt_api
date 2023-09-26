@@ -150,6 +150,12 @@ public class SystemServiceImpl implements SystemService {
 		// TODO Auto-generated method stub
 		return systemDAO.selectProcessScore(params);
 	}
+	
+	@Override
+	public XbtScore selectTheoryProcessScore(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.selectTheoryProcessScore(params);
+	}	
 
 	@Override
 	public int updateXbtEndScore(XbtScore params) {
