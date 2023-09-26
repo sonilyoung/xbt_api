@@ -214,4 +214,15 @@ public class LoginStuServiceImpl implements LoginStuService {
     	return repository.getPwdInfo(params);
     }
 
+	@Override
+	public StuLogin selectUserId(StuLogin params) {
+		// TODO Auto-generated method stub
+		return repository.selectUserId(params);
+	}
+
+	@Override
+	public int updateUserPwd(StuLogin params) {
+		// TODO Auto-generated method stub
+		return repository.updateUserPwd(params);
+	}	    
 }

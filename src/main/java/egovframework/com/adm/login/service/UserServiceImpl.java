@@ -14,6 +14,7 @@ import egovframework.com.adm.login.vo.User;
 import egovframework.com.global.exception.CustomBaseException;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.util.AES256Util;
+import egovframework.com.stu.login.vo.StuLogin;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 

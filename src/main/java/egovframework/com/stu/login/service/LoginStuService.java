@@ -35,4 +35,7 @@ public interface LoginStuService {
 	
 	public LoginRequest getPwdInfo(LoginRequest loginRequest);
 	
+	public StuLogin selectUserId(StuLogin params);
+
+	public int updateUserPwd(StuLogin params);
 }

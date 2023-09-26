@@ -50,5 +50,50 @@
 		  FROM XBT_USER  
 		 WHERE USER_ID = #{userId}
 	</select>	
+	
+	<!-- 아이디찿기 -->
+	<select id="selectUserId" parameterType="egovframework.com.stu.login.vo.StuLogin" resultType="egovframework.com.stu.login.vo.StuLogin">
+		 SELECT 
+			USER_NO,
+			USER_ID,
+			USER_NM,
+			USER_PW,
+			AUTH_CD,
+			COMPANY,
+			DEPT,
+			TEL_NO,
+			HP_NO,
+			EMAIL,
+			LOGIN_START,
+			LOGIN_LAST,
+			PW_PRIOR,
+			PW_CHANGE,
+			PW_UPDATE,
+			PW_PERIOD,
+			USE_YN,
+			INSERT_ID,
+			INSERT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE,
+			`POSITION`
+			FROM XBT_STU_USER
+		WHERE HP_NO = #{hpNo} 
+		AND USER_NM = #{userNm}
+		AND USE_YN = 'Y' 
+	</select>	
+	
+	<!-- 비밀번호수정 -->	
+	<update id="updateUserPwd" parameterType="egovframework.com.stu.login.vo.StuLogin">
+		UPDATE XBT_STU_USER SET 
+			USER_PW = #{userPw},
+			PW_PRIOR = #{pwPrior},
+			UPDATE_ID = #{userId},
+			UPDATE_DATE = now(),
+			PW_CHANGE = now()
+		WHERE USER_ID = #{userId}
+		AND HP_NO = #{hpNo} 
+		AND USER_NM = #{userNm}
+		AND USE_YN = 'Y' 	 
+	</update>	
 
 </mapper>

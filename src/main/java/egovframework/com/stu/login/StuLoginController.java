@@ -1,6 +1,10 @@
 
 package egovframework.com.stu.login;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -13,17 +17,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.service.UserService;
-import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.login.vo.LoginRequest;
 import egovframework.com.adm.login.vo.User;
 import egovframework.com.cmm.vo.TokenResponse;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.exception.CustomBaseException;
+import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
+import egovframework.com.global.util.AES256Util;
 import egovframework.com.stu.login.service.LoginStuService;
 import egovframework.com.stu.login.vo.StuLogin;
 import io.swagger.annotations.Api;
@@ -142,33 +146,66 @@ public class StuLoginController {
         return new BaseResponse<Long>(cnt);
     }
     
-    @PostMapping("/login/passwd/change.do")
-    @ApiOperation(value = "User Confirmation", notes = "This function checks the user's information to make sure that it is a registered user.")
-    public BaseResponse<Boolean> resetPwd(HttpServletRequest request, @RequestBody User parameter) {
+    /**
+     * 아이디찿기
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectUserId.do")
+    @ApiOperation(value = "selectUserId", notes = "selectUserId")
+    public BaseResponse<StuLogin> getLoginInfo(HttpServletRequest request, @RequestBody StuLogin params) {
+    	
+        if (StringUtils.isEmpty(params.getUserNm())) {
+        	return new BaseResponse<StuLogin>(BaseResponseCode.PARAMS_ERROR, "UserNm" + BaseApiMessage.REQUIRED.getCode());
+        }    	
+    	
+        if (StringUtils.isEmpty(params.getHpNo())) {
+        	return new BaseResponse<StuLogin>(BaseResponseCode.PARAMS_ERROR, "HpNo" + BaseApiMessage.REQUIRED.getCode());
+        }    
         
-    	 if (ObjectUtils.isEmpty(parameter.getUserId())) {
-             throw new CustomBaseException(BaseResponseCode.INPUT_CHECK_ERROR,
-                     new String[] {"userId", "사용자 ID"});
+		try {
+			StuLogin login = loginStuService.selectUserId(params);
+	        return new BaseResponse<StuLogin>(login);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+        	throw new BaseException(BaseResponseCode.AUTH_FAIL);
+        }
+    }      
+    
+    
+    @PostMapping("/updateUserPwd.do")
+    @ApiOperation(value = "updateUserPwd", notes = "updateUserPwd.")
+    public BaseResponse<StuLogin> resetPwd(HttpServletRequest request, @RequestBody StuLogin params) throws UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException {
+        
+    	 if (StringUtils.isEmpty(params.getUserId())) {
+    		 return new BaseResponse<StuLogin>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
          }
     	
-        if (!StringUtils.hasText(parameter.getChangePwd())) {
-            throw new CustomBaseException(BaseResponseCode.INPUT_CHECK_ERROR,
-                    new String[] {"changePwd", "변경할 비밀번호"});
+        if (StringUtils.isEmpty(params.getUserPw())) {
+        	return new BaseResponse<StuLogin>(BaseResponseCode.PARAMS_ERROR, "UserPw" + BaseApiMessage.REQUIRED.getCode());
         }
         
-        if (!StringUtils.hasText(parameter.getConfirmPwd())) {
-            throw new CustomBaseException(BaseResponseCode.INPUT_CHECK_ERROR,
-                    new String[] {"confirmPwd", "비밀번호 확인"});
-        }
+        if (StringUtils.isEmpty(params.getUserNm())) {
+        	return new BaseResponse<StuLogin>(BaseResponseCode.PARAMS_ERROR, "UserNm" + BaseApiMessage.REQUIRED.getCode());
+        }    	
+    	
+        if (StringUtils.isEmpty(params.getHpNo())) {
+        	return new BaseResponse<StuLogin>(BaseResponseCode.PARAMS_ERROR, "HpNo" + BaseApiMessage.REQUIRED.getCode());
+        }            
         
-        User param = new User();
-        param.setUserId(parameter.getUserId());
-        param.setChangePwd(parameter.getChangePwd());
-        param.setConfirmPwd(parameter.getConfirmPwd());
+        StuLogin login = loginStuService.selectUserId(params);
+        params.setPwPrior(login.getUserPw());
         
+        AES256Util aesUtil = new AES256Util();
+        String pwEnc = aesUtil.encrypt(params.getUserPw());
+        params.setUserPw(pwEnc);
+        int result = loginStuService.updateUserPwd(params);
         
-        userService.modifyPwd(param);
-        
-        return new BaseResponse<Boolean>(true);
+		if(result>0) {
+			return new BaseResponse<StuLogin>(BaseResponseCode.UPDATE_SUCCESS, BaseResponseCode.UPDATE_SUCCESS.getMessage());
+		}else {
+			return new BaseResponse<StuLogin>(BaseResponseCode.UPDATE_ERROR, BaseResponseCode.UPDATE_ERROR.getMessage());
+		}
     }
 }

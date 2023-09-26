@@ -47,4 +47,11 @@ public class UserStuManageDAO extends EgovAbstractMapper {
 		return selectOne(Namespace + ".getPwdInfo", params);
 	}
 
+	public StuLogin selectUserId(StuLogin params) {
+		return selectOne(Namespace + ".selectUserId", params);
+	}
+	
+	public int updateUserPwd(StuLogin params) {
+		return update(Namespace + ".updateUserPwd", params);
+	}	
 }
