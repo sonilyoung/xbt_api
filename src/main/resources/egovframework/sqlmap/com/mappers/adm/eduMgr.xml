@@ -23,7 +23,11 @@
 			,ENDING_PROCESS_END_YN /*수료완료유무*/
 			,PRACTICE_TOTAL_SCORE /*실기가중치*/
 			,EVALUATION_TOTAL_SCORE	/*평가가중치*/		
-			,THEORY_TOTAL_SCORE /*이론평가가중치*/		
+			,THEORY_TOTAL_SCORE /*이론평가가중치*/	
+			,PRACTICE_HUMAN_TOTAL_SCORE
+			,PRACTICE_CAR_TOTAL_SCORE
+			,PRACTICE_HUMAN_SCORE
+			,PRACTICE_CAR_SCORE	
 			,INSERT_DATE
 			,INSERT_ID
 			,UPDATE_DATE
@@ -66,6 +70,10 @@
 			,IFNULL(PRACTICE_TOTAL_SCORE, 0)AS practiceTotalScore /*실기가중치*/
 			,IFNULL(EVALUATION_TOTAL_SCORE, 0)AS evaluationTotalScore	/*평가가중치*/		
 			,IFNULL(THEORY_TOTAL_SCORE, 0)AS theoryTotalScore /*이론평가가중치*/		
+			,IFNULL(PRACTICE_HUMAN_TOTAL_SCORE, 0)AS practiceHumanTotalScore
+			,IFNULL(PRACTICE_CAR_TOTAL_SCORE, 0)AS practiceCarTotalScore
+			,IFNULL(PRACTICE_HUMAN_SCORE, 0)AS practiceHumanScore
+			,IFNULL(PRACTICE_CAR_SCORE, 0)AS practiceCarScore				
 			,INSERT_DATE
 			,INSERT_ID
 			,UPDATE_DATE
@@ -94,6 +102,10 @@
 			PRACTICE_TOTAL_SCORE,
 			EVALUATION_TOTAL_SCORE,
 			THEORY_TOTAL_SCORE,
+			PRACTICE_HUMAN_TOTAL_SCORE,
+			PRACTICE_CAR_TOTAL_SCORE,
+			PRACTICE_HUMAN_SCORE,
+			PRACTICE_CAR_SCORE,			
 			INSERT_DATE,
 			INSERT_ID,
 			TEACHER_ID
@@ -114,6 +126,10 @@
 			,#{practiceTotalScore}
 			,#{evaluationTotalScore}
 			,#{theoryTotalScore}
+			,#{practiceHumanTotalScore}
+			,#{practiceCarTotalScore}
+			,#{practiceHumanScore}
+			,#{practiceCarScore}			
 			,now()
 			,#{insertId}
 			,#{teacherId}
@@ -139,6 +155,10 @@
 			PRACTICE_TOTAL_SCORE = #{practiceTotalScore},
 			EVALUATION_TOTAL_SCORE = #{evaluationTotalScore},
 			THEORY_TOTAL_SCORE = #{theoryTotalScore},
+			PRACTICE_HUMAN_TOTAL_SCORE = #{practiceHumanTotalScore},
+			PRACTICE_CAR_TOTAL_SCORE = #{practiceCarTotalScore},
+			PRACTICE_HUMAN_SCORE = #{practiceHumanScore},
+			PRACTICE_CAR_SCORE = #{practiceCarScore},			
 			STUDY_LVL = #{studyLvl},
 			UPDATE_DATE = #{insertId},
 			UPDATE_ID = now(),

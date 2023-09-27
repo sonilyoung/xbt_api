@@ -213,13 +213,13 @@ public class UserMgrController {
     }         
     
     /**
-     * 차수 교육생 수정
+     * 교육생 실기점수 업데이트
      * 
      * @param param
      * @return Company
      */
     @PostMapping("/updateBaselineUser.do")
-    @ApiOperation(value = "차수 교육생 수정", notes = "차수 교육생 수정.")
+    @ApiOperation(value = "교육생 실기점수 업데이트", notes = "교육생 실기점수 업데이트")
     public BaseResponse<UserBaseline> updateBaselineUser(HttpServletRequest request, @RequestBody UserBaseline params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
@@ -231,11 +231,19 @@ public class UserMgrController {
 		}		
 		
 		if(StringUtils.isEmpty(params.getUserId())){				
-			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		if(StringUtils.isEmpty(params.getPracticeScore())){				
-			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
+			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "PracticeScore" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getPracticeHumanScore())){				
+			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "PracticeHumanScore" + BaseApiMessage.REQUIRED.getCode());
+		}
+		
+		if(StringUtils.isEmpty(params.getPracticeCarScore())){				
+			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "PracticeCarScore" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
 		try {
@@ -249,6 +257,15 @@ public class UserMgrController {
 				int practiceScore = (params.getPracticeScore() * baseline.getPracticeTotalScore())/100;
 				params.setPracticeBeforeScore(params.getPracticeScore());
 				params.setPracticeScore(practiceScore);
+				
+				int practiceHumanScore = (params.getPracticeHumanScore() * baseline.getPracticeHumanTotalScore())/100;
+				params.setPracticeBeforeHumanScore(params.getPracticeHumanScore());
+				params.setPracticeHumanScore(practiceHumanScore);
+				
+				int practiceCarScore = (params.getPracticeCarScore() * baseline.getPracticeCarTotalScore())/100;
+				params.setPracticeBeforeCarScore(params.getPracticeCarScore());
+				params.setPracticeCarScore(practiceCarScore);				
+				
 				//강사등록
 				result = userMgrService.updateBaselineUser(params);
 			}

@@ -586,10 +586,12 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 
 	
 	@Override
-	public JsonNode threedImgExcute(ThreedGeneration oj, ApiLogin al, MultipartFile frontImg, MultipartFile sideImg) throws Exception {
-		
+	public Map<String, Object> threedImgExcute(ThreedGeneration oj, ApiLogin al, MultipartFile frontImg, MultipartFile sideImg) throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		AttachFile af1 = fileStorageService.createKaistThreedImageFiles(oj.getUnitId(), "F", oj, frontImg);
 		AttachFile af2 = fileStorageService.createKaistThreedImageFiles(oj.getUnitId(), "S", oj, sideImg);
+		resultMap.put("frontImg", af1);
+		resultMap.put("sideImg", af2);
 		
 		//1.정면이미지전송
 		InetAddress inetAddress = InetAddress.getLocalHost();
@@ -625,7 +627,7 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 				
 		
 		insertApiLog(apiLog);		
-		return json;
+		return resultMap;
 	}	
 	
 	@Override

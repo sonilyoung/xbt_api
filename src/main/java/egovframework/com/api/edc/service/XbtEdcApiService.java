@@ -1,6 +1,7 @@
 package egovframework.com.api.edc.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,7 +40,7 @@ public interface XbtEdcApiService {
 	public JsonNode selectTwodImg(TowdGeneration oj, ApiLogin al) throws Exception;
 	
 	/*3d생성*/
-	public JsonNode threedImgExcute(ThreedGeneration oj, ApiLogin al, MultipartFile frontImg, MultipartFile sideImg) throws Exception;
+	public Map<String, Object> threedImgExcute(ThreedGeneration oj, ApiLogin al, MultipartFile frontImg, MultipartFile sideImg) throws Exception;
 	
 	/*3d 이미지 전송*/
 	public String transThreedImages(ThreedGeneration oj, ApiLogin al, AttachFile af1, AttachFile af2) throws Exception;

@@ -31,6 +31,11 @@ public class Baseline {
 	private int passTheoryScore;
 	private int passPracticeScore;	
 	
+	private int practiceHumanTotalScore;
+	private int practiceCarTotalScore;
+	private int practiceHumanScore;
+	private int practiceCarScore;
+	
 	private String timeDiff;
 	private String insertDate;
 	private String insertId;

@@ -35,6 +35,14 @@ public class UserBaseline {
 	private int evaluationTotalScore;
 	private int theoryTotalScore;
 	private int practiceTotalScore;
+	
+	private int practiceHumanTotalScore;
+	private int practiceCarTotalScore;
+	private int practiceHumanScore;
+	private int practiceCarScore;	
+	private int practiceBeforeHumanScore;
+	private int practiceBeforeCarScore;
+	
 	private String searchval;
 	
 	

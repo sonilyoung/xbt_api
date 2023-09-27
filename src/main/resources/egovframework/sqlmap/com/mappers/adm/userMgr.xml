@@ -440,6 +440,10 @@
 		SET
 		PRACTICE_BEFORE_SCORE = #{practiceBeforeScore}, 
 		PRACTICE_SCORE = #{practiceScore},
+		PRACTICE_CAR_BEFORE_SCORE = #{practiceCarBeforeScore},
+		PRACTICE_CAR_SCORE = #{practiceCarScore},
+		PRACTICE_HUMAN_BEFORE_SCORE = #{practiceHumanBeforeScore},
+		PRACTICE_HUMAN_SCORE = #{practiceHumanScore},
 		PRACTICE_YN = 'Y'
 		WHERE USER_ID = #{userId}
 		AND PROC_CD = #{procCd}			

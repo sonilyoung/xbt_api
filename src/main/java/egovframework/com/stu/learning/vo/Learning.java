@@ -39,6 +39,12 @@ public class Learning{
 	private int passScore;
 	private int passTheoryScore;
 	private int passPracticeScore;
+	
+	private int practiceHumanTotalScore;
+	private int practiceCarTotalScore;
+	private int practiceHumanScore;
+	private int practiceCarScore;
+	
 	private int userAverage;
 	private int rightCnt;
 	private int wrongCnt;

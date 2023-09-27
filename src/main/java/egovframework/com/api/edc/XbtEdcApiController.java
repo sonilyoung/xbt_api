@@ -1,5 +1,6 @@
 package egovframework.com.api.edc;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,6 +49,7 @@ import egovframework.com.common.vo.LearningImg;
 import egovframework.com.common.vo.SeqGroupCode;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.file.service.XbtImageService;
+import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.http.BaseApiMessage;
@@ -94,8 +96,6 @@ public class XbtEdcApiController {
     @Autowired
     private XbtImageService xbtImageService;    
 
-    public static final String[] SUDO_IMG_COMMAND = {"cd /home/jun/project/gwansae-unified/color2multi/color2multi_v1/script ; python ../test_PC_multi.py --dataroot /home/jun/project/gwansae-unified/color2multi --input_folder test_images --dataset_mode baggage_multi --name Pix2PixBaggageMulti_230418 --model pix2pix_baggage_multi --gpu_ids 0 --ngf 64 --ndf 16 --batchSize 1 --input_nc 3 --output_nc 27 --which_epoch latest"};
-    
 	//kaist 진행률가져오기
 	@ResponseBody
 	@PostMapping(value="/selectProgressPer.do")
@@ -137,7 +137,8 @@ public class XbtEdcApiController {
 		JsonNode result1 = xbtEdcApiService.sudoImgExcute(params, login, frontImg, sideImg);
 		
 		//카이스트명령어
-		params.setKaistCommand(SUDO_IMG_COMMAND);
+		String[] sudoImgCmd = {"cd /home/jun/project/gwansae-unified/color2multi/color2multi_v1/script ; python ../test_PC_multi.py --dataroot /home/jun/project/gwansae-unified/color2multi --input_folder test_images --dataset_mode baggage_multi --name Pix2PixBaggageMulti_230418 --model pix2pix_baggage_multi --gpu_ids 0 --ngf 64 --ndf 16 --batchSize 1 --input_nc 3 --output_nc 27 --which_epoch latest"};
+		params.setKaistCommand(sudoImgCmd);
 		JsonNode result2 = xbtEdcApiService.commandExcute(params, login);
 		
 		//슈도이미지가져오기
@@ -441,11 +442,25 @@ public class XbtEdcApiController {
 		
 		//3d이미지전송
 		LOGGER.info("3d이미지전송 시작");
-		JsonNode result1 = xbtEdcApiService.threedImgExcute(params, login, frontImg, sideImg);
+		Map<String, Object> result = xbtEdcApiService.threedImgExcute(params, login, frontImg, sideImg);
+		
+		AttachFile af1 = (AttachFile)result.get("frontImg");
+		AttachFile af2 = (AttachFile)result.get("sideImg");
 		
 		//카이스트명령어
 		LOGGER.info("3d이미지전송 카이스트명령어 시작");
-		params.setKaistCommand(SUDO_IMG_COMMAND);
+		String kaistThreedUploadPath = "/home/jun/project/gwansae-unified/3d_generation/demo_data/raw/xbt/";
+		String[] threedImgCmd = {
+			"cd /home/jun/project/gwansae-unified/3d_generation ;" +
+			"rm -r workdir ;" +
+			"DISPLAY= python main.py " +
+			kaistThreedUploadPath+ params.getUnitId() + File.separator + af1.getSaveFileName()+" " +
+			kaistThreedUploadPath+ params.getUnitId() + File.separator + af2.getSaveFileName()+" " +
+			kaistThreedUploadPath+ params.getUnitId() + File.separator + af1.getSaveFileName()+" " +
+			kaistThreedUploadPath+ params.getUnitId() + File.separator + af2.getSaveFileName()+" " +
+			"workdir"
+		};
+		params.setKaistCommand(threedImgCmd);
 		JsonNode result2 = xbtEdcApiService.commandThreedGenExcute(params, login);
 		
 		if("0000".equals(result2.get("RET_CODE").asText())) {
