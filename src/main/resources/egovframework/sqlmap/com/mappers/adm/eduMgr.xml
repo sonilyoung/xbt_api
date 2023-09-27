@@ -70,10 +70,10 @@
 			,IFNULL(PRACTICE_TOTAL_SCORE, 0)AS practiceTotalScore /*실기가중치*/
 			,IFNULL(EVALUATION_TOTAL_SCORE, 0)AS evaluationTotalScore	/*평가가중치*/		
 			,IFNULL(THEORY_TOTAL_SCORE, 0)AS theoryTotalScore /*이론평가가중치*/		
-			,IFNULL(PRACTICE_HUMAN_TOTAL_SCORE, 0)AS practiceHumanTotalScore
-			,IFNULL(PRACTICE_CAR_TOTAL_SCORE, 0)AS practiceCarTotalScore
-			,IFNULL(PRACTICE_HUMAN_SCORE, 0)AS practiceHumanScore
-			,IFNULL(PRACTICE_CAR_SCORE, 0)AS practiceCarScore				
+			,IFNULL(PRACTICE_HUMAN_TOTAL_SCORE, 0)AS practiceHumanTotalScore /*대인실기커트라인기가중치*/
+			,IFNULL(PRACTICE_CAR_TOTAL_SCORE, 0)AS practiceCarTotalScore /*차량실기커트라인기가중치*/
+			,IFNULL(PRACTICE_HUMAN_SCORE, 0)AS practiceHumanScore /*대인실기커트라인*/
+			,IFNULL(PRACTICE_CAR_SCORE, 0)AS practiceCarScore	/*대인실기커트라인*/			
 			,INSERT_DATE
 			,INSERT_ID
 			,UPDATE_DATE

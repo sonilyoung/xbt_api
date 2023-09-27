@@ -198,6 +198,8 @@ public class UserMgrController {
 			if(practice==null) {
 				practice = new UserBaseline();
 				practice.setPracticeTotalScore(basicInfo.getPracticeTotalScore());
+				practice.setPracticeCarTotalScore(basicInfo.getPracticeCarTotalScore());
+				practice.setPracticeHumanTotalScore(basicInfo.getPracticeHumanTotalScore());
 			}
 			
 			UserBaselinePop result = new UserBaselinePop();
@@ -259,15 +261,19 @@ public class UserMgrController {
 				params.setPracticeScore(practiceScore);
 				
 				int practiceHumanScore = (params.getPracticeHumanScore() * baseline.getPracticeHumanTotalScore())/100;
-				params.setPracticeBeforeHumanScore(params.getPracticeHumanScore());
+				params.setPracticeHumanBeforeScore(params.getPracticeHumanScore());
 				params.setPracticeHumanScore(practiceHumanScore);
 				
 				int practiceCarScore = (params.getPracticeCarScore() * baseline.getPracticeCarTotalScore())/100;
-				params.setPracticeBeforeCarScore(params.getPracticeCarScore());
+				params.setPracticeCarBeforeScore(params.getPracticeCarScore());
 				params.setPracticeCarScore(practiceCarScore);				
 				
 				//강사등록
 				result = userMgrService.updateBaselineUser(params);
+				
+				params.setPracticeScore(params.getPracticeBeforeScore());
+				params.setPracticeHumanScore(params.getPracticeHumanBeforeScore());
+				params.setPracticeCarScore(params.getPracticeCarBeforeScore());		
 			}
 			
 			if(result>0) {

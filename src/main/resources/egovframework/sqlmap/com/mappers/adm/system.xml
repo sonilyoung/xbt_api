@@ -183,7 +183,12 @@
 	
 	<!-- 실습 점수비중 정보 -->
 	<select id="selectPracticeScore" parameterType="egovframework.com.adm.system.vo.XbtScore" resultType="egovframework.com.adm.system.vo.XbtScore">
-		SELECT USER_ID ,IFNULL(PRACTICE_SCORE, 0)AS practiceScore FROM XBT_BASELINE_STUDENT_INFO 
+		SELECT 
+			USER_ID ,
+			IFNULL(PRACTICE_SCORE, 0)AS practiceScore,
+			IFNULL(PRACTICE_CAR_SCORE, 0)AS practiceCarScore,
+			IFNULL(PRACTICE_HUMAN_SCORE, 0)AS practiceHumanScore
+		FROM XBT_BASELINE_STUDENT_INFO 
 		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId} AND PRACTICE_YN = 'Y' LIMIT 1
 	</select>		
 	

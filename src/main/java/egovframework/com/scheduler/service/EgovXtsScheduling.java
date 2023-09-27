@@ -74,15 +74,22 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 				if(baseline!=null) {
 					//이론점수
 					XbtScore theory = systemService.selectTheoryScore(xs);
+					
 					//비중반영전
 					int tgtTheoryScore = 0;
 					int tgtEvaluationScore = 0;
-					int tgtPracticeScore = 0;					
+					int tgtPracticeScore = 0;//일반실기점수
+					int tgtpracticeCarScore = 0;//차량실기점수
+					int tgtpracticeHumanScore = 0;//대인실기점수					
 					
 					//비중반영후
 					int theoryScore = 0;
 					int evaluationScore = 0;
-					int practiceScore = 0;
+					int practiceScore = 0;//일반실기점수 비중반영
+					int practiceCarScore = 0;//차량실기점수 비중반영
+					int practiceHumanScore = 0;//대인실기점수 비중반영
+					
+					
 					if(theory!=null) {
 						tgtTheoryScore = theory.getGainScore();
 						theoryScore = Math.round((theory.getGainScore()*baseline.getTheoryTotalScore())/100);
@@ -109,79 +116,148 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 						systemService.updateXbtScore(xs);
 					}
 					
-					//실습점수
-					XbtScore practiceTotalScore = systemService.selectPracticeScore(xs);
-					if(practiceTotalScore!=null) {
-						tgtPracticeScore = practiceTotalScore.getPracticeScore();
-						practiceScore =  Math.round((practiceTotalScore.getPracticeScore()*baseline.getPracticeTotalScore())/100);
-						LOGGER.info("==============실습==============");
-						LOGGER.info("교육생 evaluationScore:" + practiceTotalScore.getUserId() + " : " + practiceTotalScore.getPracticeScore());
-						LOGGER.info("설정 evaluationScore:"+ baseline.getPracticeTotalScore());
-						LOGGER.info("evaluationScore:"+ practiceTotalScore.getPracticeScore());					
+
+					//항공경비 초기교육 (5일 / 30시간) (4) , 항공경비 인증평가교육 (1일 / 4시간) (6)
+					if("4".equals(xs.getEduCode()) || "6".equals(xs.getEduCode())){ 
+						//실습점수
+						XbtScore practiceTotalScore = systemService.selectPracticeScore(xs);
+						
+						if("4".equals(xs.getEduCode())){
+							if(practiceTotalScore!=null) {
+								tgtpracticeHumanScore = practiceTotalScore.getPracticeHumanScore();
+								
+								practiceHumanScore =  Math.round((practiceTotalScore.getPracticeHumanScore()*baseline.getPracticeHumanTotalScore())/100);
+								LOGGER.info("==============항공경비 초기교육 (5일 / 30시간) (4) 실습==============");
+								LOGGER.info("practiceHumanScore:"+ practiceHumanScore);					
+							}								
+						}
+						
+						
+						if("6".equals(xs.getEduCode())){
+							if(practiceTotalScore!=null) {
+								tgtpracticeCarScore = practiceTotalScore.getPracticeCarScore();
+								tgtpracticeHumanScore = practiceTotalScore.getPracticeHumanScore();
+								
+								practiceCarScore =  Math.round((practiceTotalScore.getPracticeCarScore()*baseline.getPracticeCarTotalScore())/100);
+								practiceHumanScore =  Math.round((practiceTotalScore.getPracticeHumanScore()*baseline.getPracticeHumanTotalScore())/100);
+								LOGGER.info("==============항공경비 인증평가교육 (1일 / 4시간) (6) 실습==============");
+								LOGGER.info("practiceCarScore:"+ practiceCarScore);
+								LOGGER.info("practiceHumanScore:"+ practiceHumanScore);					
+							}								
+						}
+											
+						
+						
+						XbtScore processTheoryScore = systemService.selectTheoryProcessScore(xs);
+						if(processTheoryScore!=null) {
+							if("Y".equals(processTheoryScore.getTheoryYn()) && "Y".equals(processTheoryScore.getPracticeYn())) {
+								
+								/*
+								 *  항공경비 초기교육 (5일 / 30시간) (4)
+									이론 90점            - 커트라인 80점
+									대인 10점 (실기평가)    - 커트라인 80점
+								 */
+								/*
+									항공경비 인증평가교육 (1일 / 4시간) (6)
+									이론 90점            - 커트라인 80점
+									대인 10점 (실기평가)    - 커트라인 80점
+									차량 10점 (실기평가)    - 커트라인 80점
+								 */								
+								
+								if("4".equals(xs.getEduCode())){
+									 //커트라인비교 추가
+									if(tgtTheoryScore < baseline.getPassTheoryScore()) {//이론평가커트라인비교
+										xs.setPassYn("N");
+									}else if(practiceHumanScore < baseline.getPracticeHumanScore()) {//대인실기커트라인비교
+										xs.setPassYn("N");	
+									}									
+								}
+								
+								if("6".equals(xs.getEduCode())){
+									 //커트라인비교 추가
+									if(tgtTheoryScore < baseline.getPassTheoryScore()) {//이론평가커트라인비교
+										xs.setPassYn("N");
+									}else if(practiceCarScore < baseline.getPracticeCarScore()) {//차량실기커트라인비교
+										xs.setPassYn("N");
+									}else if(practiceHumanScore < baseline.getPracticeHumanScore()) {//대인실기커트라인비교
+										xs.setPassYn("N");	
+									}									
+								}
+								
+								if(tgtTheoryScore < baseline.getPassTheoryScore()) {
+									systemService.updateXbtEndScore(xs); //과락처리
+								}
+								
+								
+								if(tgtTheoryScore >= baseline.getPassTheoryScore()) {
+									int totalScore = 0;
+									
+									if("4".equals(xs.getEduCode())){
+										totalScore = theoryScore + practiceHumanScore;
+									}
+									
+									if("6".equals(xs.getEduCode())){
+										totalScore = theoryScore + practiceHumanScore + practiceCarScore;
+									}
+									
+									xs.setGainScore(totalScore);
+									 
+									if(totalScore >= baseline.getEndingStdScore()) {
+										xs.setPassYn("Y");
+									}else {
+										xs.setPassYn("N");
+									}
+									systemService.updateXbtEndScore(xs);								
+								}
+
+							}					
+						}							
+					}else { //일반교육생
+						//실습점수
+						XbtScore practiceTotalScore = systemService.selectPracticeScore(xs);
+						if(practiceTotalScore!=null) {
+							tgtPracticeScore = practiceTotalScore.getPracticeScore();
+							practiceScore =  Math.round((practiceTotalScore.getPracticeScore()*baseline.getPracticeTotalScore())/100);
+							LOGGER.info("==============실습==============");
+							LOGGER.info("교육생 evaluationScore:" + practiceTotalScore.getUserId() + " : " + practiceTotalScore.getPracticeScore());
+							LOGGER.info("설정 evaluationScore:"+ baseline.getPracticeTotalScore());
+							LOGGER.info("evaluationScore:"+ practiceTotalScore.getPracticeScore());					
+						}						
+						
+						
+						XbtScore processScore = systemService.selectProcessScore(xs);
+						if(processScore!=null) {
+							if("Y".equals(processScore.getTheoryYn()) && "Y".equals(processScore.getPracticeYn()) && "Y".equals(processScore.getEvaluationYn())) {
+								
+								 //커트라인비교 추가
+								if(tgtEvaluationScore < baseline.getPassScore()) {//평가커트라인비교
+									xs.setPassYn("N");
+								}else if(tgtTheoryScore < baseline.getPassTheoryScore()) {//이론평가커트라인비교
+									xs.setPassYn("N");
+								}else if(tgtPracticeScore < baseline.getPassPracticeScore()) {//실기커트라인비교
+									xs.setPassYn("N");	
+								}
+								
+								if(tgtEvaluationScore < baseline.getPassScore() || tgtTheoryScore < baseline.getPassTheoryScore() || tgtPracticeScore < baseline.getPassPracticeScore()) {
+									systemService.updateXbtEndScore(xs); //과락처리
+								}
+								
+								
+								if(tgtEvaluationScore >= baseline.getPassScore() && tgtTheoryScore >= baseline.getPassTheoryScore() && tgtPracticeScore >= baseline.getPassPracticeScore()) {
+									int totalScore = theoryScore + evaluationScore + practiceScore;
+									xs.setGainScore(totalScore);
+									 
+									if(totalScore >= baseline.getEndingStdScore()) {
+										xs.setPassYn("Y");
+									}else {
+										xs.setPassYn("N");
+									}
+									systemService.updateXbtEndScore(xs);								
+								}
+
+							}					
+						}							
 					}
-
-					
-					XbtScore processScore = systemService.selectProcessScore(xs);
-					if(processScore!=null) {
-						if("Y".equals(processScore.getTheoryYn()) && "Y".equals(processScore.getPracticeYn()) && "Y".equals(processScore.getEvaluationYn())) {
-							
-							 //커트라인비교 추가
-							if(tgtEvaluationScore < baseline.getPassScore()) {//평가커트라인비교
-								xs.setPassYn("N");
-							}else if(tgtTheoryScore < baseline.getPassTheoryScore()) {//이론평가커트라인비교
-								xs.setPassYn("N");
-							}else if(tgtPracticeScore < baseline.getPassPracticeScore()) {//실기커트라인비교
-								xs.setPassYn("N");	
-							}
-							
-							if(tgtEvaluationScore < baseline.getPassScore() || tgtTheoryScore < baseline.getPassTheoryScore() || tgtPracticeScore < baseline.getPassPracticeScore()) {
-								systemService.updateXbtEndScore(xs); //과락처리
-							}
-							
-							
-							if(tgtEvaluationScore >= baseline.getPassScore() && tgtTheoryScore >= baseline.getPassTheoryScore() && tgtPracticeScore >= baseline.getPassPracticeScore()) {
-								int totalScore = theoryScore + evaluationScore + practiceScore;
-								xs.setGainScore(totalScore);
-								 
-								if(totalScore >= baseline.getEndingStdScore()) {
-									xs.setPassYn("Y");
-								}else {
-									xs.setPassYn("N");
-								}
-								systemService.updateXbtEndScore(xs);								
-							}
-
-						}					
-					}	
-					
-					XbtScore processTheoryScore = systemService.selectTheoryProcessScore(xs);
-					if(processTheoryScore!=null) {
-						if("Y".equals(processTheoryScore.getTheoryYn()) && "Y".equals(processTheoryScore.getPracticeYn()) && "Y".equals(processTheoryScore.getEvaluationYn())) {
-							
-							 //커트라인비교 추가
-							if(tgtTheoryScore < baseline.getPassTheoryScore()) {//이론평가커트라인비교
-								xs.setPassYn("N");
-							}
-							
-							if(tgtTheoryScore < baseline.getPassTheoryScore()) {
-								systemService.updateXbtEndScore(xs); //과락처리
-							}
-							
-							
-							if(tgtTheoryScore >= baseline.getPassTheoryScore()) {
-								int totalScore = theoryScore;
-								xs.setGainScore(totalScore);
-								 
-								if(totalScore >= baseline.getEndingStdScore()) {
-									xs.setPassYn("Y");
-								}else {
-									xs.setPassYn("N");
-								}
-								systemService.updateXbtEndScore(xs);								
-							}
-
-						}					
-					}						
 					
 					//기간이 지난 차수 ENDING_YN = 'Y'
 					systemService.updateBaselineStatus(xs);

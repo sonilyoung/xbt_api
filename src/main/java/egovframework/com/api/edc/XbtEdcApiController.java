@@ -98,7 +98,7 @@ public class XbtEdcApiController {
 
 	//kaist 진행률가져오기
 	@ResponseBody
-	@PostMapping(value="/selectProgressPer.do")
+	@PostMapping(value="/selectSudoProgress.do")
 	public BaseResponse<ApiLog> selectProgressPer(
 			HttpServletRequest request, HttpServletResponse response
 			,@RequestBody ApiLog params) throws Exception {
@@ -111,6 +111,19 @@ public class XbtEdcApiController {
 		if(StringUtils.isEmpty(params.getSeqId())){				
 			return new BaseResponse<ApiLog>(BaseResponseCode.PARAMS_ERROR, "SeqId" + BaseApiMessage.REQUIRED.getCode());
 		}		
+		
+		//슈도이미지가져오기
+		LearningImg li = new LearningImg();
+		li.setBagScanId(params.getSeqId());
+		ApiLogin aipLogin = apiLoginService.createToken(request);
+		JsonNode result3 = xbtEdcApiService.selectSudoImg(li, aipLogin);
+		
+		XrayContents xc = new XrayContents();
+		xc.setBagScanId(params.getSeqId());
+		xc.setStudyLvl("1");
+		xc.setInsertId(aipLogin.getLoginId()); 
+		xbtEdcApiService.insertKaistXrayContents(xc);
+		LOGGER.info("슈도이미지가져오기 수행결과:" + result3);		
 		
 		ApiLog ai = xbtEdcApiService.selectProgressPer(params);
 		return new BaseResponse<ApiLog>(ai);		
@@ -137,24 +150,18 @@ public class XbtEdcApiController {
 		JsonNode result1 = xbtEdcApiService.sudoImgExcute(params, login, frontImg, sideImg);
 		
 		//카이스트명령어
-		String[] sudoImgCmd = {"cd /home/jun/project/gwansae-unified/color2multi/color2multi_v1/script ; python ../test_PC_multi.py --dataroot /home/jun/project/gwansae-unified/color2multi --input_folder test_images --dataset_mode baggage_multi --name Pix2PixBaggageMulti_230418 --model pix2pix_baggage_multi --gpu_ids 0 --ngf 64 --ndf 16 --batchSize 1 --input_nc 3 --output_nc 27 --which_epoch latest"};
+		String[] sudoImgCmd = {
+				"cd /home/jun/project/gwansae-unified/color2multi/color2multi_v1/script ; "
+				+ "python ../test_PC_multi.py --dataroot /home/jun/project/gwansae-unified/color2multi --input_folder test_images --dataset_mode baggage_multi --name Pix2PixBaggageMulti_230418 --model pix2pix_baggage_multi --gpu_ids 0 --ngf 64 --ndf 16 --batchSize 1 --input_nc 3 --output_nc 27 --which_epoch latest ;"
+				+ "touch /home/jun/project/gwansae-unified/color2multi/color2multi_v1/script/color2muli.txt"		
+		};
 		params.setKaistCommand(sudoImgCmd);
 		JsonNode result2 = xbtEdcApiService.commandExcute(params, login);
 		
-		//슈도이미지가져오기
-		JsonNode result3 = xbtEdcApiService.selectSudoImg(params, login);
-		
-		XrayContents xc = new XrayContents();
-		xc.setBagScanId(unitId.getSeqId());
-		xc.setStudyLvl("1");
-		xc.setInsertId(login.getLoginId()); 
-		xbtEdcApiService.insertKaistXrayContents(xc);
-		
 		LOGGER.info("정면이미지처리 수행결과:" + result1);
 		LOGGER.info("카이스트명령어 수행결과:" + result2);
-		LOGGER.info("슈도이미지가져오기 수행결과:" + result3);
 		
-		if("0000".equals(result3.get("RET_CODE").asText())) {
+		if("0000".equals(result2.get("RET_CODE").asText())) {
 			return new BaseResponse<LearningImg>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage(), params);
 		}else {
 			return new BaseResponse<LearningImg>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage(), params);

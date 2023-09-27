@@ -24,6 +24,8 @@ public class XbtScore {
 	private int passScore;
 	private int passTheoryScore;
 	private int passPracticeScore;
+	private int practiceHumanScore;
+	private int practiceCarScore;
 	
 	private String practiceYn;
 	private String theoryYn;
