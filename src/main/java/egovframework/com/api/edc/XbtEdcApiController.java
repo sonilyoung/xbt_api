@@ -98,32 +98,19 @@ public class XbtEdcApiController {
 
 	//kaist 진행률가져오기
 	@ResponseBody
-	@PostMapping(value="/selectSudoProgress.do")
+	@PostMapping(value="/selectProgressPer.do")
 	public BaseResponse<ApiLog> selectProgressPer(
 			HttpServletRequest request, HttpServletResponse response
 			,@RequestBody ApiLog params) throws Exception {
 		
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
-		}
+    	//Login login = loginService.getLoginInfo(request);
+		//if (login == null) {
+			//throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		//}
 		
 		if(StringUtils.isEmpty(params.getSeqId())){				
 			return new BaseResponse<ApiLog>(BaseResponseCode.PARAMS_ERROR, "SeqId" + BaseApiMessage.REQUIRED.getCode());
 		}		
-		
-		//슈도이미지가져오기
-		LearningImg li = new LearningImg();
-		li.setBagScanId(params.getSeqId());
-		ApiLogin aipLogin = apiLoginService.createToken(request);
-		JsonNode result3 = xbtEdcApiService.selectSudoImg(li, aipLogin);
-		
-		XrayContents xc = new XrayContents();
-		xc.setBagScanId(params.getSeqId());
-		xc.setStudyLvl("1");
-		xc.setInsertId(aipLogin.getLoginId()); 
-		xbtEdcApiService.insertKaistXrayContents(xc);
-		LOGGER.info("슈도이미지가져오기 수행결과:" + result3);		
 		
 		ApiLog ai = xbtEdcApiService.selectProgressPer(params);
 		return new BaseResponse<ApiLog>(ai);		
@@ -152,10 +139,15 @@ public class XbtEdcApiController {
 		//카이스트명령어
 		String[] sudoImgCmd = {
 				"cd /home/jun/project/gwansae-unified/color2multi/color2multi_v1/script ; "
-				+ "python ../test_PC_multi.py --dataroot /home/jun/project/gwansae-unified/color2multi --input_folder test_images --dataset_mode baggage_multi --name Pix2PixBaggageMulti_230418 --model pix2pix_baggage_multi --gpu_ids 0 --ngf 64 --ndf 16 --batchSize 1 --input_nc 3 --output_nc 27 --which_epoch latest ;"
-				+ "touch /home/jun/project/gwansae-unified/color2multi/color2multi_v1/script/color2muli.txt"		
+				+ "python ../test_PC_multi.py --dataroot /home/jun/project/gwansae-unified/color2multi --input_folder test_images --dataset_mode baggage_multi --name Pix2PixBaggageMulti_230418 --model pix2pix_baggage_multi --gpu_ids 0 --ngf 64 --ndf 16 --batchSize 1 --input_nc 3 --output_nc 27 --which_epoch latest "
+				//+ "touch /home/jun/project/gwansae-unified/color2multi/color/fileY.txt"		
 		};
 		params.setKaistCommand(sudoImgCmd);
+		
+		LOGGER.info("====================================================");
+		LOGGER.info("sudoImgExcute command : " + sudoImgCmd[0]);
+		LOGGER.info("====================================================");
+		
 		JsonNode result2 = xbtEdcApiService.commandExcute(params, login);
 		
 		LOGGER.info("정면이미지처리 수행결과:" + result1);
@@ -179,10 +171,10 @@ public class XbtEdcApiController {
     @ApiOperation(value = "Kaist xray콘텐츠관리-정보관리", notes = "Kaist xray콘텐츠관리-정보관리 조회한다.")
     public BaseResponse<List<XrayContents>> selectKaistXrayContentsList(HttpServletRequest request
     		, @RequestBody XrayContents params) {
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
-		}
+    	//Login login = loginService.getLoginInfo(request);
+		//if (login == null) {
+			//throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		//}
 		
 		try {
 			List<XrayContents> resultList = xbtEdcApiService.selectKaistXrayContentsList(params);
@@ -204,10 +196,10 @@ public class XbtEdcApiController {
     @RequestMapping(value = {"/selectKaistXrayImgContents.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
     @ApiOperation(value = "Kaistxray콘텐츠관리-정보관리상세", notes = "Kaistxray콘텐츠관리-정보관리상세.")    
     public BaseResponse<LearningImg> selectKaistXrayImgContents(HttpServletRequest request, @RequestBody LearningImg params) {
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
-		}
+    	//Login login = loginService.getLoginInfo(request);
+		//if (login == null) {
+			//throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		//}
 		
 		if(StringUtils.isEmpty(params.getBagScanId())){				
 			return new BaseResponse<LearningImg>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getCode());
@@ -233,10 +225,10 @@ public class XbtEdcApiController {
 	public BaseResponse<Integer> syncImages(
 			HttpServletRequest request, HttpServletResponse response, @RequestBody LearningImg params) throws Exception {
 		
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
-		}
+    	//Login login = loginService.getLoginInfo(request);
+		//if (login == null) {
+			//throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		//}
 		
 		try {
 			fileStorageService.fileCopy();
@@ -290,8 +282,6 @@ public class XbtEdcApiController {
 	
 	//kaist 슈도이미지 가져오기 
     /**
-     * 엘폴 api
-     * 
      * @param param
      * @return Company
      */	
@@ -312,9 +302,19 @@ public class XbtEdcApiController {
 			
 			try {
 				//JsonNode resultData = sudoImgService.selectSudoImg(params, login);
-				xbtEdcApiService.selectSudoImg(params, login);
+				JsonNode json = xbtEdcApiService.selectSudoImg(params, login);
 				
-				return new BaseResponse<JsonNode>(BaseResponseCode.GET_IMAGE_SUCCESS, BaseResponseCode.GET_IMAGE_SUCCESS.getMessage());
+				if("0000".equals(json.get("RET_CODE").asText()) && json.get("RET_DATA")!=null) {
+					XrayContents xc = new XrayContents();
+					xc.setBagScanId(params.getBagScanId());
+					xc.setStudyLvl("1");
+					xc.setInsertId(login.getLoginId()); 
+					xbtEdcApiService.insertKaistXrayContents(xc);
+					LOGGER.info("슈도이미지가져오기 수행결과:" + json);							
+					return new BaseResponse<JsonNode>(BaseResponseCode.GET_IMAGE_SUCCESS, BaseResponseCode.GET_IMAGE_SUCCESS.getMessage());
+				}else {
+					return new BaseResponse<JsonNode>(BaseResponseCode.GET_IMAGE_FAIL, BaseResponseCode.GET_IMAGE_FAIL.getMessage());
+				}
 				
 				//json = mapper.convertValue(result, JsonNode.class);
 				//return new BaseResponse<JsonNode>(json);			
@@ -326,6 +326,8 @@ public class XbtEdcApiController {
 			}
 	}
 	
+	
+	
 	//KAIST API 2d생성 커맨드실행
 	@ResponseBody
 	@RequestMapping(value = {"/twodGeneration.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
@@ -335,6 +337,18 @@ public class XbtEdcApiController {
 			,@RequestBody TowdGeneration params) throws Exception {
 		
 		ApiLogin login = apiLoginService.createToken(request);
+		
+		if(StringUtils.isEmpty(params.getCategory())){
+			return new BaseResponse<JsonNode>(BaseResponseCode.PARAMS_ERROR, "Category" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		
+		if(StringUtils.isEmpty(params.getCategoryCnt())){
+			return new BaseResponse<JsonNode>(BaseResponseCode.PARAMS_ERROR, "CategoryCnt" + BaseApiMessage.REQUIRED.getMessage());
+		}	
+		
+		if(StringUtils.isEmpty(params.getFileName())){
+			return new BaseResponse<JsonNode>(BaseResponseCode.PARAMS_ERROR, "FileName" + BaseApiMessage.REQUIRED.getMessage());
+		}			
 		
 		//KAIST 카테고리정보
 		/*
@@ -379,14 +393,19 @@ public class XbtEdcApiController {
 		 */
 
 		//카이스트명령어
-		String twodGenCd = "cd/home/jun/project/gwansae-unified/2d_generation";
+		String twodGenCd = "cd /home/jun/project/gwansae-unified/2d_generation";
 		String twodGenExe = "GEN_CATEGORY="+params.getCategory()+" GEN_COUNT="+params.getCategoryCnt()+" GEN_PATH=../output_generated_image RESULT_PATH=../output_final_image ./demo_gen_only.sh";  
 		String[] kaistCmd = {twodGenCd+ ";" +twodGenExe};
 		
 		params.setKaistCommand(kaistCmd);
+		
+		LOGGER.info("====================================================");
+		LOGGER.info("twodGeneration command : " + kaistCmd[0]);
+		LOGGER.info("====================================================");		
+		
 		JsonNode result = xbtEdcApiService.commandTwodGenExcute(params, login);
 		
-		xbtEdcApiService.selectTwodImg(params, login);
+		//xbtEdcApiService.selectTwodImg(params, login);
 		
 		LOGGER.info("2dGeneration 수행결과:" + result);
 		
@@ -396,6 +415,47 @@ public class XbtEdcApiController {
 			return new BaseResponse<JsonNode>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage(), result.get("RET_DATA"));
 		}	
 	}		
+	
+	//2d이미지 가져오기 
+    /**
+     * @param param
+     * @return Company
+     */	
+	@ResponseBody
+	@RequestMapping(value = {"/selectTwodImg.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public  BaseResponse<JsonNode> selectTwodImg(HttpServletRequest request
+    		,@RequestBody TowdGeneration params) throws Exception{		
+			ApiLogin login = apiLoginService.createToken(request);
+			LOGGER.info("params : " + params);
+			
+			//JsonNode json = null;
+			//ObjectMapper mapper = new ObjectMapper();
+			
+			if(StringUtils.isEmpty(params.getFileName())){
+				return new BaseResponse<JsonNode>(BaseResponseCode.PARAMS_ERROR, "FileName" + BaseApiMessage.REQUIRED.getMessage());
+			}				
+			
+			try {
+				//JsonNode resultData = sudoImgService.selectSudoImg(params, login);
+				JsonNode json = xbtEdcApiService.selectTwodImg(params, login);
+				if("0000".equals(json.get("RET_CODE").asText()) && json.get("RET_DATA")!=null) {
+					LOGGER.info("2d이미지 가져오기 수행결과:" + json);							
+					return new BaseResponse<JsonNode>(BaseResponseCode.GET_IMAGE_SUCCESS, BaseResponseCode.GET_IMAGE_SUCCESS.getMessage());
+				}else {
+					return new BaseResponse<JsonNode>(BaseResponseCode.GET_IMAGE_FAIL, BaseResponseCode.GET_IMAGE_FAIL.getMessage());
+				}
+				
+				//json = mapper.convertValue(result, JsonNode.class);
+				//return new BaseResponse<JsonNode>(json);			
+			}catch(Exception e) {
+				e.printStackTrace();
+				return new BaseResponse<JsonNode>(BaseResponseCode.GET_IMAGE_FAIL, BaseResponseCode.GET_IMAGE_FAIL.getMessage());
+				//json = mapper.convertValue(result, JsonNode.class);
+				//return new BaseResponse<JsonNode>(json);			
+			}
+	}	
+	
 	
     /**
      * 카이스트 2D합성이미지상세
@@ -407,10 +467,10 @@ public class XbtEdcApiController {
     @RequestMapping(value = {"/selectKaistTwodGeneration.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
     @ApiOperation(value = "Kaist 2D합성이미지상세", notes = "Kaist 2D합성이미지상세")    
     public BaseResponse<TowdGeneration> selectKaistTwodGeneration(HttpServletRequest request, @RequestBody TowdGeneration params) {
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
-		}
+    	//Login login = loginService.getLoginInfo(request);
+		//if (login == null) {
+			//throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		//}
 		
 		if(StringUtils.isEmpty(params.getFileName())){				
 			return new BaseResponse<TowdGeneration>(BaseResponseCode.PARAMS_ERROR, "FileName" + BaseApiMessage.REQUIRED.getCode());
@@ -448,7 +508,6 @@ public class XbtEdcApiController {
 		LOGGER.info("kaist threed생성:"+ params);
 		
 		//3d이미지전송
-		LOGGER.info("3d이미지전송 시작");
 		Map<String, Object> result = xbtEdcApiService.threedImgExcute(params, login, frontImg, sideImg);
 		
 		AttachFile af1 = (AttachFile)result.get("frontImg");
@@ -456,18 +515,27 @@ public class XbtEdcApiController {
 		
 		//카이스트명령어
 		LOGGER.info("3d이미지전송 카이스트명령어 시작");
-		String kaistThreedUploadPath = "/home/jun/project/gwansae-unified/3d_generation/demo_data/raw/xbt/";
+		String kaistThreedUploadPath = "/home/jun/project/gwansae-unified/3d_generation/demo_data/raw/"+params.getUnitId();
 		String[] threedImgCmd = {
 			"cd /home/jun/project/gwansae-unified/3d_generation ;" +
 			"rm -r workdir ;" +
 			"DISPLAY= python main.py " +
-			kaistThreedUploadPath+ params.getUnitId() + File.separator + af1.getSaveFileName()+" " +
-			kaistThreedUploadPath+ params.getUnitId() + File.separator + af2.getSaveFileName()+" " +
-			kaistThreedUploadPath+ params.getUnitId() + File.separator + af1.getSaveFileName()+" " +
-			kaistThreedUploadPath+ params.getUnitId() + File.separator + af2.getSaveFileName()+" " +
+			//kaistThreedUploadPath+ params.getUnitId() + File.separator + af1.getSaveFileName()+ " " +
+			//kaistThreedUploadPath+ params.getUnitId() + File.separator + af2.getSaveFileName()+ " " +
+			//kaistThreedUploadPath+ params.getUnitId() + File.separator + af1.getSaveFileName()+ " " +
+			//kaistThreedUploadPath+ params.getUnitId() + File.separator + af2.getSaveFileName()+ " " +
+			kaistThreedUploadPath+ File.separator + af1.getSaveFileName()+ " " +
+			kaistThreedUploadPath+ File.separator + af2.getSaveFileName()+ " " +
+			kaistThreedUploadPath+ File.separator + af1.getSaveFileName()+ " " +
+			kaistThreedUploadPath+ File.separator + af2.getSaveFileName()+ " " +
 			"workdir"
 		};
 		params.setKaistCommand(threedImgCmd);
+		
+		LOGGER.info("====================================================");
+		LOGGER.info("threedImgExcute command : " + threedImgCmd[0]);
+		LOGGER.info("====================================================");			
+		
 		JsonNode result2 = xbtEdcApiService.commandThreedGenExcute(params, login);
 		
 		if("0000".equals(result2.get("RET_CODE").asText())) {
@@ -478,36 +546,45 @@ public class XbtEdcApiController {
 	}	
 	
 	
-	//kaist 3d이미지진행률가져오기
+	//kaist 3d이미지 기져오기 
+    /**
+     * @param param
+     * @return Company
+     */	
 	@ResponseBody
-	@PostMapping(value="/selectThreedProgressPer.do")
-	public BaseResponse<ApiLog> selectThreedProgressPer(
-			HttpServletRequest request, HttpServletResponse response
-			,@RequestBody ApiLog params) throws Exception {
+	@RequestMapping(value = {"/selectThreedImg.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+    public  BaseResponse<JsonNode> selectSudoImg(HttpServletRequest request
+    		,@RequestBody ThreedGeneration params) throws Exception{		
+			ApiLogin login = apiLoginService.createToken(request);
+			LOGGER.info("params : " + params);
+			
+			//JsonNode json = null;
+			//ObjectMapper mapper = new ObjectMapper();
+			
+			if(StringUtils.isEmpty(params.getUnitId())){
+				return new BaseResponse<JsonNode>(BaseResponseCode.PARAMS_ERROR, "UnitId" + BaseApiMessage.REQUIRED.getMessage());
+			}				
+			
+			try {
+				JsonNode json = xbtEdcApiService.selectThreedImg(params, login);
+				
+				if("0000".equals(json.get("RET_CODE").asText()) && json.get("RET_DATA")!=null) {
+					return new BaseResponse<JsonNode>(BaseResponseCode.GET_IMAGE_SUCCESS, BaseResponseCode.GET_IMAGE_SUCCESS.getMessage());
+				}else {
+					return new BaseResponse<JsonNode>(BaseResponseCode.GET_IMAGE_FAIL, BaseResponseCode.GET_IMAGE_FAIL.getMessage());
+				}
+				
+				//json = mapper.convertValue(result, JsonNode.class);
+				//return new BaseResponse<JsonNode>(json);			
+			}catch(Exception e) {
+				e.printStackTrace();
+				return new BaseResponse<JsonNode>(BaseResponseCode.GET_IMAGE_FAIL, BaseResponseCode.GET_IMAGE_FAIL.getMessage());
+				//json = mapper.convertValue(result, JsonNode.class);
+				//return new BaseResponse<JsonNode>(json);			
+			}
+	}
 		
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
-		}
-		
-		if(StringUtils.isEmpty(params.getSeqId())){				
-			return new BaseResponse<ApiLog>(BaseResponseCode.PARAMS_ERROR, "SeqId" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
-		//3d이미지가져오기
-		ApiLogin al = apiLoginService.createToken(request);
-		ThreedGeneration tg = new ThreedGeneration();
-		tg.setUnitId(params.getSeqId());
-		LOGGER.info("3d이미지전송 3d이미지가져오기 시작");
-		JsonNode result3 = xbtEdcApiService.selectThreedImg(tg, al);
-		LOGGER.info("threed이미지가져오기 수행결과:" + result3);
-		
-		ApiLog ai = xbtEdcApiService.selectProgressPer(params);
-		return new BaseResponse<ApiLog>(ai);		
-	}		
-	
-	
-	
 	
 	
 	

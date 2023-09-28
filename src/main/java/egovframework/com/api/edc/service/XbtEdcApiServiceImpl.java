@@ -154,11 +154,11 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 		JSONObject json = new JSONObject();
 		json.put("bagScanId", oj.getBagScanId());
 		json.put("imgFront", imageData1);
-		json.put("imgFrontName", af1.getOriginalFileName());
+		json.put("imgFrontName", af1.getSaveFileName());
 		
 		json.put("imgSide", imageData2);
 		
-		json.put("imgSideName", af2.getOriginalFileName());		
+		json.put("imgSideName", af2.getSaveFileName());		
 		//json.put("imageData", encodedImageData);
 
 		// JSON 데이터를 문자열로 변환
@@ -652,10 +652,10 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 		JSONObject json = new JSONObject();
 		json.put("unitId", oj.getUnitId());
 		json.put("imgFront", imageData1);
-		json.put("imgFrontName", af1.getOriginalFileName());
+		json.put("imgFrontName", af1.getSaveFileName());
 		
 		json.put("imgSide", imageData2);
-		json.put("imgSideName", af2.getOriginalFileName());		
+		json.put("imgSideName", af2.getSaveFileName());		
 		//json.put("imageData", encodedImageData);
 
 		// JSON 데이터를 문자열로 변환
