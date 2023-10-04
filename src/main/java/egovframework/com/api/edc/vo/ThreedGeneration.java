@@ -10,6 +10,8 @@ public class ThreedGeneration implements Serializable{
 	
 	private static final long serialVersionUID = 5094756872612852233L;
 	private String unitId;
+	private String width;
+	private String height;
 	private String[] kaistCommand;
 	private List<byte[]> threedGenList;
 	private List<String> fileNameList;

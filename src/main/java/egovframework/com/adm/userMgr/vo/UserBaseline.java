@@ -18,11 +18,11 @@ public class UserBaseline {
 	private String userNm;
 	private String compNm;
 	private String deptNm;
-	private String gainScore;
+	private int gainScore;
 	private int practiceScore;
 	private int practiceBeforeScore;
 	private String practiceYn;
-	private String theoryScore;
+	private int theoryScore;
 	private int evaluationScore;
 	private String passYn;
 	private String endingProcessDate;

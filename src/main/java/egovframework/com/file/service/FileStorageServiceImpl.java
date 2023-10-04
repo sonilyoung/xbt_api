@@ -884,7 +884,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         // 실제 파일명_현재시간 으로 rename
         StringBuilder sb = new StringBuilder();
         //X00353-204.jpg
-        sb.append(targetName).append("-").append(fileNameWithoutExtension).append(".").append(fileExtension);
+        sb.append(targetName).append("-").append(fileNameWithoutExtension).append("_" + params.getWidth() + "x" + params.getHeight()).append(".").append(fileExtension);
         String realFileName = sb.toString();
         
         try {

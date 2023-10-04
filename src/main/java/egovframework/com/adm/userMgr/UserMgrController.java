@@ -253,8 +253,9 @@ public class UserMgrController {
 			Baseline bp = new Baseline();
 			bp.setProcCd(params.getProcCd());
 			Baseline baseline = eduMgrService.selectBaseline(bp);			
-
+			UserBaseline eduCodeInfo = userMgrService.selectBaselinePractice(params);
 			int result = 0;
+			int gainScore = 0;
 			if(baseline!=null) {
 				int practiceScore = (params.getPracticeScore() * baseline.getPracticeTotalScore())/100;
 				params.setPracticeBeforeScore(params.getPracticeScore());
@@ -268,7 +269,16 @@ public class UserMgrController {
 				params.setPracticeCarBeforeScore(params.getPracticeCarScore());
 				params.setPracticeCarScore(practiceCarScore);				
 				
+
+				if("4".equals(eduCodeInfo.getEduCode())){
+					gainScore = eduCodeInfo.getTheoryScore() + practiceHumanScore;
+				}else if("6".equals(eduCodeInfo.getEduCode())){
+					gainScore = eduCodeInfo.getTheoryScore() + practiceHumanScore + practiceCarScore;
+				}else {
+					gainScore = eduCodeInfo.getEvaluationScore() + eduCodeInfo.getTheoryScore() + practiceScore;
+				}	
 				//강사등록
+				params.setGainScore(gainScore);
 				result = userMgrService.updateBaselineUser(params);
 				
 				params.setPracticeScore(params.getPracticeBeforeScore());

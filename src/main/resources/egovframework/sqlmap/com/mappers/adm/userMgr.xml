@@ -424,16 +424,19 @@
 	<select id="selectBaselinePractice" parameterType="egovframework.com.adm.userMgr.vo.UserBaseline" resultType="egovframework.com.adm.userMgr.vo.UserBaseline" >
 		SELECT
 			T1.PROC_CD,
+			T1.EDU_CODE,
 			T1.PROC_NM,
 			(SELECT PRACTICE_TOTAL_SCORE FROM XBT_BASELINE XB WHERE XB.PROC_CD = T1.PROC_CD)AS PRACTICE_TOTAL_SCORE,
-			PRACTICE_BEFORE_SCORE AS practiceScore,
-			T1.PRACTICE_SCORE AS gainScore,
+			IFNULL(T1.PRACTICE_BEFORE_SCORE, 0) AS practiceScore,
+			IFNULL(T1.PRACTICE_SCORE, 0) AS gainScore,
 			(SELECT PRACTICE_CAR_TOTAL_SCORE FROM XBT_BASELINE XB WHERE XB.PROC_CD = T1.PROC_CD)AS PRACTICE_CAR_TOTAL_SCORE,
 			(SELECT PRACTICE_HUMAN_TOTAL_SCORE FROM XBT_BASELINE XB WHERE XB.PROC_CD = T1.PROC_CD)AS PRACTICE_HUMAN_TOTAL_SCORE,
-			T1.PRACTICE_CAR_BEFORE_SCORE AS practiceCarScore, 
-			T1.PRACTICE_HUMAN_BEFORE_SCORE AS practiceHumanScore,
-			T1.PRACTICE_CAR_SCORE AS carGainScore,
-			T1.PRACTICE_HUMAN_SCORE AS humanGainScore
+			IFNULL(T1.PRACTICE_CAR_BEFORE_SCORE, 0) AS practiceCarScore, 
+			IFNULL(T1.PRACTICE_HUMAN_BEFORE_SCORE, 0) AS practiceHumanScore,
+			IFNULL(T1.PRACTICE_CAR_SCORE, 0) AS carGainScore,
+			IFNULL(T1.PRACTICE_HUMAN_SCORE, 0) AS humanGainScore,
+			IFNULL(T1.THEORY_SCORE, 0) AS theoryScore,
+			IFNULL(T1.EVALUATION_SCORE, 0) AS evaluationScore
 		FROM
 			XBT_BASELINE_STUDENT_INFO T1 
 		WHERE 			
@@ -446,6 +449,7 @@
 	<update id="updateBaselineUser" parameterType="egovframework.com.adm.userMgr.vo.UserBaseline">
 		UPDATE XBT_BASELINE_STUDENT_INFO
 		SET
+		GAIN_SCORE = #{gainScore},
 		PRACTICE_BEFORE_SCORE = #{practiceBeforeScore}, 
 		PRACTICE_SCORE = #{practiceScore},
 		PRACTICE_CAR_BEFORE_SCORE = #{practiceCarBeforeScore},
