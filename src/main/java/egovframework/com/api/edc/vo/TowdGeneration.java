@@ -9,7 +9,7 @@ import lombok.Data;
 public class TowdGeneration implements Serializable{
 	private static final long serialVersionUID = 5493112859864781570L;
 	private String category;
-	private String categoryCnt;
+	private int categoryCnt;
 	private String fileName;
 	private String[] kaistCommand;
 	private List<byte[]> towdGenList;

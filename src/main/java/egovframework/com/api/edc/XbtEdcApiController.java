@@ -52,6 +52,7 @@ import egovframework.com.file.service.XbtImageService;
 import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
+import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
@@ -136,10 +137,12 @@ public class XbtEdcApiController {
 		//슈도이미지업로드
 		JsonNode result1 = xbtEdcApiService.sudoImgExcute(params, login, frontImg, sideImg);
 		
-		//카이스트명령어
+		//슈도컬러 카이스트명령어
+		String KAIST_SUDO_CD = GlobalsProperties.getProperty("kaist.sudo.cd");
+		String KAIST_SUDO_SH = GlobalsProperties.getProperty("kaist.sudo.sh");
 		String[] sudoImgCmd = {
-				"cd /home/jun/project/gwansae-unified/color2multi/color2multi_v1/script ; "
-				+ "python ../test_PC_multi.py --dataroot /home/jun/project/gwansae-unified/color2multi --input_folder test_images --dataset_mode baggage_multi --name Pix2PixBaggageMulti_230418 --model pix2pix_baggage_multi --gpu_ids 0 --ngf 64 --ndf 16 --batchSize 1 --input_nc 3 --output_nc 27 --which_epoch latest "
+				KAIST_SUDO_CD + " ; "
+				+ KAIST_SUDO_SH
 				//+ "touch /home/jun/project/gwansae-unified/color2multi/color/fileY.txt"		
 		};
 		params.setKaistCommand(sudoImgCmd);
@@ -392,10 +395,11 @@ public class XbtEdcApiController {
 			ZippoOil
 		 */
 
-		//카이스트명령어
-		String twodGenCd = "cd /home/jun/project/gwansae-unified/2d_generation";
-		String twodGenExe = "GEN_CATEGORY="+params.getCategory()+" GEN_COUNT="+params.getCategoryCnt()+" GEN_PATH=../output_generated_image RESULT_PATH=../output_final_image ./demo_gen_only.sh";  
-		String[] kaistCmd = {twodGenCd+ ";" +twodGenExe};
+		//2d 영상합성 카이스트명령어
+		String KAIST_TWOD_CD = GlobalsProperties.getProperty("kaist.twod.cd");
+		String KAIST_TWOD_SH = GlobalsProperties.getProperty("kaist.twod.sh");
+		String twodGenExe = "GEN_CATEGORY="+params.getCategory()+" GEN_COUNT="+params.getCategoryCnt()+" "+KAIST_TWOD_SH;  
+		String[] kaistCmd = {KAIST_TWOD_CD+ ";" +twodGenExe};
 		
 		params.setKaistCommand(kaistCmd);
 		
@@ -515,11 +519,19 @@ public class XbtEdcApiController {
 		
 		//카이스트명령어
 		LOGGER.info("3d이미지전송 카이스트명령어 시작");
-		String kaistThreedUploadPath = "/home/jun/project/gwansae-unified/3d_generation/demo_data/raw/"+params.getUnitId();
+		
+		//3d 카이스트명령어
+		String KAIST_THREED_UPLOAD = GlobalsProperties.getProperty("kaist.threed.upload");
+		String KAIST_THREED_CD = GlobalsProperties.getProperty("kaist.threed.cd");
+		String KAIST_THREED_SH1 = GlobalsProperties.getProperty("kaist.threed.sh1");
+		String KAIST_THREED_SH2 = GlobalsProperties.getProperty("kaist.threed.sh2");
+		String KAIST_THREED_SH3 = GlobalsProperties.getProperty("kaist.threed.sh3");
+		
+		String kaistThreedUploadPath = KAIST_THREED_UPLOAD+params.getUnitId();
 		String[] threedImgCmd = {
-			"cd /home/jun/project/gwansae-unified/3d_generation ;" +
-			"rm -r workdir ;" +
-			"DISPLAY= python main.py " +
+			KAIST_THREED_CD+ " ; " +
+			KAIST_THREED_SH1 + " ; " +
+			KAIST_THREED_SH2 + " " +
 			//kaistThreedUploadPath+ params.getUnitId() + File.separator + af1.getSaveFileName()+ " " +
 			//kaistThreedUploadPath+ params.getUnitId() + File.separator + af2.getSaveFileName()+ " " +
 			//kaistThreedUploadPath+ params.getUnitId() + File.separator + af1.getSaveFileName()+ " " +
@@ -528,7 +540,7 @@ public class XbtEdcApiController {
 			kaistThreedUploadPath+ File.separator + af2.getSaveFileName()+ " " +
 			kaistThreedUploadPath+ File.separator + af1.getSaveFileName()+ " " +
 			kaistThreedUploadPath+ File.separator + af2.getSaveFileName()+ " " +
-			"workdir"
+			KAIST_THREED_SH3
 		};
 		params.setKaistCommand(threedImgCmd);
 		
