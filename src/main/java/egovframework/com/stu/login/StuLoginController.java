@@ -165,8 +165,15 @@ public class StuLoginController {
         }    
         
 		try {
+
 			StuLogin login = loginStuService.selectUserId(params);
-	        return new BaseResponse<StuLogin>(login);
+			if(login != null) {
+		        return new BaseResponse<StuLogin>(login);
+			}else {
+				return new BaseResponse<StuLogin>(BaseResponseCode.NO_USERS, BaseResponseCode.NO_USERS.getMessage());
+			}	        
+	        
+	        
         } catch (Exception e) {
         	LOGGER.error("error:", e);
         	throw new BaseException(BaseResponseCode.AUTH_FAIL);
@@ -195,6 +202,10 @@ public class StuLoginController {
         }            
         
         StuLogin login = loginStuService.selectUserId(params);
+		if(login == null) {
+	        return new BaseResponse<StuLogin>(BaseResponseCode.NO_USERS, BaseResponseCode.NO_USERS.getMessage());
+		}
+		
         params.setPwPrior(login.getUserPw());
         
         AES256Util aesUtil = new AES256Util();
@@ -205,7 +216,7 @@ public class StuLoginController {
 		if(result>0) {
 			return new BaseResponse<StuLogin>(BaseResponseCode.UPDATE_SUCCESS, BaseResponseCode.UPDATE_SUCCESS.getMessage());
 		}else {
-			return new BaseResponse<StuLogin>(BaseResponseCode.UPDATE_ERROR, BaseResponseCode.UPDATE_ERROR.getMessage());
+			return new BaseResponse<StuLogin>(BaseResponseCode.NO_USERS, BaseResponseCode.NO_USERS.getMessage());
 		}
     }
 }
