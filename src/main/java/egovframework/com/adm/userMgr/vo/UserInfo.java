@@ -60,6 +60,7 @@ public class UserInfo {
 	private String careerEndDate1;
 	private String careerCompany1;
 	private String careerPosition1;
+	private String careerWork1;
 	private String careerStartDate2;
 	private String careerEndDate2;
 	private String careerCompany2;

@@ -737,6 +737,7 @@
 			CAREER_END_DATE1 = 	#{careerEndDate1}        ,
 			CAREER_COMPANY1 = 	#{careerCompany1}        ,
 			CAREER_POSITION1 = 	#{careerPosition1}       ,
+			CAREER_WORK1 = 	#{careerWork1}       ,
 			CAREER_START_DATE2 = 	#{careerStartDate2}  ,
 			CAREER_END_DATE2 = 	#{careerEndDate2}        ,
 			CAREER_COMPANY2 = 	#{careerCompany2}        ,
