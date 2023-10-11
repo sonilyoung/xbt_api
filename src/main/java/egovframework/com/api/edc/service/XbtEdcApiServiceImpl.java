@@ -140,7 +140,10 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 		
 		//long testTime = System.currentTimeMillis();
 		
-		OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.HOURS).build();
+		OkHttpClient client = new OkHttpClient().newBuilder()
+				.connectTimeout(1, TimeUnit.HOURS)
+				.writeTimeout(1, TimeUnit.HOURS)
+				.readTimeout(1, TimeUnit.HOURS).build();
 		
 		// 이미지 파일을 읽고, Base64로 인코딩하여 JSON 데이터에 포함시킴
 		File imageFile1 = new File(KAIST_XRAY_ROOT_DIR+File.separator+oj.getBagScanId()+File.separator+af1.getSaveFileName());
@@ -207,7 +210,10 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 		
 		//long testTime = System.currentTimeMillis();
 		
-		OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.HOURS).build();
+		OkHttpClient client = new OkHttpClient().newBuilder()
+				.connectTimeout(1, TimeUnit.HOURS)
+				.writeTimeout(1, TimeUnit.HOURS)
+				.readTimeout(1, TimeUnit.HOURS).build();
 		
 		// JSON 데이터 생성
 		JSONObject jsonData = new JSONObject();
@@ -299,7 +305,10 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 		
 		//long testTime = System.currentTimeMillis();
 		
-		OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.HOURS).build();
+		OkHttpClient client = new OkHttpClient().newBuilder()
+				.connectTimeout(1, TimeUnit.HOURS)
+				.writeTimeout(1, TimeUnit.HOURS)
+				.readTimeout(1, TimeUnit.HOURS).build();
 		
 		// JSON 데이터 생성
 		JSONObject jsonData = new JSONObject();
@@ -419,7 +428,10 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 		
 		//long testTime = System.currentTimeMillis();
 		
-		OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.HOURS).build();
+		OkHttpClient client = new OkHttpClient().newBuilder()
+				.connectTimeout(1, TimeUnit.HOURS)
+				.writeTimeout(1, TimeUnit.HOURS)
+				.readTimeout(1, TimeUnit.HOURS).build();
 		
 		// JSON 데이터 생성
 		JSONObject jsonData = new JSONObject();
@@ -512,7 +524,10 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 		
 		//long testTime = System.currentTimeMillis();
 		
-		OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.HOURS).build();
+		OkHttpClient client = new OkHttpClient().newBuilder()
+				.connectTimeout(1, TimeUnit.HOURS)
+				.writeTimeout(1, TimeUnit.HOURS)
+				.readTimeout(1, TimeUnit.HOURS).build();
 		
 		// JSON 데이터 생성
 		JSONObject jsonData = new JSONObject();
@@ -638,7 +653,10 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 		
 		//long testTime = System.currentTimeMillis();
 		
-		OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.HOURS).build();
+		OkHttpClient client = new OkHttpClient().newBuilder()
+				.connectTimeout(1, TimeUnit.HOURS)
+				.writeTimeout(1, TimeUnit.HOURS)
+				.readTimeout(1, TimeUnit.HOURS).build();
 		
 		// 이미지 파일을 읽고, Base64로 인코딩하여 JSON 데이터에 포함시킴
 		File imageFile1 = new File(KAIST_THREED_ROOT_DIR+File.separator+oj.getUnitId()+File.separator+af1.getSaveFileName());
@@ -703,7 +721,10 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 		
 		//long testTime = System.currentTimeMillis();
 		
-		OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.HOURS).build();
+		OkHttpClient client = new OkHttpClient().newBuilder()
+				.connectTimeout(1, TimeUnit.HOURS)
+				.writeTimeout(1, TimeUnit.HOURS)
+				.readTimeout(1, TimeUnit.HOURS).build();
 		
 		// JSON 데이터 생성
 		JSONObject jsonData = new JSONObject();
@@ -795,7 +816,10 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 		
 		//long testTime = System.currentTimeMillis();
 		
-		OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.HOURS).build();
+		OkHttpClient client = new OkHttpClient().newBuilder()
+				.connectTimeout(1, TimeUnit.HOURS)
+				.writeTimeout(1, TimeUnit.HOURS)
+				.readTimeout(1, TimeUnit.HOURS).build();
 		
 		// JSON 데이터 생성
 		JSONObject jsonData = new JSONObject();
