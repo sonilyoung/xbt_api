@@ -537,8 +537,8 @@ public class XbtEdcApiController {
 			//kaistThreedUploadPath+ params.getUnitId() + File.separator + af1.getSaveFileName()+ " " +
 			//kaistThreedUploadPath+ params.getUnitId() + File.separator + af2.getSaveFileName()+ " " +
 			kaistThreedUploadPath+ File.separator + af1.getSaveFileName()+ " " +
-			kaistThreedUploadPath+ File.separator + af2.getSaveFileName()+ " " +
 			kaistThreedUploadPath+ File.separator + af1.getSaveFileName()+ " " +
+			kaistThreedUploadPath+ File.separator + af2.getSaveFileName()+ " " +
 			kaistThreedUploadPath+ File.separator + af2.getSaveFileName()+ " " +
 			KAIST_THREED_SH3
 		};
