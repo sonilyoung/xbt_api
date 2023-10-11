@@ -168,13 +168,16 @@ public class StuTheoryController {
 			StuTheory result = stuTheoryService.selectTheory(params);
 			Theory tr = new Theory();
 			tr.setQuestionId(params.getQuestionId());
-			xbtImageService.selectTheoryImg(tr);
-			result.setChoiceImg1(tr.getChoiceImg1());
-			result.setChoiceImg2(tr.getChoiceImg2());
-			result.setChoiceImg3(tr.getChoiceImg3());
-			result.setChoiceImg4(tr.getChoiceImg4());
-			result.setMultiPlusImg(tr.getMultiPlusImg());
 			
+			if("C".equals(result.getQuestionType()) || "D".equals(result.getQuestionType())) {
+				xbtImageService.selectTheoryImg(tr);
+				result.setChoiceImg1(tr.getChoiceImg1());
+				result.setChoiceImg2(tr.getChoiceImg2());
+				result.setChoiceImg3(tr.getChoiceImg3());
+				result.setChoiceImg4(tr.getChoiceImg4());
+				result.setMultiPlusImg(tr.getMultiPlusImg());				
+			}
+
 	        return new BaseResponse<StuTheory>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
