@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.adm.theory.vo.Theory;
+import egovframework.com.api.edc.vo.ThreedGeneration;
 import egovframework.com.api.edc.vo.TowdGeneration;
 import egovframework.com.common.vo.LearningImg;
 import egovframework.com.common.vo.LearningMainImg;
@@ -99,8 +100,12 @@ public class XbtImageServiceImpl implements XbtImageService {
 	/*kaist xray API RESPONSE 저장경로*/
     public static final String KAIST_SUDO_IMG_RESPONSE_PATH = GlobalsProperties.getProperty("kaist.sudo.img.response.path");
    
-    /*kaist xray API RESPONSE 저장경로*/
+    /*kaist xray 2D API RESPONSE 저장경로*/
     public static final String KAIST_TWOD_IMG_RESPONSE_PATH = GlobalsProperties.getProperty("kaist.twod.img.response.path"); 
+
+    /*kaist xray 3D API RESPONSE 저장경로*/
+    public static final String KAIST_THREED_IMG_RESPONSE_PATH = GlobalsProperties.getProperty("kaist.threed.img.response.path");    
+    
     
     
 	@Override
@@ -959,5 +964,42 @@ public class XbtImageServiceImpl implements XbtImageService {
         params.setTowdGenList(towdGenList);
         return params;
 	}	
+	
+	
+	@Override
+	public ThreedGeneration selectKaistThreedImg(ThreedGeneration params) {
+		// TODO Auto-generated method stub
+    	String xrayPath = KAIST_THREED_IMG_RESPONSE_PATH;
+		String scanId = params.getUnitId();	
+        String strDirPath = xrayPath+File.separator+scanId; 
+        File[] fileList = null;
+        List<byte[]> threedGenList = new ArrayList<byte[]>();  
+		fileList = FileReader.ListFileSort( strDirPath );
+			
+        byte[] fileByte = null;/*이미지*/
+        byte[] fileThreedByte = null;/*3d 이미지*/
+        
+        if(fileList==null) {
+        	return params;
+        }   
+        
+        //결과유기물
+        for( int i = 0; i < fileList.length; i++ ) { 
+        	try {
+        		if(fileList[i].getName().contains("-threed")) {
+        			fileThreedByte = Files.readAllBytes(fileList[i].toPath());
+                }else {
+            		fileByte = Files.readAllBytes(fileList[i].toPath());
+            		threedGenList.add(fileByte);                	
+                }        		
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        params.setThreedGenList(threedGenList);
+        params.setOutputh(fileThreedByte);
+        return params;
+	}		
 		
 }

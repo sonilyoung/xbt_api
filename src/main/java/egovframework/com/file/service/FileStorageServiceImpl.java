@@ -945,7 +945,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         	
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
                 // byte 배열을 FileOutputStream을 사용하여 새로운 파일로 저장
-                FileOutputStream fileOutputStream = new FileOutputStream(new File(targetFile + "-" + "3d" + fileGifExtension));
+                FileOutputStream fileOutputStream = new FileOutputStream(new File(targetFile + "-" + "threed" + fileGifExtension));
                 fileOutputStream.write(byteArray);
                 fileOutputStream.close();
             }

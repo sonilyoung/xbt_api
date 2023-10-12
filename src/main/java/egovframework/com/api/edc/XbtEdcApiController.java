@@ -599,6 +599,33 @@ public class XbtEdcApiController {
 		
 	
 	
+    /**
+     * 카이스트 3D이미지상세
+     * 
+     * @param param
+     * @return Company
+     */
+	@ResponseBody
+    @RequestMapping(value = {"/selectKaistThreedGeneration.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @ApiOperation(value = "Kaist 3D이미지상세", notes = "Kaist 3D이미지상세")    
+    public BaseResponse<ThreedGeneration> selectKaistThreedGeneration(HttpServletRequest request, @RequestBody ThreedGeneration params) {
+    	//Login login = loginService.getLoginInfo(request);
+		//if (login == null) {
+			//throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		//}
+		
+		if(StringUtils.isEmpty(params.getUnitId())){				
+			return new BaseResponse<ThreedGeneration>(BaseResponseCode.PARAMS_ERROR, "UnitId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			ThreedGeneration resultImg = xbtImageService.selectKaistThreedImg(params);
+	        return new BaseResponse<ThreedGeneration>(resultImg);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    } 	
 	
 	
 	

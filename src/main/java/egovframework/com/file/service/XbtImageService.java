@@ -3,6 +3,7 @@ package egovframework.com.file.service;
 import java.util.List;
 
 import egovframework.com.adm.theory.vo.Theory;
+import egovframework.com.api.edc.vo.ThreedGeneration;
 import egovframework.com.api.edc.vo.TowdGeneration;
 import egovframework.com.common.vo.LearningImg;
 import egovframework.com.common.vo.LearningMainImg;
@@ -46,5 +47,7 @@ public interface XbtImageService {
 	public Theory selectTheoryImg(Theory params);
 	
 	public TowdGeneration selectKaistTwodImg(TowdGeneration params);
+	
+	public ThreedGeneration selectKaistThreedImg(ThreedGeneration params);
 	
 }

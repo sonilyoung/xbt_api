@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.util.Arrays;
 
 public class FileReader {
     	     
@@ -20,4 +21,18 @@ public class FileReader {
         }
 		return fList; 
     }
+    
+    public static File[] ListFileSort( String strDirPath ) { 
+        File path = new File( strDirPath ); 
+        File[] fList = path.listFiles(); 
+        if(fList!=null) {
+        	Arrays.sort(fList);
+        	for( int i = 0; i < fList.length; i++ ) { 
+        		if( fList[i].isDirectory() ) { 
+        			ListFile( fList[i].getPath() );  // 재귀함수 호출 
+        		} 
+        	}
+        }
+		return fList; 
+    }    
 }
