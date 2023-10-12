@@ -78,7 +78,6 @@
 		WHERE PROC_CD = #{procCd} 
 		AND PROC_YEAR = #{procYear}
 		AND PROC_SEQ = #{procSeq}
-		and TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}	
 		AND END_YN = 'Y'
 	</select>			
@@ -144,7 +143,10 @@
 			'N',
 			now()
 		FROM
-			XBT_THEORY_QUESTION
+			XBT_THEORY_QUESTION		
+		where LAGE_GROUP_CD = 
+			(SELECT EDU_CODE FROM XBT_STU_USER WHERE USER_ID = #{userId})		
+			ORDER BY RAND() 
 	</insert>
 	
 	<!-- 이론문제출제목록가져오기 -->

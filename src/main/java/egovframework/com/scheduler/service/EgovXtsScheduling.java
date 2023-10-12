@@ -126,7 +126,9 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 							if(practiceTotalScore!=null) {
 								tgtpracticeHumanScore = practiceTotalScore.getPracticeHumanScore();
 								
-								practiceHumanScore =  Math.round((practiceTotalScore.getPracticeHumanScore()*baseline.getPracticeHumanTotalScore())/100);
+								//practiceHumanScore =  Math.round((practiceTotalScore.getPracticeHumanScore()*baseline.getPracticeHumanTotalScore())/100);
+								
+								practiceHumanScore =  Math.round(practiceTotalScore.getPracticeHumanScore());
 								LOGGER.info("==============항공경비 초기교육 (5일 / 30시간) (4) 실습==============");
 								LOGGER.info("practiceHumanScore:"+ practiceHumanScore);					
 							}								
@@ -138,8 +140,11 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 								tgtpracticeCarScore = practiceTotalScore.getPracticeCarScore();
 								tgtpracticeHumanScore = practiceTotalScore.getPracticeHumanScore();
 								
-								practiceCarScore =  Math.round((practiceTotalScore.getPracticeCarScore()*baseline.getPracticeCarTotalScore())/100);
-								practiceHumanScore =  Math.round((practiceTotalScore.getPracticeHumanScore()*baseline.getPracticeHumanTotalScore())/100);
+								//practiceCarScore =  Math.round((practiceTotalScore.getPracticeCarScore()*baseline.getPracticeCarTotalScore())/100);
+								//practiceHumanScore =  Math.round((practiceTotalScore.getPracticeHumanScore()*baseline.getPracticeHumanTotalScore())/100);
+								
+								practiceCarScore =  Math.round(practiceTotalScore.getPracticeCarScore());
+								practiceHumanScore =  Math.round(practiceTotalScore.getPracticeHumanScore());								
 								LOGGER.info("==============항공경비 인증평가교육 (1일 / 4시간) (6) 실습==============");
 								LOGGER.info("practiceCarScore:"+ practiceCarScore);
 								LOGGER.info("practiceHumanScore:"+ practiceHumanScore);					
