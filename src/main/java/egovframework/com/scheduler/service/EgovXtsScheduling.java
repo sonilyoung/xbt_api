@@ -222,7 +222,8 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 						XbtScore practiceTotalScore = systemService.selectPracticeScore(xs);
 						if(practiceTotalScore!=null) {
 							tgtPracticeScore = practiceTotalScore.getPracticeScore();
-							practiceScore =  Math.round((practiceTotalScore.getPracticeScore()*baseline.getPracticeTotalScore())/100);
+							//practiceScore =  Math.round((practiceTotalScore.getPracticeScore()*baseline.getPracticeTotalScore())/100);
+							practiceScore =  Math.round((practiceTotalScore.getPracticeScore()));
 							LOGGER.info("==============실습==============");
 							LOGGER.info("교육생 evaluationScore:" + practiceTotalScore.getUserId() + " : " + practiceTotalScore.getPracticeScore());
 							LOGGER.info("설정 evaluationScore:"+ baseline.getPracticeTotalScore());
