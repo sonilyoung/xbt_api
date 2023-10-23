@@ -13,11 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -996,12 +998,14 @@ public class UserMgrController {
     
     
 	//교육생 엑셀 추가
-	@PostMapping(value="/insertStudentExcel.do")
-	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	@ResponseBody
+	@PostMapping(value="/insertStudentExcel.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)	
 	public BaseResponse<Integer> insertStudentExcel(
 			HttpServletRequest request
 			,HttpServletResponse response
 			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
+			,@RequestPart(value = "params", required = false) UserInfo params
 	) throws Exception{
 		LOGGER.debug("========= insertStudentExcel 교육생 엑셀등록 ========="+ excelFile);
 
@@ -1036,7 +1040,7 @@ public class UserMgrController {
 	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
 			
 			//LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
-			UserInfo params = new UserInfo();
+			params = new UserInfo();
 			
 			int result = 0;
 			
