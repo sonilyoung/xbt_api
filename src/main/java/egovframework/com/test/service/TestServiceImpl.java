@@ -7,10 +7,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import egovframework.com.test.dao.TestDAO;
 import lombok.extern.log4j.Log4j2;
-
 
 /**
  * 사용자관리에 관한 비지니스 클래스를 정의한다.
@@ -100,6 +98,5 @@ public class TestServiceImpl implements TestService {
 		// TODO Auto-generated method stub
 		return testDAO.updateXrayBagData(params);
 	}
-
 
 }

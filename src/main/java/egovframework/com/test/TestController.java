@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,6 +61,7 @@ import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.global.util.FileReader;
+import egovframework.com.global.util.ImageConvertUtil;
 import egovframework.com.test.service.TestService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
@@ -1081,4 +1083,47 @@ public class TestController {
 		JsonNode json = mapper.convertValue(result, JsonNode.class);
 		return new BaseResponse<JsonNode>(json);
 	}	
+	
+	
+	
+	/*
+	 * 이미지변환
+	 * */
+	@ResponseBody
+	@RequestMapping(value = {"/convertPngToJpg.do"}, method = RequestMethod.GET)
+    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public BaseResponse<Integer> convertPngToJpg(
+			HttpServletRequest request, HttpServletResponse response, 
+			@RequestBody Map<String, Object> params) throws Exception {
+		
+		int result = ImageConvertUtil.convertPngToJpg(params);
+        if(result>0) {
+            return new BaseResponse<Integer>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage());
+        }else {
+        	return new BaseResponse<Integer>(BaseResponseCode.FAIL);
+        }
+	}	
+	
+	
+	
+	/*
+	 * 이미지삭제
+	 * */
+	@ResponseBody
+	@RequestMapping(value = {"/removePng.do"}, method = RequestMethod.GET)
+    @SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public BaseResponse<Integer> removePng(
+			HttpServletRequest request, HttpServletResponse response, 
+			@RequestBody Map<String, Object> params) throws Exception {
+		
+		int result = ImageConvertUtil.removeFile(params);
+        if(result>0) {
+            return new BaseResponse<Integer>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage());
+        }else {
+        	return new BaseResponse<Integer>(BaseResponseCode.FAIL);
+        }
+	}		
+		
+	
+	
 }

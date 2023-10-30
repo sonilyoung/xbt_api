@@ -74,7 +74,8 @@
 				A.INSERT_ID,
 				A.INSERT_DATE,
 				A.UPDATE_ID,
-				A.UPDATE_DATE      
+				A.UPDATE_DATE,
+				A.CLASS_TYPE      
          FROM XBT_STU_USER A INNER JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD
 		<choose>
 			<when test='searchval != "" and searchval != null'>
@@ -541,7 +542,8 @@
 				A.INSERT_DATE,
 				A.UPDATE_ID,
 				A.UPDATE_DATE, 
-				A.CAREER_YN
+				A.CAREER_YN,
+				A.CLASS_TYPE
          FROM XBT_STU_USER A LEFT JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD	
          WHERE A.USER_ID = #{userId}		
 	</select>		
@@ -617,7 +619,8 @@
 			LAST_EDU_YEAR,
 			LAST_EDU_END,
 			EDU_DAY,
-			EDU_TIME
+			EDU_TIME,
+			CLASS_TYPE
 		)VALUES(
 			#{userId}
 			,#{userNm}
@@ -688,6 +691,7 @@
 			,#{lastEduEnd}
 			,#{eduDay}
 			,#{eduTime}			
+			,#{classType}			
 		)
 	
 	</insert>	
@@ -762,7 +766,8 @@
 			LAST_EDU_YEAR = 	#{lastEduYear}           ,
 			LAST_EDU_END = 	#{lastEduEnd}                ,
 			EDU_DAY = 		#{eduDay}					 ,
-			EDU_TIME = 	#{eduTime}
+			EDU_TIME = 	#{eduTime}						 ,
+			CLASS_TYPE = 	#{classType}						 
 		WHERE USER_ID = 		#{userId}	
 
 	</update>	

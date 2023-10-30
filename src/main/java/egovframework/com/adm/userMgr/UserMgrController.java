@@ -1029,7 +1029,7 @@ public class UserMgrController {
 			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
 			
 			excelFile.transferTo(destFile); // 엑셀파일 생성
-			String[] coloumNm = {"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q"};
+			String[] coloumNm = {"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R"};
 			    
 			ExcelReadOption excelReadOption = new ExcelReadOption();
 			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
@@ -1102,6 +1102,10 @@ public class UserMgrController {
 	    		if(StringUtils.isEmpty(excelData.get("Q"))){
 	    			params.setCareer1(excelData.get("Q"));//담당업무				
 	    		}
+	    		
+	    		if(StringUtils.isEmpty(excelData.get("R"))){
+	    			params.setClassType(excelData.get("R"));//수업만 A반 B반				
+	    		}	    		
 	            
 				Common cp = new Common();
 				cp.setLanguageCode("kr");
