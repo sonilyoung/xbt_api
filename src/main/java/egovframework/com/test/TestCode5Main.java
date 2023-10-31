@@ -48,6 +48,8 @@ public class TestCode5Main {
         		        File fileDir = new File(targetPath + lastFolderName);
         		        // root directory 없으면 생성
         		    	if (!fileDir.exists()) {
+        		    		
+        		    		
         		    		fileDir.mkdirs(); //폴더 생성합니다.
         		    	}        		
         		    	
