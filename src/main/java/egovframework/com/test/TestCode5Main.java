@@ -24,38 +24,21 @@ public class TestCode5Main {
 		//String targetPath = "D:/HAN_SEO_UNIVERSITY/REAL_IMAGES/dual_images/";
 		
 		//싱글이미지
-		String filePath = "D:/HAN_SEO_UNIVERSITY/original_single_images/";
-		String targetPath = "D:/HAN_SEO_UNIVERSITY/REAL_IMAGES/single_images/";		
+		String filePath = "D:\\HAN_SEO_UNIVERSITY\\test_images\\";
 		File[] fileList = FileReader.ListFile( filePath );
-		
-		
 		
         for( int i = 0; i < fileList.length; i++ ) {
         	try {
         		//System.out.println("path : " + fileList[i].toPath());
         		
         		String lastFolderName = fileList[i].toPath().toString().substring(fileList[i].toPath().toString().length()-8, fileList[i].toPath().toString().length());
-        		System.out.println("===== lastFolderName ===== " + lastFolderName);
         		
         		File[] fileDetailList = FileReader.ListFile(fileList[i].toPath().toString());
         		for( int j = 0; j < fileDetailList.length; j++ ) {
         			//System.out.println("fileDetailList : " + fileDetailList[j].toPath());
         			
-        			if(fileDetailList[j].getName().contains(".jpg") || fileDetailList[j].getName().contains(".JPG")) {
-        				System.out.println("realImages : " + fileDetailList[j].getName());
-        				byte[] fileByte = Files.readAllBytes(fileDetailList[j].toPath());
-        				
-        		        File fileDir = new File(targetPath + lastFolderName);
-        		        // root directory 없으면 생성
-        		    	if (!fileDir.exists()) {
-        		    		
-        		    		
-        		    		fileDir.mkdirs(); //폴더 생성합니다.
-        		    	}        		
-        		    	
-        		    	FileOutputStream fos = new FileOutputStream(targetPath + lastFolderName + "/" + lastFolderName + "-401" + ".jpg");
-        	            fos.write(fileByte);        	
-        	            fos.close();          		    	
+        			if(fileDetailList[j].getName().contains("-403.jpg")) {
+        				System.out.println("===== lastFolderName ===== " + lastFolderName);       		    	
         			}
         			
         		}
