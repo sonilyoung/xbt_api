@@ -24,11 +24,9 @@ public class TestCodeRenameMain {
 		//String targetPath = "D:\\HAN_SEO_UNIVERSITY\\dual_images_complete\\";
 		
 		//싱글이미지
-		String filePath = "D:\\KINAC16\\HANSEO_TEST\\";
-		String targetPath = "D:\\KINAC16\\HANSEO_TEST\\";		
+		String filePath = "D:\\HAN_SEO_UNIVERSITY\\test_images\\";
+		String targetPath = "D:\\HAN_SEO_UNIVERSITY\\test_images\\";		
 		File[] fileList = FileReader.ListFile( filePath );
-		
-		
 		
         for( int i = 0; i < fileList.length; i++ ) {
         	try {
@@ -49,7 +47,9 @@ public class TestCodeRenameMain {
         		        // root directory 없으면 생성
         		    	if (!fileDir.exists()) {
         		    		fileDir.mkdirs(); //폴더 생성합니다.
-        		    	}        		
+        		    	}        	
+        		    	
+        		    	System.out.println("lastFolderName : " + lastFolderName);
         		    	
         		    	FileOutputStream fos = new FileOutputStream(targetPath + lastFolderName + "/" + lastFolderName + "-403" + ".jpg");
         	            fos.write(fileByte);        	

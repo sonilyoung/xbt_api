@@ -24,8 +24,8 @@ public class TestCodeRenameAllMain {
 		//String targetPath = "D:\\HAN_SEO_UNIVERSITY\\dual_images_complete\\";
 		
 		//싱글이미지
-		String filePath = "D:\\KINAC16\\HANSEO_TEST\\";
-		String targetPath = "D:\\KINAC16\\HANSEO_TEST\\";		
+		String filePath = "D:\\HAN_SEO_UNIVERSITY\\test_images\\";
+		String targetPath = "D:\\HAN_SEO_UNIVERSITY\\test_images\\";		
 		File[] fileList = FileReader.ListFile( filePath );
 		
 		
@@ -35,13 +35,13 @@ public class TestCodeRenameAllMain {
         		//System.out.println("path : " + fileList[i].toPath());
         		
         		String lastFolderName = fileList[i].toPath().toString().substring(fileList[i].toPath().toString().length()-8, fileList[i].toPath().toString().length());
-        		System.out.println("===== lastFolderName ===== " + lastFolderName);
+        		//System.out.println("===== lastFolderName ===== " + lastFolderName);
         		
         		File[] fileDetailList = FileReader.ListFile(fileList[i].toPath().toString());
         		for( int j = 0; j < fileDetailList.length; j++ ) {
-        			//System.out.println("fileDetailList : " + fileDetailList[j].toPath());
+        			System.out.println("fileDetailList : " + fileDetailList[j].toPath());
         			
-        				System.out.println("realImages : " + fileDetailList[j].getName());
+        				String targetType = fileDetailList[j].getName().substring(fileDetailList[j].getName().toString().length()-8, fileDetailList[j].getName().toString().length());
         				byte[] fileByte = Files.readAllBytes(fileDetailList[j].toPath());
         				
         		        File fileDir = new File(targetPath + lastFolderName);
@@ -50,11 +50,11 @@ public class TestCodeRenameAllMain {
         		    		fileDir.mkdirs(); //폴더 생성합니다.
         		    	}        		
         		    	
-        		    	//FileOutputStream fos = new FileOutputStream(targetPath + lastFolderName + "/" + lastFolderName + "-403" + ".jpg");
-        	            //fos.write(fileByte);        	
-        	            //fos.close();        
+        		    	FileOutputStream fos = new FileOutputStream(targetPath + lastFolderName + "/" + lastFolderName + targetType);
+        	            fos.write(fileByte);        	
+        	            fos.close();        
         	            
-        	            //fileDetailList[j].delete();
+        	            fileDetailList[j].delete();
         	            
         			
         		}
