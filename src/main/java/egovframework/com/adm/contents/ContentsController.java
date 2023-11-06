@@ -32,6 +32,7 @@ import egovframework.com.common.vo.LearningImg;
 import egovframework.com.common.vo.LearningMainImg;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.file.service.XbtImageService;
+import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
@@ -578,6 +579,7 @@ public class ContentsController {
 			result.setFrontImg(resultImg.getImgFront()); 
 			result.setSideImg(resultImg.getImgSide());
 			result.setRealImg(resultImg.getImgReal());
+			result.setThreedImg(resultImg.getImgThreed());
 			
 	        return new BaseResponse<UnitImg>(result);
         } catch (Exception e) {
@@ -706,7 +708,10 @@ public class ContentsController {
 		//MultipartFile realImg = mRequest.getFile("realImg");
 		//MultipartFile frontImg = mRequest.getFile("frontImg");
 		//MultipartFile sideImg = mRequest.getFile("sideImg");
+		AttachFile af = new AttachFile();
+		af.setTargetName(params.getUnitId());
 		if(realImg != null){
+			fileStorageService.createUnitImage("401", af, realImg);
 			params.setRealmImg(realImg);
 			if(!ComUtils.imgExtentionCheck(realImg)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
@@ -714,6 +719,7 @@ public class ContentsController {
 		}
 	
 		if(frontImg != null){
+			fileStorageService.createUnitImage("101", af, frontImg);
 			params.setFrontmImg(frontImg);
 			if(!ComUtils.imgExtentionCheck(frontImg)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);
@@ -721,6 +727,7 @@ public class ContentsController {
 		}
 		
 		if(sideImg != null){
+			fileStorageService.createUnitImage("201", af, sideImg);
 			params.setSidemImg(sideImg);
 			if(!ComUtils.imgExtentionCheck(sideImg)) {
 				return new BaseResponse<Integer>(BaseResponseCode.EXTENSION_ERROR);

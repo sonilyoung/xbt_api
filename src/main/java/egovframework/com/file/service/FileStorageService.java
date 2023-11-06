@@ -24,6 +24,8 @@ import egovframework.com.file.vo.AttachFile;
  */
 public interface FileStorageService {
 	
+	AttachFile createUnitImage(String imgType, AttachFile params ,MultipartFile file) throws Exception;
+	
 	AttachFile createUnitImageFile(String targetName, AttachFile params ,MultipartFile file) throws Exception;
 
 	AttachFile createXrayImageFile(String targetName, AttachFile params ,MultipartFile file) throws Exception;

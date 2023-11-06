@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 import egovframework.com.global.util.FileReader;
 
-public class TestCodeRenameMain {
+public class TestCodeRenameAllMain {
 
 	public static void main(String[] args) {
 
@@ -41,7 +41,6 @@ public class TestCodeRenameMain {
         		for( int j = 0; j < fileDetailList.length; j++ ) {
         			//System.out.println("fileDetailList : " + fileDetailList[j].toPath());
         			
-        			if(fileDetailList[j].getName().contains("401.jpg") || fileDetailList[j].getName().contains("401.JPG")) {
         				System.out.println("realImages : " + fileDetailList[j].getName());
         				byte[] fileByte = Files.readAllBytes(fileDetailList[j].toPath());
         				
@@ -51,13 +50,12 @@ public class TestCodeRenameMain {
         		    		fileDir.mkdirs(); //폴더 생성합니다.
         		    	}        		
         		    	
-        		    	FileOutputStream fos = new FileOutputStream(targetPath + lastFolderName + "/" + lastFolderName + "-403" + ".jpg");
-        	            fos.write(fileByte);        	
-        	            fos.close();        
+        		    	//FileOutputStream fos = new FileOutputStream(targetPath + lastFolderName + "/" + lastFolderName + "-403" + ".jpg");
+        	            //fos.write(fileByte);        	
+        	            //fos.close();        
         	            
-        	            fileDetailList[j].delete();
+        	            //fileDetailList[j].delete();
         	            
-        			}
         			
         		}
         		//byte[] fileByte = Files.readAllBytes(fileList[i].toPath());

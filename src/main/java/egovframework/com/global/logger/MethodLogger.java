@@ -55,13 +55,14 @@ public class MethodLogger implements Filter {
         //log.debug("REQUEST : {}", reqContent);
         
         //octet-stream , excel
+        /*
         if(httpServletResponse.getContentType()!=null) {
         	if(!httpServletResponse.getContentType().contains("excelFile") && !httpServletResponse.getContentType().contains("excel") && !httpServletResponse.getContentType().contains("octet-stream")) {
         		log.debug("RESPONSE : {}", resContent);
         	}else {
         		log.debug("RESPONSE : file respnse");	
         	}
-        }
+        }*/
         log.debug("====================================================================================");        
     }
 

@@ -98,6 +98,52 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
     
 	@Override
+	public AttachFile createUnitImage(String imgType, AttachFile params, MultipartFile file) throws Exception {
+		// TODO Auto-generated method stub
+        AttachFile attachFile = null;
+        File newFile = null;
+        String originalFileName = file.getOriginalFilename();
+        //String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
+        String fileExtension = StringUtils.getFilenameExtension(originalFileName);
+        
+        String filePath = UNIT_ROOT_DIR;
+        
+        File fileDir = new File(filePath);
+        // root directory 없으면 생성
+    	if (!fileDir.exists()) {
+    		fileDir.mkdirs(); //폴더 생성합니다.
+    	}        
+        
+    	String targetFilePath = filePath+File.separator+params.getTargetName();
+    	File imgDir = new File(filePath+File.separator+params.getTargetName());
+    	if (!imgDir.exists()) {
+    		imgDir.mkdirs(); //폴더 생성합니다.
+    	}        	
+    	
+        // 실제 파일명_현재시간 으로 rename
+        StringBuilder sb = new StringBuilder();
+        //X00353-204.jpg
+        
+        sb.append(params.getTargetName()).append("-").append(imgType).append(".").append(fileExtension);
+        String realFileName = sb.toString();
+        try {
+            newFile = new File(targetFilePath, realFileName);
+            file.transferTo(newFile);
+            attachFile = new AttachFile();
+            attachFile.setFileExt(fileExtension);
+            attachFile.setFilePath(filePath);
+            attachFile.setOriginalFileName(originalFileName);
+            attachFile.setSaveFileName(realFileName);
+            attachFile.setFileSize((int) file.getSize());
+        } catch (IllegalStateException e) {
+            throw e;
+        } catch (IOException e) {
+            throw e;
+        }
+        return attachFile;
+	}       
+    
+	@Override
 	public AttachFile createUnitImageFile(String targetName, AttachFile params, MultipartFile file) throws Exception {
 		// TODO Auto-generated method stub
         AttachFile attachFile = null;
@@ -915,15 +961,24 @@ public class FileStorageServiceImpl implements FileStorageService {
             //String bagScanId = objectMapper.writeValueAsString(jdata.get("bagScanId")).asText();;
         	String fileName = jdata.get("unitId").asText();
         	String responsePath = KAIST_RESPONSE_IMG_REQUEST_PATH + File.separator + fileName;
+        	String responsePathNew = UNIT_ROOT_DIR + File.separator + fileName;
         	String fileExtension = ".png";
         	String fileGifExtension = ".gif";
+        	
             File fileDir = new File(responsePath);
+            File fileDirNew = new File(responsePathNew);
+            
             // root directory 없으면 생성
         	if (!fileDir.exists()) {
         		fileDir.mkdirs(); //폴더 생성합니다.
+        	}        
+        	
+        	if (!fileDirNew.exists()) {
+        		fileDirNew.mkdirs(); //폴더 생성합니다.
         	}        	
         	
         	String targetFile = responsePath + File.separator + fileName;
+        	String targetFileNew = responsePathNew + File.separator + fileName;
         	byte[] byteArray = null;
         	
         	if(jdata.get("threedGenList")!=null) {
@@ -948,6 +1003,10 @@ public class FileStorageServiceImpl implements FileStorageService {
                 FileOutputStream fileOutputStream = new FileOutputStream(new File(targetFile + "-" + "threed" + fileGifExtension));
                 fileOutputStream.write(byteArray);
                 fileOutputStream.close();
+                
+                FileOutputStream fileOutputStreamNew = new FileOutputStream(new File(targetFileNew + "-" + "threed" + fileGifExtension));
+                fileOutputStreamNew.write(byteArray);                
+                fileOutputStreamNew.close();
             }
         	
             

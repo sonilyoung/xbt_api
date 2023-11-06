@@ -356,6 +356,7 @@
 				OR USER_NM LIKE  CONCAT('%' , #{searchval} , '%')
 				OR EDU_NAME LIKE  CONCAT('%' , #{searchval} , '%')
 				OR COMP_NM LIKE  CONCAT('%' , #{searchval} , '%')
+				OR #{searchval} BETWEEN EDU_START_DATE AND EDU_END_DATE 			
 			</when>
 		</choose>
 		ORDER BY INSERT_DATE DESC		

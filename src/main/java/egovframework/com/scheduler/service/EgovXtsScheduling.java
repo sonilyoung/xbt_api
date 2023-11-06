@@ -86,8 +86,8 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 					int theoryScore = 0;
 					int evaluationScore = 0;
 					int practiceScore = 0;//일반실기점수 비중반영
-					int practiceCarScore = 0;//차량실기점수 비중반영
-					int practiceHumanScore = 0;//대인실기점수 비중반영
+					//int practiceCarScore = 0;//차량실기점수 비중반영
+					//int practiceHumanScore = 0;//대인실기점수 비중반영
 					
 					
 					if(theory!=null) {
@@ -124,30 +124,27 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 						
 						if("4".equals(xs.getEduCode())){
 							if(practiceTotalScore!=null) {
-								tgtpracticeHumanScore = practiceTotalScore.getPracticeHumanScore();
-								
 								//practiceHumanScore =  Math.round((practiceTotalScore.getPracticeHumanScore()*baseline.getPracticeHumanTotalScore())/100);
-								
-								practiceHumanScore =  Math.round(practiceTotalScore.getPracticeHumanScore());
+								practiceScore =  Math.round(practiceTotalScore.getPracticeScore());
 								LOGGER.info("==============항공경비 초기교육 (5일 / 30시간) (4) 실습==============");
-								LOGGER.info("practiceHumanScore:"+ practiceHumanScore);					
+								LOGGER.info("practiceHumanScore:"+ practiceScore);					
 							}								
 						}
 						
 						
 						if("6".equals(xs.getEduCode())){
 							if(practiceTotalScore!=null) {
-								tgtpracticeCarScore = practiceTotalScore.getPracticeCarScore();
-								tgtpracticeHumanScore = practiceTotalScore.getPracticeHumanScore();
+								//tgtpracticeCarScore = practiceTotalScore.getPracticeCarScore();
+								//tgtpracticeHumanScore = practiceTotalScore.getPracticeHumanScore();
 								
 								//practiceCarScore =  Math.round((practiceTotalScore.getPracticeCarScore()*baseline.getPracticeCarTotalScore())/100);
 								//practiceHumanScore =  Math.round((practiceTotalScore.getPracticeHumanScore()*baseline.getPracticeHumanTotalScore())/100);
 								
-								practiceCarScore =  Math.round(practiceTotalScore.getPracticeCarScore());
-								practiceHumanScore =  Math.round(practiceTotalScore.getPracticeHumanScore());								
+								//practiceCarScore =  Math.round(practiceTotalScore.getPracticeCarScore());
+								//practiceHumanScore =  Math.round(practiceTotalScore.getPracticeHumanScore());	
+								practiceScore =  Math.round(practiceTotalScore.getPracticeScore());
 								LOGGER.info("==============항공경비 인증평가교육 (1일 / 4시간) (6) 실습==============");
-								LOGGER.info("practiceCarScore:"+ practiceCarScore);
-								LOGGER.info("practiceHumanScore:"+ practiceHumanScore);					
+								LOGGER.info("practiceHumanScore:"+ practiceScore);								
 							}								
 						}
 											
@@ -173,18 +170,25 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 									 //커트라인비교 추가
 									if(tgtTheoryScore < baseline.getPassTheoryScore()) {//이론평가커트라인비교
 										xs.setPassYn("N");
-									}else if(practiceHumanScore < baseline.getPracticeHumanScore()) {//대인실기커트라인비교
+									//}else if(practiceHumanScore < baseline.getPracticeHumanScore()) {//대인실기커트라인비교
+										//xs.setPassYn("N");	
+									//}	
+									}else if(tgtPracticeScore < baseline.getPassPracticeScore()) {//실기커트라인비교
 										xs.setPassYn("N");	
-									}									
+									}
+																	
 								}
 								
 								if("6".equals(xs.getEduCode())){
 									 //커트라인비교 추가
 									if(tgtTheoryScore < baseline.getPassTheoryScore()) {//이론평가커트라인비교
 										xs.setPassYn("N");
-									}else if(practiceCarScore < baseline.getPracticeCarScore()) {//차량실기커트라인비교
-										xs.setPassYn("N");
-									}else if(practiceHumanScore < baseline.getPracticeHumanScore()) {//대인실기커트라인비교
+									//}else if(practiceCarScore < baseline.getPracticeCarScore()) {//차량실기커트라인비교
+										//xs.setPassYn("N");
+									//}else if(practiceHumanScore < baseline.getPracticeHumanScore()) {//대인실기커트라인비교
+										//xs.setPassYn("N");	
+									//}
+									}else if(tgtPracticeScore < baseline.getPassPracticeScore()) {//실기커트라인비교
 										xs.setPassYn("N");	
 									}									
 								}
@@ -198,11 +202,13 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 									int totalScore = 0;
 									
 									if("4".equals(xs.getEduCode())){
-										totalScore = theoryScore + practiceHumanScore;
+										//totalScore = theoryScore + practiceHumanScore;
+										totalScore = theoryScore + practiceScore;
 									}
 									
 									if("6".equals(xs.getEduCode())){
-										totalScore = theoryScore + practiceHumanScore + practiceCarScore;
+										//totalScore = theoryScore + practiceHumanScore + practiceCarScore;
+										totalScore = theoryScore + practiceScore;
 									}
 									
 									xs.setGainScore(totalScore);
