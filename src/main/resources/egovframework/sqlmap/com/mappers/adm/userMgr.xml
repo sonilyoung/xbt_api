@@ -12,6 +12,7 @@
 				USER_NM,
 				USER_PW,
 				A.AUTH_CD,
+				EDU_CODE,
 				EDU_NAME,
 				USER_NM_CH,
 				USER_NM_EN,
@@ -487,6 +488,7 @@
 				BIRTH_DAY,
 				AGE,
 				ADDRESS,
+				ADDRESS_EN,
 				DEPT,
 				POSITION,
 				WORK,
@@ -564,6 +566,7 @@
 			BIRTH_DAY,
 			AGE,
 			ADDRESS,
+			ADDRESS_EN,
 			DEPT,
 			POSITION,
 			WORK,
@@ -635,6 +638,7 @@
 			,#{birthDay}
 			,#{age}
 			,#{address}
+			,#{addressEn}
 			,#{dept}
 			,#{position}
 			,#{work}
@@ -697,6 +701,37 @@
 	
 	</insert>	
 	
+		<!-- 중복 교육생 등록 -->
+	<insert id="insertDuplicationUser" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">
+		INSERT INTO XBT_STU_DUPLICATION_USER(
+			USER_ID,
+			USER_NM,
+			INSERT_ID,
+			INSERT_DATE
+		)VALUES(
+			#{userId}
+			,#{userNm}
+			,#{insertId}
+			,now()
+		)
+	
+	</insert>	
+	
+			
+	<!-- 중복 교육생 삭제-->
+	<delete id="deleteDuplicationUser" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">
+		DELETE FROM XBT_STU_DUPLICATION_USER  
+	</delete>	
+	
+	<!-- 중복 교육생 상세조회-->
+	<select id="selectDuplicationUserList" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >	
+			SELECT 
+				USER_NO,
+				USER_ID,
+				USER_NM
+         FROM XBT_STU_DUPLICATION_USER 	
+	</select>			
+	
 	
 	<!-- 교육생 수정 -->
 	<update id="updateUser" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
@@ -711,6 +746,7 @@
 			BIRTH_DAY = 		#{birthDay},
 			AGE = 		#{age},
 			ADDRESS = 		#{address},
+			ADDRESS_EN = 		#{addressEn},
 			DEPT = 		#{dept},
 			POSITION = 		#{position},
 			WORK = 		#{work},
@@ -1397,6 +1433,7 @@
 			PROC_CD,
 			PROC_YEAR,
 			PROC_SEQ,
+			EDU_CODE,
 			EDU_NAME,
 			USER_ID,
 			USER_NM,
@@ -1419,6 +1456,7 @@
 		SELECT
 			T1.PROC_CD,
 			T1.PROC_SEQ,
+			T1.EDU_CODE,
 			T2.EDU_NAME,
 			T2.USER_NM,	
 			T2.USER_NM_EN,
@@ -1436,4 +1474,82 @@
 		AND T1.PROC_SEQ = #{procSeq}	
 		AND T1.PASS_YN != 'ING'
 	</select>	
+	
+	
+	<!--이수증명서 자격증번호 저장 -->
+	<select id="selectCertNumber" parameterType="egovframework.com.adm.userMgr.vo.UserCertificateDetail" resultType="egovframework.com.adm.userMgr.vo.UserCertificateDetail" >
+			SELECT IFNULL(
+				MAX(CERTIFICATION_ID), 
+				CONCAT(
+					'KSSA-',
+					DATE_FORMAT(NOW(), '%Y'),
+					<choose>
+						<when test='eduType == "1"'>
+							'-보안-',
+						</when>
+						<when test='eduType == "2"'>
+							'-경비-',
+						</when>
+					</choose>					
+					LPAD(cast(right(IFNULL(MAX(CERTIFICATION_ID), 0), 5) as DECIMAL)+1, 5 , '0')
+				) 
+			) AS certificationId  
+			FROM XBT_CERTIFICATION_INFO 
+		<choose>
+			<when test='eduType == "1"'>
+				WHERE EDU_CODE = '1' OR EDU_CODE = '2' OR EDU_CODE = '3'
+			</when>
+			<when test='eduType == "2"'>
+				WHERE EDU_CODE = '4' OR EDU_CODE = '5' OR EDU_CODE = '6'
+			</when>
+		</choose>
+	</select>	
+	
+	
+	
+	<!-- 이수증명서 자격증번호 저장 -->
+	<insert id="insertCertNumber" parameterType="egovframework.com.adm.userMgr.vo.CertificationInfo">
+		INSERT INTO XBT_CERTIFICATION_INFO(
+			CERTIFICATION_ID,
+			PROC_CD,
+			PROC_YEAR,
+			PROC_SEQ,
+			EDU_CODE,
+			EDU_NAME,
+			USER_ID,
+			USER_NM,
+			PRACTICE_SCORE,
+			THEORY_SCORE,
+			EVALUATION_SCORE,
+			EVALUATION_YN,
+			PASS_YN,
+			EDU_START_DATE,
+			EDU_END_DATE,
+			ENDING_YN,
+			INSERT_DATE,
+			INSERT_ID
+		)VALUES(
+			,#{certificationId}
+			,#{procCd}
+			,#{procYear}
+			,#{procSeq}
+			,#{eduCode}
+			,#{eduName}
+			,#{userId}
+			,#{userNm}
+			,#{practiceScore}
+			,#{theoryScore}
+			,#{evaluationScore}
+			,#{evaluationYn}
+			,#{passYn}
+			,#{eduStartDate}
+			,#{eduEndDate}
+			,#{endingYn}
+			,now()
+			,#{insertId}
+		)
+	</insert>		
+	
+	
+		
 </mapper>

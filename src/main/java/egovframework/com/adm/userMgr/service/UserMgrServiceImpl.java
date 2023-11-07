@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.adm.userMgr.dao.UserMgrDAO;
+import egovframework.com.adm.userMgr.vo.CertificationInfo;
 import egovframework.com.adm.userMgr.vo.TeacherInfo;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
@@ -57,6 +58,13 @@ public class UserMgrServiceImpl implements UserMgrService {
 		// TODO Auto-generated method stub
 		return (List<UserInfo>) userMgrDAO.selectUserListPop(params);
 	}	
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<UserInfo> selectDuplicationUserList(UserInfo params) {
+		// TODO Auto-generated method stub
+		return (List<UserInfo>) userMgrDAO.selectDuplicationUserList(params);
+	}		
 	
 	@Override
 	@SuppressWarnings("unchecked")
@@ -115,6 +123,12 @@ public class UserMgrServiceImpl implements UserMgrService {
 		// TODO Auto-generated method stub
 		return userMgrDAO.insertUser(params);
 	}
+	
+	@Override
+	public int insertDuplicationUser(UserInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.insertDuplicationUser(params);
+	}
 
 
 	@Override
@@ -131,8 +145,11 @@ public class UserMgrServiceImpl implements UserMgrService {
 	}	
 	
 	
-	
-	
+	@Override
+	public int deleteDuplicationUser(UserInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.deleteDuplicationUser(params);
+	}	
 
 	@Override
 	public List<UserBaseline> getUserBaselineList(UserBaseline params) {
@@ -231,7 +248,17 @@ public class UserMgrServiceImpl implements UserMgrService {
 		// TODO Auto-generated method stub
 		return userMgrDAO.selectCertificationUser(params);
 	}
+	
+	@Override
+	public UserCertificateDetail selectCertNumber(UserCertificateDetail params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.selectCertNumber(params);
+	}
 
-
+	@Override
+	public int insertCertNumber(CertificationInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.insertCertNumber(params);
+	}
 
 }

@@ -2,6 +2,7 @@ package egovframework.com.adm.userMgr.service;
 
 import java.util.List;
 
+import egovframework.com.adm.userMgr.vo.CertificationInfo;
 import egovframework.com.adm.userMgr.vo.TeacherInfo;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
@@ -34,6 +35,8 @@ public interface UserMgrService{
 	
 	public List<UserInfo> selectUserListPop(UserInfo params);
 	
+	public List<UserInfo> selectDuplicationUserList(UserInfo params);
+	
 	public List<UserBaseline> selectBaselineUserList(UserBaseline params);
 	
 	public UserBaseline selectBaselineBasicTotalScore(UserBaseline params);
@@ -52,9 +55,13 @@ public interface UserMgrService{
 	
 	public int insertUser(UserInfo params);
 	
+	public int insertDuplicationUser(UserInfo params);
+	
 	public int updateUser(UserInfo params);
 	
-	public int deleteUser(UserInfo params);	
+	public int deleteUser(UserInfo params);
+	
+	public int deleteDuplicationUser(UserInfo params);	
 	
 	
 	public List<UserBaseline> getUserBaselineList(UserBaseline params);
@@ -86,4 +93,8 @@ public interface UserMgrService{
 	public List<UserCertificate> selectCertificationUserList(UserCertificate params);
 	
 	public UserCertificateDetail selectCertificationUser(UserCertificateDetail params);
+	
+	public UserCertificateDetail selectCertNumber(UserCertificateDetail params);
+	
+	public int insertCertNumber(CertificationInfo params);
 }

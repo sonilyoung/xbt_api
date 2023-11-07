@@ -45,6 +45,7 @@ public class UserInfo {
 	private String birthDay;
 	private String age;
 	private String address;
+	private String addressEn;
 	private String work;
 	private String career1;
 	private String career2;

@@ -23,12 +23,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import egovframework.com.adm.contents.vo.XbtSeq;
 import egovframework.com.adm.eduMgr.service.EduMgrService;
 import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.userMgr.service.UserMgrService;
+import egovframework.com.adm.userMgr.vo.CertificationInfo;
 import egovframework.com.adm.userMgr.vo.TeacherInfo;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
@@ -40,7 +40,6 @@ import egovframework.com.adm.userMgr.vo.UserCertificateDetail;
 import egovframework.com.adm.userMgr.vo.UserInfo;
 import egovframework.com.common.service.CommonService;
 import egovframework.com.common.vo.Common;
-import egovframework.com.common.vo.SeqGroupCode;
 import egovframework.com.excel.ExcelRead;
 import egovframework.com.excel.ExcelReadOption;
 import egovframework.com.global.OfficeMessageSource;
@@ -1001,7 +1000,7 @@ public class UserMgrController {
 	@ResponseBody
 	@PostMapping(value="/insertStudentExcel.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)	
-	public BaseResponse<Integer> insertStudentExcel(
+	public BaseResponse<List<UserInfo>> insertStudentExcel(
 			HttpServletRequest request
 			,HttpServletResponse response
 			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
@@ -1029,7 +1028,7 @@ public class UserMgrController {
 			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
 			
 			excelFile.transferTo(destFile); // 엑셀파일 생성
-			String[] coloumNm = {"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R"};
+			String[] coloumNm = {"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S"};
 			    
 			ExcelReadOption excelReadOption = new ExcelReadOption();
 			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
@@ -1043,10 +1042,13 @@ public class UserMgrController {
 			params = new UserInfo();
 			
 			int result = 0;
+			int duplicationCnt = 0;
 			
+			
+			userMgrService.deleteDuplicationUser(params);
 			for(LinkedHashMap<String, String> excelData: excelContent){
 				params = new UserInfo();
-				params.setUserId(excelData.get("J"));//아이디
+				params.setUserId(excelData.get("K"));//아이디
 				params.setEduCode(excelData.get("B")); 
 				params.setUserNm(excelData.get("C"));//국문성명
 	            params.setUserNmEn(excelData.get("D"));//영문성명
@@ -1060,51 +1062,52 @@ public class UserMgrController {
 	            params.setBirthDay(dateString1);//생년월일
 	            params.setAge(excelData.get("G"));//나이
 	            params.setAddress(excelData.get("H"));//주소
-	            params.setCompany(excelData.get("I"));//소속
-	            params.setHpNo(excelData.get("J"));//휴대폰
+	            params.setAddressEn(excelData.get("I"));//영문주소
+	            params.setCompany(excelData.get("J"));//소속
+	            params.setHpNo(excelData.get("K").replaceAll("-", ""));//휴대폰
 	            //여기까지 필수값
 	            
 	            //필수가 아닌데이터 처리
-	    		if(StringUtils.isEmpty(excelData.get("K"))){				
-	    			params.setEmail(excelData.get("K"));//이메일
+	    		if(StringUtils.isEmpty(excelData.get("L"))){				
+	    			params.setEmail(excelData.get("L"));//이메일
 	            }
 	    		
-	    		if(StringUtils.isEmpty(excelData.get("L"))){				
-	    			params.setCareerYn(excelData.get("L"));//항공보안경력유무
+	    		if(StringUtils.isEmpty(excelData.get("M"))){				
+	    			params.setCareerYn(excelData.get("M"));//항공보안경력유무
 	            }	            
 	            
-	    		if(null != excelData.get("M") && !"".equals(excelData.get("M"))){
+	    		if(null != excelData.get("N") && !"".equals(excelData.get("N"))){
 		            // 엑셀 날짜 값을 Java Date 객체로 변환
-		            Date date2 = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("M")));
+		            Date date2 = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("N")));
 		            // 날짜를 원하는 형식으로 문자열로 변환
 		            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
 		            String dateString2 = dateFormat2.format(date2);	            
 		            params.setCareerStartDate1(dateString2);//보안경력시작일	    			
 	    		}
 	    		
-	    		if(null != excelData.get("N") && !"".equals(excelData.get("N"))){
+	    		if(null != excelData.get("O") && !"".equals(excelData.get("O"))){
 		            // 엑셀 날짜 값을 Java Date 객체로 변환
-		            Date date3 = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("N")));
+		            Date date3 = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("O")));
 		            // 날짜를 원하는 형식으로 문자열로 변환
 		            SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd");
 		            String dateString3 = dateFormat3.format(date3);	  	            
 		            params.setCareerEndDate1(dateString3);//보안경력종료일
 	    		}
 	    		
-	    		if(StringUtils.isEmpty(excelData.get("O"))){
-	    			params.setCareerCompany1(excelData.get("O"));//소속
-	    		}
-	    		
 	    		if(StringUtils.isEmpty(excelData.get("P"))){
-	    			params.setCareerPosition1(excelData.get("P"));//직책(직위)
+	    			params.setCareerCompany1(excelData.get("P"));//소속
 	    		}
 	    		
 	    		if(StringUtils.isEmpty(excelData.get("Q"))){
-	    			params.setCareer1(excelData.get("Q"));//담당업무				
+	    			params.setCareerPosition1(excelData.get("Q"));//직책(직위)
 	    		}
 	    		
 	    		if(StringUtils.isEmpty(excelData.get("R"))){
-	    			params.setClassType(excelData.get("R"));//수업만 A반 B반				
+	    			params.setCareer1(excelData.get("R"));//담당업무				
+	    		}
+	    		
+	    		if(StringUtils.isEmpty(excelData.get("S"))){
+	    			params.setClassType(excelData.get("S"));//수업만 A반 B반				
 	    		}	    		
 	            
 				Common cp = new Common();
@@ -1128,20 +1131,26 @@ public class UserMgrController {
 	            
 				UserInfo ui = userMgrService.selectUser(params);
 				if(ui != null) {
-					return new BaseResponse<Integer>(BaseResponseCode.EXGIST_USERS, BaseResponseCode.EXGIST_USERS.getMessage());
+					duplicationCnt = userMgrService.insertDuplicationUser(params);
 				}else {
 					result = userMgrService.insertUser(params);	
 				}				
 			}
 			
 			
+			List<UserInfo> duplicaitonUserList = userMgrService.selectDuplicationUserList(params);
+
+            if(duplicationCnt>0) {
+	            return new BaseResponse<List<UserInfo>>(BaseResponseCode.EXGIST_USERS, BaseResponseCode.EXGIST_USERS.getMessage(), duplicaitonUserList);
+            }			
+			
             if(result>0) {
-	            return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+	            return new BaseResponse<List<UserInfo>>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage(), duplicaitonUserList);
             }else {
-            	return new BaseResponse<Integer>(BaseResponseCode.DATA_IS_NULL);
+            	return new BaseResponse<List<UserInfo>>(BaseResponseCode.DATA_IS_NULL, BaseResponseCode.DATA_IS_NULL.getMessage(), duplicaitonUserList);
             }
 	    }catch(Exception e) {
-	    	return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR);
+	    	return new BaseResponse<List<UserInfo>>(BaseResponseCode.SAVE_ERROR);
 	    } 
 	    
 	}    
@@ -1852,8 +1861,24 @@ public class UserMgrController {
 			return new BaseResponse<UserCertificateDetail>(BaseResponseCode.PARAMS_ERROR, "ProcSeq" + BaseApiMessage.REQUIRED.getCode());
 		}				
 		
+		if(StringUtils.isEmpty(params.getEduCode())){				
+			return new BaseResponse<UserCertificateDetail>(BaseResponseCode.PARAMS_ERROR, "EduCode" + BaseApiMessage.REQUIRED.getCode());
+		}		
+				
 		try {
+			
+			//보안
+			if("1".equals(params.getEduCode()) || "2".equals(params.getEduCode()) || "3".equals(params.getEduCode())) {
+				
+				params.setEduType("1");
+			//경비
+			}else if("4".equals(params.getEduCode()) || "5".equals(params.getEduCode()) || "6".equals(params.getEduCode())) {
+				params.setEduType("2");
+			}
+			
+			UserCertificateDetail certNumber = userMgrService.selectCertNumber(params);
 			UserCertificateDetail result = userMgrService.selectCertificationUser(params);
+			result.setCertNumber(certNumber.getCertNumber());
 			
 	        return new BaseResponse<UserCertificateDetail>(result);
         } catch (Exception e) {
@@ -1861,6 +1886,121 @@ public class UserMgrController {
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
+    
+    
+    /**
+     * 이수증명서 자격증번호 가져오기
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectCertNumber.do")
+    @ApiOperation(value = "이수증명서 자격증번호 가져오기", notes = "이수증명서 자격증번호 가져오기")
+    public BaseResponse<UserCertificateDetail> selectCertNumber(HttpServletRequest request, @RequestBody UserCertificateDetail params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getEduCode())){				
+			return new BaseResponse<UserCertificateDetail>(BaseResponseCode.PARAMS_ERROR, "EduCode" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		try {
+			//보안
+			if("1".equals(params.getEduCode()) || "2".equals(params.getEduCode()) || "3".equals(params.getEduCode())) {
+				
+				params.setEduType("1");
+			//경비
+			}else if("4".equals(params.getEduCode()) || "5".equals(params.getEduCode()) || "6".equals(params.getEduCode())) {
+				params.setEduType("2");
+			}
+			
+			UserCertificateDetail result = userMgrService.selectCertNumber(params);
+			
+	        return new BaseResponse<UserCertificateDetail>(result);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }       
+    
+    
+    
+    /**
+     * 이수증명서 자격증번호 저장
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/insertCertNumber.do")
+    @ApiOperation(value = "이수증명서 자격증번호 저장", notes = "이수증명서 자격증번호 저장")
+    public BaseResponse<CertificationInfo> insertCertNumber(HttpServletRequest request, @RequestBody CertificationInfo params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getCertificationId())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "certificationId" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "procCd" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getProcYear())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "procYear" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getProcSeq())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "procSeq" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getEduCode())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "eduCode" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getEduName())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "userId" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getUserNm())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "userNm" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getPracticeScore())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "practiceScore" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getTheoryScore())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "theoryScore" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getEvaluationScore())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "evaluationScore" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getPassYn())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "passYn" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getEduStartDate())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "eduStartDate" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getEduEndDate())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "eduEndDate" + BaseApiMessage.REQUIRED.getCode());
+		}
+		if(StringUtils.isEmpty(params.getEndingYn())){				
+			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "endingYn" + BaseApiMessage.REQUIRED.getCode());
+		}
+
+		params.setInsertId(login.getUserId());
+		try {
+			int result = userMgrService.insertCertNumber(params);
+			
+			if(result>0) {
+				return new BaseResponse<CertificationInfo>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<CertificationInfo>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }         
             
         
 }

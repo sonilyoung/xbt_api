@@ -2,6 +2,7 @@ package egovframework.com.adm.userMgr.dao;
 
 import java.util.List;
 
+import egovframework.com.adm.userMgr.vo.CertificationInfo;
 import egovframework.com.adm.userMgr.vo.TeacherInfo;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
@@ -25,6 +26,10 @@ public class UserMgrDAO extends EgovAbstractMapper{
 	public List<?> selectUserListPop(UserInfo params) {
 		return (List<?>)selectList(Namespace + ".selectUserListPop", params);
 	}
+	
+	public List<?> selectDuplicationUserList(UserInfo params) {
+		return (List<?>)selectList(Namespace + ".selectDuplicationUserList", params);
+	}		
 		
 	public List<?> selectBaselineUserList(UserBaseline params) {
 		return (List<?>)selectList(Namespace + ".selectBaselineUserList", params);
@@ -56,11 +61,16 @@ public class UserMgrDAO extends EgovAbstractMapper{
 	
 	public UserInfo selectUser(UserInfo params) {
 		return selectOne(Namespace + ".selectUser", params);
-	}	
+	}
 	
 	public int insertUser(UserInfo params) {
 		return insert(Namespace + ".insertUser", params);
 	}
+	
+	
+	public int insertDuplicationUser(UserInfo params) {
+		return insert(Namespace + ".insertDuplicationUser", params);
+	}	
 	
 	public int updateUser(UserInfo params) {
 		return update(Namespace + ".updateUser", params);
@@ -70,7 +80,9 @@ public class UserMgrDAO extends EgovAbstractMapper{
 		return delete(Namespace + ".deleteUser", params);
 	}	
 	
-	
+	public int deleteDuplicationUser(UserInfo params) {
+		return delete(Namespace + ".deleteDuplicationUser", params);
+	}		
 	
 	
 	public List<?> getUserBaselineList(UserBaseline params) {
@@ -134,4 +146,13 @@ public class UserMgrDAO extends EgovAbstractMapper{
 	public UserCertificateDetail selectCertificationUser(UserCertificateDetail params) {
 		return selectOne(Namespace + ".selectCertificationUser", params);
 	}		
+	
+	public UserCertificateDetail selectCertNumber(UserCertificateDetail params) {
+		return selectOne(Namespace + ".selectCertNumber", params);
+	}		
+	
+	public int insertCertNumber(CertificationInfo params) {
+		return insert(Namespace + ".insertCertNumber", params);
+	}
+		
 }
