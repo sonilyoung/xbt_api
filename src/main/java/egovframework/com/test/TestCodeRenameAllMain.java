@@ -24,11 +24,9 @@ public class TestCodeRenameAllMain {
 		//String targetPath = "D:\\HAN_SEO_UNIVERSITY\\dual_images_complete\\";
 		
 		//싱글이미지
-		String filePath = "D:\\HAN_SEO_UNIVERSITY\\test_images\\";
-		String targetPath = "D:\\HAN_SEO_UNIVERSITY\\test_images\\";		
+		String filePath = "D:\\KINAC16\\HANSEO_UNIVERSITY\\";
+		String targetPath = "D:\\KINAC16\\HANSEO_UNIVERSITY\\";		
 		File[] fileList = FileReader.ListFile( filePath );
-		
-		
 		
         for( int i = 0; i < fileList.length; i++ ) {
         	try {
@@ -41,6 +39,7 @@ public class TestCodeRenameAllMain {
         		for( int j = 0; j < fileDetailList.length; j++ ) {
         			System.out.println("fileDetailList : " + fileDetailList[j].toPath());
         			
+        			if(!fileDetailList[j].getName().contains("403.jpg") && !fileDetailList[j].getName().contains("403.JPG")) {
         				String targetType = fileDetailList[j].getName().substring(fileDetailList[j].getName().toString().length()-8, fileDetailList[j].getName().toString().length());
         				byte[] fileByte = Files.readAllBytes(fileDetailList[j].toPath());
         				
@@ -54,8 +53,8 @@ public class TestCodeRenameAllMain {
         	            fos.write(fileByte);        	
         	            fos.close();        
         	            
-        	            fileDetailList[j].delete();
-        	            
+        	            fileDetailList[j].delete();       				
+        			}
         			
         		}
         		//byte[] fileByte = Files.readAllBytes(fileList[i].toPath());
