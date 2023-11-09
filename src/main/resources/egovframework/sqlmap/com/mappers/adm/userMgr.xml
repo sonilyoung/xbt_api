@@ -5,7 +5,11 @@
 	<!-- 교육생관리-->
 		
 	<!-- 교육생 정보조회-->
-	<select id="selectUserList" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >	
+	<select id="selectUserList" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >
+		SELECT 
+			TOT.*,
+			(select Max(XBSI.PROC_SEQ) from XBT_BASELINE_STUDENT_INFO XBSI where XBSI.PROC_CD = TOT.procCd AND XBSI.USER_ID = TOT.USER_ID)as procSeq
+		FROM (				
 			SELECT 
 				USER_NO,
 				USER_ID,
@@ -76,7 +80,8 @@
 				A.INSERT_DATE,
 				A.UPDATE_ID,
 				A.UPDATE_DATE,
-				A.CLASS_TYPE      
+				A.CLASS_TYPE,
+				(SELECT MAX(PROC_CD) FROM XBT_BASELINE_STUDENT_INFO XBSI WHERE XBSI.USER_ID = USER_ID) AS procCd      
          FROM XBT_STU_USER A INNER JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD
 		<choose>
 			<when test='searchval != "" and searchval != null'>
@@ -91,7 +96,8 @@
 				)
 			</when>
 		</choose>         
-         ORDER BY A.INSERT_DATE DESC			
+         ORDER BY A.INSERT_DATE DESC
+    )TOT			
 	</select>	
 	
 	<!-- 교육생 정보조회팝업-->
