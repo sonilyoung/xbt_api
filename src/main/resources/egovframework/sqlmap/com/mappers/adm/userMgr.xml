@@ -1458,10 +1458,17 @@
 			T1.PROC_SEQ,
 			T1.EDU_CODE,
 			T2.EDU_NAME,
+			T1.PROC_YEAR,
+			T1.USER_ID,	
 			T2.USER_NM,	
 			T2.USER_NM_EN,
 			T2.BIRTH_DAY,
 			T2.ADDRESS,
+			T1.PRACTICE_SCORE,
+			T1.THEORY_SCORE,
+			T1.EVALUATION_SCORE,
+			T1.ENDING_YN,		
+			T1.PASS_YN,			
 			T1.EDU_START_DATE,
 			T1.EDU_END_DATE,
 			date_format(NOW(), '%Y-%m-%d')AS TO_DAY,
@@ -1479,7 +1486,6 @@
 	<!--이수증명서 자격증번호 저장 -->
 	<select id="selectCertNumber" parameterType="egovframework.com.adm.userMgr.vo.UserCertificateDetail" resultType="egovframework.com.adm.userMgr.vo.UserCertificateDetail" >
 			SELECT IFNULL(
-				MAX(CERTIFICATION_ID), 
 				CONCAT(
 					'KSSA-',
 					DATE_FORMAT(NOW(), '%Y'),
@@ -1492,7 +1498,8 @@
 						</when>
 					</choose>					
 					LPAD(cast(right(IFNULL(MAX(CERTIFICATION_ID), 0), 5) as DECIMAL)+1, 5 , '0')
-				) 
+				), 			
+				MAX(CERTIFICATION_ID) 
 			) AS certificationId  
 			FROM XBT_CERTIFICATION_INFO 
 		<choose>
@@ -1529,7 +1536,7 @@
 			INSERT_DATE,
 			INSERT_ID
 		)VALUES(
-			,#{certificationId}
+			#{certificationId}
 			,#{procCd}
 			,#{procYear}
 			,#{procSeq}

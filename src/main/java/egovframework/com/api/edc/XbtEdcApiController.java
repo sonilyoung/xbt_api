@@ -89,6 +89,9 @@ public class XbtEdcApiController {
 	private XbtEdcApiService xbtEdcApiService;	
 	
     @Autowired
+    private LoginService loginService;	
+    
+    @Autowired
     private FileStorageService fileStorageService;    
     
     @Autowired

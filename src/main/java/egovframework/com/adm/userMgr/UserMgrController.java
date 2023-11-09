@@ -3,6 +3,7 @@ package egovframework.com.adm.userMgr;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -1843,44 +1844,50 @@ public class UserMgrController {
      */
     @PostMapping("/selectCertificationUser.do")
     @ApiOperation(value = "이수증명서학생", notes = "이수증명서학생")
-    public BaseResponse<UserCertificateDetail> selectCertificationUser(HttpServletRequest request, @RequestBody UserCertificateDetail params) {
+    public BaseResponse<List<UserCertificateDetail>> selectCertificationUser(HttpServletRequest request, @RequestBody List<UserCertificateDetail> params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getUserId())){				
-			return new BaseResponse<UserCertificateDetail>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getProcCd())){				
-			return new BaseResponse<UserCertificateDetail>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getProcSeq())){				
-			return new BaseResponse<UserCertificateDetail>(BaseResponseCode.PARAMS_ERROR, "ProcSeq" + BaseApiMessage.REQUIRED.getCode());
-		}				
-		
-		if(StringUtils.isEmpty(params.getEduCode())){				
-			return new BaseResponse<UserCertificateDetail>(BaseResponseCode.PARAMS_ERROR, "EduCode" + BaseApiMessage.REQUIRED.getCode());
-		}		
-				
+		List<UserCertificateDetail> resultList = new ArrayList<UserCertificateDetail>();
 		try {
 			
-			//보안
-			if("1".equals(params.getEduCode()) || "2".equals(params.getEduCode()) || "3".equals(params.getEduCode())) {
+			for(UserCertificateDetail ps : params) {
 				
-				params.setEduType("1");
-			//경비
-			}else if("4".equals(params.getEduCode()) || "5".equals(params.getEduCode()) || "6".equals(params.getEduCode())) {
-				params.setEduType("2");
-			}
+				if(StringUtils.isEmpty(ps.getUserId())){				
+					return new BaseResponse<List<UserCertificateDetail>>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+				}		
+				
+				if(StringUtils.isEmpty(ps.getProcCd())){				
+					return new BaseResponse<List<UserCertificateDetail>>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+				}		
+				
+				if(StringUtils.isEmpty(ps.getProcSeq())){				
+					return new BaseResponse<List<UserCertificateDetail>>(BaseResponseCode.PARAMS_ERROR, "ProcSeq" + BaseApiMessage.REQUIRED.getCode());
+				}				
+				
+				if(StringUtils.isEmpty(ps.getEduCode())){				
+					return new BaseResponse<List<UserCertificateDetail>>(BaseResponseCode.PARAMS_ERROR, "EduCode" + BaseApiMessage.REQUIRED.getCode());
+				}		
+				
+				//보안
+				if("1".equals(ps.getEduCode()) || "2".equals(ps.getEduCode()) || "3".equals(ps.getEduCode())) {
+					ps.setEduType("1");
+				//경비
+				}else if("4".equals(ps.getEduCode()) || "5".equals(ps.getEduCode()) || "6".equals(ps.getEduCode())) {
+					ps.setEduType("2");
+				}
+				
+				UserCertificateDetail certNumber = userMgrService.selectCertNumber(ps);
+				UserCertificateDetail result = userMgrService.selectCertificationUser(ps);
+				if(result!=null) {
+					result.setCertificationId(certNumber.getCertificationId());
+					resultList.add(result);					
+				}
+			}			
 			
-			UserCertificateDetail certNumber = userMgrService.selectCertNumber(params);
-			UserCertificateDetail result = userMgrService.selectCertificationUser(params);
-			result.setCertNumber(certNumber.getCertNumber());
-			
-	        return new BaseResponse<UserCertificateDetail>(result);
+	        return new BaseResponse<List<UserCertificateDetail>>(resultList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
@@ -1935,66 +1942,68 @@ public class UserMgrController {
      */
     @PostMapping("/insertCertNumber.do")
     @ApiOperation(value = "이수증명서 자격증번호 저장", notes = "이수증명서 자격증번호 저장")
-    public BaseResponse<CertificationInfo> insertCertNumber(HttpServletRequest request, @RequestBody CertificationInfo params) {
+    public BaseResponse<List<CertificationInfo>> insertCertNumber(HttpServletRequest request, @RequestBody List<CertificationInfo> params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getCertificationId())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "certificationId" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getProcCd())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "procCd" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getProcYear())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "procYear" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getProcSeq())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "procSeq" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getEduCode())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "eduCode" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getEduName())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getUserId())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "userId" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getUserNm())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "userNm" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getPracticeScore())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "practiceScore" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getTheoryScore())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "theoryScore" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getEvaluationScore())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "evaluationScore" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getPassYn())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "passYn" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getEduStartDate())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "eduStartDate" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getEduEndDate())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "eduEndDate" + BaseApiMessage.REQUIRED.getCode());
-		}
-		if(StringUtils.isEmpty(params.getEndingYn())){				
-			return new BaseResponse<CertificationInfo>(BaseResponseCode.PARAMS_ERROR, "endingYn" + BaseApiMessage.REQUIRED.getCode());
-		}
-
-		params.setInsertId(login.getUserId());
 		try {
-			int result = userMgrService.insertCertNumber(params);
+			int result = 0;
+			for(CertificationInfo ps : params) {
+				if(StringUtils.isEmpty(ps.getCertificationId())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "certificationId" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getProcCd())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "procCd" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getProcYear())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "procYear" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getProcSeq())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "procSeq" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getEduCode())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "eduCode" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getEduName())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "eduName" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getUserId())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "userId" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getUserNm())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "userNm" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getPracticeScore())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "practiceScore" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getTheoryScore())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "theoryScore" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getEvaluationScore())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "evaluationScore" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getPassYn())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "passYn" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getEduStartDate())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "eduStartDate" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getEduEndDate())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "eduEndDate" + BaseApiMessage.REQUIRED.getCode());
+				}
+				if(StringUtils.isEmpty(ps.getEndingYn())){				
+					return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.PARAMS_ERROR, "endingYn" + BaseApiMessage.REQUIRED.getCode());
+				}			
+				ps.setInsertId(login.getUserId());
+				result = userMgrService.insertCertNumber(ps);
+			}
 			
 			if(result>0) {
-				return new BaseResponse<CertificationInfo>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+				return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
 			}else {
-				return new BaseResponse<CertificationInfo>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+				return new BaseResponse<List<CertificationInfo>>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
 			}
         } catch (Exception e) {
         	LOGGER.error("error:", e);

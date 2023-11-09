@@ -27,8 +27,8 @@ public class UserCertificateDetail {
 	private String theoryScore;
 	private String evaluationScore;
 	private String evaluationYn;
-	private String passYn;
 	private String endingYn;
+	private String passYn;
 	private String insertDate;
 	private String insertId;	
 	
