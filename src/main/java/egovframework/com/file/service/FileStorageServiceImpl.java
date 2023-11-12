@@ -92,6 +92,9 @@ public class FileStorageServiceImpl implements FileStorageService {
     /*kaist xray API REQUEST 저장경로*/
     public static final String KAIST_RESPONSE_IMG_REQUEST_PATH = GlobalsProperties.getProperty("kaist.threed.img.response.path");   
     
+    /*단품 저장경로*/
+    public static final String FACE_ROOT_DIR = GlobalsProperties.getProperty("face.img.path");      
+    
     @PostConstruct
     public void initialize() {
         this.realPath = servletContext.getRealPath("/");
@@ -1015,5 +1018,51 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
 		
 	}		
+	
+	@Override
+	public AttachFile createImageFile(String userId, AttachFile params, MultipartFile file) throws Exception {
+		// TODO Auto-generated method stub
+        AttachFile attachFile = null;
+        File newFile = null;
+        String originalFileName = file.getOriginalFilename();
+        //String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
+        String fileExtension = StringUtils.getFilenameExtension(originalFileName);
+        
+        String filePath = FACE_ROOT_DIR;
+        
+        File fileDir = new File(filePath);
+        // root directory 없으면 생성
+    	if (!fileDir.exists()) {
+    		fileDir.mkdirs(); //폴더 생성합니다.
+    	}        
+        
+    	String targetFilePath = filePath+File.separator+params.getTargetName();
+    	File imgDir = new File(filePath+File.separator+params.getTargetName());
+    	if (!imgDir.exists()) {
+    		imgDir.mkdirs(); //폴더 생성합니다.
+    	}        	
+    	
+        // 실제 파일명_현재시간 으로 rename
+        StringBuilder sb = new StringBuilder();
+        //X00353-204.jpg
+        
+        sb.append(userId).append("-").append(params.getCommand()).append(".").append(fileExtension);
+        String realFileName = sb.toString();
+        try {
+            newFile = new File(targetFilePath, realFileName);
+            file.transferTo(newFile);
+            attachFile = new AttachFile();
+            attachFile.setFileExt(fileExtension);
+            attachFile.setFilePath(filePath);
+            attachFile.setOriginalFileName(originalFileName);
+            attachFile.setSaveFileName(realFileName);
+            attachFile.setFileSize((int) file.getSize());
+        } catch (IllegalStateException e) {
+            throw e;
+        } catch (IOException e) {
+            throw e;
+        }
+        return attachFile;
+	}    	
 
 }

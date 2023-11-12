@@ -4,9 +4,11 @@ import lombok.Data;
 
 @Data
 public class FaceVO {
-	private int request_id;
-	private int face_id;
-	private byte[] image;
-	private String info_key;
+	private String userId;
+	private String imageType;
+	private int requestId;
+	private int faceId;
+	private byte[] faceImage;
+	private String infoKey;
 	private String info;
 }

@@ -53,4 +53,6 @@ public interface FileStorageService {
     public AttachFile createKaistThreedImageFiles(String targetName, String fileNameWithoutExtension, ThreedGeneration params, MultipartFile file) throws Exception ;
     
     public void makeKaistThreedImages(JsonNode jdata) throws Exception;
+    
+    public AttachFile createImageFile(String userId, AttachFile params, MultipartFile file) throws Exception;
 }
