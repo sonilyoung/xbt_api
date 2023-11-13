@@ -6,10 +6,12 @@ import lombok.Data;
 public class TokenResponse {
     private String accessToken;
     private String tokenType;
+    private String faceType;
 
-    public TokenResponse(String token, String type) {
+    public TokenResponse(String token, String type, String faceType) {
         this.accessToken = token;
         this.tokenType = type;
+        this.faceType = faceType;
     }
 
     public String getAccessToken() {

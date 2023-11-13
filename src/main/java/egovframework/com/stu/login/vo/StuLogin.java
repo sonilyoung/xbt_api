@@ -50,5 +50,6 @@ public class StuLogin {
 	private String employStatusYn;
 	private String lastEdu;
 	private String writeDate;
+	private String faceType;
 
 }

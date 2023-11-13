@@ -88,7 +88,7 @@ public class LoginController {
         // 로그인 시간 업데이트 
         //loginService.updateLoginTime(loginRequest.getLoginId());
         
-        return new BaseResponse<TokenResponse>(new TokenResponse(token, "bearer"));
+        return new BaseResponse<TokenResponse>(new TokenResponse(token, "bearer", "N"));
     }
     
     

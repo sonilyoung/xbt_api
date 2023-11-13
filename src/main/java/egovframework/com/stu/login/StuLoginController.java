@@ -89,12 +89,19 @@ public class StuLoginController {
         }
         
         //로그인 횟수
-        //loginService.updateLoginCnt(loginRequest.getLoginId());
+        //loginStuService.updateLoginCnt(loginRequest.getLoginId());
         
         // 로그인 시간 업데이트 
-        //loginService.updateLoginTime(loginRequest.getLoginId());
+        //loginStuService.updateLoginTime(loginRequest.getLoginId());
+        StuLogin st = new StuLogin();
+        st.setUserId(loginRequest.getLoginId());
+        StuLogin faceTypeUser = loginStuService.selectXbtFaceType(st);
+        String faceType = "N";
+        if(faceTypeUser != null) {
+        	faceType = faceTypeUser.getFaceType();	
+        }
         
-        return new BaseResponse<TokenResponse>(new TokenResponse(token, "bearer"));
+        return new BaseResponse<TokenResponse>(new TokenResponse(token, "bearer", faceType));
     }
     
     

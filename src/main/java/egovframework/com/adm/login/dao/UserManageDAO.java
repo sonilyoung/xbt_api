@@ -46,5 +46,5 @@ public class UserManageDAO extends EgovAbstractMapper {
 	public LoginRequest getPwdInfo(LoginRequest params) {
 		return selectOne(Namespace + ".getPwdInfo", params);
 	}
-
+	
 }

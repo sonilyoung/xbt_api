@@ -1029,7 +1029,7 @@ public class UserMgrController {
 			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
 			
 			excelFile.transferTo(destFile); // 엑셀파일 생성
-			String[] coloumNm = {"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S"};
+			String[] coloumNm = {"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T"};
 			    
 			ExcelReadOption excelReadOption = new ExcelReadOption();
 			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
@@ -1069,11 +1069,11 @@ public class UserMgrController {
 	            //여기까지 필수값
 	            
 	            //필수가 아닌데이터 처리
-	    		if(StringUtils.isEmpty(excelData.get("L"))){				
+	    		if(!StringUtils.isEmpty(excelData.get("L"))){				
 	    			params.setEmail(excelData.get("L"));//이메일
 	            }
 	    		
-	    		if(StringUtils.isEmpty(excelData.get("M"))){				
+	    		if(!StringUtils.isEmpty(excelData.get("M"))){				
 	    			params.setCareerYn(excelData.get("M"));//항공보안경력유무
 	            }	            
 	            
@@ -1095,21 +1095,25 @@ public class UserMgrController {
 		            params.setCareerEndDate1(dateString3);//보안경력종료일
 	    		}
 	    		
-	    		if(StringUtils.isEmpty(excelData.get("P"))){
+	    		if(!StringUtils.isEmpty(excelData.get("P"))){
 	    			params.setCareerCompany1(excelData.get("P"));//소속
 	    		}
 	    		
-	    		if(StringUtils.isEmpty(excelData.get("Q"))){
+	    		if(!StringUtils.isEmpty(excelData.get("Q"))){
 	    			params.setCareerPosition1(excelData.get("Q"));//직책(직위)
 	    		}
 	    		
-	    		if(StringUtils.isEmpty(excelData.get("R"))){
+	    		if(!StringUtils.isEmpty(excelData.get("R"))){
 	    			params.setCareer1(excelData.get("R"));//담당업무				
 	    		}
 	    		
-	    		if(StringUtils.isEmpty(excelData.get("S"))){
+	    		if(!StringUtils.isEmpty(excelData.get("S"))){
 	    			params.setClassType(excelData.get("S"));//수업만 A반 B반				
-	    		}	    		
+	    		}	
+	    		
+	    		if(!StringUtils.isEmpty(excelData.get("T"))){
+	    			params.setFaceType(excelData.get("T"));//안면인식				
+	    		}	  	    		
 	            
 				Common cp = new Common();
 				cp.setLanguageCode("kr");

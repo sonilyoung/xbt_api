@@ -33,5 +33,6 @@ public class Login implements Serializable {
     private String updDt;                      //수정일시        
     //private String autoPlus;                   //자동증가        
     private String delYn;                      //삭제여부        
-    private String delDt;                      //삭제일시   
+    private String delDt;                      //삭제일시
+    private String faceType;                      //안면인식
 }

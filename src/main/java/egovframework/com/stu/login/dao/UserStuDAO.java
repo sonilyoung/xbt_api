@@ -1,5 +1,6 @@
 package egovframework.com.stu.login.dao;
 
+import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.login.vo.User;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -25,4 +26,5 @@ public class UserStuDAO extends EgovAbstractMapper{
 	public Long getUserCount(User parameter) {
 		return (Long)selectOne(Namespace + ".getUserCount", parameter);
 	}
+	
 }

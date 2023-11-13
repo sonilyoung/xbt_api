@@ -95,5 +95,15 @@
 		AND USER_NM = #{userNm}
 		AND USE_YN = 'Y' 	 
 	</update>	
+	
+	<select id="selectXbtFaceType" parameterType="egovframework.com.stu.login.vo.StuLogin" resultType="egovframework.com.stu.login.vo.StuLogin">
+		SELECT
+			 USER_NO                       /*사용자NO*/                 											
+		     , USER_ID                     /*사용자ID*/        
+		     , FACE_TYPE       			   /*안면인식 YN*/
+		FROM XBT_STU_USER                                             								 
+		WHERE USER_ID = #{userId}
+		AND USE_YN = 'Y'
+	</select>		
 
 </mapper>

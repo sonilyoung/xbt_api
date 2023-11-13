@@ -9,6 +9,8 @@ import egovframework.com.api.edc.vo.FaceVO;
 public interface XbtFaceApiService {
 	
 	public JsonNode insertFaceApi(MultipartFile faceImg, FaceVO params) throws Exception;
+	
+	public JsonNode deleteFaceApi(FaceVO params) throws Exception;
 
 	public JsonNode livenessFaceApi(MultipartFile faceImg, FaceVO params) throws Exception;
 	

@@ -91,6 +91,7 @@ public class UserInfo {
 	private String eduDay;
 	private String eduTime;
 	private String searchval;
+	private String faceType;
 	
 	private List<String> userIdList;
 	

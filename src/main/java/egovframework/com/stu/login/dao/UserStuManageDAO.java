@@ -1,5 +1,6 @@
 package egovframework.com.stu.login.dao;
 
+import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.login.vo.LoginRequest;
 import egovframework.com.stu.login.vo.StuLogin;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
@@ -54,4 +55,8 @@ public class UserStuManageDAO extends EgovAbstractMapper {
 	public int updateUserPwd(StuLogin params) {
 		return update(Namespace + ".updateUserPwd", params);
 	}	
+	
+    public StuLogin selectXbtFaceType(StuLogin params) {
+        return selectOne(Namespace + ".selectXbtFaceType", params);
+    }		
 }

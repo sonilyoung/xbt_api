@@ -38,4 +38,7 @@ public interface LoginStuService {
 	public StuLogin selectUserId(StuLogin params);
 
 	public int updateUserPwd(StuLogin params);
+	
+	public StuLogin selectXbtFaceType(StuLogin params);
+	
 }

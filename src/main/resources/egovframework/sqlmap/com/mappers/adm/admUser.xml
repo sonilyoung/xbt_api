@@ -33,7 +33,7 @@
 		WHERE USER_ID = #{userId}
 		AND USE_YN = 'Y'
 	</select>
-
+	
 	<update id="updateLoginTime" parameterType="String">
 	</update>	
 

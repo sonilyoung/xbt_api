@@ -92,7 +92,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     /*kaist xray API REQUEST 저장경로*/
     public static final String KAIST_RESPONSE_IMG_REQUEST_PATH = GlobalsProperties.getProperty("kaist.threed.img.response.path");   
     
-    /*단품 저장경로*/
+    /*안면인식 api 이미지 저장경로*/
     public static final String FACE_ROOT_DIR = GlobalsProperties.getProperty("face.img.path");      
     
     @PostConstruct
@@ -1064,5 +1064,20 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
         return attachFile;
 	}    	
+	
+	public void fileDeleteAll(String target, String filePath) {
+	    String directoryPath = filePath;
+	    
+	    File directory = new File(directoryPath + File.separator + target);
+	    File[] files = directory.listFiles();  // 디렉토리 내의 모든 파일을 가져옵니다.
+
+	    if (files != null) {
+	        for (File file : files) {
+	            if (file.isFile()) {
+		            file.delete();  // 파일 삭제
+	            }
+	        }
+	    }		
+	}	
 
 }

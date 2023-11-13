@@ -108,6 +108,40 @@ public class XbtFaceApiServiceImpl implements XbtFaceApiService {
 		JsonNode result = mapper.readTree(jsonData);
 		return result;
 	}    
+	
+	@Override
+	public JsonNode deleteFaceApi(FaceVO params) throws Exception {
+		// TODO Auto-generated method stub
+		LOGGER.info("=========deleteFaceApi start=========");
+		
+		OkHttpClient client = new OkHttpClient().newBuilder()
+				.connectTimeout(1, TimeUnit.HOURS)
+				.writeTimeout(1, TimeUnit.HOURS)
+				.readTimeout(1, TimeUnit.HOURS).build();
+		
+        //remove ( 얼굴 삭제)
+		String tgtUrl = url+"/1/remove/"+params.getUserId();
+		LOGGER.info("face path: " + url);
+		
+		// 요청 생성
+        Request request = new Request.Builder()
+                .url(tgtUrl)
+                .addHeader("Accept", "application/json")
+                .build();
+
+		// 요청 실행
+		Response response = client.newCall(request).execute();
+		
+        // 수신한 JSON 데이터 읽기
+        String jsonData = response.body().string();
+		LOGGER.info("=========deleteFaceApi end=========");
+		LOGGER.info("response: " + response);
+		LOGGER.info("Received JSON data: " + jsonData);		
+		LOGGER.info("=========deleteFaceApi end=========");
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode result = mapper.readTree(jsonData);
+		return result;
+	}    	
 		
 	
 	@Override

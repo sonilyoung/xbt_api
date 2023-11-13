@@ -55,4 +55,6 @@ public interface FileStorageService {
     public void makeKaistThreedImages(JsonNode jdata) throws Exception;
     
     public AttachFile createImageFile(String userId, AttachFile params, MultipartFile file) throws Exception;
+    
+    public void fileDeleteAll(String target, String option)throws Exception;
 }

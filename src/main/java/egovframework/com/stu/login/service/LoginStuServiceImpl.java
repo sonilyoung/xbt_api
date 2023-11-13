@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.login.vo.LoginRequest;
 import egovframework.com.global.util.AES256Util;
 import egovframework.com.stu.login.dao.UserStuManageDAO;
@@ -225,4 +226,11 @@ public class LoginStuServiceImpl implements LoginStuService {
 		// TODO Auto-generated method stub
 		return repository.updateUserPwd(params);
 	}	    
+	
+	@Override
+	public StuLogin selectXbtFaceType(StuLogin params) {
+		// TODO Auto-generated method stub
+		return repository.selectXbtFaceType(params);
+	}
+	
 }

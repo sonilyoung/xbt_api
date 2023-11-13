@@ -630,7 +630,8 @@
 			LAST_EDU_END,
 			EDU_DAY,
 			EDU_TIME,
-			CLASS_TYPE
+			CLASS_TYPE,
+			FACE_TYPE
 		)VALUES(
 			#{userId}
 			,#{userNm}
@@ -703,6 +704,7 @@
 			,#{eduDay}
 			,#{eduTime}			
 			,#{classType}			
+			,#{faceType}			
 		)
 	
 	</insert>	

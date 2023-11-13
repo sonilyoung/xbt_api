@@ -29,6 +29,7 @@ import egovframework.com.file.service.FileStorageService;
 import egovframework.com.file.service.XbtImageService;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
+import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import io.swagger.annotations.Api;
@@ -38,38 +39,17 @@ import io.swagger.annotations.Api;
 @Api(tags = "XTS external API")
 public class XbtFaceApiController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(XbtEdcApiController.class);
-	
-	@Autowired
-	private EgovXtsEdcPseudoFilterService egovXtsEdcPseudoFilterService;
-	
-	@Autowired
-	private EgovXtsEdcThreeDimensionService egovXtsEdcThreeDimensionService;
-	
-	@Autowired
-	private EgovXtsEdcReinforcementService egovXtsEdcReinforcementService;
+	private static final Logger LOGGER = LoggerFactory.getLogger(XbtFaceApiController.class);
 	
 	@Autowired
 	private XbtFaceApiService xbtFaceApiService;
 	
-	@Autowired
-	private ApiLoginService apiLoginService;
-	
-	@Autowired
-	private ContentsService contentsService;		
-	
-	@Autowired
-	private XbtEdcApiService xbtEdcApiService;	
-	
     @Autowired
-    private LoginService loginService;	
-    
-    @Autowired
-    private FileStorageService fileStorageService;    
-    
-    @Autowired
-    private XbtImageService xbtImageService;    
-    
+    private FileStorageService fileStorageService;    	
+	
+    /*안면인식 api 이미지 저장경로*/
+    public static final String FACE_ROOT_DIR = GlobalsProperties.getProperty("face.img.path");   	
+   
 	//외부 얼굴등록 api
     @ResponseBody
 	@PostMapping(value="/insertFaceApi.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -84,18 +64,33 @@ public class XbtFaceApiController {
 		//if (login == null) {
 			//throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		//}
-		JsonNode json = xbtFaceApiService.insertFaceApi(faceImg, params);
-		if("0".equals(json.get("error").asText())) {
-			return new BaseResponse<FaceVO>(BaseResponseCode.SUCCESS, json.get("desc").asText());
-		}else if("-1000".equals(json.get("error").asText())) {
-			return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, json.get("desc").asText());
-		}else if("-1001".equals(json.get("error").asText())) {
-			return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, json.get("desc").asText());
-		}else if("-1002".equals(json.get("error").asText())) {
-			return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, json.get("desc").asText());
+    	fileStorageService.fileDeleteAll(params.getUserId(), FACE_ROOT_DIR);
+    	JsonNode deleteJson = xbtFaceApiService.deleteFaceApi(params);
+		if("0".equals(deleteJson.get("error").asText())) {
+			
+			JsonNode json = xbtFaceApiService.insertFaceApi(faceImg, params);
+			if("0".equals(json.get("error").asText())) {
+				return new BaseResponse<FaceVO>(BaseResponseCode.SUCCESS, json.get("desc").asText());
+			}else if("-1000".equals(json.get("error").asText())) {
+				return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, json.get("desc").asText());
+			}else if("-1001".equals(json.get("error").asText())) {
+				return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, json.get("desc").asText());
+			}else if("-1002".equals(json.get("error").asText())) {
+				return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, json.get("desc").asText());
+			}else {
+				return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage());
+			}			
+			
+		}else if("-1000".equals(deleteJson.get("error").asText())) {
+			return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, deleteJson.get("desc").asText());
+		}else if("-1001".equals(deleteJson.get("error").asText())) {
+			return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, deleteJson.get("desc").asText());
+		}else if("-1002".equals(deleteJson.get("error").asText())) {
+			return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, deleteJson.get("desc").asText());
 		}else {
 			return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage());
-		}
+		}    	
+
 	}    
     
 	//외부 획득한 사진에서 얼굴이 진짜인지 여부를 체크 api
