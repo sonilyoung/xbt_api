@@ -95,11 +95,14 @@ public class StuLoginController {
         //loginStuService.updateLoginTime(loginRequest.getLoginId());
         StuLogin st = new StuLogin();
         st.setUserId(loginRequest.getLoginId());
+        
+        LOGGER.info("==================faceType check start==================");
         StuLogin faceTypeUser = loginStuService.selectXbtFaceType(st);
         String faceType = "N";
         if(faceTypeUser != null) {
         	faceType = faceTypeUser.getFaceType();	
         }
+        LOGGER.info("==================faceType check end==================");
         
         return new BaseResponse<TokenResponse>(new TokenResponse(token, "bearer", faceType));
     }

@@ -156,10 +156,6 @@ public class LearningMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getBagList())){				
-			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "BagList" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
 		if(StringUtils.isEmpty(params.getModuleNm())){				
 			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "ModuleNm" + BaseApiMessage.REQUIRED.getCode());
 		}
@@ -228,10 +224,6 @@ public class LearningMgrController {
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
-		
-		if(StringUtils.isEmpty(params.getBagList())){				
-			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "BagList" + BaseApiMessage.REQUIRED.getCode());
-		}			
 		
 		if(StringUtils.isEmpty(params.getModuleId())){				
 			return new BaseResponse<EduModule>(BaseResponseCode.PARAMS_ERROR, "ModuleId" + BaseApiMessage.REQUIRED.getCode());

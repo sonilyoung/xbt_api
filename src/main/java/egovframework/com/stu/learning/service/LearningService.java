@@ -77,7 +77,6 @@ public interface LearningService {
 	
 	public int updateWrongAnswer(Learning params);
 	
-	
 	public int updateWrongAnswerEnd(Learning params);
 	
 	public int insertWrongAnswerResult(Learning params);
@@ -93,5 +92,37 @@ public interface LearningService {
 	public int selectLearningBaselineResultCount(Learning params);
 	
 	public int selectWrongAnswerBaselineResultCount(Learning params);
+	
+	
+	
+	public List<LearningProblem> selectForceLearningProblems(LearningProblem params);
+	
+	public int selectForceLearningProblemsCount(LearningProblem params);
+	
+	public int insertForceLearningProblems(LearningProblem params);
+	
+	public int updateForceLearningProblems(LearningProblem params);
+	
+	public List<LearningProblem> selectForceLearningProblemsList(LearningProblem params);
+	
+	public List<LearningProblem> selectForceLearningProblemsResultList(LearningProblem params);
+	
+	public List<LearningProblem> selectForceLearningProblemsResult(LearningProblem params);
+	
+	public Learning selectForceLearningAnswer(Learning params);
+	
+	public int updateForceLearningAnswer(Learning params);
+	
+	public int updateForceLearningEnd(Learning params);
+	
+	public int insertForceLearningResult(Learning params);
+	
+	public Learning selectForceLearningSum(Learning params);
+	
+	public Learning selectForceLearningResultCount(Learning params);
+	
+	public int updateForceLearningResult(Learning params);
+	
+	public LearningProblem selectForceLearningProblemsMaxkey(LearningProblem params);
 	
 }
