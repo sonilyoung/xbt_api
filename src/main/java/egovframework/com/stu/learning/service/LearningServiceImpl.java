@@ -139,9 +139,9 @@ public class LearningServiceImpl implements LearningService {
 	}
 
 	@Override
-	public Learning selectLeaningSum(Learning params) {
+	public Learning selectLearningSum(Learning params) {
 		// TODO Auto-generated method stub
-		return learningDAO.selectLeaningSum(params);
+		return learningDAO.selectLearningSum(params);
 	}
 
 	@Override
@@ -257,6 +257,101 @@ public class LearningServiceImpl implements LearningService {
 	public int selectWrongAnswerBaselineResultCount(Learning params) {
 		// TODO Auto-generated method stub
 		return learningDAO.selectWrongAnswerBaselineResultCount(params);
-	}	
+	}
+
+	
+	/* 강화학습 */
+	@Override
+	public List<LearningProblem> selectForceLearningProblems(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return (List<LearningProblem>)learningDAO.selectForceLearningProblems(params);
+	}
+
+	@Override
+	public int selectForceLearningProblemsCount(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectForceLearningProblemsCount(params);
+	}
+
+	@Override
+	public int insertForceLearningProblems(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return learningDAO.insertForceLearningProblems(params);
+	}
+
+	@Override
+	public int updateForceLearningProblems(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return learningDAO.updateForceLearningProblems(params);
+	}
+
+	@Override
+	public List<LearningProblem> selectForceLearningProblemsList(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return (List<LearningProblem>)learningDAO.selectForceLearningProblems(params);
+	}
+
+	@Override
+	public List<LearningProblem> selectForceLearningProblemsResultList(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return (List<LearningProblem>)learningDAO.selectForceLearningProblems(params);
+	}
+
+	@Override
+	public Learning selectForceLearningAnswer(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectForceLearningAnswer(params);
+	}
+
+	@Override
+	public int updateForceLearningAnswer(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.updateForceLearningAnswer(params);
+	}
+
+	@Override
+	public int updateForceLearningEnd(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.updateForceLearningEnd(params);
+	}
+
+	@Override
+	public int insertForceLearningResult(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.insertForceLearningResult(params);
+	}
+
+	@Override
+	public Learning selectForceLearningSum(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectForceLearningSum(params);
+	}
+
+	@Override
+	public int selectForceLearningBaselineResultCount(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectForceLearningBaselineResultCount(params);
+	}		
+	
+	@Override
+	public Learning selectForceLearningResultCount(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectForceLearningResultCount(params);
+	}
+
+	@Override
+	public int updateForceLearningResult(Learning params) {
+		// TODO Auto-generated method stub
+		return learningDAO.updateForceLearningResult(params);
+	}
+
+	@Override
+	public LearningProblem selectForceLearningProblemsMaxkey(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectForceLearningProblemsMaxkey(params);
+	}
+
+
+
 	
 }

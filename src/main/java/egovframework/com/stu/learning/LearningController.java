@@ -582,7 +582,7 @@ public class LearningController {
 				learningService.insertLearningResult(params);				
 			}
 
-			Learning gainScore = learningService.selectLeaningSum(params);
+			Learning gainScore = learningService.selectLearningSum(params);
 			params.setGainScore(gainScore.getGainScore());
 			if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassScore())) {//통과
 				params.setPassYn("Y");

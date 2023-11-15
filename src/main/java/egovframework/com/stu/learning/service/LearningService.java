@@ -53,13 +53,17 @@ public interface LearningService {
 	
 	public int insertLearningResult(Learning params);
 	
-	public Learning selectLeaningSum(Learning params);
+	public Learning selectLearningSum(Learning params);
 	
 	public Learning selectLearningResultCount(Learning params);
 	
 	public int updateLearningResult(Learning params);
 	
 	public LearningProblem selectLearningProblemsMaxkey(LearningProblem params);
+	
+	public int selectLearningBaselineResultCount(Learning params);
+	
+	public int selectWrongAnswerBaselineResultCount(Learning params);
 	
 	public List<LearningProblem> selectWrongAnswerProblems(LearningProblem params);
 	
@@ -89,12 +93,9 @@ public interface LearningService {
 		
 	public List<LearningProblem> selectWrongAnswerProblemsResultList(LearningProblem params);
 	
-	public int selectLearningBaselineResultCount(Learning params);
-	
-	public int selectWrongAnswerBaselineResultCount(Learning params);
 	
 	
-	
+	/*강화학습*/
 	public List<LearningProblem> selectForceLearningProblems(LearningProblem params);
 	
 	public int selectForceLearningProblemsCount(LearningProblem params);
@@ -107,8 +108,6 @@ public interface LearningService {
 	
 	public List<LearningProblem> selectForceLearningProblemsResultList(LearningProblem params);
 	
-	public List<LearningProblem> selectForceLearningProblemsResult(LearningProblem params);
-	
 	public Learning selectForceLearningAnswer(Learning params);
 	
 	public int updateForceLearningAnswer(Learning params);
@@ -119,10 +118,14 @@ public interface LearningService {
 	
 	public Learning selectForceLearningSum(Learning params);
 	
+	public int selectForceLearningBaselineResultCount(Learning params);
+	
 	public Learning selectForceLearningResultCount(Learning params);
 	
 	public int updateForceLearningResult(Learning params);
 	
 	public LearningProblem selectForceLearningProblemsMaxkey(LearningProblem params);
+	
+	
 	
 }

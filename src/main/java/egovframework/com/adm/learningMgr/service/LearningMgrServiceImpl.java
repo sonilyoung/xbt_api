@@ -82,7 +82,7 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 		//22	XBT 평가슬라이드	es		
 		
 		int result = learningMgrDAO.insertModule(params);
-		if(params.getBagList()!=null) {
+		if(params.getBagList()!=null && params.getBagList().get(0)!=null) {
 			for(String p : params.getBagList()) {
 				EduModule dp = new EduModule();
 				dp.setBagScanId(p);
@@ -106,7 +106,7 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 		// TODO Auto-generated method stub
 		int result = learningMgrDAO.updateModule(params);
 		
-		if(params.getBagList()!=null) {
+		if(params.getBagList()!=null && params.getBagList().get(0)!=null) {
 			learningMgrDAO.deleteModuleQuestion(params);
 			for(String p : params.getBagList()) {
 				EduModule dp = new EduModule();

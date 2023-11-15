@@ -18,12 +18,12 @@ public class LearningDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectBaseline", params);
 	}	
 
-	public List<?> selectLearning(Learning params) {
-		return (List<?>)selectList(Namespace + ".selectLearning", params);
-	}	
-	
 	public Learning selectModuleInfo(Learning params) {
 		return selectOne(Namespace + ".selectModuleInfo", params);
+	}		
+	
+	public List<?> selectLearning(Learning params) {
+		return (List<?>)selectList(Namespace + ".selectLearning", params);
 	}		
 	
 	public List<?> selectLearningProblems(LearningProblem params) {
@@ -73,8 +73,8 @@ public class LearningDAO extends EgovAbstractMapper{
 		return insert(Namespace + ".insertLearningResult", params);
 	}		
 	
-	public Learning selectLeaningSum(Learning params) {
-		return selectOne(Namespace + ".selectLeaningSum", params);
+	public Learning selectLearningSum(Learning params) {
+		return selectOne(Namespace + ".selectLearningSum", params);
 	}		
 	
 	public int updateLearningResult(Learning params) {
@@ -89,6 +89,7 @@ public class LearningDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectLearningProblemsMaxkey", params);
 	}
 	
+	/* 오답문제풀이 */
 	public List<?> selectWrongAnswerProblems(LearningProblem params) {
 		return (List<?>)selectList(Namespace + ".selectWrongAnswerProblems", params);
 	}
@@ -153,4 +154,66 @@ public class LearningDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectWrongAnswerBaselineResultCount", params);
 	}
 	
+	
+	/* 강화학습 */
+	public List<?> selectForceLearningProblems(LearningProblem params) {
+		return (List<?>)selectList(Namespace + ".selectForceLearningProblems", params);
+	}
+	
+	public int selectForceLearningProblemsCount(LearningProblem params) {
+		return selectOne(Namespace + ".selectForceLearningProblemsCount", params);
+	}
+	
+	public int insertForceLearningProblems(LearningProblem params) {
+		return insert(Namespace + ".insertForceLearningProblems", params);
+	}	
+	
+	public int updateForceLearningProblems(LearningProblem params) {
+		return update(Namespace + ".updateForceLearningProblems", params);
+	}		
+	
+	public int updateForceLearningEnd(Learning params) {
+		return update(Namespace + ".updateForceLearningEnd", params);
+	}	
+	
+	public List<?> selectForceLearningProblemsList(LearningProblem params) {
+		return (List<?>)selectList(Namespace + ".selectForceLearningProblemsList", params);
+	}
+	
+	public List<?> selectForceLearningProblemsResultList(LearningProblem params) {
+		return (List<?>)selectList(Namespace + ".selectForceLearningProblemsResultList", params);
+	}	
+	
+	public Learning selectForceLearningAnswer(Learning params) {
+		return selectOne(Namespace + ".selectForceLearningAnswer", params);
+	}		
+	
+	public int updateForceLearningAnswer(Learning params) {
+		return update(Namespace + ".updateForceLearningAnswer", params);
+	}	
+	
+	
+	public int insertForceLearningResult(Learning params) {
+		return insert(Namespace + ".insertForceLearningResult", params);
+	}		
+	
+	public Learning selectForceLearningSum(Learning params) {
+		return selectOne(Namespace + ".selectForceLearningSum", params);
+	}		
+	
+	public int updateForceLearningResult(Learning params) {
+		return update(Namespace + ".updateForceLearningResult", params);
+	}		
+	
+	public int selectForceLearningBaselineResultCount(Learning params) {
+		return selectOne(Namespace + ".selectForceLearningBaselineResultCount", params);
+	}	
+	
+	public Learning selectForceLearningResultCount(Learning params) {
+		return selectOne(Namespace + ".selectForceLearningResultCount", params);
+	}
+	
+	public LearningProblem selectForceLearningProblemsMaxkey(LearningProblem params) {
+		return selectOne(Namespace + ".selectForceLearningProblemsMaxkey", params);
+	}	
 }

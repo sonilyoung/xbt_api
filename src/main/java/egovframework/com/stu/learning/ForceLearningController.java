@@ -145,76 +145,14 @@ public class ForceLearningController {
        
     
     /**
-     * 강화학습이미지목록가져오기
-     * 
-     * @param param
-     * @return Company
-    */  
-    @PostMapping("/selectImgList.do")
-    @ApiOperation(value = "강화학습이미지목록가져오기", notes = "강화학습이미지목록가져오기")
-    public BaseResponse<List<LearningProblem>> selectImgList(HttpServletRequest request, @RequestBody Learning params) {
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
-		}
-		
-		params.setUserId(login.getUserId());
-		if(StringUtils.isEmpty(params.getMenuCd())){				
-			return new BaseResponse<List<LearningProblem>>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getMessage());
-		}
-		
-		try {
-			Learning baselineData = learningService.selectBaseline(params);
-			if(baselineData == null) {
-				return new BaseResponse<List<LearningProblem>>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
-			}
-			
-			params.setProcCd(baselineData.getProcCd()); 
-			List<Learning> learningData = learningService.selectLearning(params);
-			if(learningData == null) {
-				return new BaseResponse<List<LearningProblem>>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
-			}
-			
-			Learning moduleInfoData = learningService.selectModuleInfo(params);
-			if(moduleInfoData == null) {
-				return new BaseResponse<List<LearningProblem>>(BaseResponseCode.MODULE_DATA, BaseResponseCode.MODULE_DATA.getMessage());
-			}
-			moduleInfoData.setUserId(login.getUserId());
-			moduleInfoData.setUserName(login.getUserNm());
-			LearningProblem lpParams = new LearningProblem();
-			lpParams.setUserId(login.getUserId());
-			lpParams.setModuleId(moduleInfoData.getModuleId());
-			lpParams.setProcCd(baselineData.getProcCd());
-			lpParams.setProcYear(baselineData.getProcYear());
-			lpParams.setProcSeq(baselineData.getProcSeq());		
-			lpParams.setQuestionCnt(moduleInfoData.getQuestionCnt());
-			
-			//강화학습문제가져오기
-			List<LearningProblem> problems = learningService.selectLearningProblems(lpParams);	
-			if(problems == null) {
-				return new BaseResponse<List<LearningProblem>>(BaseResponseCode.LEARNINGPROBLEM_DATA, BaseResponseCode.LEARNINGPROBLEM_DATA.getMessage());
-			}	
-
-
-			List<LearningProblem> result = xbtImageService.selectLeaningImgList(problems); 
-			return new BaseResponse<List<LearningProblem>>(result);
-        } catch (Exception e) {
-        	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
-        }
-    }      
-    
-
-    
-    /**
      * 강화학습정답선택
      * 
      * @param param
      * @return Company
     */  
-    @PostMapping("/updateLearningAnswer.do")
+    @PostMapping("/updateForceLearningAnswer.do")
     @ApiOperation(value = "강화학습정답선택", notes = "강화학습정답선택")
-    public BaseResponse<Integer> updateLearningAnswer(HttpServletRequest request, @RequestBody Learning params) {
+    public BaseResponse<Integer> updateForceLearningAnswer(HttpServletRequest request, @RequestBody Learning params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
@@ -261,10 +199,10 @@ public class ForceLearningController {
 			lpParams.setProcYear(params.getProcYear());
 			lpParams.setProcSeq(params.getProcSeq());
 			lpParams.setUserId(params.getUserId());
-			LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);			
+			LearningProblem maxKey = learningService.selectForceLearningProblemsMaxkey(lpParams);			
 			params.setTrySeq(maxKey.getTrySeq());
 			
-			Learning answer = learningService.selectLearnAnswer(params);
+			Learning answer = learningService.selectForceLearningAnswer(params);
 			params.setAnswerDiv(answer.getAnswerDiv());
 			PointStd score = learningService.selectPointStdScore(params);
 			
@@ -292,7 +230,7 @@ public class ForceLearningController {
 				params.setGainScore(0);
 			}*/
 			
-			int result = learningService.updateLearningAnswer(params); 
+			int result = learningService.updateForceLearningAnswer(params); 
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
 			}else {
@@ -311,9 +249,9 @@ public class ForceLearningController {
      * @param param
      * @return Company
     */  
-    @PostMapping("/endLearning.do")
+    @PostMapping("/endForceLearning.do")
     @ApiOperation(value = "강화학습종료", notes = "강화학습종료")
-    public BaseResponse<Learning> endLearning(HttpServletRequest request, @RequestBody Learning params) {
+    public BaseResponse<Learning> endForceLearning(HttpServletRequest request, @RequestBody Learning params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
@@ -355,18 +293,18 @@ public class ForceLearningController {
 			lpParams.setProcYear(params.getProcYear());
 			lpParams.setProcSeq(params.getProcSeq());
 			lpParams.setUserId(params.getUserId());
-			LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);
+			LearningProblem maxKey = learningService.selectForceLearningProblemsMaxkey(lpParams);
 			params.setTrySeq(maxKey.getTrySeq());				
 			
 			//강화학습종료데이터확인
-			int baselineCnt = learningService.selectLearningBaselineResultCount(params);
+			int baselineCnt = learningService.selectForceLearningBaselineResultCount(params);
 			
 			//강화학습종료데이터등록
 			if(baselineCnt <= 0) {
-				learningService.insertLearningResult(params);				
+				learningService.insertForceLearningResult(params);				
 			}
 
-			Learning gainScore = learningService.selectLeaningSum(params);
+			Learning gainScore = learningService.selectForceLearningSum(params);
 			params.setGainScore(gainScore.getGainScore());
 			if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassScore())) {//통과
 				params.setPassYn("Y");
@@ -375,7 +313,7 @@ public class ForceLearningController {
 			}
 			
 			//강화학습종료 틀린갯수 맞은갯수 확인 
-			Learning resultCnt = learningService.selectLearningResultCount(params);
+			Learning resultCnt = learningService.selectForceLearningResultCount(params);
 			params.setQuestionCnt(resultCnt.getQuestionCnt());
 			params.setWrongCnt(resultCnt.getWrongCnt());
 			params.setRightCnt(resultCnt.getRightCnt());
@@ -383,10 +321,10 @@ public class ForceLearningController {
 			
 			//문제종료처리
 			params.setEndYn("Y");
-			learningService.updateLearningEnd(params);
+			learningService.updateForceLearningEnd(params);
 			
 			//결과데이터저장
-			learningService.updateLearningResult(params);
+			learningService.updateForceLearningResult(params);
 			
 			//강화학습자평균가져오기
 			
@@ -407,9 +345,9 @@ public class ForceLearningController {
      * @param param
      * @return Company
     */  
-    @PostMapping("/selectLearningComplete.do")
+    @PostMapping("/selectForceLearningComplete.do")
     @ApiOperation(value = "사용자강화학습완료정보", notes = "사용자강화학습완료정보")
-    public BaseResponse<Learning> selectLearningComplete(HttpServletRequest request, @RequestBody Learning params) {
+    public BaseResponse<Learning> selectForceLearningComplete(HttpServletRequest request, @RequestBody Learning params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
@@ -453,7 +391,7 @@ public class ForceLearningController {
 			lpParams.setProcCd(baselineData.getProcCd());
 			lpParams.setProcYear(baselineData.getProcYear());
 			lpParams.setProcSeq(baselineData.getProcSeq());		
-			LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);
+			LearningProblem maxKey = learningService.selectForceLearningProblemsMaxkey(lpParams);
 			lpParams.setTrySeq(maxKey.getTrySeq());
 			lpParams.setQuestionCnt(moduleInfoData.getQuestionCnt());
 			//List<LearningProblem> problems = learningService.selectLearningProblems(lpParams);	
@@ -463,7 +401,7 @@ public class ForceLearningController {
 			
 			lpParams.setEndYn("Y");
 			lpParams.setLanguageCode(params.getLanguageCode());
-			List<LearningProblem> resultList = learningService.selectLearnProblemsResultList(lpParams);
+			List<LearningProblem> resultList = learningService.selectForceLearningProblemsResultList(lpParams);
 			
 			if(resultList == null) {
 				return new BaseResponse<Learning>(BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS, BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS.getMessage());
@@ -478,66 +416,6 @@ public class ForceLearningController {
         }
     }    
     
-    
-    /**
-     * 사용자강화학습완료 물품상세정보
-     * 
-     * @param param
-     * @return Company
-    */  
-    @PostMapping("/selectLearnProblemsResult.do")
-    @ApiOperation(value = "사용자강화학습완료 물품상세정보", notes = "사용자강화학습완료 물품상세정보")
-    public BaseResponse<List<LearningProblem>> selectLearnProblemsResult(HttpServletRequest request, @RequestBody Learning params) {
-    	Login login = loginService.getLoginInfo(request);
-		if (login == null) {
-			throw new BaseException(BaseResponseCode.AUTH_FAIL);
-		}
-		
-		params.setUserId(login.getUserId());
-		if(StringUtils.isEmpty(params.getMenuCd())){				
-			return new BaseResponse<List<LearningProblem>>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getMessage());
-		}
-		
-		if(StringUtils.isEmpty(params.getLanguageCode())){				
-			return new BaseResponse<List<LearningProblem>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
-		}				
-		
-		if(StringUtils.isEmpty(params.getBagScanId())){				
-			return new BaseResponse<List<LearningProblem>>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getMessage());
-		}		
-		
-		//다국어처리조회
-		if("ko".equals(params.getLanguageCode())) {
-			params.setLanguageCode("kr");
-		}		
-		
-		try {
-			Learning baselineData = learningService.selectBaseline(params);
-			if(baselineData == null) {
-				return new BaseResponse<List<LearningProblem>>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
-			}
-			
-			params.setProcCd(baselineData.getProcCd()); 
-			List<Learning> learningData = learningService.selectLearning(params);
-			if(learningData == null) {
-				return new BaseResponse<List<LearningProblem>>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
-			}
-			
-			Learning moduleInfoData = learningService.selectModuleInfo(params);
-			if(moduleInfoData == null) {
-				return new BaseResponse<List<LearningProblem>>(BaseResponseCode.MODULE_DATA, BaseResponseCode.MODULE_DATA.getMessage());
-			}
-			
-			LearningProblem lpParams = new LearningProblem();
-			lpParams.setLanguageCode(params.getLanguageCode());
-			lpParams.setBagScanId(params.getBagScanId());
-			List<LearningProblem> resultList = learningService.selectLearnProblemsResult(lpParams);
-			return new BaseResponse<List<LearningProblem>>(resultList);
-        } catch (Exception e) {
-        	LOGGER.error("error:", e);
-            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
-        }
-    }        
     
     
 }

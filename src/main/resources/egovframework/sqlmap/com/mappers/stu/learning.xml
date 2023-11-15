@@ -333,7 +333,7 @@
 	
 	
 	<!-- 학습종료점수합산 -->
-	<select id="selectLeaningSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
+	<select id="selectLearningSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
 			floor(IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt}) AS gainScore
 		FROM XBT_STU_LEARNING_PROGRESSING 

@@ -50,7 +50,7 @@
 	</select>	
 	
 	<!-- 강화학습문제 등록 -->
-	<insert id="insertLearningProblems" parameterType="egovframework.com.stu.learning.vo.LearningProblem">
+	<insert id="insertForceLearningProblems" parameterType="egovframework.com.stu.learning.vo.LearningProblem">
 		INSERT INTO XBT_STU_FORCE_LEARNING_PROGRESSING(
 		MODULE_ID, 
 		PROC_CD, 
@@ -63,7 +63,7 @@
 		ACTION_DIV, 
 		INSERT_DATE)
 		SELECT 
-			MODULE_ID,
+			#{moduleId},
 			#{procCd},
 			#{procYear},
 			#{procSeq},
@@ -90,7 +90,7 @@
 	
 	
 	<!-- 강화학습문제 초기화-->
-	<update id="updateLearningProblems" parameterType="egovframework.com.stu.learning.vo.LearningProblem">	
+	<update id="updateForceLearningProblems" parameterType="egovframework.com.stu.learning.vo.LearningProblem">	
 		UPDATE 
 			XBT_BASELINE_LEARNING 
 		SET END_YN = 'N'
@@ -101,7 +101,7 @@
 	</update>		
 	
 	<!-- 강화학습문제출제목록가져오기 -->
-	<select id="selectLearnProblemsList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
+	<select id="selectForceLearningProblemsList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
 		SELECT 
 			MODULE_ID, 
 			PROC_CD, 
@@ -128,7 +128,7 @@
 	</select>	
 	
 	<!-- 강화학습문제출제목록가져오기 -->
-	<select id="selectLearnProblemsResultList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
+	<select id="selectForceLearningProblemsResultList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
 		SELECT 
 			MODULE_ID, 
 			PROC_CD, 
@@ -158,36 +158,10 @@
 		LIMIT #{questionCnt}
 	</select>		
 	
-	<!-- 강화학습문제출제목록상세정보가져오기 -->
-	<select id="selectLearnProblemsResult" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
-		SELECT 
-			<choose>
-				<when test='languageCode == "kr"'>
-					ANSWER_ITEM AS unitName,
-				</when>
-				<when test='languageCode == "en"'>
-					ANSWER_ITEM_EN AS unitName,				
-				</when>
-				<when test='languageCode == "ch"'>
-					ANSWER_ITEM_CH AS unitName,
-				</when>				
-				<when test='languageCode == "jp"'>
-					ANSWER_ITEM AS unitName,
-				</when>
-				<otherwise>
-					, UNIT_NAME /*물품명*/
-				</otherwise>											
-			</choose>
-			(SELECT OPEN_YN FROM XBT_UNIT_GROUP T1 WHERE T1.UNIT_GROUP_CD = T4.UNIT_GROUP_CD ) AS openYn,
-			(SELECT PASS_YN FROM XBT_UNIT_GROUP T1 WHERE T1.UNIT_GROUP_CD = T4.UNIT_GROUP_CD ) AS passYn												
-		FROM XBT_BAG_CONST_UNIT T3 INNER JOIN XBT_UNIT_INFO T4
-		ON T3.UNIT_ID = T4.UNIT_ID 
-		WHERE BAG_SCAN_ID = #{bagScanId}
-	</select>	
 	
 	
 	<!-- 강화학습정답확인 -->
-	<select id="selectLearnAnswer" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
+	<select id="selectForceLearningAnswer" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
 			MAX(ACTION_DIV = #{userActionDiv}) as answer,
 			MAX(ACTION_DIV) as answerDiv
@@ -204,27 +178,8 @@
 	</select>	
 
 
-	<!-- 관리자에셋팅된 점수체게 가져오기 -->
-	<select id="selectPointStdScore" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.PointStd">
-		SELECT
-			POINTS_DETAIL_NO, 
-			POINTS_STD_NO, 
-			ACTION_DIV, 
-			(SELECT CODE_NAME FROM XBT_COMMON_CODE T2 WHERE T2.GROUP_ID = 'actionDiv' 
-			 AND T2.CODE_VALUE = ACTION_DIV AND T2.USE_YN = 'Y' AND T2.LANGUAGE_CODE = 'kr')AS actionDivName,			
-			BAN_UNIT_SCORE, 
-			LIMIT_UNIT_SCORE, 
-			QUESTION_UNIT_SCORE, 
-			PASS_UNIT_SCORE 
-		FROM
-			XBT_POINTS_STD_DETAIL T1
-		WHERE POINTS_STD_NO = (SELECT MAX(POINTS_STD_NO) FROM XBT_POINTS_STD_MASTER WHERE USE_YN = 'Y')
-		AND ACTION_DIV = #{answerDiv}
-	</select>	
-	
-	
 	<!-- 강화학습정답선택-->
-	<update id="updateLearningAnswer" parameterType="egovframework.com.stu.learning.vo.Learning">	
+	<update id="updateForceLearningAnswer" parameterType="egovframework.com.stu.learning.vo.Learning">	
 		UPDATE 
 			XBT_STU_FORCE_LEARNING_PROGRESSING 
 		SET 
@@ -239,7 +194,7 @@
 	</update>
 	
 	<!-- 강화학습문제종료-->
-	<update id="updateLearningEnd" parameterType="egovframework.com.stu.learning.vo.Learning">	
+	<update id="updateForceLearningEnd" parameterType="egovframework.com.stu.learning.vo.Learning">	
 		UPDATE 
 			XBT_STU_FORCE_LEARNING_PROGRESSING 
 		SET 
@@ -252,8 +207,8 @@
 	</update>	
 	
 	<!-- 결과 등록 -->
-	<insert id="insertLearningResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
-		INSERT INTO XBT_BASELINE_LEARNING(
+	<insert id="insertForceLearningResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
+		INSERT INTO XBT_BASELINE_FORCE_LEARNING(
 			PROC_CD,
 			PROC_YEAR,
 			PROC_SEQ,
@@ -280,7 +235,7 @@
 	
 	
 	<!-- 강화학습종료점수합산 -->
-	<select id="selectLeaningSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
+	<select id="selectForceLearningSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
 			floor(IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt}) AS gainScore
 		FROM XBT_STU_FORCE_LEARNING_PROGRESSING 
@@ -295,7 +250,7 @@
 	</select>		
 	
 	<!-- 강화학습종료 틀린갯수 맞은갯수 확인 -->
-	<select id="selectLearningResultCount" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
+	<select id="selectForceLearningResultCount" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT
 			COUNT(*)AS questionCnt,
 			COUNT(CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 1 END) AS rightCnt,
@@ -313,9 +268,9 @@
 	</select>		
 
 	<!-- 강화학습종료 결과데이터 확인-->
-	<select id="selectLearningBaselineResultCount" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="int">	
+	<select id="selectForceLearningBaselineResultCount" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="int">	
 		SELECT COUNT(*) 
-		FROM XBT_BASELINE_LEARNING
+		FROM XBT_BASELINE_FORCE_LEARNING
 		WHERE PROC_CD = #{procCd} 
 		AND PROC_YEAR = #{procYear} 
 		AND PROC_SEQ = #{procSeq}
@@ -324,9 +279,9 @@
 	</select>
 	
 	<!-- 강화학습종료 결과데이터-->
-	<update id="updateLearningResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
+	<update id="updateForceLearningResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
 		UPDATE 
-			XBT_BASELINE_LEARNING 
+			XBT_BASELINE_FORCE_LEARNING 
 		SET 
 			GAIN_SCORE = #{gainScore},
 			PASS_YN = #{passYn},
@@ -340,299 +295,4 @@
 		AND USER_ID = #{userId}
 	</update>		
 	
-	<!-- 오답문제조회 -->
-	<select id="selectWrongAnswerProblems" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
-		SELECT 
-			MODULE_ID,
-			STUDY_LVL,
-			BAG_SCAN_ID ,
-			ACTION_DIV 
-		FROM
-			XBT_STU_FORCE_LEARNING_PROGRESSING	
-		WHERE 
-			ACTION_DIV != USER_ACTION_DIV
-			and USER_ACTION_DIV IS NOT NULL
-			and MODULE_ID = #{moduleId}
-			and PROC_CD = #{procCd} 
-			AND PROC_YEAR = #{procYear} 
-			AND PROC_SEQ = #{procSeq}
-			AND USER_ID = #{userId}
-			AND END_YN = 'Y'
-	</select>	
-	
-	<!-- 등록된오답문제 횟수확인 -->
-	<select id="selectWrongAnswerProblemsMaxkey" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">
-		SELECT 
-			IFNULL(MAX(TRY_SEQ), 0) AS trySeq
-		FROM XBT_STU_WRONG_ANSWER_PROGRESSING
-		WHERE PROC_CD = #{procCd} 
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND USER_ID = #{userId}
-	</select>		
-	
-	
-	<!-- 등록된오답문제 체크 -->
-	<select id="selectWrongAnswerProblemsCount" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="int">
-		SELECT 
-			COUNT(PROGRESS_NO) 
-		FROM XBT_STU_WRONG_ANSWER_PROGRESSING
-		WHERE PROC_CD = #{procCd} 
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-		AND END_YN = #{endYn}
-	</select>	
-	
-	<!-- 오답문제 등록 -->
-	<insert id="insertWrongAnswerProblems" parameterType="egovframework.com.stu.learning.vo.LearningProblem">
-		INSERT INTO XBT_STU_WRONG_ANSWER_PROGRESSING(
-		MODULE_ID, 
-		PROC_CD, 
-		PROC_YEAR, 
-		PROC_SEQ, 
-		TRY_SEQ,
-		STUDY_LVL,
-		USER_ID,
-		BAG_SCAN_ID, 
-		ACTION_DIV, 
-		INSERT_DATE)
-		SELECT 
-			DISTINCT MODULE_ID,
-			#{procCd},
-			#{procYear},
-			#{procSeq},
-			#{trySeq},
-			STUDY_LVL,
-			#{userId},
-			BAG_SCAN_ID ,
-			ACTION_DIV ,
-			NOW()
-		FROM 
-			XBT_STU_FORCE_LEARNING_PROGRESSING 
-		WHERE 
-			ACTION_DIV != USER_ACTION_DIV
-			AND USER_ACTION_DIV IS NOT NULL
-			AND MODULE_ID = #{moduleId}
-			AND PROC_CD = #{procCd} 
-			AND PROC_YEAR = #{procYear} 
-			AND PROC_SEQ = #{procSeq}
-			AND USER_ID = #{userId}
-			AND END_YN = 'Y'
-			AND TRY_SEQ = (
-				SELECT
-					MIN(TRY_SEQ)
-				FROM 
-					XBT_STU_FORCE_LEARNING_PROGRESSING 
-				WHERE 
-					ACTION_DIV != USER_ACTION_DIV
-					AND USER_ACTION_DIV IS NOT NULL
-					AND MODULE_ID = #{moduleId}
-					AND PROC_CD = #{procCd} 
-					AND PROC_YEAR = #{procYear} 
-					AND PROC_SEQ = #{procSeq}
-					AND USER_ID = #{userId}
-					AND END_YN = 'Y'				
-			)
-			<!-- LIMIT #{questionCnt} -->
-	</insert>		
-				
-	<!-- 오답문제출제목록가져오기 -->
-	<select id="selectWrongAnswerProblemsList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
-		SELECT 
-			MODULE_ID, 
-			PROC_CD, 
-			PROC_YEAR, 
-			PROC_SEQ, 
-			USER_ID,
-			BAG_SCAN_ID, 
-			ACTION_DIV,
-			USER_ACTION_DIV,
-			CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 'Y'
-			WHEN ACTION_DIV = '1' and USER_ACTION_DIV = '0' THEN 'H'
-			WHEN !(ACTION_DIV = '1' and USER_ACTION_DIV = '0') AND ACTION_DIV != USER_ACTION_DIV THEN 'N'
-			ELSE 'N'
-			END AS answerYn,  
-			INSERT_DATE
-		FROM XBT_STU_WRONG_ANSWER_PROGRESSING 
-		WHERE PROC_CD = #{procCd} 
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-		AND END_YN = #{endYn}
-		<!-- LIMIT #{questionCnt} -->
-	</select>		
-	
-	<!-- 오답정답확인 -->
-	<select id="selectWrongAnswer" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
-		SELECT 
-			MAX(ACTION_DIV = #{userActionDiv}) as answer,
-			MAX(ACTION_DIV) as answerDiv  
-		FROM XBT_STU_WRONG_ANSWER_PROGRESSING 
-		WHERE 
-		MODULE_ID = #{moduleId} 
-		AND PROC_CD = #{procCd}  
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-		AND BAG_SCAN_ID = #{bagScanId}
-		AND END_YN = 'N'
-	</select>	
-	
-	<!-- 오답문제정답선택-->
-	<update id="updateWrongAnswer" parameterType="egovframework.com.stu.learning.vo.Learning">	
-		UPDATE 
-			XBT_STU_WRONG_ANSWER_PROGRESSING 
-		SET 
-			USER_ACTION_DIV = #{userActionDiv},
-			GAIN_SCORE = #{gainScore}
-		WHERE PROC_CD = #{procCd} 
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-		AND BAG_SCAN_ID = #{bagScanId}
-	</update>	
-	
-	
-	<!-- 결과 등록 -->
-	<insert id="insertWrongAnswerResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
-		INSERT INTO XBT_BASELINE_WRONG_ANSWER(
-			PROC_CD,
-			PROC_YEAR,
-			PROC_SEQ,
-			TRY_SEQ,
-			USER_ID,
-			TEST_DATE,
-			STUDY_LVL,
-			MODULE_ID,
-			END_YN,
-			INSERT_DATE
-		)VALUES(
-			#{procCd},
-			#{procYear},
-			#{procSeq},
-			#{trySeq},
-			#{userId},
-			now(),
-			#{studyLvl},
-			#{moduleId},
-			'Y',
-			now()
-		)
-	</insert>	
-	
-	
-	<!-- 오답문제종료점수합산 -->
-	<select id="selectWrongAnswerSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
-		SELECT 
-			floor(IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt}) AS gainScore
-		FROM XBT_STU_WRONG_ANSWER_PROGRESSING 
-		WHERE 
-		MODULE_ID = #{moduleId} 
-		AND PROC_CD = #{procCd}  
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-		AND END_YN = 'N'
-	</select>		
-	
-	
-	<!-- 오답문제종료 결과데이터 확인 -->
-	<select id="selectWrongAnswerBaselineResultCount" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="int">
-		SELECT COUNT(*) 
-		FROM XBT_BASELINE_WRONG_ANSWER
-		WHERE PROC_CD = #{procCd} 
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-	</select>		
-	
-	<!-- 오답문제종료 틀린갯수 맞은갯수 확인 -->
-	<select id="selectWrongAnswerResultCount" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
-		SELECT
-			COUNT(*)AS questionCnt,
-			COUNT(CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 1 END) AS rightCnt,
-			COUNT(CASE WHEN ACTION_DIV != USER_ACTION_DIV || USER_ACTION_DIV IS NULL THEN 1 END) AS wrongCnt,
-			COUNT(CASE WHEN ACTION_DIV = '1' and USER_ACTION_DIV = '0' THEN 1 END) as banCnt	
-		FROM
-			XBT_STU_WRONG_ANSWER_PROGRESSING
-		WHERE 
-		MODULE_ID = #{moduleId} 
-		AND PROC_CD = #{procCd}  
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-	</select>			
-	
-	<!-- 오답문제종료-->
-	<update id="updateWrongAnswerEnd" parameterType="egovframework.com.stu.learning.vo.Learning">	
-		UPDATE 
-			XBT_STU_WRONG_ANSWER_PROGRESSING 
-		SET 
-			END_YN = #{endYn}
-		WHERE PROC_CD = #{procCd} 
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-	</update>		
-	
-	<!-- 오답문제종료 결과데이터-->
-	<update id="updateWrongAnswerResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
-		UPDATE 
-			XBT_BASELINE_WRONG_ANSWER 
-		SET 
-			GAIN_SCORE = #{gainScore},
-			PASS_YN = #{passYn},
-			RIGHT_CNT = #{rightCnt},
-			WRONG_CNT = #{wrongCnt},	
-			BAN_CNT = #{banCnt}	
-		WHERE PROC_CD = #{procCd} 
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-	</update>		
-	
-	
-	
-	<!-- 오답문제출제목록가져오기 -->
-	<select id="selectWrongAnswerProblemsResultList" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
-		SELECT 
-			MODULE_ID, 
-			PROC_CD, 
-			PROC_YEAR, 
-			PROC_SEQ, 
-			USER_ID,
-			BAG_SCAN_ID, 
-			ACTION_DIV,
-			USER_ACTION_DIV,
-			(SELECT CODE_NAME FROM XBT_COMMON_CODE T1 WHERE T1.GROUP_ID = 'actionDiv' 
-				AND T1.CODE_VALUE = ACTION_DIV AND T1.USE_YN = 'Y' AND language_code = #{languageCode})as actionDivName,
-			(SELECT CODE_NAME FROM XBT_COMMON_CODE T1 WHERE T1.GROUP_ID = 'actionDiv' 
-				AND T1.CODE_VALUE = USER_ACTION_DIV AND T1.USE_YN = 'Y' AND language_code = #{languageCode})as userActionDivName,			
-			CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 'Y'
-			WHEN ACTION_DIV = '1' and USER_ACTION_DIV = '0' THEN 'H'
-			WHEN !(ACTION_DIV = '1' and USER_ACTION_DIV = '0') AND ACTION_DIV != USER_ACTION_DIV THEN 'N'
-			ELSE 'N'
-			END AS answerYn,  
-			INSERT_DATE
-		FROM XBT_STU_WRONG_ANSWER_PROGRESSING 
-		WHERE PROC_CD = #{procCd} 
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-		AND END_YN = #{endYn}
-	</select>		
-	
-		
-		
 </mapper>
