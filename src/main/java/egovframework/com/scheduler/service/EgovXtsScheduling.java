@@ -79,8 +79,8 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 					int tgtTheoryScore = 0;
 					int tgtEvaluationScore = 0;
 					int tgtPracticeScore = 0;//일반실기점수
-					int tgtpracticeCarScore = 0;//차량실기점수
-					int tgtpracticeHumanScore = 0;//대인실기점수					
+					//int tgtpracticeCarScore = 0;//차량실기점수
+					//int tgtpracticeHumanScore = 0;//대인실기점수					
 					
 					//비중반영후
 					int theoryScore = 0;
@@ -222,7 +222,42 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 								}
 
 							}					
-						}							
+						}			
+					//2 -> 보안검색요원 정기교육 (1일 / 8시간) - 평가만
+					}else if("2".equals(xs.getEduCode())){
+						
+						XbtScore processScore = systemService.selectProcessScore(xs);
+						if(processScore!=null) {
+							if("Y".equals(processScore.getEvaluationYn())) {
+								
+								 //커트라인비교 추가
+								if(tgtEvaluationScore < baseline.getPassScore()) {//평가커트라인비교
+									xs.setPassYn("N");
+								}
+								
+								if(tgtEvaluationScore < baseline.getPassScore()) {
+									systemService.updateXbtEndScore(xs); //과락처리
+								}
+								
+								
+								if(tgtEvaluationScore >= baseline.getPassScore()) {
+									int totalScore = evaluationScore;
+									xs.setGainScore(totalScore);
+									 
+									if(totalScore >= baseline.getEndingStdScore()) {
+										xs.setPassYn("Y");
+									}else {
+										xs.setPassYn("N");
+									}
+									systemService.updateXbtEndScore(xs);								
+								}
+
+							}					
+						}		
+						//5 -> 항공경비 정기교육 (1일 / 8시간)
+						//10 -> 항공보안경비 감독자 정기 (1일/8시간)
+					}else if("5".equals(xs.getEduCode()) || "10".equals(xs.getEduCode())){
+						LOGGER.info("==============처리사항 없음...==============");
 					}else { //일반교육생
 						//실습점수
 						XbtScore practiceTotalScore = systemService.selectPracticeScore(xs);
