@@ -170,6 +170,8 @@ public class MainController {
 			List<Schedule> menu1Result = new ArrayList<Schedule>();
 			boolean m1 = false;
 			boolean m2 = false;
+			boolean aim1 = false;
+			boolean aim2 = false;			
 			for(Schedule m : menu1) {
 				if(m.getMenuCd().equals("12") || m.getMenuCd().equals("13")) {
 					if(m.getMenuCd().equals("12") && "false".equals(m.getMenuFlag())) {
@@ -188,6 +190,24 @@ public class MainController {
 						menu1Result.add(m);
 					}
 				}
+				
+				if(m.getMenuCd().equals("14") || m.getMenuCd().equals("15")) {
+					if(m.getMenuCd().equals("14") && "false".equals(m.getMenuFlag())) {
+						aim1=true;
+					}
+					if(m.getMenuCd().equals("15") && "false".equals(m.getMenuFlag())) {
+						aim2=true;
+					} 		
+					if(aim1 && aim2) {
+						params.setMenuCd("15");
+						Schedule defaultM = mainService.selectDefaultMenu(params);
+						menu1Result.add(defaultM);
+					}
+					
+					if(m.getMenuCd().equals("14") && "true".equals(m.getMenuFlag()) || m.getMenuCd().equals("15") && "true".equals(m.getMenuFlag())){
+						menu1Result.add(m);
+					}
+				}				
 			}	
 			
 			boolean m3 = false;
@@ -215,6 +235,8 @@ public class MainController {
 			List<Schedule> menu1St = menu1.stream().filter(m -> (
 				!(m.getMenuCd().equals("12"))
 				&&!(m.getMenuCd().equals("13"))
+				&&!(m.getMenuCd().equals("14"))
+				&&!(m.getMenuCd().equals("15"))
 				&&!(m.getMenuCd().equals("24"))
 				&&!(m.getMenuCd().equals("25"))
 				)
@@ -234,9 +256,9 @@ public class MainController {
 					m6=true;
 				} 		
 				if(m5 && m6) {
-					params.setMenuCd("22");
+					params.setMenuCd("21");
 					Schedule defaultM = mainService.selectDefaultMenu(params);
-					defaultM.setMenuFlag("true");
+					//defaultM.setMenuFlag("true");
 					menu2Result.add(defaultM);
 					break;
 				}
