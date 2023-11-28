@@ -261,4 +261,10 @@ public class UserMgrServiceImpl implements UserMgrService {
 		return userMgrDAO.insertCertNumber(params);
 	}
 
+	@Override
+	public int updateFaceYn(UserInfo params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.updateFaceYn(params);
+	}
+
 }

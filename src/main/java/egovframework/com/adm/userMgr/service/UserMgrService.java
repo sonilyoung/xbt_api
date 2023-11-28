@@ -97,4 +97,6 @@ public interface UserMgrService{
 	public UserCertificateDetail selectCertNumber(UserCertificateDetail params);
 	
 	public int insertCertNumber(CertificationInfo params);
+	
+	public int updateFaceYn(UserInfo params);
 }

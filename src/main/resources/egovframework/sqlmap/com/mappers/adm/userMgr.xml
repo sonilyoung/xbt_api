@@ -81,7 +81,9 @@
 				A.UPDATE_ID,
 				A.UPDATE_DATE,
 				A.CLASS_TYPE,
-				(SELECT MAX(PROC_CD) FROM XBT_BASELINE_STUDENT_INFO XBSI WHERE XBSI.USER_ID = USER_ID) AS procCd      
+				(SELECT MAX(PROC_CD) FROM XBT_BASELINE_STUDENT_INFO XBSI WHERE XBSI.USER_ID = USER_ID) AS procCd,
+				A.FACE_TYPE,
+				A.FACE_YN      
          FROM XBT_STU_USER A INNER JOIN XBT_STU_AUTH K ON A.AUTH_CD = K.AUTH_CD
 		<choose>
 			<when test='searchval != "" and searchval != null'>
@@ -812,7 +814,8 @@
 			LAST_EDU_END = 	#{lastEduEnd}                ,
 			EDU_DAY = 		#{eduDay}					 ,
 			EDU_TIME = 	#{eduTime}						 ,
-			CLASS_TYPE = 	#{classType}						 
+			CLASS_TYPE = 	#{classType}				 ,
+			FACE_TYPE = 	#{faceType}										 
 		WHERE USER_ID = 		#{userId}	
 
 	</update>	
@@ -1565,6 +1568,13 @@
 		)
 	</insert>		
 	
-	
+	<!-- 얼글등록정보수정 -->
+	<update id="updateFaceYn" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
+		UPDATE XBT_STU_USER SET		
+			FACE_YN = 		#{faceYn},
+			UPDATE_ID = 		#{updateId},
+			UPDATE_DATE = 		now()            
+		WHERE USER_ID = 	#{userId}	
+	</update>	
 		
 </mapper>

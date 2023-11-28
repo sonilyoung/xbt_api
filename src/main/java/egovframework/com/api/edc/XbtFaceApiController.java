@@ -20,6 +20,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import egovframework.com.adm.contents.service.ContentsService;
 import egovframework.com.adm.login.service.LoginService;
+import egovframework.com.adm.login.service.UserService;
+import egovframework.com.adm.userMgr.service.UserMgrService;
+import egovframework.com.adm.userMgr.vo.UserInfo;
 import egovframework.com.api.edc.service.EgovXtsEdcPseudoFilterService;
 import egovframework.com.api.edc.service.EgovXtsEdcReinforcementService;
 import egovframework.com.api.edc.service.EgovXtsEdcThreeDimensionService;
@@ -50,6 +53,9 @@ public class XbtFaceApiController {
 	
     @Autowired
     private FileStorageService fileStorageService;    	
+    
+    @Autowired
+    private UserMgrService userMgrService;    
 	
     /*안면인식 api 이미지 저장경로*/
     public static final String FACE_ROOT_DIR = GlobalsProperties.getProperty("face.img.path");   	
@@ -75,6 +81,15 @@ public class XbtFaceApiController {
 		
 		JsonNode json = xbtFaceApiService.insertFaceApi(faceImg, params);
 		if("0".equals(json.get("error").asText())) {
+			
+			if("success".equals(json.get("desc").asText())) {
+				UserInfo ui = new UserInfo();
+				ui.setUserId(params.getUserId());
+				ui.setUpdateId(params.getUserId());
+				ui.setFaceYn("Y");
+				userMgrService.updateFaceYn(ui);
+			}
+			
 			return new BaseResponse<FaceVO>(BaseResponseCode.SUCCESS, json.get("desc").asText());
 		}else if("-1000".equals(json.get("error").asText())) {
 			return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, json.get("desc").asText());
@@ -108,7 +123,16 @@ public class XbtFaceApiController {
     	fileStorageService.fileDeleteAll(params.getUserId(), FACE_ROOT_DIR);
     	JsonNode deleteJson = xbtFaceApiService.deleteFaceApi(params);
 		if("0".equals(deleteJson.get("error").asText())) {
-			return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, deleteJson.get("data").get("result").asText());			
+			
+			if("success".equals(deleteJson.get("desc").asText())) {
+				UserInfo ui = new UserInfo();
+				ui.setUserId(params.getUserId());
+				ui.setUpdateId(params.getUserId());
+				ui.setFaceYn("N");
+				userMgrService.updateFaceYn(ui);
+			}			
+			
+			return new BaseResponse<FaceVO>(BaseResponseCode.SUCCESS, deleteJson.get("data").get("result").asText());			
 		}else if("-1000".equals(deleteJson.get("error").asText())) {
 			return new BaseResponse<FaceVO>(BaseResponseCode.FAIL, deleteJson.get("data").get("result").asText());
 		}else if("-1001".equals(deleteJson.get("error").asText())) {

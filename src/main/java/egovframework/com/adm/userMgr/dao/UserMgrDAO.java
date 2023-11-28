@@ -154,5 +154,9 @@ public class UserMgrDAO extends EgovAbstractMapper{
 	public int insertCertNumber(CertificationInfo params) {
 		return insert(Namespace + ".insertCertNumber", params);
 	}
+	
+	public int updateFaceYn(UserInfo params) {
+		return update(Namespace + ".updateFaceYn", params);
+	}		
 		
 }
