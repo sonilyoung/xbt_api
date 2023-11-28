@@ -50,8 +50,8 @@
 			,#{contents}
 			,#{languageCode}
 			,#{insertId}
+			,#{insertDate}
 			,'Y'
-			,now()
 		)	
 	</insert>	
 	
@@ -61,10 +61,11 @@
 		UPDATE XBT_NOTICE
 		SET 
 			TITLE = #{title}
-			, CONTENTS = #{title}
+			, CONTENTS = #{contents}
 			, UPDATE_ID = #{updateId}
 			, USE_YN = #{useYn}
 			, UPDATE_DATE = now()
+			, INSERT_DATE = #{insertDate}
 		WHERE NOTICE_ID = #{noticeId}
 	</update>	
 	

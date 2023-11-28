@@ -128,9 +128,9 @@ public class SystemController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Contents" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
-		if(StringUtils.isEmpty(params.getLanguageCode())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
-		}			
+		//if(StringUtils.isEmpty(params.getLanguageCode())){				
+			//return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
+		//}			
 		
 		//다국어처리조회
 		if("ko".equals(params.getLanguageCode())) {
@@ -183,9 +183,9 @@ public class SystemController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Contents" + BaseApiMessage.REQUIRED.getCode());
 		}			
 		
-		if(StringUtils.isEmpty(params.getLanguageCode())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
-		}		
+		//if(StringUtils.isEmpty(params.getLanguageCode())){				
+			//return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getCode());
+		//}		
 		
 		//다국어처리조회
 		if("ko".equals(params.getLanguageCode())) {

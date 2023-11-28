@@ -21,7 +21,7 @@
 	<security:http pattern="/swagger-ui.html" security="none"/>     
 	<security:http pattern="/resources/**" security="none"/>
      
-     <!-- Interceptors 
+     <!-- Interceptors -->
 	<mvc:interceptors>
  		<mvc:interceptor>
 			<mvc:mapping path="/**" />
@@ -33,7 +33,7 @@
 			<mvc:exclude-mapping path="/resources/**"/>
 			<beans:bean id="authInterceptor" class="egovframework.com.global.interceptor.AuthInterceptor"/>
 		</mvc:interceptor>
-	</mvc:interceptors>-->
+	</mvc:interceptors>
      
 
 
