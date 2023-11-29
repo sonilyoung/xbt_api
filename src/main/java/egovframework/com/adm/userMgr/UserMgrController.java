@@ -1049,7 +1049,7 @@ public class UserMgrController {
 			userMgrService.deleteDuplicationUser(params);
 			for(LinkedHashMap<String, String> excelData: excelContent){
 				params = new UserInfo();
-				params.setUserId(excelData.get("K"));//아이디
+				params.setUserId(excelData.get("L").replaceAll("-", ""));//아이디
 				params.setClassType(excelData.get("B"));//등록차수 
 				params.setEduCode(excelData.get("C")); //교육과정코드
 				params.setUserNm(excelData.get("D"));//국문성명
@@ -1057,11 +1057,15 @@ public class UserMgrController {
 	            params.setSex(excelData.get("F"));//성별
 	            
 	            // 엑셀 날짜 값을 Java Date 객체로 변환
-	            Date date1 = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("G")));
-	            // 날짜를 원하는 형식으로 문자열로 변환
-	            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-	            String dateString1 = dateFormat1.format(date1);
-	            params.setBirthDay(dateString1);//생년월일
+	            if(null != excelData.get("G") && !"".equals(excelData.get("G"))){	
+		            Date date1 = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("G")));
+		            // 날짜를 원하는 형식으로 문자열로 변환
+		            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+		            String dateString1 = dateFormat1.format(date1);
+		            params.setBirthDay(dateString1);//생년월일
+	            }
+
+	            
 	            params.setAge(excelData.get("H"));//나이
 	            params.setAddress(excelData.get("I"));//주소
 	            params.setAddressEn(excelData.get("J"));//영문주소
