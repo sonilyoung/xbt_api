@@ -202,7 +202,8 @@ public class ForceLearningController {
 			LearningProblem maxKey = learningService.selectForceLearningProblemsMaxkey(lpParams);			
 			params.setTrySeq(maxKey.getTrySeq());
 			
-			Learning answer = learningService.selectForceLearningAnswer(params);
+			/*
+			Learning answer = learningService.selectLearnAnswer(params);
 			params.setAnswerDiv(answer.getAnswerDiv());
 			PointStd score = learningService.selectPointStdScore(params);
 			
@@ -221,6 +222,12 @@ public class ForceLearningController {
 				gainScore = 0;
 			}
 			params.setGainScore(gainScore);
+			*/
+			/*점수계산*/
+			int gainScore = learningService.selectCommonScoreResult(params);
+			params.setGainScore(gainScore);
+			
+			
 			/*
 			if("1".equals(answer.getAnswer())) {//정답
 				double result = 100/(double)moduleInfoData.getQuestionCnt();

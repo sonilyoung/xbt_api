@@ -126,6 +126,6 @@ public interface LearningService {
 	
 	public LearningProblem selectForceLearningProblemsMaxkey(LearningProblem params);
 	
-	
+	public int selectCommonScoreResult(Learning params);
 	
 }

@@ -480,6 +480,7 @@ public class LearningController {
 			LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);			
 			params.setTrySeq(maxKey.getTrySeq());
 			
+			/*
 			Learning answer = learningService.selectLearnAnswer(params);
 			params.setAnswerDiv(answer.getAnswerDiv());
 			PointStd score = learningService.selectPointStdScore(params);
@@ -499,6 +500,11 @@ public class LearningController {
 				gainScore = 0;
 			}
 			params.setGainScore(gainScore);
+			*/
+			/*점수계산*/
+			int gainScore = learningService.selectCommonScoreResult(params);
+			params.setGainScore(gainScore);
+			
 			/*
 			if("1".equals(answer.getAnswer())) {//정답
 				double result = 100/(double)moduleInfoData.getQuestionCnt();
@@ -900,7 +906,8 @@ public class LearningController {
 			LearningProblem maxKey = learningService.selectWrongAnswerProblemsMaxkey(lpParams);			
 			params.setTrySeq(maxKey.getTrySeq());
 			
-			Learning answer = learningService.selectWrongAnswer(params);
+			/*
+			Learning answer = learningService.selectLearnAnswer(params);
 			params.setAnswerDiv(answer.getAnswerDiv());
 			PointStd score = learningService.selectPointStdScore(params);
 			
@@ -918,6 +925,10 @@ public class LearningController {
 			}else {
 				gainScore = 0;
 			}
+			params.setGainScore(gainScore);
+			*/
+			/*점수계산*/
+			int gainScore = learningService.selectCommonScoreResult(params);
 			params.setGainScore(gainScore);
 			
 			int result = learningService.updateWrongAnswer(params); 

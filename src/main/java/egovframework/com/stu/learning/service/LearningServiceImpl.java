@@ -351,6 +351,45 @@ public class LearningServiceImpl implements LearningService {
 		return learningDAO.selectForceLearningProblemsMaxkey(params);
 	}
 
+	@Override
+	public int selectCommonScoreResult(Learning params) {
+		// TODO Auto-generated method stub
+		Learning answer = learningDAO.selectLearnAnswer(params);
+		params.setAnswerDiv(answer.getAnswerDiv());
+		PointStd score = learningDAO.selectPointStdScore(params);
+		
+		/*
+		int gainScore = 0;
+		if("0".contentEquals(params.getUserActionDiv())) {
+			gainScore = score.getBanUnitScore();	
+		}else if("1".contentEquals(params.getUserActionDiv())) {
+			gainScore = score.getBanUnitScore();
+		}else if("2".contentEquals(params.getUserActionDiv())) {
+			gainScore = score.getLimitUnitScore();	
+		}else if("3".contentEquals(params.getUserActionDiv())) {
+			gainScore = score.getQuestionUnitScore();	
+		}else if("4".contentEquals(params.getUserActionDiv())) {
+			gainScore = score.getPassUnitScore();				
+		}else {
+			gainScore = 0;
+		}
+		*/
+		
+		int gainScore = 0;
+		if("0".contentEquals(params.getUserActionDiv()) || "1".contentEquals(params.getUserActionDiv())) {
+			gainScore = score.getBanUnitScore();
+		}else if("2".contentEquals(params.getUserActionDiv())) {
+			gainScore = score.getLimitUnitScore();	
+		}else if("3".contentEquals(params.getUserActionDiv()) || "4".contentEquals(params.getUserActionDiv())) {
+			gainScore = score.getPassUnitScore();				
+		}else {
+			gainScore = 0;
+		}		
+		
+		
+		return gainScore;
+	}
+
 
 
 	

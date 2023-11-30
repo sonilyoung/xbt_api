@@ -208,7 +208,8 @@ public class EvaluationController {
 			LearningProblem maxKey = evaluationService.selectEvaluationProblemsMaxkey(lpParams);			
 			params.setTrySeq(maxKey.getTrySeq());			
 			
-			Learning answer = evaluationService.selectEvaluationAnswer(params);
+			/*
+			Learning answer = learningService.selectLearnAnswer(params);
 			params.setAnswerDiv(answer.getAnswerDiv());
 			PointStd score = learningService.selectPointStdScore(params);
 			
@@ -226,6 +227,10 @@ public class EvaluationController {
 			}else {
 				gainScore = 0;
 			}
+			params.setGainScore(gainScore);
+			*/
+			/*점수계산*/
+			int gainScore = learningService.selectCommonScoreResult(params);
 			params.setGainScore(gainScore);
 			
 			int result = evaluationService.updateEvaluationAnswer(params); 
