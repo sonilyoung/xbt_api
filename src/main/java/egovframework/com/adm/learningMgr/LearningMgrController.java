@@ -468,6 +468,14 @@ public class LearningMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
+		if(!StringUtils.isEmpty(params.getBagLists())){
+			String[] bList = params.getBagLists().split(",");
+			List<String> bl = new ArrayList<String>(); 
+			for(String s : bList) {
+				bl.add(s);
+			}
+			params.setBagList(bl);
+		}			
 		
 		try {
 			List<EduModulePop> resultList = learningMgrService.selectModuleXrayPopList(params);

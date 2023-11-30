@@ -230,6 +230,8 @@ public class EvaluationController {
 			params.setGainScore(gainScore);
 			*/
 			/*점수계산*/
+			Learning answer = evaluationService.selectEvaluationAnswer(params);
+			params.setAnswerDiv(answer.getAnswerDiv());			
 			int gainScore = learningService.selectCommonScoreResult(params);
 			params.setGainScore(gainScore);
 			

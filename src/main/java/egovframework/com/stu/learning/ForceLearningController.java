@@ -224,7 +224,15 @@ public class ForceLearningController {
 			params.setGainScore(gainScore);
 			*/
 			/*점수계산*/
+			Learning answer = learningService.selectForceLearningAnswer(params);
+			params.setAnswerDiv(answer.getAnswerDiv());			
 			int gainScore = learningService.selectCommonScoreResult(params);
+			LOGGER.info("====================강화학습체점=====================");
+			LOGGER.info("bagScanId:" + params.getBagScanId());
+			LOGGER.info("AnswerDiv:" + answer.getAnswerDiv());
+			LOGGER.info("UserActionDiv:" + params.getUserActionDiv());
+			LOGGER.info("점수:" + gainScore);
+			LOGGER.info("===========================================");
 			params.setGainScore(gainScore);
 			
 			

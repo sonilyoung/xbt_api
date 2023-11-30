@@ -216,6 +216,16 @@
 			T1.INSERT_DATE 
 		FROM XBT_BAG_INFO T1 INNER JOIN XBT_UNIT_GROUP T3 ON
 		T1.UNIT_GROUP_CD = T3.UNIT_GROUP_CD
+		<choose>
+			<when test='bagList != null'>
+				AND T1.BAG_SCAN_ID IN
+				  <foreach item="item" index="index" collection="bagList" open="(" separator="," close=")">
+				        #{item}
+				  </foreach>			
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>		
 		ORDER BY BAG_SCAN_ID ASC		  		 	
 	</select>
 	

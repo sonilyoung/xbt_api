@@ -502,6 +502,8 @@ public class LearningController {
 			params.setGainScore(gainScore);
 			*/
 			/*점수계산*/
+			Learning answer = learningService.selectLearnAnswer(params);
+			params.setAnswerDiv(answer.getAnswerDiv());			
 			int gainScore = learningService.selectCommonScoreResult(params);
 			params.setGainScore(gainScore);
 			
@@ -928,7 +930,15 @@ public class LearningController {
 			params.setGainScore(gainScore);
 			*/
 			/*점수계산*/
+			Learning answer = learningService.selectWrongAnswer(params);
+			params.setAnswerDiv(answer.getAnswerDiv());			
 			int gainScore = learningService.selectCommonScoreResult(params);
+			LOGGER.info("====================오답문제체점=====================");
+			LOGGER.info("bagScanId:" + params.getBagScanId());
+			LOGGER.info("AnswerDiv:" + answer.getAnswerDiv());
+			LOGGER.info("UserActionDiv:" + params.getUserActionDiv());
+			LOGGER.info("점수:" + gainScore);
+			LOGGER.info("===========================================");			
 			params.setGainScore(gainScore);
 			
 			int result = learningService.updateWrongAnswer(params); 

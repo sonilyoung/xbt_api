@@ -354,8 +354,6 @@ public class LearningServiceImpl implements LearningService {
 	@Override
 	public int selectCommonScoreResult(Learning params) {
 		// TODO Auto-generated method stub
-		Learning answer = learningDAO.selectLearnAnswer(params);
-		params.setAnswerDiv(answer.getAnswerDiv());
 		PointStd score = learningDAO.selectPointStdScore(params);
 		
 		/*

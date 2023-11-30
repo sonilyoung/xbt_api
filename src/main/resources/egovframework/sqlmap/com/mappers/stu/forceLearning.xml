@@ -85,7 +85,7 @@
 				AND ACTION_DIV != USER_ACTION_DIV 
 				AND USER_ID = #{userId}
 			)
-		) LIMIT 100		
+		) LIMIT 25		
 	</insert>		
 	
 	

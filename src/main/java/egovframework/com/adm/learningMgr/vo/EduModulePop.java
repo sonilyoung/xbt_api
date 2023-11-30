@@ -32,6 +32,7 @@ public class EduModulePop {
 	private Long moduleDetailId;
 
 	private List<String> bagList;
+	private String bagLists; //다중검색 문자열
 	
 	private Long bagScanNo;
 	private String unitName;                     /*물품명*/
