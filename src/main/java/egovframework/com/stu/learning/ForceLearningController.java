@@ -300,7 +300,7 @@ public class ForceLearningController {
 			params.setProcSeq(baselineData.getProcSeq());
 			params.setStudyLvl(moduleInfoData.getStudyLvl());
 			params.setPassScore(baselineData.getPassScore());
-			params.setQuestionCnt(moduleInfoData.getQuestionCnt());
+			params.setQuestionCnt(25);
 			
 			//시도횟수
 			LearningProblem lpParams = new LearningProblem();
@@ -408,7 +408,7 @@ public class ForceLearningController {
 			lpParams.setProcSeq(baselineData.getProcSeq());		
 			LearningProblem maxKey = learningService.selectForceLearningProblemsMaxkey(lpParams);
 			lpParams.setTrySeq(maxKey.getTrySeq());
-			lpParams.setQuestionCnt(moduleInfoData.getQuestionCnt());
+			lpParams.setQuestionCnt(25);
 			//List<LearningProblem> problems = learningService.selectLearningProblems(lpParams);	
 			//if(problems == null) {
 				//return new BaseResponse<Learning>(BaseResponseCode.LEARNINGPROBLEM_DATA, BaseResponseCode.LEARNINGPROBLEM_DATA.getMessage());
