@@ -202,7 +202,7 @@
 			T1.BAG_SCAN_NO,
 			T1.BAG_SCAN_ID,
 			T1.UNIT_ID,/*정답물품아이디*/
-			(SELECT UNIT_NAME FROM XBT_UNIT_INFO WHERE UNIT_ID = T1.UNIT_ID) as unitName,/*정답물품명*/
+			T1.UNIT_NAME,/*정답물품명*/
 			T3.OPEN_YN,/*개봉여부*/
 			T3.PASS_YN,/*통과여부*/
 			T3.UNIT_GROUP_CD ,
@@ -224,9 +224,9 @@
 				  </foreach>			
 			</when>
 			<otherwise>
+				ORDER BY BAG_SCAN_ID ASC
 			</otherwise>
 		</choose>		
-		ORDER BY BAG_SCAN_ID ASC		  		 	
 	</select>
 	
 			

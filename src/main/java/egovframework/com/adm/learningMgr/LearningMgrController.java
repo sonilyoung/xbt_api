@@ -468,18 +468,33 @@ public class LearningMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(!StringUtils.isEmpty(params.getBagLists())){
-			String[] bList = params.getBagLists().split(",");
-			List<String> bl = new ArrayList<String>(); 
-			for(String s : bList) {
-				bl.add(s);
-			}
-			params.setBagList(bl);
-		}			
-		
+		List<EduModulePop> resultDataList = new ArrayList<EduModulePop>();
 		try {
-			List<EduModulePop> resultList = learningMgrService.selectModuleXrayPopList(params);
-	        return new BaseResponse<List<EduModulePop>>(resultList);
+			
+			if(StringUtils.isEmpty(params.getBagLists())) {
+				resultDataList = learningMgrService.selectModuleXrayPopList(params);
+			}else {
+				List<EduModulePop> resultList = learningMgrService.selectModuleXrayPopList(params);
+				if(!StringUtils.isEmpty(params.getBagLists())){
+					String[] bList = params.getBagLists().split(",");
+					List<String> bl = new ArrayList<String>(); 
+					for(String s : bList) {
+						bl.add(s);
+					}
+					params.setBagList(bl);
+				}
+				
+				for(String bl : params.getBagList()) {
+					for(EduModulePop rl : resultList) {
+						if(bl.equals(rl.getBagScanId())) {
+							resultDataList.add(rl);
+							continue;
+						}
+					}
+				}				
+			}
+			
+	        return new BaseResponse<List<EduModulePop>>(resultDataList);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());

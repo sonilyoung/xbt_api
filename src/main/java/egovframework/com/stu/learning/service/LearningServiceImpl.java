@@ -372,7 +372,6 @@ public class LearningServiceImpl implements LearningService {
 			gainScore = 0;
 		}
 		
-		
 		/* 점수체계 3개로반영
 		int gainScore = 0;
 		if("0".contentEquals(params.getUserActionDiv()) || "1".contentEquals(params.getUserActionDiv())) {
