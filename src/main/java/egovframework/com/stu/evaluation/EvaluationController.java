@@ -234,6 +234,12 @@ public class EvaluationController {
 			params.setActionDiv(answer.getActionDiv());
 			params.setAnswerDiv(answer.getAnswerDiv());			
 			int gainScore = learningService.selectCommonScoreResult(params);
+			LOGGER.info("====================평가체점=====================");
+			LOGGER.info("bagScanId:" + params.getBagScanId());
+			LOGGER.info("AnswerDiv:" + answer.getAnswerDiv());
+			LOGGER.info("UserActionDiv:" + params.getUserActionDiv());
+			LOGGER.info("점수:" + gainScore);
+			LOGGER.info("===========================================");			
 			params.setGainScore(gainScore);
 			
 			int result = evaluationService.updateEvaluationAnswer(params); 

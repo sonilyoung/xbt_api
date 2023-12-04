@@ -225,7 +225,8 @@ public class ForceLearningController {
 			*/
 			/*점수계산*/
 			Learning answer = learningService.selectForceLearningAnswer(params);
-			params.setAnswerDiv(answer.getAnswerDiv());			
+			params.setActionDiv(answer.getActionDiv());
+			params.setAnswerDiv(answer.getAnswerDiv());	
 			int gainScore = learningService.selectCommonScoreResult(params);
 			LOGGER.info("====================강화학습체점=====================");
 			LOGGER.info("bagScanId:" + params.getBagScanId());
