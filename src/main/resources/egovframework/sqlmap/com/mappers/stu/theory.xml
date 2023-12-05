@@ -183,8 +183,8 @@
 	<!-- 오답정답확인 -->
 	<select id="selectTheoryAnswer" parameterType="egovframework.com.stu.theory.vo.StuTheory" resultType="egovframework.com.stu.theory.vo.StuTheory">
 		SELECT 
-			MAX(ACTION_DIV = #{userActionDiv}) as answer,
-			MAX(ACTION_DIV) as answerDiv  
+			DISTINCT (ACTION_DIV = #{userActionDiv}) as answer,  
+			(ACTION_DIV) as answerDiv
 		FROM XBT_STU_THEORY_PROGRESSING 
 		WHERE 
 		PROC_CD = #{procCd}  

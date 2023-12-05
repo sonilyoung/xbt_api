@@ -2020,5 +2020,43 @@ public class UserMgrController {
         }
     }         
             
+    
+    
+    
+    /**
+     * 평가데이터 초기화
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteEvaluationData.do")
+    @ApiOperation(value = "평가데이터 초기화", notes = "평가데이터 초기화")
+    public BaseResponse<UserInfo> deleteEvaluationData(HttpServletRequest request, @RequestBody UserInfo params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getProcCd())){				
+			return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getUserId())){				
+			return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+		}			
+		
+		try {
+			int result = userMgrService.deleteEvaluationData(params);
+			if(result>0) {
+				return new BaseResponse<UserInfo>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<UserInfo>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }       
+        
         
 }

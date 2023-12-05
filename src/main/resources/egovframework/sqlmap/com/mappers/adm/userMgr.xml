@@ -1576,5 +1576,27 @@
 			UPDATE_DATE = 		now()            
 		WHERE USER_ID = 	#{userId}	
 	</update>	
+	
+	<!-- 교육생평가점수 수정 -->
+	<update id="deleteBaselineEvaluation" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
+		DELETE FROM XBT_BASELINE_EVALUATION
+		WHERE PROC_CD  = #{procCd} AND USER_ID = #{userId}
+	</update>	
+	
+	<!-- 교육생평가점수 수정 -->
+	<update id="deleteEvaluationProgressing" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
+		DELETE FROM XBT_STU_EVALUATION_PROGRESSING 
+		WHERE PROC_CD  = #{procCd} AND USER_ID = #{userId}
+	</update>			
+	
+	
+	<!-- 교육생평가점수 수정 -->
+	<update id="updateEvaluationStudentInfo" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
+		UPDATE XBT_BASELINE_STUDENT_INFO SET 
+		EVALUATION_SCORE = 0 ,
+		EVALUATION_YN = 'N',
+		PASS_YN = 'ING'
+		WHERE PROC_CD  = #{procCd} AND USER_ID = #{userId}
+	</update>	
 		
 </mapper>

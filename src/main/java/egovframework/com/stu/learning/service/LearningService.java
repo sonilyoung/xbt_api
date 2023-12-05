@@ -42,6 +42,8 @@ public interface LearningService {
 	public List<LearningProblem> selectLearnProblemsList(LearningProblem params);
 	
 	public List<LearningProblem> selectLearnProblemsResultList(LearningProblem params);
+
+	public List<LearningProblem> selectOxLearning(LearningProblem params);
 	
 	public List<LearningProblem> selectLearnProblemsResult(LearningProblem params);
 	

@@ -15,6 +15,9 @@ public class Theory {
 	private String lageGroupCd;
 	private String middleGroupCd;
 	private String smallGroupCd;
+	private String largeGroupNm;
+	private String middleGroupNm;
+	private String smallGroupNm;
 	private String question;
 	private String choice1;
 	private String choice2;

@@ -105,6 +105,12 @@ public class LearningServiceImpl implements LearningService {
 		return (List<LearningProblem>) learningDAO.selectLearnProblemsResultList(params);
 	}	
 	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<LearningProblem> selectOxLearning(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return (List<LearningProblem>) learningDAO.selectOxLearning(params);
+	}		
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -357,31 +363,33 @@ public class LearningServiceImpl implements LearningService {
 		PointStd score = learningDAO.selectPointStdScore(params);
 		
 		int gainScore = 0;
-		if("0".equals(params.getActionDiv())) {
+		if("0".equals(params.getAnswerDiv())) {
 			if("0".equals(params.getUserActionDiv())) { //반입금지
-				gainScore = score.getBanUnitScore();	
-			}else if("1".equals(params.getUserActionDiv())) { //의심물품
 				gainScore = score.getQuestionUnitScore();
+			}else if("1".equals(params.getUserActionDiv())) { //의심물품
+				gainScore = score.getBanUnitScore();
 			}			
-		}else if("1".equals(params.getUserActionDiv())) {
+		}else if("1".equals(params.getAnswerDiv())) {
 			if("0".equals(params.getUserActionDiv())) { //반입금지
-				gainScore = score.getBanUnitScore();	
+				gainScore = score.getQuestionUnitScore();	
 			}else if("1".equals(params.getUserActionDiv())) { //의심물품
-				gainScore = score.getQuestionUnitScore();
+				gainScore = score.getBanUnitScore();
 			}
-		}else if("2".equals(params.getUserActionDiv())) {
-			gainScore = score.getLimitUnitScore();	
-		}else if("3".equals(params.getUserActionDiv())) {
+		}else if("2".equals(params.getAnswerDiv())) {
+			if(params.getAnswerDiv().equals(params.getUserActionDiv())) {
+				gainScore = score.getLimitUnitScore();
+			}
+		}else if("3".equals(params.getAnswerDiv())) {
 			if("3".equals(params.getUserActionDiv())) { //통과
-				gainScore = score.getPassUnitScore();	
-			}else if("4".equals(params.getUserActionDiv())) { //의심
 				gainScore = score.getQuestionUnitScore();
+			}else if("4".equals(params.getUserActionDiv())) { //의심
+				gainScore = score.getPassUnitScore();	
 			}	
-		}else if("4".equals(params.getUserActionDiv())) {
+		}else if("4".equals(params.getAnswerDiv())) {
 			if("3".equals(params.getUserActionDiv())) { //통과
-				gainScore = score.getPassUnitScore();	
-			}else if("4".equals(params.getUserActionDiv())) { //의심
 				gainScore = score.getQuestionUnitScore();
+			}else if("4".equals(params.getUserActionDiv())) { //의심
+				gainScore = score.getPassUnitScore();	
 			}			
 		}else {
 			gainScore = 0;

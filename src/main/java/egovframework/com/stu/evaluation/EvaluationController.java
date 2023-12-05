@@ -231,7 +231,6 @@ public class EvaluationController {
 			*/
 			/*점수계산*/
 			Learning answer = evaluationService.selectEvaluationAnswer(params);
-			params.setActionDiv(answer.getActionDiv());
 			params.setAnswerDiv(answer.getAnswerDiv());			
 			int gainScore = learningService.selectCommonScoreResult(params);
 			LOGGER.info("====================평가체점=====================");

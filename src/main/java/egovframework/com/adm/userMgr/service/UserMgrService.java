@@ -99,4 +99,6 @@ public interface UserMgrService{
 	public int insertCertNumber(CertificationInfo params);
 	
 	public int updateFaceYn(UserInfo params);
+	
+	public int deleteEvaluationData(UserInfo params);	
 }

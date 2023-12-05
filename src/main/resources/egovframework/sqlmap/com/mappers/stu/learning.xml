@@ -227,7 +227,47 @@
 		AND USER_ID = #{userId}
 		AND END_YN = #{endYn}
 		LIMIT #{questionCnt}
-	</select>		
+	</select>	
+	
+	<!-- 학습오답노트팝업데이터 -->
+	<select id="selectOxLearning" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
+		SELECT 
+			MODULE_ID, 
+			PROC_CD, 
+			PROC_YEAR, 
+			PROC_SEQ, 
+			USER_ID,
+			BAG_SCAN_ID, 
+			ACTION_DIV,
+			USER_ACTION_DIV,
+			(SELECT CODE_NAME FROM XBT_COMMON_CODE T1 WHERE T1.GROUP_ID = 'actionDiv' 
+				AND T1.CODE_VALUE = ACTION_DIV AND T1.USE_YN = 'Y' AND language_code = #{languageCode})as actionDivName,
+			(SELECT CODE_NAME FROM XBT_COMMON_CODE T1 WHERE T1.GROUP_ID = 'actionDiv' 
+				AND T1.CODE_VALUE = USER_ACTION_DIV AND T1.USE_YN = 'Y' AND language_code = #{languageCode})as userActionDivName,			
+			CASE WHEN ACTION_DIV = USER_ACTION_DIV THEN 'Y'
+			<!-- 
+			WHEN ACTION_DIV = '0' and USER_ACTION_DIV = '1' THEN 'Y'
+			WHEN ACTION_DIV = '1' and USER_ACTION_DIV = '0' THEN 'Y'
+			WHEN ACTION_DIV = '3' and USER_ACTION_DIV = '4' THEN 'Y'
+			WHEN ACTION_DIV = '4' and USER_ACTION_DIV = '3' THEN 'Y'
+			 -->
+			WHEN ACTION_DIV = '0' and USER_ACTION_DIV = '1' THEN 'H'
+			WHEN ACTION_DIV = '1' and USER_ACTION_DIV = '0' THEN 'H'
+			WHEN ACTION_DIV = '3' and USER_ACTION_DIV = '4' THEN 'H'
+			WHEN ACTION_DIV = '4' and USER_ACTION_DIV = '3' THEN 'H'
+			WHEN !(ACTION_DIV = '1' and USER_ACTION_DIV = '0') AND ACTION_DIV != USER_ACTION_DIV THEN 'N'
+			ELSE 'N'
+			END AS answerYn,  
+			INSERT_DATE
+		FROM XBT_STU_LEARNING_PROGRESSING 
+		WHERE PROC_CD = #{procCd} 
+		AND PROC_YEAR = #{procYear} 
+		AND PROC_SEQ = #{procSeq}
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}
+		AND END_YN = #{endYn}
+		USER_ACTION_DIV IS NOT NULL
+	</select>			
 	
 	<!-- 학습문제출제목록상세정보가져오기 -->
 	<select id="selectLearnProblemsResult" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
@@ -260,8 +300,8 @@
 	<!-- 학습정답확인 -->
 	<select id="selectLearnAnswer" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			MAX(ACTION_DIV = #{userActionDiv}) as answer,
-			MAX(ACTION_DIV) as answerDiv
+			DISTINCT (ACTION_DIV = #{userActionDiv}) as answer,  
+			(ACTION_DIV) as answerDiv
 		FROM XBT_STU_LEARNING_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 
@@ -352,17 +392,20 @@
 	
 	<!-- 학습종료점수합산 -->
 	<select id="selectLearningSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
-		SELECT 
-			floor(IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt}) AS gainScore
-		FROM XBT_STU_LEARNING_PROGRESSING 
-		WHERE 
-		MODULE_ID = #{moduleId} 
-		AND PROC_CD = #{procCd}  
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-		AND END_YN = 'N'
+		SELECT floor(gainScore/#{questionCnt}) AS gainScore 
+		FROM (
+			SELECT 
+				IFNULL(SUM(GAIN_SCORE), 0) AS gainScore
+			FROM XBT_STU_LEARNING_PROGRESSING 
+			WHERE 
+			MODULE_ID = #{moduleId} 
+			AND PROC_CD = #{procCd}  
+			AND PROC_YEAR = #{procYear} 
+			AND PROC_SEQ = #{procSeq}
+			AND TRY_SEQ = #{trySeq}
+			AND USER_ID = #{userId}
+			AND END_YN = 'N'
+		)TOT	
 	</select>		
 	
 	<!-- 학습종료 틀린갯수 맞은갯수 확인 -->
@@ -409,7 +452,7 @@
 		AND PROC_SEQ = #{procSeq}
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
-	</update>		
+	</update>	
 	
 	<!-- 오답문제조회 -->
 	<select id="selectWrongAnswerProblems" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
@@ -548,8 +591,8 @@
 	<!-- 오답정답확인 -->
 	<select id="selectWrongAnswer" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			MAX(ACTION_DIV = #{userActionDiv}) as answer,
-			MAX(ACTION_DIV) as answerDiv  
+			DISTINCT (ACTION_DIV = #{userActionDiv}) as answer,  
+			(ACTION_DIV) as answerDiv
 		FROM XBT_STU_WRONG_ANSWER_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 
@@ -608,17 +651,20 @@
 	
 	<!-- 오답문제종료점수합산 -->
 	<select id="selectWrongAnswerSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
-		SELECT 
-			floor(IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt}) AS gainScore
-		FROM XBT_STU_WRONG_ANSWER_PROGRESSING 
-		WHERE 
-		MODULE_ID = #{moduleId} 
-		AND PROC_CD = #{procCd}  
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-		AND END_YN = 'N'
+		SELECT floor(gainScore/#{questionCnt}) AS gainScore 
+		FROM (
+			SELECT 
+				IFNULL(SUM(GAIN_SCORE), 0) AS gainScore
+			FROM XBT_STU_WRONG_ANSWER_PROGRESSING 
+			WHERE 
+			MODULE_ID = #{moduleId} 
+			AND PROC_CD = #{procCd}  
+			AND PROC_YEAR = #{procYear} 
+			AND PROC_SEQ = #{procSeq}
+			AND TRY_SEQ = #{trySeq}
+			AND USER_ID = #{userId}
+			AND END_YN = 'N'
+		)TOT
 	</select>		
 	
 	

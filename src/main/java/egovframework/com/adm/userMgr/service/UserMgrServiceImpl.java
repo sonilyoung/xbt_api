@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import egovframework.com.adm.userMgr.dao.UserMgrDAO;
 import egovframework.com.adm.userMgr.vo.CertificationInfo;
@@ -265,6 +266,15 @@ public class UserMgrServiceImpl implements UserMgrService {
 	public int updateFaceYn(UserInfo params) {
 		// TODO Auto-generated method stub
 		return userMgrDAO.updateFaceYn(params);
+	}
+
+	@Override
+	@Transactional
+	public int deleteEvaluationData(UserInfo params) {
+		// TODO Auto-generated method stub
+		userMgrDAO.deleteBaselineEvaluation(params);
+		userMgrDAO.deleteEvaluationProgressing(params);
+		return userMgrDAO.updateEvaluationStudentInfo(params);
 	}
 
 }

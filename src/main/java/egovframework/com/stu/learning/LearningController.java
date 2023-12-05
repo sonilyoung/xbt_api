@@ -503,7 +503,6 @@ public class LearningController {
 			*/
 			/*점수계산*/
 			Learning answer = learningService.selectLearnAnswer(params);
-			params.setActionDiv(answer.getActionDiv());
 			params.setAnswerDiv(answer.getAnswerDiv());			
 			int gainScore = learningService.selectCommonScoreResult(params);
 			LOGGER.info("====================학습체점=====================");
@@ -770,6 +769,87 @@ public class LearningController {
         }
     }        
     
+    /**
+     * 학습오답노트팝업데이터
+     * 
+     * @param param
+     * @return Company
+    */  
+    @PostMapping("/selectOxLearning.do")
+    @ApiOperation(value = "학습오답노트팝업데이터", notes = "학습오답노트팝업데이터")
+    public BaseResponse<Learning> selectOxLearning(HttpServletRequest request, @RequestBody Learning params) {
+
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		params.setUserId(login.getUserId());
+		if(StringUtils.isEmpty(params.getMenuCd())){				
+			return new BaseResponse<Learning>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getMessage());
+		}
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<Learning>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}				
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}		
+		
+		try {
+			Learning baselineData = learningService.selectBaseline(params);
+			if(baselineData == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.BASELINE_DATA, BaseResponseCode.BASELINE_DATA.getMessage());
+			}
+			
+			params.setProcCd(baselineData.getProcCd()); 
+			List<Learning> learningData = learningService.selectLearning(params);
+			if(learningData == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
+			}
+			
+			Learning moduleInfoData = learningService.selectModuleInfo(params);
+			if(moduleInfoData == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.MODULE_DATA, BaseResponseCode.MODULE_DATA.getMessage());
+			}
+			moduleInfoData.setUserId(login.getUserId());
+			moduleInfoData.setUserName(login.getUserNm());
+			LearningProblem lpParams = new LearningProblem();
+			lpParams.setUserId(login.getUserId());
+			lpParams.setModuleId(moduleInfoData.getModuleId());
+			lpParams.setProcCd(baselineData.getProcCd());
+			lpParams.setProcYear(baselineData.getProcYear());
+			lpParams.setProcSeq(baselineData.getProcSeq());		
+			LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);
+			lpParams.setTrySeq(maxKey.getTrySeq());
+			lpParams.setQuestionCnt(moduleInfoData.getQuestionCnt());
+			//List<LearningProblem> problems = learningService.selectLearningProblems(lpParams);	
+			//if(problems == null) {
+				//return new BaseResponse<Learning>(BaseResponseCode.LEARNINGPROBLEM_DATA, BaseResponseCode.LEARNINGPROBLEM_DATA.getMessage());
+			//}				
+			
+			lpParams.setEndYn("N");
+			lpParams.setLanguageCode(params.getLanguageCode());
+			List<LearningProblem> resultList = learningService.selectOxLearning(lpParams);
+			
+			if(resultList == null) {
+				return new BaseResponse<Learning>(BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS, BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS.getMessage());
+			}			
+			
+			moduleInfoData.setLearningProblemList(resultList);
+			
+			return new BaseResponse<Learning>(moduleInfoData);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    
+    }    
+    
+    
+    
     
     
     
@@ -938,7 +1018,6 @@ public class LearningController {
 			*/
 			/*점수계산*/
 			Learning answer = learningService.selectWrongAnswer(params);
-			params.setActionDiv(answer.getActionDiv());
 			params.setAnswerDiv(answer.getAnswerDiv());	
 			int gainScore = learningService.selectCommonScoreResult(params);
 			LOGGER.info("====================오답문제체점=====================");

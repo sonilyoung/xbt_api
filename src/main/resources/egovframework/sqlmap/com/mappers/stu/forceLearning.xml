@@ -181,8 +181,8 @@
 	<!-- 강화학습정답확인 -->
 	<select id="selectForceLearningAnswer" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
 		SELECT 
-			MAX(ACTION_DIV = #{userActionDiv}) as answer,
-			MAX(ACTION_DIV) as answerDiv
+			DISTINCT (ACTION_DIV = #{userActionDiv}) as answer,  
+			(ACTION_DIV) as answerDiv
 		FROM XBT_STU_FORCE_LEARNING_PROGRESSING 
 		WHERE 
 		MODULE_ID = #{moduleId} 
@@ -254,17 +254,20 @@
 	
 	<!-- 강화학습종료점수합산 -->
 	<select id="selectForceLearningSum" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">
-		SELECT 
-			floor(IFNULL(SUM(GAIN_SCORE), 0)/1000*1000/#{questionCnt}) AS gainScore
-		FROM XBT_STU_FORCE_LEARNING_PROGRESSING 
-		WHERE 
-		MODULE_ID = #{moduleId} 
-		AND PROC_CD = #{procCd}  
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
-		AND END_YN = 'N'
+		SELECT floor(gainScore/#{questionCnt}) AS gainScore 
+		FROM (
+			SELECT 
+				IFNULL(SUM(GAIN_SCORE), 0) AS gainScore
+			FROM XBT_STU_FORCE_LEARNING_PROGRESSING 
+			WHERE 
+			MODULE_ID = #{moduleId} 
+			AND PROC_CD = #{procCd}  
+			AND PROC_YEAR = #{procYear} 
+			AND PROC_SEQ = #{procSeq}
+			AND TRY_SEQ = #{trySeq}
+			AND USER_ID = #{userId}
+			AND END_YN = 'N'
+		)TOT
 	</select>		
 	
 	<!-- 강화학습종료 틀린갯수 맞은갯수 확인 -->

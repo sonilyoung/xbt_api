@@ -158,5 +158,17 @@ public class UserMgrDAO extends EgovAbstractMapper{
 	public int updateFaceYn(UserInfo params) {
 		return update(Namespace + ".updateFaceYn", params);
 	}		
+	
+	public int deleteBaselineEvaluation(UserInfo params) {
+		return delete(Namespace + ".deleteBaselineEvaluation", params);
+	}
+	
+	public int deleteEvaluationProgressing(UserInfo params) {
+		return delete(Namespace + ".deleteEvaluationProgressing", params);
+	}
+	
+	public int updateEvaluationStudentInfo(UserInfo params) {
+		return delete(Namespace + ".updateEvaluationStudentInfo", params);
+	}	
 		
 }
