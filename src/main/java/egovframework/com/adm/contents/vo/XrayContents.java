@@ -15,6 +15,7 @@ public class XrayContents{
 	private String unitName;                     /*물품명*/
 	private String unitDesc;                     /*물품설명*/	
 	private String unitGroupCd;
+	private String unitGroupName;
 	private String openYn;
 	private String passYn;
 	private String actionDiv;                  /*action구분*/

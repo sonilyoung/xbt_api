@@ -46,6 +46,8 @@ public interface ContentsService {
 	
 	public UnitGroup selectUnitGroup(UnitGroup params);
 	
+	public UnitGroup selectUnitGroupName(UnitGroup params);
+	
     public int insertUnitGroup(UnitGroup params);
 	
 	public int insertUnitGroupLanguage(Language params);

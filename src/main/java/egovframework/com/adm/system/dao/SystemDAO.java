@@ -2,6 +2,7 @@ package egovframework.com.adm.system.dao;
 
 import java.util.List;
 
+import egovframework.com.adm.contents.vo.XrayContents;
 import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.system.vo.Notice;
 import egovframework.com.adm.system.vo.XbtScore;
@@ -95,5 +96,9 @@ public class SystemDAO extends EgovAbstractMapper{
 	
 	public int updateBaselineStatus(XbtScore params) {
 		return update(Namespace + ".updateBaselineStatus", params);
-	}			
+	}
+	
+	public int updateXrayExcelData(XrayContents params) {
+		return update(Namespace + ".updateXrayExcelData", params);
+	}	
 }

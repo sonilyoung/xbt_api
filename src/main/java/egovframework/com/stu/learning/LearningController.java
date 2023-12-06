@@ -810,21 +810,16 @@ public class LearningController {
 				return new BaseResponse<Learning>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
 			}
 			
-			Learning moduleInfoData = learningService.selectModuleInfo(params);
-			if(moduleInfoData == null) {
-				return new BaseResponse<Learning>(BaseResponseCode.MODULE_DATA, BaseResponseCode.MODULE_DATA.getMessage());
-			}
-			moduleInfoData.setUserId(login.getUserId());
-			moduleInfoData.setUserName(login.getUserNm());
+			params.setUserId(login.getUserId());
+			params.setUserName(login.getUserNm());
 			LearningProblem lpParams = new LearningProblem();
 			lpParams.setUserId(login.getUserId());
-			lpParams.setModuleId(moduleInfoData.getModuleId());
+			lpParams.setModuleId(params.getModuleId());
 			lpParams.setProcCd(baselineData.getProcCd());
 			lpParams.setProcYear(baselineData.getProcYear());
 			lpParams.setProcSeq(baselineData.getProcSeq());		
 			LearningProblem maxKey = learningService.selectLearningProblemsMaxkey(lpParams);
 			lpParams.setTrySeq(maxKey.getTrySeq());
-			lpParams.setQuestionCnt(moduleInfoData.getQuestionCnt());
 			//List<LearningProblem> problems = learningService.selectLearningProblems(lpParams);	
 			//if(problems == null) {
 				//return new BaseResponse<Learning>(BaseResponseCode.LEARNINGPROBLEM_DATA, BaseResponseCode.LEARNINGPROBLEM_DATA.getMessage());
@@ -838,9 +833,9 @@ public class LearningController {
 				return new BaseResponse<Learning>(BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS, BaseResponseCode.DATA_IS_NULL_LAERNPROBLEMS.getMessage());
 			}			
 			
-			moduleInfoData.setLearningProblemList(resultList);
+			params.setLearningProblemList(resultList);
 			
-			return new BaseResponse<Learning>(moduleInfoData);
+			return new BaseResponse<Learning>(params);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());

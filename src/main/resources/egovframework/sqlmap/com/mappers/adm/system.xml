@@ -264,4 +264,19 @@
 		WHERE ENDING_YN = 'N'
 		AND date_format(NOW(), '%Y-%m-%d') > EDU_END_DATE	
 	</update>
+	
+	<!--가방엑셀데이터처리-->
+	<update id="updateXrayExcelData" parameterType="egovframework.com.adm.contents.vo.XrayContents">		
+		UPDATE 
+			XBT_BAG_INFO 
+		SET 
+			ACTION_DIV_NAME = #{actionDivName}, 
+			OPEN_YN = #{openYn},
+			PASS_YN = #{passYn}, 
+			ACTION_DIV = #{actionDiv}, 
+			UNIT_NAME= #{unitName}, 
+			UNIT_GROUP_CD = #{unitGroupCd}, 
+			STUDY_LVL = #{studyLvl} 
+		WHERE BAG_SCAN_ID = #{bagScanId} 
+	</update>	
 </mapper>

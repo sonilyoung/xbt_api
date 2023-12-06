@@ -266,7 +266,7 @@
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
 		AND END_YN = #{endYn}
-		USER_ACTION_DIV IS NOT NULL
+		AND USER_ACTION_DIV IS NOT NULL
 	</select>			
 	
 	<!-- 학습문제출제목록상세정보가져오기 -->

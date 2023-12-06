@@ -96,6 +96,12 @@ public class ContentsServiceImpl implements ContentsService {
 		return contentsDAO.selectUnitGroup(params);
 	}	
 	
+	@Override
+	public UnitGroup selectUnitGroupName(UnitGroup params) {
+		// TODO Auto-generated method stub
+		return contentsDAO.selectUnitGroupName(params);
+	}		
+	
 
 	@Override
 	@Transactional
