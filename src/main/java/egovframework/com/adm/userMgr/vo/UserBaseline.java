@@ -24,6 +24,7 @@ public class UserBaseline {
 	private String practiceYn;
 	private int theoryScore;
 	private int evaluationScore;
+	private String evaluationYn;
 	private String passYn;
 	private String endingProcessDate;
 	private String eduStartDate;

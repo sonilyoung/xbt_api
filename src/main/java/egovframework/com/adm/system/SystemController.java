@@ -570,7 +570,7 @@ public class SystemController {
 			ExcelReadOption excelReadOption = new ExcelReadOption();
 			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
 			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
-			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
+			excelReadOption.setStartRow(6); //시작행(헤더부분 제외)
 			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
 			
 			int result = 1;
@@ -623,11 +623,11 @@ public class SystemController {
 				UnitGroup ug = new UnitGroup();
 				ug.setLanguageCode("kr");
 				ug.setGroupName(params.getUnitGroupName());
-				UnitGroup uGresult = contentsService.selectUnitGroup(ug);
+				UnitGroup uGresult = contentsService.selectUnitGroupName(ug);
 				params.setUnitGroupCd(uGresult.getUnitGroupCd());
 				
 				//이미지레벨
-				params.setBagScanId(excelData.get("J"));
+				params.setStudyLvl(excelData.get("J"));
 				
 				errorCnt = systemService.updateXrayExcelData(params);
 				
