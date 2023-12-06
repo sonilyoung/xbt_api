@@ -24,6 +24,7 @@ public class EduDate {
 	private String insertDate;
 	private String learnYn;
 	private String command;
+	private int trySeq;
 	
 	private List<List<EduDate>> menuList;
 

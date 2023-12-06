@@ -145,8 +145,10 @@
 	<!-- 학습문제 초기화-->
 	<update id="updateLearningProblems" parameterType="egovframework.com.stu.learning.vo.LearningProblem">	
 		UPDATE 
-			XBT_BASELINE_LEARNING 
-		SET END_YN = 'N'
+			XBT_STU_LEARNING_PROGRESSING 
+		SET END_YN = 'N',
+		USER_ACTION_DIV = '',
+		GAIN_SCORE = 0
 		WHERE PROC_CD = #{procCd} 
 		AND PROC_YEAR = #{procYear} 
 		AND PROC_SEQ = #{procSeq}
@@ -266,7 +268,7 @@
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
 		AND END_YN = #{endYn}
-		USER_ACTION_DIV IS NOT NULL
+		AND USER_ACTION_DIV IS NOT NULL
 	</select>			
 	
 	<!-- 학습문제출제목록상세정보가져오기 -->

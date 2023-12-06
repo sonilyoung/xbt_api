@@ -337,8 +337,6 @@ public class EvaluationController {
 			//결과데이터저장
 			evaluationService.updateEvaluationResult(params);
 			
-			//평가자평균가져오기
-			
 			return new BaseResponse<Learning>(params);
 			
         } catch (Exception e) {

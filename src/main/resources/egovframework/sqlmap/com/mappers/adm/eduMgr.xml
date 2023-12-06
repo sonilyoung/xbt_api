@@ -275,6 +275,31 @@
 		DELETE FROM XBT_BASELINE_STUDENT_INFO WHERE PROC_CD = #{procCd}
 	</delete>		
 	
+	<!-- 학습데이터 최근데이터삭제-->
+	<delete id="deleteBaselineLearning" parameterType="egovframework.com.adm.eduMgr.vo.EduDate">
+		DELETE FROM XBT_STU_LEARNING_PROGRESSING 
+		WHERE PROC_CD = #{procCd} 
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}
+	</delete>		
+	
+	<!-- 학습 결과데이터 최근데이터삭제-->
+	<delete id="deleteBaselineLearningResult" parameterType="egovframework.com.adm.eduMgr.vo.EduDate">
+		DELETE FROM XBT_BASELINE_LEARNING 
+		WHERE PROC_CD = #{procCd} 
+		AND TRY_SEQ = #{trySeq}
+		AND USER_ID = #{userId}
+	</delete>		
+		
+	<!-- 평가데이터 모두삭제-->
+	<delete id="deleteBaselineEvaluationAll" parameterType="egovframework.com.adm.eduMgr.vo.EduDate">
+		DELETE FROM XBT_STU_EVALUATION_PROGRESSING WHERE PROC_CD = #{procCd}
+	</delete>		
+	
+	<!-- 평가 결과데이터 모두삭제-->
+	<delete id="deleteBaselineEvaluationResultAll" parameterType="egovframework.com.adm.eduMgr.vo.EduDate">
+		DELETE FROM XBT_BASELINE_EVALUATION WHERE PROC_CD = #{procCd}
+	</delete>		
 	
 	
 	<!-- 교육일정  일정목록 -->

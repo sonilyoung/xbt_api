@@ -2031,22 +2031,26 @@ public class UserMgrController {
      */
     @PostMapping("/deleteEvaluationData.do")
     @ApiOperation(value = "평가데이터 초기화", notes = "평가데이터 초기화")
-    public BaseResponse<UserInfo> deleteEvaluationData(HttpServletRequest request, @RequestBody UserInfo params) {
+    public BaseResponse<UserInfo> deleteEvaluationData(HttpServletRequest request, @RequestBody List<UserInfo> params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getProcCd())){				
-			return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
-		}		
-		
-		if(StringUtils.isEmpty(params.getUserId())){				
-			return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
-		}			
-		
 		try {
-			int result = userMgrService.deleteEvaluationData(params);
+			int result = 0;
+			for(UserInfo ui : params) {
+				if(StringUtils.isEmpty(ui.getProcCd())){				
+					return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+				}		
+				
+				if(StringUtils.isEmpty(ui.getUserId())){				
+					return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+				}	
+				
+				result = userMgrService.deleteEvaluationData(ui);
+			}
+			
 			if(result>0) {
 				return new BaseResponse<UserInfo>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage());
 			}else {

@@ -17,6 +17,7 @@ import egovframework.com.adm.system.dao.SystemDAO;
 import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.userMgr.dao.UserMgrDAO;
 import egovframework.com.adm.userMgr.vo.UserInfo;
+import egovframework.com.stu.learning.dao.LearningDAO;
 import egovframework.com.stu.learning.vo.LearningProblem;
 import lombok.extern.log4j.Log4j2;
 
@@ -52,6 +53,8 @@ public class EduMgrServiceImpl implements EduMgrService {
     @Resource(name = "SystemDAO")
 	private SystemDAO systemDAO;
    
+    @Resource(name = "LearningDAO")
+	private LearningDAO learningDAO;    
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -146,6 +149,10 @@ public class EduMgrServiceImpl implements EduMgrService {
 		ed.setProcCd(baseline.getProcCd());
 		eduMgrDAO.deleteEduDateAll(ed);		
 		
+		//평가데이터삭제
+		eduMgrDAO.deleteBaselineEvaluationAll(ed);	
+		eduMgrDAO.deleteBaselineEvaluationResultAll(ed);	
+		
 		for(String u : params.getUserList()) {
 			Long moduleId = (long) 0;
 			for(int i=0; i < params.getScheduleList().size();i++) {
@@ -172,7 +179,19 @@ public class EduMgrServiceImpl implements EduMgrService {
 					sl.setInsertId(params.getUserId());
 					sl.setEduStartDate(params.getScheduleList().get(i).getEduStartDate()); 
 					sl.setEduEndDate(params.getScheduleList().get(i).getEduEndDate());
-					eduMgrDAO.insertEduDate(sl);						
+					eduMgrDAO.insertEduDate(sl);	
+					
+					
+					//학습데이터삭제
+					LearningProblem lp = new LearningProblem();
+					lp.setProcCd(baseline.getProcCd());
+					lp.setProcYear(baseline.getProcYear());
+					lp.setProcSeq(baseline.getProcSeq());
+					lp.setUserId(u);
+					LearningProblem key = learningDAO.selectLearningProblemsMaxkey(lp);
+					sl.setTrySeq(key.getTrySeq());
+					eduMgrDAO.deleteBaselineLearning(sl);	
+					eduMgrDAO.deleteBaselineLearningResult(sl);
 				}
 			}
 			
