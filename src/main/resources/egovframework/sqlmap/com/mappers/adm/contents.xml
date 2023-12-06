@@ -220,6 +220,47 @@
 			WHERE XUG.UNIT_GROUP_CD = #{unitGroupCd}
 	</select>	
 		
+	<!-- 엑셀업로드 처리시 그룹확인 -->
+	<select id="selectUnitGroupName" parameterType="egovframework.com.adm.contents.vo.UnitGroup" resultType="egovframework.com.adm.contents.vo.UnitGroup" >
+			SELECT XUG.UNIT_GROUP_NO, /*코드번호*/
+			       XUG.UNIT_GROUP_CD, /*물품코드분류*/
+					<choose>
+						<when test='languageCode == "kr"'>
+					       GROUP_NAME , /*물품분류명칭*/
+					       GROUP_DESC,/*물품분류설명*/
+						</when>
+						<when test='languageCode == "en"'>
+					       GROUP_NAME_EN AS GROUP_NAME, /*물품분류명칭*/
+					       GROUP_DESC_EN AS GROUP_DESC,/*물품분류설명*/										
+						</when>
+						<when test='languageCode == "ch"'>
+			       			GROUP_NAME_CH AS GROUP_NAME, /*물품분류명칭*/
+			       			GROUP_DESC_CH AS GROUP_DESC,/*물품분류설명*/				
+						</when>				
+						<when test='languageCode == "jp"'>
+			       			GROUP_NAME_JP AS GROUP_NAME, /*물품분류명칭*/
+			       			GROUP_DESC_JP AS GROUP_DESC,/*물품분류설명*/				
+						</when>
+						<otherwise>
+			       			GROUP_NAME , /*물품분류명칭*/
+			       			GROUP_DESC,/*물품분류설명*/	
+						</otherwise>											
+					</choose>		
+			       ACTION_DIV,/*ACTION구분*/
+			       USE_YN,/*사용여부*/
+			       OPEN_YN,/*개봉여부*/
+			       PASS_YN,/*통과여부*/
+			       INSERT_DATE,/*등록일*/
+			       INSERT_ID,/*등록자*/
+			       UPDATE_DATE,/*수정일*/
+			       UPDATE_ID,/*수정자*/
+			       PARENT_UNIT_GROUP_CD,/*상위물품분류코드*/
+			       LANGUAGE_CODE,
+			       IMG_FILE 
+			FROM XBT_UNIT_GROUP XUG
+			WHERE XUG.GROUP_NAME = #{groupName}
+	</select>		
+	
 	
 	<!-- 그룹관리등록 -->
 	<!-- <insert id="insertUnitGroup" parameterType="egovframework.com.adm.contents.vo.UnitGroup" useGeneratedKeys="true" keyProperty="unitGroupNo">-->

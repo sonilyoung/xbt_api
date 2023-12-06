@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import egovframework.com.adm.contents.vo.XrayContents;
 import egovframework.com.adm.system.dao.SystemDAO;
 import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.system.vo.Notice;
@@ -168,4 +169,11 @@ public class SystemServiceImpl implements SystemService {
 		// TODO Auto-generated method stub
 		return systemDAO.updateBaselineStatus(params);
 	}
+	
+	@Override
+	public int updateXrayExcelData(XrayContents params) {
+		// TODO Auto-generated method stub
+		return systemDAO.updateXrayExcelData(params);
+	}
+	
 }

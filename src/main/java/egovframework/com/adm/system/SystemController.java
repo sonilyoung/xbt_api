@@ -1,29 +1,50 @@
 
 package egovframework.com.adm.system;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import egovframework.com.adm.contents.service.ContentsService;
+import egovframework.com.adm.contents.vo.UnitGroup;
+import egovframework.com.adm.contents.vo.XrayContents;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.system.service.SystemService;
 import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.system.vo.Notice;
+import egovframework.com.adm.userMgr.vo.UserBaselinePop;
+import egovframework.com.adm.userMgr.vo.UserInfo;
 import egovframework.com.common.service.CommonService;
+import egovframework.com.common.vo.Common;
+import egovframework.com.excel.ExcelRead;
+import egovframework.com.excel.ExcelReadOption;
+import egovframework.com.global.annotation.SkipAuth;
+import egovframework.com.global.authorization.SkipAuthLevel;
+import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
+import egovframework.com.global.util.AES256Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -50,7 +71,14 @@ public class SystemController {
     private CommonService commonService;
     
     @Autowired
-    private SystemService systemService;    
+    private SystemService systemService;   
+
+    @Autowired
+    private ContentsService contentsService;
+    
+    
+    /*파일업로드 저장경로*/
+    public static final String FILE_UPLOAD_PATH = GlobalsProperties.getProperty("file.upload.path");    
     				
     /**
      * 공지사항조회
@@ -497,5 +525,126 @@ public class SystemController {
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }     
+    
+    
+    
+    /**
+     * 모듈적용메뉴가져오기
+     * 
+     * @param param
+     * @return XrayContents
+     */
+	@ResponseBody
+	@PostMapping(value="/updateXrayExcelData.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)	
+	public BaseResponse<XrayContents> updateXrayExcelData(
+			HttpServletRequest request
+			,HttpServletResponse response
+			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
+			,@RequestPart(value = "params", required = false) XrayContents params
+	) throws Exception{
+		LOGGER.debug("========= insertXrayExcelData 엑스레이가방데이터 ========="+ excelFile);
+
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}		
+		
+	    try {
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmsss"); 
+			Date time = new Date(); 
+			String fmtDate=format.format(time);
+
+			//String stordFilePath = GlobalsProperties.getProperty("Globals.fileStorePath");
+			File fileDir = new File(FILE_UPLOAD_PATH);
+			// root directory 없으면 생성
+			if (!fileDir.exists()) {
+				fileDir.mkdirs(); //폴더 생성합니다.
+			}             
+			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
+			
+			excelFile.transferTo(destFile); // 엑셀파일 생성
+			String[] coloumNm = {"E", "F", "G", "H", "I", "J"};
+			    
+			ExcelReadOption excelReadOption = new ExcelReadOption();
+			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
+			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
+			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
+			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
+			
+			int result = 1;
+			int errorCnt = 0;
+			for(LinkedHashMap<String, String> excelData: excelContent){
+				params = new XrayContents();
+				
+				if(null == excelData.get("E") && "".equals(excelData.get("E"))){//가방아이디
+					return new BaseResponse<XrayContents>(BaseResponseCode.PARAMS_ERROR, "BagScanId" + BaseApiMessage.REQUIRED.getCode());					
+				}
+				
+				if(null == excelData.get("F") && "".equals(excelData.get("F"))){//action_div_name
+					return new BaseResponse<XrayContents>(BaseResponseCode.PARAMS_ERROR, "ActionDivName(정답구분한글)" + BaseApiMessage.REQUIRED.getCode());
+				}
+				
+				if(null == excelData.get("G") && "".equals(excelData.get("G"))){//action_div
+					return new BaseResponse<XrayContents>(BaseResponseCode.PARAMS_ERROR, "ActionDiv(정답구분)" + BaseApiMessage.REQUIRED.getCode());
+				}
+				
+				if(null == excelData.get("H") && "".equals(excelData.get("H"))){//물품명
+					return new BaseResponse<XrayContents>(BaseResponseCode.PARAMS_ERROR, "UnitName(물품명)" + BaseApiMessage.REQUIRED.getCode());
+				}
+				
+				if(null == excelData.get("I") && "".equals(excelData.get("I"))){//물품그룹
+					return new BaseResponse<XrayContents>(BaseResponseCode.PARAMS_ERROR, "UnitGroupName(물품그룹)" + BaseApiMessage.REQUIRED.getCode());
+				}
+				
+				if(null != excelData.get("J") && "".equals(excelData.get("J"))){//이미지레벨
+					return new BaseResponse<XrayContents>(BaseResponseCode.PARAMS_ERROR, "ImageLevel(이미지레벨)" + BaseApiMessage.REQUIRED.getCode());
+				}								
+				
+				params.setBagScanId(excelData.get("E"));
+				
+				//정답구분한글처리
+				params.setActionDivName(excelData.get("F"));
+				String [] arrAct = excelData.get("F").split("/");
+				params.setOpenYn(arrAct[0]);
+				params.setPassYn(arrAct[1]);	
+				
+				//정답구분
+				params.setActionDiv(excelData.get("G"));
+				
+				//단품명
+				params.setUnitName(excelData.get("H"));
+				
+				//물품그룹처리 DB조회해서 처리
+				params.setUnitGroupName(excelData.get("I"));
+				
+				//그룹관리조회
+				UnitGroup ug = new UnitGroup();
+				ug.setLanguageCode("kr");
+				ug.setGroupName(params.getUnitGroupName());
+				UnitGroup uGresult = contentsService.selectUnitGroup(ug);
+				params.setUnitGroupCd(uGresult.getUnitGroupCd());
+				
+				//이미지레벨
+				params.setBagScanId(excelData.get("J"));
+				
+				errorCnt = systemService.updateXrayExcelData(params);
+				
+				if(errorCnt == 0) {
+					result = errorCnt;
+				}
+			}
+			
+            if(result > 0 ) {
+	            return new BaseResponse<XrayContents>(BaseResponseCode.UPDATE_SUCCESS, BaseResponseCode.UPDATE_SUCCESS.getMessage());
+            }else {
+            	return new BaseResponse<XrayContents>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage());
+            }
+	    }catch(Exception e) {
+	    	return new BaseResponse<XrayContents>(BaseResponseCode.UNKONWN_ERROR);
+	    } 
+	    
+	}        
 	    
 }

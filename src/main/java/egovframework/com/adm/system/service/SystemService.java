@@ -2,6 +2,7 @@ package egovframework.com.adm.system.service;
 
 import java.util.List;
 
+import egovframework.com.adm.contents.vo.XrayContents;
 import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.system.vo.Notice;
 import egovframework.com.adm.system.vo.XbtScore;
@@ -67,5 +68,7 @@ public interface SystemService {
 	public int updateXbtEndScore(XbtScore params);
 	
 	public int updateBaselineStatus(XbtScore params);
+	
+	public int updateXrayExcelData(XrayContents params);
 		
 }

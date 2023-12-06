@@ -45,9 +45,13 @@ public class ContentsDAO extends EgovAbstractMapper{
 		return selectOne(Namespace + ".selectUnitGroup", params);
 	}
 	
+
+	public UnitGroup selectUnitGroupName(UnitGroup params) {
+		return selectOne(Namespace + ".selectUnitGroupName", params);
+	}	
+	
     public int insertUnitGroup(UnitGroup params) {
     	return insert(Namespace + ".insertUnitGroup", params);
-    	
     }	
     
 	
