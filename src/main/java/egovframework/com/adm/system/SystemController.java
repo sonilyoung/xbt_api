@@ -605,10 +605,15 @@ public class SystemController {
 				params.setBagScanId(excelData.get("E"));
 				
 				//정답구분한글처리
-				params.setActionDivName(excelData.get("F"));
-				String [] arrAct = excelData.get("F").split("/");
-				params.setOpenYn(arrAct[0]);
-				params.setPassYn(arrAct[1]);	
+	            Common cp = new Common();
+	            cp.setLanguageCode("kr");
+	            cp.setGroupId("actionDiv");
+	            cp.setCodeValue(excelData.get("G")); //개봉여부
+	            Common cr = commonService.selectCommonDetail(cp);				
+				params.setActionDivName(cr.getCodeName());
+				//String [] arrAct = excelData.get("F").split("/");
+				params.setOpenYn(cr.getMemo1());
+				params.setPassYn(cr.getMemo2());	
 				
 				//정답구분
 				params.setActionDiv(excelData.get("G"));

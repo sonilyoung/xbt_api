@@ -121,6 +121,14 @@ public class SystemServiceImpl implements SystemService {
 		// TODO Auto-generated method stub
 		return (List<XbtScore>) systemDAO.selectXbtEndingUserList(params);
 	}
+	
+
+	@Override
+	public XbtScore selectXbtEndingUser(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.selectXbtEndingUser(params);
+	}
+	
 
 	@Override
 	public XbtScore selectTheoryScore(XbtScore params) {

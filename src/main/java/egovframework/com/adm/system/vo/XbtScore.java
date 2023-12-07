@@ -21,8 +21,10 @@ public class XbtScore {
 	private String deptNm;
 	
 	private int gainScore;
+	private int dangerScore;
 	private int passScore;
 	private int passTheoryScore;
+	private int passDangerScore;
 	private int passPracticeScore;
 	private int practiceHumanScore;
 	private int practiceCarScore;

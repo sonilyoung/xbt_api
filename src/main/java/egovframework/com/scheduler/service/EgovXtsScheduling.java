@@ -222,7 +222,58 @@ public class EgovXtsScheduling extends EgovAbstractServiceImpl {
 								}
 
 							}					
-						}			
+						}		
+					//1 -> 보안검색요원 초기교육 (5일 / 40시간) - 실기(비중30) , 이론(비중30) , CBT(비중40) -50문제 
+					//항공위험물이론 별도 80점
+					}else if("1".equals(xs.getEduCode())){
+						 //일반교육생
+						//실습점수
+						XbtScore practiceTotalScore = systemService.selectPracticeScore(xs);
+						if(practiceTotalScore!=null) {
+							tgtPracticeScore = practiceTotalScore.getPracticeScore();
+							//practiceScore =  Math.round((practiceTotalScore.getPracticeScore()*baseline.getPracticeTotalScore())/100);
+							practiceScore =  Math.round((practiceTotalScore.getPracticeScore()));
+							LOGGER.info("==============실습==============");
+							LOGGER.info("교육생 evaluationScore:" + practiceTotalScore.getUserId() + " : " + practiceTotalScore.getPracticeScore());
+							LOGGER.info("설정 evaluationScore:"+ baseline.getPracticeTotalScore());
+							LOGGER.info("evaluationScore:"+ practiceTotalScore.getPracticeScore());					
+						}						
+						
+						
+						XbtScore processScore = systemService.selectProcessScore(xs);
+						if(processScore!=null) {
+							if("Y".equals(processScore.getTheoryYn()) && "Y".equals(processScore.getPracticeYn()) && "Y".equals(processScore.getEvaluationYn())) {
+								
+								 //커트라인비교 추가
+								if(tgtEvaluationScore < baseline.getPassScore()) {//평가커트라인비교
+									xs.setPassYn("N");
+								}else if(tgtTheoryScore < baseline.getPassTheoryScore()) {//이론평가커트라인비교
+									xs.setPassYn("N");
+								}else if(tgtPracticeScore < baseline.getPassPracticeScore()) {//실기커트라인비교
+									xs.setPassYn("N");	
+								}
+								
+								if(tgtEvaluationScore < baseline.getPassScore() || tgtTheoryScore < baseline.getPassTheoryScore() || tgtPracticeScore < baseline.getPassPracticeScore()) {
+									systemService.updateXbtEndScore(xs); //과락처리
+								}
+								
+								
+								if(tgtEvaluationScore >= baseline.getPassScore() && tgtTheoryScore >= baseline.getPassTheoryScore() && tgtPracticeScore >= baseline.getPassPracticeScore()) {
+									int totalScore = theoryScore + evaluationScore + practiceScore;
+									xs.setGainScore(totalScore);
+									 
+									if(totalScore >= baseline.getEndingStdScore()) {
+										xs.setPassYn("Y");
+									}else {
+										xs.setPassYn("N");
+									}
+									systemService.updateXbtEndScore(xs);								
+								}
+
+							}					
+						}							
+					
+						
 					//2 -> 보안검색요원 정기교육 (1일 / 8시간) - 평가만
 					}else if("2".equals(xs.getEduCode())){
 						

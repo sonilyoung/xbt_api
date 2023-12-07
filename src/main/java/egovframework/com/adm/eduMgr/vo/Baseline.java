@@ -29,6 +29,7 @@ public class Baseline {
 	
 	private int passScore;
 	private int passTheoryScore;
+	private int passdDangerScore;
 	private int passPracticeScore;	
 	
 	private int practiceHumanTotalScore;
