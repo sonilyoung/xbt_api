@@ -166,11 +166,46 @@
 			XBT_BASELINE_STUDENT_INFO
 		WHERE
 			ENDING_YN = 'N' OR ENDING_YN = 'ING'
-	</select>		
+	</select>	
+	
+	<!-- 평가대상 교육생 -->
+	<select id="selectXbtEndingUser" parameterType="egovframework.com.adm.system.vo.XbtScore" resultType="egovframework.com.adm.system.vo.XbtScore">
+		SELECT
+			PROC_CD,
+			PROC_YEAR,
+			PROC_SEQ,
+			EDU_CODE,
+			EDU_NAME,
+			USER_ID,
+			USER_NM,
+			PROC_NM,
+			COMP_NM,
+			DEPT_NM,
+			GAIN_SCORE,
+			PRACTICE_SCORE,
+			PRACTICE_YN,
+			THEORY_SCORE,
+			THEORY_YN,
+			EVALUATION_SCORE,
+			EVALUATION_YN,
+			PASS_YN,
+			ENDING_PROCESS_DATE,
+			EDU_START_DATE,
+			EDU_END_DATE,
+			ENDING_YN
+		FROM
+			XBT_BASELINE_STUDENT_INFO
+		WHERE
+			ENDING_YN = 'N' OR ENDING_YN = 'ING'
+			AND USER_ID = #{userId}
+	</select>			
 	
 	<!-- 이론평가 점수비중 정보 -->
 	<select id="selectTheoryScore" parameterType="egovframework.com.adm.system.vo.XbtScore" resultType="egovframework.com.adm.system.vo.XbtScore">
-		SELECT USER_ID ,IFNULL(GAIN_SCORE, 0)AS gainScore FROM XBT_BASELINE_THEORY 
+		SELECT USER_ID ,
+			IFNULL(GAIN_SCORE, 0)AS gainScore,
+			IFNULL(DANGER_SCORE, 0)AS dangerScore
+		FROM XBT_BASELINE_THEORY 
 		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId} and END_YN = 'Y' ORDER BY TRY_SEQ DESC LIMIT 1
 	</select>		
 		

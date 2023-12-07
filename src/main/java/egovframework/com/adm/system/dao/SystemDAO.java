@@ -66,6 +66,10 @@ public class SystemDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectXbtEndingUserList", params);
 	}	
 	
+	public XbtScore selectXbtEndingUser(XbtScore params) {
+		return selectOne(Namespace + ".selectXbtEndingUser", params);
+	}	
+	
 	public XbtScore selectTheoryScore(XbtScore params) {
 		return selectOne(Namespace + ".selectTheoryScore", params);
 	}	

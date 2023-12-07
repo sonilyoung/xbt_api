@@ -53,6 +53,8 @@ public interface SystemService {
 	
 	public List<XbtScore> selectXbtEndingUserList(XbtScore params);
 	
+	public XbtScore selectXbtEndingUser(XbtScore params);
+	
 	public XbtScore selectTheoryScore(XbtScore params);
 	
 	public XbtScore selectEvaluationScore(XbtScore params);
