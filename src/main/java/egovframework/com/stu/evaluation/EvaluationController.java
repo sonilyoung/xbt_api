@@ -22,6 +22,7 @@ import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
+import egovframework.com.score.XbtScoreService;
 import egovframework.com.stu.evaluation.service.EvaluationService;
 import egovframework.com.stu.learning.service.LearningService;
 import egovframework.com.stu.learning.vo.Learning;
@@ -60,7 +61,10 @@ public class EvaluationController {
     private EvaluationService evaluationService;
     
     @Autowired
-    private XbtImageService xbtImageService;        
+    private XbtImageService xbtImageService;     
+    
+    @Autowired
+    private XbtScoreService xbtScoreService;    
     
     
     /**
@@ -232,7 +236,7 @@ public class EvaluationController {
 			/*점수계산*/
 			Learning answer = evaluationService.selectEvaluationAnswer(params);
 			params.setAnswerDiv(answer.getAnswerDiv());			
-			int gainScore = learningService.selectCommonScoreResult(params);
+			int gainScore = xbtScoreService.selectCommonScoreResult(params);
 			LOGGER.info("====================평가체점=====================");
 			LOGGER.info("bagScanId:" + params.getBagScanId());
 			LOGGER.info("AnswerDiv:" + answer.getAnswerDiv());

@@ -29,7 +29,7 @@ public class Baseline {
 	
 	private int passScore;
 	private int passTheoryScore;
-	private int passdDangerScore;
+	private int passDangerScore;
 	private int passPracticeScore;	
 	
 	private int practiceHumanTotalScore;
@@ -45,6 +45,11 @@ public class Baseline {
 	private String userId;
 	private String searchval;
 	private String teacherId;
+	
+	private String theoryPassYn;
+	private String practicePassYn;
+	private String evaluationPassYn;
+	private String dangerPassYn;
 	
 	private List<Student> stuList;
 	private List<List<String>> menuList;

@@ -24,6 +24,7 @@ import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
+import egovframework.com.score.XbtScoreService;
 import egovframework.com.stu.learning.service.LearningService;
 import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningProblem;
@@ -56,7 +57,10 @@ public class LearningController {
     private LearningService learningService;
     
     @Autowired
-    private XbtImageService xbtImageService;        
+    private XbtImageService xbtImageService;   
+    
+    @Autowired
+    private XbtScoreService xbtScoreService;    
     
     
     /**
@@ -506,7 +510,7 @@ public class LearningController {
 			/*점수계산*/
 			Learning answer = learningService.selectLearnAnswer(params);
 			params.setAnswerDiv(answer.getAnswerDiv());			
-			int gainScore = learningService.selectCommonScoreResult(params);
+			int gainScore = xbtScoreService.selectCommonScoreResult(params);
 			LOGGER.info("====================학습체점=====================");
 			LOGGER.info("bagScanId:" + params.getBagScanId());
 			LOGGER.info("AnswerDiv:" + answer.getAnswerDiv());
@@ -1016,7 +1020,7 @@ public class LearningController {
 			/*점수계산*/
 			Learning answer = learningService.selectWrongAnswer(params);
 			params.setAnswerDiv(answer.getAnswerDiv());	
-			int gainScore = learningService.selectCommonScoreResult(params);
+			int gainScore = xbtScoreService.selectCommonScoreResult(params);
 			LOGGER.info("====================오답문제체점=====================");
 			LOGGER.info("bagScanId:" + params.getBagScanId());
 			LOGGER.info("AnswerDiv:" + answer.getAnswerDiv());

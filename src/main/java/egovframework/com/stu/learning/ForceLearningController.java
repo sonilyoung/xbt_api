@@ -16,18 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
-import egovframework.com.common.vo.LearningImg;
-import egovframework.com.common.vo.LearningMainImg;
 import egovframework.com.file.service.XbtImageService;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
+import egovframework.com.score.XbtScoreService;
 import egovframework.com.stu.learning.service.LearningService;
 import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningProblem;
-import egovframework.com.stu.learning.vo.PointStd;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -56,7 +54,10 @@ public class ForceLearningController {
     private LearningService learningService;
     
     @Autowired
-    private XbtImageService xbtImageService;        
+    private XbtImageService xbtImageService;
+    
+    @Autowired
+    private XbtScoreService xbtScoreService;
     
     
     /**
@@ -226,7 +227,7 @@ public class ForceLearningController {
 			/*점수계산*/
 			Learning answer = learningService.selectForceLearningAnswer(params);
 			params.setAnswerDiv(answer.getAnswerDiv());	
-			int gainScore = learningService.selectCommonScoreResult(params);
+			int gainScore = xbtScoreService.selectCommonScoreResult(params);
 			LOGGER.info("====================강화학습체점=====================");
 			LOGGER.info("bagScanId:" + params.getBagScanId());
 			LOGGER.info("AnswerDiv:" + answer.getAnswerDiv());

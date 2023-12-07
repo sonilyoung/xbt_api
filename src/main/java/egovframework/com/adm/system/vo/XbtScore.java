@@ -31,6 +31,7 @@ public class XbtScore {
 	
 	private String practiceYn;
 	private String theoryYn;
+	private String dangerYn;
 	private String evaluationYn;
 	private String passYn;
 	private String endingProcessDate;
@@ -38,5 +39,10 @@ public class XbtScore {
 	private String eduEndDate;
 	private String endingYn;
 	private String command;
+	
+	private String theoryPassYn;
+	private String practicePassYn;
+	private String evaluationPassYn;
+	private String dangerPassYn;
 	
 }

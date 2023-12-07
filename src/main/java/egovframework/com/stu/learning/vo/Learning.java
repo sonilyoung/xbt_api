@@ -38,6 +38,7 @@ public class Learning{
 	private int slideSpeed;
 	private int passScore;
 	private int passTheoryScore;
+	private int passDangerScore;
 	private int passPracticeScore;
 	
 	private int practiceHumanTotalScore;

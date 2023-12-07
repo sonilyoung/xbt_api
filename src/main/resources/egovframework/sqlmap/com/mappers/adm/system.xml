@@ -161,7 +161,11 @@
 			ENDING_PROCESS_DATE,
 			EDU_START_DATE,
 			EDU_END_DATE,
-			ENDING_YN
+			ENDING_YN,
+			THEORY_PASS_YN,
+			PRACTICE_PASS_YN,
+			EVALUATION_PASS_YN,
+			DANGER_PASS_YN
 		FROM
 			XBT_BASELINE_STUDENT_INFO
 		WHERE
@@ -186,13 +190,19 @@
 			PRACTICE_YN,
 			THEORY_SCORE,
 			THEORY_YN,
+			DANGER_SCORE,
+			DANGER_YN,
 			EVALUATION_SCORE,
 			EVALUATION_YN,
 			PASS_YN,
 			ENDING_PROCESS_DATE,
 			EDU_START_DATE,
 			EDU_END_DATE,
-			ENDING_YN
+			ENDING_YN,
+			THEORY_PASS_YN,
+			PRACTICE_PASS_YN,
+			EVALUATION_PASS_YN,
+			DANGER_PASS_YN
 		FROM
 			XBT_BASELINE_STUDENT_INFO
 		WHERE
@@ -206,7 +216,11 @@
 			IFNULL(GAIN_SCORE, 0)AS gainScore,
 			IFNULL(DANGER_SCORE, 0)AS dangerScore
 		FROM XBT_BASELINE_THEORY 
-		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId} and END_YN = 'Y' ORDER BY TRY_SEQ DESC LIMIT 1
+		WHERE PROC_CD = #{procCd} 
+		AND USER_ID = #{userId} 
+		AND END_YN = 'Y' 
+		ORDER BY TRY_SEQ DESC 
+		LIMIT 1
 	</select>		
 		
 	
@@ -252,44 +266,44 @@
 				WHERE PROC_CD = #{procCd} 
 				AND USER_ID = #{userId} 			
 			</when>
+			<when test='command == "danger"'>
+				UPDATE 
+					XBT_BASELINE_STUDENT_INFO
+				SET 
+				DANGER_YN = 'Y',
+				DANGER_SCORE = #{dangerScore},
+				UPDATE_DATE = now(),
+				UPDATE_ID = 'system'
+				WHERE PROC_CD = #{procCd} 
+				AND USER_ID = #{userId} 
+			</when>			
 		</choose>
 	
 	</update>	
 
 	<!-- 교육생첨수처리현황 -->
 	<select id="selectProcessScore" parameterType="egovframework.com.adm.system.vo.XbtScore" resultType="egovframework.com.adm.system.vo.XbtScore">
-		SELECT THEORY_YN, EVALUATION_YN, PRACTICE_YN  FROM XBT_BASELINE_STUDENT_INFO
+		SELECT THEORY_YN, EVALUATION_YN, PRACTICE_YN, DANGER_YN  FROM XBT_BASELINE_STUDENT_INFO
 		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId}
 	</select>		
 	
 	<!-- 교육생첨수처리현황(이론특화) 항공경비 초기교육 (4일 / 30시간) , 항공경비 인증평가교육 (1일 / 4시간) -->
 	<select id="selectTheoryProcessScore" parameterType="egovframework.com.adm.system.vo.XbtScore" resultType="egovframework.com.adm.system.vo.XbtScore">
-		SELECT THEORY_YN, EVALUATION_YN, PRACTICE_YN  FROM XBT_BASELINE_STUDENT_INFO
+		SELECT THEORY_YN, EVALUATION_YN, PRACTICE_YN, DANGER_YN  FROM XBT_BASELINE_STUDENT_INFO
 		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId}
 		AND EDU_CODE IN (4, 6)
-	</select>		
+	</select>
 	
 	<!-- 최종 점수 처리-->
 	<update id="updateXbtEndScore" parameterType="egovframework.com.adm.system.vo.XbtScore">
 		UPDATE XBT_BASELINE_STUDENT_INFO SET
-		<choose>
-			<when test='passYn == "Y"'>
-				GAIN_SCORE = #{gainScore},
-				ENDING_YN = 'Y',
-				PASS_YN = #{passYn},
-				ENDING_PROCESS_DATE = now(),			
-			</when>
-			<when test='passYn == "N"'>
-				GAIN_SCORE = #{gainScore},
-				ENDING_YN = 'Y',
-				PASS_YN = #{passYn},
-				ENDING_PROCESS_DATE = null,			
-			</when>			
-		</choose>		
+			GAIN_SCORE = #{gainScore},
+			ENDING_YN = #{endingYn},
+			PASS_YN = #{passYn},
+			ENDING_PROCESS_DATE = now(),			
 			UPDATE_DATE = now(),
 			UPDATE_ID = 'system'		
 		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId}
-		
 	</update>	
 	
 	<!--일정종료처리-->

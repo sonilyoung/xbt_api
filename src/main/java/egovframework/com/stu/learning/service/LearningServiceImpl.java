@@ -357,60 +357,6 @@ public class LearningServiceImpl implements LearningService {
 		return learningDAO.selectForceLearningProblemsMaxkey(params);
 	}
 
-	@Override
-	public int selectCommonScoreResult(Learning params) {
-		// TODO Auto-generated method stub
-		PointStd score = learningDAO.selectPointStdScore(params);
-		
-		int gainScore = 0;
-		if("0".equals(params.getAnswerDiv())) {
-			if("0".equals(params.getUserActionDiv())) { //반입금지
-				gainScore = score.getQuestionUnitScore();
-			}else if("1".equals(params.getUserActionDiv())) { //의심물품
-				gainScore = score.getBanUnitScore();
-			}			
-		}else if("1".equals(params.getAnswerDiv())) {
-			if("0".equals(params.getUserActionDiv())) { //반입금지
-				gainScore = score.getQuestionUnitScore();	
-			}else if("1".equals(params.getUserActionDiv())) { //의심물품
-				gainScore = score.getBanUnitScore();
-			}
-		}else if("2".equals(params.getAnswerDiv())) {
-			if(params.getAnswerDiv().equals(params.getUserActionDiv())) {
-				gainScore = score.getLimitUnitScore();
-			}
-		}else if("3".equals(params.getAnswerDiv())) {
-			if("3".equals(params.getUserActionDiv())) { //통과
-				gainScore = score.getQuestionUnitScore();
-			}else if("4".equals(params.getUserActionDiv())) { //의심
-				gainScore = score.getPassUnitScore();	
-			}	
-		}else if("4".equals(params.getAnswerDiv())) {
-			if("3".equals(params.getUserActionDiv())) { //통과
-				gainScore = score.getQuestionUnitScore();
-			}else if("4".equals(params.getUserActionDiv())) { //의심
-				gainScore = score.getPassUnitScore();	
-			}			
-		}else {
-			gainScore = 0;
-		}
-		
-		/* 점수체계 3개로반영
-		int gainScore = 0;
-		if("0".contentEquals(params.getUserActionDiv()) || "1".contentEquals(params.getUserActionDiv())) {
-			gainScore = score.getBanUnitScore();
-		}else if("2".contentEquals(params.getUserActionDiv())) {
-			gainScore = score.getLimitUnitScore();	
-		}else if("3".contentEquals(params.getUserActionDiv()) || "4".contentEquals(params.getUserActionDiv())) {
-			gainScore = score.getPassUnitScore();				
-		}else {
-			gainScore = 0;
-		}		
-		*/
-		
-		return gainScore;
-	}
-
 
 
 	
