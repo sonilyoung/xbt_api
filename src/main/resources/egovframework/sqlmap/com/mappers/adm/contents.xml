@@ -218,6 +218,7 @@
 			       IMG_FILE 
 			FROM XBT_UNIT_GROUP XUG
 			WHERE XUG.UNIT_GROUP_CD = #{unitGroupCd}
+			AND USE_YN = 'Y'
 	</select>	
 		
 	<!-- 엑셀업로드 처리시 그룹확인 -->
@@ -259,6 +260,7 @@
 			       IMG_FILE 
 			FROM XBT_UNIT_GROUP XUG
 			WHERE XUG.GROUP_NAME = #{groupName}
+			AND USE_YN = 'Y'
 	</select>		
 	
 	

@@ -291,7 +291,14 @@
 	<select id="selectTheoryProcessScore" parameterType="egovframework.com.adm.system.vo.XbtScore" resultType="egovframework.com.adm.system.vo.XbtScore">
 		SELECT THEORY_YN, EVALUATION_YN, PRACTICE_YN, DANGER_YN  FROM XBT_BASELINE_STUDENT_INFO
 		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId}
-		AND EDU_CODE IN (4, 6)
+		<choose>
+			<when test='eduList != null'>
+				AND EDU_CODE IN
+				  <foreach item="item" index="index" collection="eduList" open="(" separator="," close=")">
+				        #{item}
+				  </foreach>			
+			</when>
+		</choose>			
 	</select>
 	
 	<!-- 최종 점수 처리-->

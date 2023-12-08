@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
+import egovframework.com.adm.system.vo.XbtScore;
 import egovframework.com.file.service.XbtImageService;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.http.BaseApiMessage;
@@ -340,6 +341,11 @@ public class EvaluationController {
 			
 			//결과데이터저장
 			evaluationService.updateEvaluationResult(params);
+			
+			//합격불합격처리
+			XbtScore xs = new XbtScore();
+			xs.setUserId(params.getUserId());
+			xbtScoreService.userScoreCalculate(xs);
 			
 			return new BaseResponse<Learning>(params);
 			

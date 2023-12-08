@@ -29,7 +29,5 @@ public interface XbtScoreService{
 	
 	public void userScoreCalculate(XbtScore userId) throws Exception;
 	
-	public void userScoreCalculateAdmin(XbtScore userId) throws Exception;
-	
 	public int selectCommonScoreResult(Learning params) throws Exception;
 }

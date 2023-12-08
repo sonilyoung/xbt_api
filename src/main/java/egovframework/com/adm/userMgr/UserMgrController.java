@@ -28,6 +28,7 @@ import egovframework.com.adm.eduMgr.service.EduMgrService;
 import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
+import egovframework.com.adm.system.vo.XbtScore;
 import egovframework.com.adm.userMgr.service.UserMgrService;
 import egovframework.com.adm.userMgr.vo.CertificationInfo;
 import egovframework.com.adm.userMgr.vo.TeacherInfo;
@@ -52,6 +53,7 @@ import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.global.util.AES256Util;
+import egovframework.com.score.XbtScoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -84,6 +86,9 @@ public class UserMgrController {
     
     @Autowired
     private EduMgrService eduMgrService;    
+    
+    @Autowired
+    private XbtScoreService xbtScoreService;      
     
     /*파일업로드 저장경로*/
     public static final String FILE_UPLOAD_PATH = GlobalsProperties.getProperty("file.upload.path");    
@@ -302,6 +307,11 @@ public class UserMgrController {
 				params.setPracticeHumanScore(params.getPracticeHumanBeforeScore());
 				params.setPracticeCarScore(params.getPracticeCarBeforeScore());		
 			}
+			
+			//합격불합격처리
+			XbtScore xs = new XbtScore();
+			xs.setUserId(params.getUserId());
+			xbtScoreService.userScoreCalculate(xs);
 			
 			if(result>0) {
 				return new BaseResponse<UserBaseline>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage(), params);

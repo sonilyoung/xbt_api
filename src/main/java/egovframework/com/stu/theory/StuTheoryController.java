@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
+import egovframework.com.adm.system.vo.XbtScore;
 import egovframework.com.adm.theory.service.TheoryService;
 import egovframework.com.adm.theory.vo.Theory;
 import egovframework.com.adm.theory.vo.TheoryFile;
@@ -27,6 +28,7 @@ import egovframework.com.global.exception.BaseResponse;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
+import egovframework.com.score.XbtScoreService;
 import egovframework.com.stu.learning.service.LearningService;
 import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.theory.service.StuTheoryService;
@@ -68,7 +70,11 @@ public class StuTheoryController {
     private FileService fileService;          
     
     @Autowired
-    private TheoryService theoryService;      
+    private TheoryService theoryService;    
+    
+    @Autowired
+    private XbtScoreService xbtScoreService;  
+    
     
     /**
      * 이론정보
@@ -358,6 +364,11 @@ public class StuTheoryController {
 			
 			//결과데이터저장
 			int result = stuTheoryService.updateTheoryResult(params);
+			
+			//합격불합격처리
+			XbtScore xs = new XbtScore();
+			xs.setUserId(params.getUserId());
+			xbtScoreService.userScoreCalculate(xs);			
 			
 			if(result>0) {
 				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());

@@ -1,5 +1,7 @@
 package egovframework.com.adm.system.vo;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -45,4 +47,5 @@ public class XbtScore {
 	private String evaluationPassYn;
 	private String dangerPassYn;
 	
+	private List<String> eduList;
 }
