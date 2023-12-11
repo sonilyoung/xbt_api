@@ -26,8 +26,8 @@
 			INSERT_DATE
 		FROM
 			XBT_THEORY_QUESTION
-		WHERE LAGE_GROUP_CD = 
-			(SELECT EDU_CODE FROM XBT_STU_USER WHERE USER_ID = #{userId})		
+		WHERE LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}
 			ORDER BY RAND() 
 		LIMIT #{questionCnt}
 	</select>	
@@ -144,8 +144,8 @@
 			now()
 		FROM
 			XBT_THEORY_QUESTION		
-		where LAGE_GROUP_CD = 
-			(SELECT EDU_CODE FROM XBT_STU_USER WHERE USER_ID = #{userId})		
+		where LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}	
 			ORDER BY RAND() 
 	</insert>
 	
@@ -176,7 +176,8 @@
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
 		AND END_YN = #{endYn}
-	  	AND LAGE_GROUP_CD = (SELECT EDU_CODE FROM XBT_STU_USER WHERE USER_ID = #{userId})	
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}	
 	  	ORDER BY RAND()
 	</select>
 	

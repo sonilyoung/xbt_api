@@ -672,6 +672,7 @@
 		FROM XBT_BAG_CONST_UNIT A INNER JOIN XBT_UNIT_INFO B INNER JOIN XBT_UNIT_GROUP C
 		ON  A.BAG_SCAN_ID = #{bagScanId} AND A.UNIT_ID=B.UNIT_ID
       	AND B.UNIT_GROUP_CD=C.UNIT_GROUP_CD
+      	AND C.USE_YN = 'Y'
       	WHERE 1=1
 		<choose>
 			<when test='searchval != "" and searchval != null'>

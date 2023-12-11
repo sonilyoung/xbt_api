@@ -9,6 +9,7 @@ public class StuLogin {
 	private String userId;
 	private String userNm;
 	private String userPw;
+	private String eduCode;
 	private String authCd;
 	private String company;
 	private String dept;

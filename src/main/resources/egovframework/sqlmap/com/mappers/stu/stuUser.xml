@@ -5,6 +5,7 @@
 	<select id="getStuByLoginId" parameterType="String" resultType="egovframework.com.stu.login.vo.StuLogin">
 		 SELECT 
 			USER_NO,
+			EDU_CODE,
 			USER_ID,
 			USER_NM,
 			USER_PW,

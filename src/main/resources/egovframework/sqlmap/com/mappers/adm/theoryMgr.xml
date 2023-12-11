@@ -89,9 +89,9 @@
 			LAGE_GROUP_CD,
 			(SELECT THEORY_GROUP_NAME FROM XBT_THEORY_GROUP WHERE GROUP_TYPE = 'L' AND THEORY_GROUP_CD = LAGE_GROUP_CD)AS LARGE_GROUP_NM,
 			MIDDLE_GROUP_CD,
-			(SELECT THEORY_GROUP_NAME FROM XBT_THEORY_GROUP WHERE GROUP_TYPE = 'M' AND THEORY_GROUP_CD = LAGE_GROUP_CD)AS MIDDLE_GROUP_NM,
+			(SELECT THEORY_GROUP_NAME FROM XBT_THEORY_GROUP WHERE GROUP_TYPE = 'M' AND THEORY_GROUP_CD = MIDDLE_GROUP_CD)AS MIDDLE_GROUP_NM,
 			SMALL_GROUP_CD,
-			(SELECT THEORY_GROUP_NAME FROM XBT_THEORY_GROUP WHERE GROUP_TYPE = 'S' AND THEORY_GROUP_CD = LAGE_GROUP_CD)AS SMALL_GROUP_NM,
+			(SELECT THEORY_GROUP_NAME FROM XBT_THEORY_GROUP WHERE GROUP_TYPE = 'S' AND THEORY_GROUP_CD = SMALL_GROUP_CD)AS SMALL_GROUP_NM,
 			QUESTION,
 			CHOICE1,
 			CHOICE2,
@@ -312,5 +312,45 @@
 	<delete id="deleteTheoryFile" parameterType="egovframework.com.adm.theory.vo.TheoryFile">
 		DELETE FROM XBT_THEORY_FILE WHERE THEORY_NO = #{theoryNo}  
 	</delete>	
+	
+	<insert id="insertTheoryExcel" parameterType="java.util.LinkedHashMap">
+		INSERT INTO XBT_THEORY_QUESTION(
+			QUESTION_ID,
+			QUESTION_TYPE,
+			STUDY_LVL,
+			USE_YN,
+			LAGE_GROUP_CD,
+			MIDDLE_GROUP_CD,
+			SMALL_GROUP_CD,
+			QUESTION,
+			ACTION_DIV,
+			MULTI_PLUS_IMG_NAME,
+			CHOICE1,
+			CHOICE2,
+			CHOICE3,
+			CHOICE4,
+			MEMO,
+			INSERT_ID,
+			INSERT_DATE
+		)VALUES(
+			#{questionId}
+			,#{questionType}
+			,#{studyLvl}
+			,#{useYn}
+			,#{lageGroupCd}
+			,#{middleGroupCd}
+			,#{smallGroupCd}
+			,#{question}
+			,#{actionDiv}
+			,#{multiPlusImgName}
+			,#{choice1}
+			,#{choice2}
+			,#{choice3}
+			,#{choice4}
+			,#{memo}
+			,'admin'
+			,now()
+		)
+	</insert>		
 	
 </mapper>

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.com.adm.login.service.LoginService;
-import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.system.vo.XbtScore;
 import egovframework.com.adm.theory.service.TheoryService;
 import egovframework.com.adm.theory.vo.Theory;
@@ -31,6 +30,8 @@ import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.score.XbtScoreService;
 import egovframework.com.stu.learning.service.LearningService;
 import egovframework.com.stu.learning.vo.Learning;
+import egovframework.com.stu.login.service.LoginStuService;
+import egovframework.com.stu.login.vo.StuLogin;
 import egovframework.com.stu.theory.service.StuTheoryService;
 import egovframework.com.stu.theory.vo.StuTheory;
 import io.swagger.annotations.Api;
@@ -55,7 +56,7 @@ public class StuTheoryController {
     private OfficeMessageSource officeMessageSource;
 
     @Autowired
-    private LoginService loginService;
+    private LoginStuService loginService;
     
     @Autowired
     private StuTheoryService stuTheoryService;
@@ -85,13 +86,17 @@ public class StuTheoryController {
     @PostMapping("/selectTheoryList.do")
     @ApiOperation(value = "이론정보", notes = "이론정보")
     public BaseResponse<StuTheory> selectTheoryList(HttpServletRequest request, @RequestBody StuTheory params) {
-    	Login login = loginService.getLoginInfo(request);
+    	StuLogin login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
 		params.setUserId(login.getUserId());
 		params.setUserName(login.getUserNm());
+		
+		if(StringUtils.isEmpty(params.getMenuCd())){				
+			return new BaseResponse<StuTheory>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getCode());
+		}		
 		
 		StuTheory moduleInfoData = new StuTheory();
 		
@@ -106,9 +111,11 @@ public class StuTheoryController {
 		params.setProcYear(baselineData.getProcYear());
 		params.setProcSeq(baselineData.getProcSeq());
 		params.setStudyLvl(baselineData.getStudyLvl());
+		params.setQuestionCnt(baselineData.getTheoryQuestionCnt());
 		
-		params.setQuestionCnt(baselineData.getTheoryQuestionCnt()); 						
 		//이론문제가져오기
+		params.setLageGroupCd(login.getEduCode());
+		params.setMiddleGroupCd(login.getEduCode()+params.getMenuCd());
 		List<StuTheory> problems = stuTheoryService.selectTheoryList(params);
 		if(problems == null) {
 			return new BaseResponse<StuTheory>(BaseResponseCode.THEORY_DATA, BaseResponseCode.THEORY_DATA.getMessage());
@@ -160,13 +167,17 @@ public class StuTheoryController {
     @PostMapping("/selectTheory.do")
     @ApiOperation(value = "이론상세", notes = "이론상세조회.")
     public BaseResponse<StuTheory> selectTheory(HttpServletRequest request, @RequestBody StuTheory params) {
-    	Login login = loginService.getLoginInfo(request);
+    	StuLogin login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
 		if(StringUtils.isEmpty(params.getQuestionId())){				
 			return new BaseResponse<StuTheory>(BaseResponseCode.PARAMS_ERROR, "QuestionId" + BaseApiMessage.REQUIRED.getCode());
+		}		
+		
+		if(StringUtils.isEmpty(params.getMenuCd())){				
+			return new BaseResponse<StuTheory>(BaseResponseCode.PARAMS_ERROR, "MenuCd" + BaseApiMessage.REQUIRED.getCode());
 		}		
 		
 		try {
@@ -257,7 +268,7 @@ public class StuTheoryController {
     @PostMapping("/endTheory.do")
     @ApiOperation(value = "이론종료", notes = "이론종료")
     public BaseResponse<Integer> endTheory(HttpServletRequest request, @RequestBody StuTheory params) {
-    	Login login = loginService.getLoginInfo(request);
+    	StuLogin login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
@@ -285,6 +296,8 @@ public class StuTheoryController {
 			
 			params.setQuestionCnt(baselineData.getTheoryQuestionCnt()); 
 			//이론문제가져오기
+			params.setLageGroupCd(login.getEduCode());
+			params.setMiddleGroupCd(login.getEduCode()+params.getMenuCd());
 			List<StuTheory> problems = stuTheoryService.selectTheoryList(params);
 			int problemsCnt = 0;
 			if(problems!=null) {
@@ -367,6 +380,7 @@ public class StuTheoryController {
 			
 			//합격불합격처리
 			XbtScore xs = new XbtScore();
+			xs.setProcCd(baselineData.getProcCd());
 			xs.setUserId(params.getUserId());
 			xbtScoreService.userScoreCalculate(xs);			
 			
@@ -392,7 +406,7 @@ public class StuTheoryController {
     @PostMapping("/selectTheoryFileList.do")
     @ApiOperation(value = "이론파일조회", notes = "이론파일조회")
     public BaseResponse<List<TheoryFile>> selectTheoryFileList(HttpServletRequest request, @RequestBody TheoryFile params) {
-    	Login login = loginService.getLoginInfo(request);
+    	StuLogin login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}

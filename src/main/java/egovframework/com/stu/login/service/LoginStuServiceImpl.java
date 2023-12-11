@@ -131,18 +131,19 @@ public class LoginStuServiceImpl implements LoginStuService {
                 + (StringUtils.isEmpty(login.getDept()) ? "null" : login.getDept()) + "|"
                 + (StringUtils.isEmpty(login.getTelNo()) ? "null" : login.getTelNo()) + "|"
                 + (StringUtils.isEmpty(login.getEmail()) ? "null" : login.getEmail()) + "|"
-                + login.getLoginStart() + "|"
-                + login.getLoginLast() + "|"
-                + login.getPwPrior() + "|"
-                + login.getPwChange() + "|"
-                + login.getPwUpdate() + "|"
-                + login.getPwPeriod() + "|"
-                + (StringUtils.isEmpty(login.getUseYn()) ? "null" : login.getUseYn()) + "|"
+                + (StringUtils.isEmpty(login.getLoginStart()) ? "null" : login.getLoginStart()) + "|"
+                + (StringUtils.isEmpty(login.getLoginLast()) ? "null" : login.getLoginLast()) + "|"
+                + (StringUtils.isEmpty(login.getPwPrior()) ? "null" : login.getPwPrior()) + "|"
+                + (StringUtils.isEmpty(login.getPwChange()) ? "null" : login.getPwChange()) + "|"
+                + (StringUtils.isEmpty(login.getLoginLast()) ? "null" : login.getLoginLast()) + "|"
+                + (StringUtils.isEmpty(login.getPwUpdate()) ? "null" : login.getPwUpdate()) + "|"
+                + (StringUtils.isEmpty(login.getPwPeriod()) ? "null" : login.getPwPeriod()) + "|"
                 + login.getInsertId() + "|"
                 + login.getInsertDate() + "|"
                 + login.getUpdateId() + "|"
                 + login.getUpdateDate() + "|"
-                + (StringUtils.isEmpty(login.getPosition()) ? "null" : login.getPosition());
+                + (StringUtils.isEmpty(login.getPosition()) ? "null" : login.getPosition()) + "|"
+        		+ login.getEduCode();
         return str;
     }
 
@@ -170,6 +171,7 @@ public class LoginStuServiceImpl implements LoginStuService {
         login.setUpdateId(strSplit[18]);
         login.setUpdateDate(strSplit[19]);
         login.setPosition(strSplit[20]);     
+        login.setEduCode(strSplit[21]);
         return login;
     }
 

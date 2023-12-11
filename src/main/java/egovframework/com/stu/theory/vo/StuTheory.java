@@ -39,6 +39,7 @@ public class StuTheory {
 	private String endYn;
 	private String passYn;
 	private String menuCd;
+	private String eduCode;
 	private int trySeq;
 	private int rightCnt;
 	private int wrongCnt;

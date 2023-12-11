@@ -15,6 +15,7 @@ public class TheoryGroup {
 	private String useYn;
 	private String insertId;
 	private String insertDate;
+	private String menuCd;
 	
 	private List<Long> groupNoList;
 
