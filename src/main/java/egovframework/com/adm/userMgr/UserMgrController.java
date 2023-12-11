@@ -310,6 +310,7 @@ public class UserMgrController {
 			
 			//합격불합격처리
 			XbtScore xs = new XbtScore();
+			xs.setProcCd(params.getProcCd());
 			xs.setUserId(params.getUserId());
 			xbtScoreService.userScoreCalculate(xs);
 			
@@ -2070,7 +2071,46 @@ public class UserMgrController {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
+    }    
+    
+    
+    /**
+     * 점수집계 수동실행
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/updateUserScore.do")
+    @ApiOperation(value = "점수집계 수동실행", notes = "점수집계 수동실행")
+    public BaseResponse<UserInfo> updateUserScore(HttpServletRequest request, @RequestBody List<UserInfo> params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			for(UserInfo ui : params) {
+				if(StringUtils.isEmpty(ui.getProcCd())){				
+					return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+				}		
+				
+				if(StringUtils.isEmpty(ui.getUserId())){				
+					return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+				}	
+				
+				XbtScore xs = new XbtScore();
+				xs.setProcCd(ui.getProcCd());
+				xs.setUserId(ui.getUserId());
+				xbtScoreService.userScoreCalculate(xs);
+			}
+			
+			return new BaseResponse<UserInfo>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage());
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
     }       
+            
         
         
 }

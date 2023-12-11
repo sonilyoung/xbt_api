@@ -1,10 +1,15 @@
 
 package egovframework.com.adm.theory;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +32,15 @@ import egovframework.com.adm.theory.vo.Theory;
 import egovframework.com.adm.theory.vo.TheoryFile;
 import egovframework.com.adm.theory.vo.TheoryGroup;
 import egovframework.com.common.vo.SeqGroupCode;
+import egovframework.com.excel.ExcelRead;
+import egovframework.com.excel.ExcelReadOption;
 import egovframework.com.file.service.FileService;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.file.service.XbtImageService;
 import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
+import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
@@ -74,6 +82,8 @@ public class TheoryController {
     @Autowired
     private FileService fileService;       
     
+    /*파일업로드 저장경로*/
+    public static final String FILE_UPLOAD_PATH = GlobalsProperties.getProperty("file.upload.path");
     				
     /**
      * 이론그룹조회
@@ -931,5 +941,95 @@ public class TheoryController {
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }    
+    
+    
+	
+	//이론문제 등록
+	@PostMapping(value="/insertTheoryExcel.do")
+	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
+	public BaseResponse<Integer> insertTheoryExcel(
+			HttpServletRequest request
+			,HttpServletResponse response
+			,@RequestPart(value = "excelFile", required = true) MultipartFile excelFile
+	) throws Exception{
+		LOGGER.debug("========= insertTheoryExcel 이론문제등록 ========="+ excelFile);
+
+	    try {
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmsss"); 
+			Date time = new Date(); 
+			String fmtDate=format.format(time);
+
+			//String stordFilePath = GlobalsProperties.getProperty("Globals.fileStorePath");
+			File fileDir = new File(FILE_UPLOAD_PATH);
+			// root directory 없으면 생성
+			if (!fileDir.exists()) {
+				fileDir.mkdirs(); //폴더 생성합니다.
+			}             
+			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
+			
+			excelFile.transferTo(destFile); // 엑셀파일 생성
+			String[] coloumNm = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "N"};
+			    
+			ExcelReadOption excelReadOption = new ExcelReadOption();
+			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
+			excelReadOption.setOutputColumns(coloumNm); //추출할 컬럼명 추가
+			excelReadOption.setStartRow(2); //시작행(헤더부분 제외)
+			List<LinkedHashMap<String, String>>excelContent  = ExcelRead.read(excelReadOption);
+			
+	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
+			
+			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+			int result = 0;
+			
+			for(LinkedHashMap<String, String> excelData: excelContent){
+				params = new LinkedHashMap<String, Object>();
+				
+				XbtSeq seq = new XbtSeq();
+				seq.setSeqInfo(SeqGroupCode.XBT_THEORY_ID.getCode());
+				XbtSeq unitId = contentsService.selectXbtSeq(seq);
+				
+	            params.put("questionId", unitId.getSeqId());//문제아이디
+	            params.put("questionType", excelData.get("B"));//B문제타입
+	            params.put("studyLvl", excelData.get("C"));//C학습레벨
+	            params.put("useYn", excelData.get("D"));//D사용여부
+	            
+	            /*
+	            Common cp = new Common();
+	            cp.setLanguageCode("kr");
+	            cp.setGroupId("eduName");
+	            cp.setCodeName(excelData.get("E"));
+	            cp.setCommand("codeName");
+	            Common cr = commonService.selectCommon(cp);
+	            */
+	            
+	            params.put("lageGroupCd", excelData.get("E"));//대그룹
+	            
+	            params.put("middleGroupCd", excelData.get("F"));//F중그룹
+	            params.put("smallGroupCd", excelData.get("G"));//G소그룹
+	            params.put("question", excelData.get("H"));//H문제
+	            params.put("actionDiv", excelData.get("I"));//I정답
+	            params.put("choice1", excelData.get("J"));//J지문1
+	            params.put("choice2", excelData.get("K"));//K지문2
+	            params.put("choice3", excelData.get("L"));//L지문3
+	            params.put("choice4", excelData.get("M"));//M지문4
+	            params.put("memo", excelData.get("N"));//N메모
+	            
+	            result = theoryService.insertTheoryExcel(params);
+
+			}
+			
+			
+            if(result>0) {
+	            return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+            }else {
+            	return new BaseResponse<Integer>(BaseResponseCode.DATA_IS_NULL);
+            }
+	    }catch(Exception e) {
+	    	return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR);
+	    } 
+	    
+	}			
+	    
 	    
 }

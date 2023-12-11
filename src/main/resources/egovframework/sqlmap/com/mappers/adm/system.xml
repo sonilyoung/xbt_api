@@ -208,6 +208,7 @@
 		WHERE
 			ENDING_YN = 'N' OR ENDING_YN = 'ING'
 			AND USER_ID = #{userId}
+			AND PROC_CD = #{procCd}
 	</select>			
 	
 	<!-- 이론평가 점수비중 정보 -->

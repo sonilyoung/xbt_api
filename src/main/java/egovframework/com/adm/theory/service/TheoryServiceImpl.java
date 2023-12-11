@@ -1,5 +1,6 @@
 package egovframework.com.adm.theory.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -130,4 +131,10 @@ public class TheoryServiceImpl implements TheoryService {
 		return theoryDAO.deleteTheoryFile(params);
 	}
 
+	@Override
+	public int insertTheoryExcel(LinkedHashMap<String, Object> params) {
+		// TODO Auto-generated method stub
+		return theoryDAO.insertTheoryExcel(params);
+	}	
+	
 }

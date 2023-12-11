@@ -1,5 +1,6 @@
 package egovframework.com.adm.theory.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import egovframework.com.adm.theory.vo.Theory;
@@ -55,5 +56,7 @@ public interface TheoryService {
 	public int updateTheoryFile(TheoryFile params);
 	
 	public int deleteTheoryFile(TheoryFile params);
+	
+	public int insertTheoryExcel(LinkedHashMap<String, Object> params);
 		
 }

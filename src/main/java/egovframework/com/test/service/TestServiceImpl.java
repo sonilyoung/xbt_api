@@ -81,12 +81,6 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public int insertTheoryExcel(LinkedHashMap<String, Object> params) {
-		// TODO Auto-generated method stub
-		return testDAO.insertTheoryExcel(params);
-	}
-	
-	@Override
 	@SuppressWarnings("unchecked")
 	public List<LinkedHashMap<String, Object>> selectXrayBagData(LinkedHashMap<String, Object> params) {
 		// TODO Auto-generated method stub

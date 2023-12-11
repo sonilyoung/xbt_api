@@ -1,6 +1,5 @@
 package egovframework.com.score;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.annotation.Resource;
@@ -58,7 +57,7 @@ public class XbtScoreServiceImpl implements XbtScoreService {
 	public void userScoreCalculate(XbtScore params) throws Exception {
 		LOGGER.info("=======================사용자 점수 계산 시작=============================");
 	
-		//교육생정보 가져오기
+		//교육생정보 가져오기 (procCd, userId)
 		XbtScore xs = systemService.selectXbtEndingUser(params);
 		
 		if(xs!=null) {
