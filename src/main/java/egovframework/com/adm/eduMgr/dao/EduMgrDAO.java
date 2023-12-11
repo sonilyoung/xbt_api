@@ -72,6 +72,14 @@ public class EduMgrDAO extends EgovAbstractMapper{
 	
 	public int deleteBaselineEvaluationResultAll(EduDate params) {
 		return delete(Namespace + ".deleteBaselineEvaluationResultAll", params);
+	}
+	
+	public int deleteBaselineTheoryAll(EduDate params) {
+		return delete(Namespace + ".deleteBaselineTheoryAll", params);
+	}		
+	
+	public int deleteBaselineTheoryResultAll(EduDate params) {
+		return delete(Namespace + ".deleteBaselineTheoryResultAll", params);
 	}		
 	
 	public List<?> selectEduDateList(EduDate params) {

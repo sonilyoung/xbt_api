@@ -68,6 +68,8 @@
 		AND PROC_YEAR = #{procYear} 
 		AND PROC_SEQ = #{procSeq}
 		AND USER_ID = #{userId}
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}
 	</select>	
 	
 	<!-- 이론평가 유무확인 -->
@@ -80,6 +82,8 @@
 		AND PROC_SEQ = #{procSeq}
 		AND USER_ID = #{userId}	
 		AND END_YN = 'Y'
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}		
 	</select>			
 	
 	<!-- 등록된이론문제 체크 -->
@@ -93,6 +97,8 @@
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
 		AND END_YN = #{endYn}
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}
 	</select>	
 
 
@@ -194,6 +200,8 @@
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
 		AND QUESTION_ID = #{questionId}
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}		
 	</select>		
 	
 	<!-- 오답문제정답선택-->
@@ -209,6 +217,8 @@
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
 		AND QUESTION_ID = #{questionId}
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}		
 	</update>	
 	
 	<!-- 오답문제종료 결과데이터 확인 -->
@@ -220,6 +230,8 @@
 		AND PROC_SEQ = #{procSeq}
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}		
 	</select>	
 	
 	<!-- 난이도 정보 -->
@@ -232,6 +244,8 @@
 			AND PROC_SEQ = #{procSeq}
 			AND TRY_SEQ = #{trySeq}
 			AND USER_ID = #{userId}
+			AND LAGE_GROUP_CD = #{lageGroupCd} 
+			AND MIDDLE_GROUP_CD = #{middleGroupCd}			
 			GROUP BY STUDY_LVL
 		)T1 
 	</select>		
@@ -272,6 +286,8 @@
 		AND PROC_SEQ = #{procSeq}
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}		
 	</select>		
 	
 	<!-- 학습종료 틀린갯수 맞은갯수 확인 -->
@@ -288,6 +304,8 @@
 		AND PROC_SEQ = #{procSeq}
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}		
 	</select>	
 	
 	
@@ -302,6 +320,8 @@
 		AND PROC_SEQ = #{procSeq}
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}		
 	</update>	
 		
 	

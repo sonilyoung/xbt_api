@@ -300,7 +300,18 @@
 	<!-- 평가 결과데이터 모두삭제-->
 	<delete id="deleteBaselineEvaluationResultAll" parameterType="egovframework.com.adm.eduMgr.vo.EduDate">
 		DELETE FROM XBT_BASELINE_EVALUATION WHERE PROC_CD = #{procCd}
+	</delete>	
+	
+	<!-- 이론평가데이터 모두삭제-->
+	<delete id="deleteBaselineTheoryAll" parameterType="egovframework.com.adm.eduMgr.vo.EduDate">
+		DELETE FROM XBT_STU_THEORY_PROGRESSING WHERE PROC_CD = #{procCd}
 	</delete>		
+	
+	<!-- 이론 결과데이터 모두삭제-->
+	<delete id="deleteBaselineTheoryResultAll" parameterType="egovframework.com.adm.eduMgr.vo.EduDate">
+		DELETE FROM XBT_STU_THEORY_PROGRESSING WHERE PROC_CD = #{procCd}
+	</delete>		
+	
 	
 	
 	<!-- 교육일정  일정목록 -->
