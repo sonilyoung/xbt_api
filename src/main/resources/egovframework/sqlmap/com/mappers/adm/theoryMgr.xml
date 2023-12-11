@@ -313,4 +313,44 @@
 		DELETE FROM XBT_THEORY_FILE WHERE THEORY_NO = #{theoryNo}  
 	</delete>	
 	
+	<insert id="insertTheoryExcel" parameterType="java.util.LinkedHashMap">
+		INSERT INTO XBT_THEORY_QUESTION(
+			QUESTION_ID,
+			QUESTION_TYPE,
+			STUDY_LVL,
+			USE_YN,
+			LAGE_GROUP_CD,
+			MIDDLE_GROUP_CD,
+			SMALL_GROUP_CD,
+			QUESTION,
+			ACTION_DIV,
+			MULTI_PLUS_IMG_NAME,
+			CHOICE1,
+			CHOICE2,
+			CHOICE3,
+			CHOICE4,
+			MEMO,
+			INSERT_ID,
+			INSERT_DATE
+		)VALUES(
+			#{questionId}
+			,#{questionType}
+			,#{studyLvl}
+			,#{useYn}
+			,#{lageGroupCd}
+			,#{middleGroupCd}
+			,#{smallGroupCd}
+			,#{question}
+			,#{actionDiv}
+			,#{multiPlusImgName}
+			,#{choice1}
+			,#{choice2}
+			,#{choice3}
+			,#{choice4}
+			,#{memo}
+			,'admin'
+			,now()
+		)
+	</insert>		
+	
 </mapper>

@@ -1,5 +1,6 @@
 package egovframework.com.adm.theory.dao;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import egovframework.com.adm.theory.vo.Theory;
@@ -78,4 +79,8 @@ public class TheoryDAO extends EgovAbstractMapper{
 		// TODO Auto-generated method stub
 		return delete(Namespace + ".deleteTheoryFile", params);
 	}	
+	
+	public int insertTheoryExcel(LinkedHashMap<String, Object> params) {
+		return insert(Namespace + ".insertTheoryExcel", params);
+	}		
 }

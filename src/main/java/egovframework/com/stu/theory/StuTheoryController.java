@@ -367,6 +367,7 @@ public class StuTheoryController {
 			
 			//합격불합격처리
 			XbtScore xs = new XbtScore();
+			xs.setProcCd(baselineData.getProcCd());
 			xs.setUserId(params.getUserId());
 			xbtScoreService.userScoreCalculate(xs);			
 			
