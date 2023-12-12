@@ -326,7 +326,7 @@ public class EduMgrServiceImpl implements EduMgrService {
 		// TODO Auto-generated method stub
 		int result = eduMgrDAO.insertBaselineCopy(params);
 		eduMgrDAO.insertBaselineDateCopy(params);
-		eduMgrDAO.insertBaselineStudentCopy(params);
+		//eduMgrDAO.insertBaselineStudentCopy(params);
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/d");
 		String targetStartDate = params.getEduStartDate();
@@ -334,29 +334,34 @@ public class EduMgrServiceImpl implements EduMgrService {
 		LocalDate startDate = LocalDate.parse(targetStartDate.replaceAll("-", "/"), formatter);
 		LocalDate endDate = LocalDate.parse(targetEndDate.replaceAll("-", "/"), formatter);
 		List<LocalDate> bdate = egovframework.com.global.util.ComUtils.getDatesBetweenTwoDates(startDate, endDate);
-		for(LocalDate ld : bdate) {
-			System.out.println(String.valueOf(ld));
-		}
 		
 		List<Baseline> dateLit = (List<Baseline>) eduMgrDAO.selectEduDateInfoList(params);
-		
-		int i = 0;
-		for(Baseline b : dateLit) {
-			b.setProcCd(params.getProcCd());
-			
-			if(i<=dateLit.size()){
-				b.setEduStartDateCopy(String.valueOf(bdate.get(i)));
-				b.setEduEndDateCopy(String.valueOf(bdate.get(i)));
-				eduMgrDAO.updateBaselineEduDate(b);
-			}else {
-				b.setEduStartDateCopy("");
-				b.setEduEndDateCopy("");
-				eduMgrDAO.updateBaselineEduDate(b);
+		if(bdate.size() <= dateLit.size()) {
+			int i = 0;
+			for(LocalDate ld : bdate) {
+				dateLit.get(i).setProcCd(params.getProcCd());
+				dateLit.get(i).setEduStartDateCopy(String.valueOf(String.valueOf(ld)));
+				dateLit.get(i).setEduEndDateCopy(String.valueOf(String.valueOf(ld)));
+				eduMgrDAO.updateBaselineEduDate(dateLit.get(i));
+				i++;
 			}
-			i++;						
-			
-
-		}				
+		}else {
+			int i = 0;
+			for(Baseline b : dateLit) {
+				b.setProcCd(params.getProcCd());
+				
+				if(i <= dateLit.size()){
+					b.setEduStartDateCopy(String.valueOf(bdate.get(i)));
+					b.setEduEndDateCopy(String.valueOf(bdate.get(i)));
+					eduMgrDAO.updateBaselineEduDate(b);
+					i++;
+				}else {
+					b.setEduStartDateCopy("");
+					b.setEduEndDateCopy("");
+					eduMgrDAO.updateBaselineEduDate(b);
+				}
+			}			
+		}
 		
 		return result;
 	}

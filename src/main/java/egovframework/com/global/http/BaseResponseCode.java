@@ -33,6 +33,8 @@ public enum BaseResponseCode {
 			"0600", "수정시 내부 오류가 발생"
 	), DATA_IS_DUPLICATE(
 			"0700", "중복된 데이터가 있습니다."
+	), DATE_IS_DUPLICATE(
+			"0701", "등록하려는 일자에 중복된 일자가 있습니다."			
 	), DATA_IS_NULL(
 			"0800", "데이터가 없습니다."
 	), INPUT_CHECK_ERROR(

@@ -518,10 +518,6 @@ public class TheoryController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "MiddleGroupCd" + BaseApiMessage.REQUIRED.getCode());
 		}	
 		
-		if(StringUtils.isEmpty(params.getSmallGroupCd())){				
-			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "SmallGroupCd" + BaseApiMessage.REQUIRED.getCode());
-		}				
-		
 		if(StringUtils.isEmpty(params.getActionDiv())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "ActionDiv" + BaseApiMessage.REQUIRED.getCode());
 		}	

@@ -299,6 +299,13 @@ public class EduMgrController {
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userList" + BaseApiMessage.REQUIRED.getCode());
 		}				
 		
+		//중복된 날짜가 insert 될경우 오류 벨리데이션 처리
+	    boolean duplicated = params.getScheduleList().stream().distinct().count() != params.getScheduleList().size();
+		if(duplicated) {
+			return new BaseResponse<Integer>(BaseResponseCode.DATE_IS_DUPLICATE, BaseResponseCode.DATE_IS_DUPLICATE.getMessage());
+	    }		
+	    
+	    
 		try {
 			//차수등록
 			params.setInsertId(login.getUserId());
@@ -359,11 +366,11 @@ public class EduMgrController {
 		}			
 		
 		try {
-			int baseCnt = eduMgrService.selectBaselineDataCount(params);
+			//int baseCnt = eduMgrService.selectBaselineDataCount(params);
 			
-			if(baseCnt>0) {
-				return new BaseResponse<Integer>(BaseResponseCode.DATA_IS_DUPLICATE, BaseResponseCode.DATA_IS_DUPLICATE.getMessage());
-			}else {
+			//if(baseCnt>0) {
+				//return new BaseResponse<Integer>(BaseResponseCode.DATA_IS_DUPLICATE, BaseResponseCode.DATA_IS_DUPLICATE.getMessage());
+			//}else {
 				int result = eduMgrService.insertBaselineCopy(params);
 				
 				if(result>0) {
@@ -371,7 +378,7 @@ public class EduMgrController {
 				}else {
 					return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
 				}
-			}		
+			//}		
 
         } catch (Exception e) {
         	LOGGER.error("error:", e);
@@ -440,7 +447,13 @@ public class EduMgrController {
 		
 		if(StringUtils.isEmpty(params.getUserList())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userList" + BaseApiMessage.REQUIRED.getCode());
-		}				
+		}			
+		
+		//중복된 날짜가 insert 될경우 오류 벨리데이션 처리
+	    boolean duplicated = params.getScheduleList().stream().distinct().count() != params.getScheduleList().size();
+		if(duplicated) {
+			return new BaseResponse<Integer>(BaseResponseCode.DATE_IS_DUPLICATE, BaseResponseCode.DATE_IS_DUPLICATE.getMessage());
+	    }			
 		
 		try {
 			//차수등록

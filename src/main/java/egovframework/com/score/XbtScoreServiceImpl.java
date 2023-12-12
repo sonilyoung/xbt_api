@@ -378,7 +378,6 @@ public class XbtScoreServiceImpl implements XbtScoreService {
 		// TODO Auto-generated method stub
 		PointStd score = learningDAO.selectPointStdScore(params);
 		
-		/*
 		int gainScore = 0;
 		if("0".equals(params.getAnswerDiv())) {
 			if("0".equals(params.getUserActionDiv())) { //반입금지
@@ -410,9 +409,9 @@ public class XbtScoreServiceImpl implements XbtScoreService {
 			}			
 		}else {
 			gainScore = 0;
-		}*/
+		}
 		
-		/* 점수체계 3개로반영*/
+		/* 점수체계 3개로반영
 		int gainScore = 0;
 		if("0".contentEquals(params.getUserActionDiv()) || "1".contentEquals(params.getUserActionDiv())) {
 			gainScore = score.getBanUnitScore();
@@ -422,7 +421,7 @@ public class XbtScoreServiceImpl implements XbtScoreService {
 			gainScore = score.getPassUnitScore();				
 		}else {
 			gainScore = 0;
-		}		
+		}		*/
 		
 		return gainScore;
 	}

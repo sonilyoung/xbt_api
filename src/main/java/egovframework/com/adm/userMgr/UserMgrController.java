@@ -1069,11 +1069,11 @@ public class UserMgrController {
 	            
 	            // 엑셀 날짜 값을 Java Date 객체로 변환
 	            if(null != excelData.get("G") && !"".equals(excelData.get("G"))){	
-		            Date date1 = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("G")));
+		            //Date date1 = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("G")));
 		            // 날짜를 원하는 형식으로 문자열로 변환
-		            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-		            String dateString1 = dateFormat1.format(date1);
-		            params.setBirthDay(dateString1);//생년월일
+		            //SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+		            //String dateString1 = dateFormat1.format(date1);
+		            params.setBirthDay(excelData.get("G"));//생년월일
 	            }
 
 	            
@@ -1095,20 +1095,20 @@ public class UserMgrController {
 	            
 	    		if(null != excelData.get("O") && !"".equals(excelData.get("O"))){
 		            // 엑셀 날짜 값을 Java Date 객체로 변환
-		            Date date2 = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("O")));
+		            //Date date2 = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("O")));
 		            // 날짜를 원하는 형식으로 문자열로 변환
-		            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-		            String dateString2 = dateFormat2.format(date2);	            
-		            params.setCareerStartDate1(dateString2);//보안경력시작일	    			
+		            //SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+		            //String dateString2 = dateFormat2.format(date2);	            
+		            params.setCareerStartDate1(excelData.get("O"));//보안경력시작일	    			
 	    		}
 	    		
 	    		if(null != excelData.get("P") && !"".equals(excelData.get("P"))){
 		            // 엑셀 날짜 값을 Java Date 객체로 변환
-		            Date date3 = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("P")));
+		            //Date date3 = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("P")));
 		            // 날짜를 원하는 형식으로 문자열로 변환
-		            SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd");
-		            String dateString3 = dateFormat3.format(date3);	  	            
-		            params.setCareerEndDate1(dateString3);//보안경력종료일
+		            //SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd");
+		            //String dateString3 = dateFormat3.format(date3);	  	            
+		            params.setCareerEndDate1(excelData.get("P"));//보안경력종료일
 	    		}
 	    		
 	    		if(!StringUtils.isEmpty(excelData.get("Q"))){
