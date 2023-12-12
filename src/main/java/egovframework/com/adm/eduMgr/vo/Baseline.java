@@ -8,6 +8,7 @@ import lombok.Data;
 public class Baseline {
 	private Long procCd;
 	private Long targetProcCd;
+	private String eduCode;
 	private String procYear;
 	private String procSeq;
 	private String procName;

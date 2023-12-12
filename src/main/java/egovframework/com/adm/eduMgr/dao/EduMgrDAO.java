@@ -18,7 +18,6 @@ public class EduMgrDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectBaselineList", params);
 	}
 	
-	
 	public int insertBaseline(Baseline params) {
 		return insert(Namespace + ".insertBaseline", params);
 	}
@@ -135,5 +134,8 @@ public class EduMgrDAO extends EgovAbstractMapper{
 	public int selectBaselineDataCount(Baseline params) {
 		return selectOne(Namespace + ".selectBaselineDataCount", params);
 	}
-			
+	
+	public List<?> selectBaselineProcSeqList(Baseline params) {
+		return (List<?>)selectList(Namespace + ".selectBaselineProcSeqList", params);
+	}			
 }

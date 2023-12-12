@@ -64,4 +64,6 @@ public interface EduMgrService {
 	
 	public int selectBaselineDataCount(Baseline params);
 	
+	public List<Baseline> selectBaselineProcSeqList(Baseline params);
+	
 }

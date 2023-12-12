@@ -130,4 +130,10 @@ public class CommonServiceImpl implements CommonService {
 		return commonDAO.updateLanguageApply(params);
 	}
 
+	@Override
+	public List<Common> selectCommonDetailList(Common params) {
+		// TODO Auto-generated method stub
+		return (List<Common>) commonDAO.selectCommonDetailList(params);
+	}
+
 }

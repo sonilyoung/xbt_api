@@ -74,6 +74,9 @@ public class CommonDAO extends EgovAbstractMapper{
 		return update(Namespace + ".updateLanguageApply", params);
 	}	
 	
+	public List<?> selectCommonDetailList(Common params) {
+		return (List<?>)selectList(Namespace + ".selectCommonDetailList", params);
+	}
 	
 	
 	

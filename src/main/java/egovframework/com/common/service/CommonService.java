@@ -53,4 +53,6 @@ public interface CommonService {
 	
 	public int updateLanguageApply(Common params);
 	
+	public List<Common> selectCommonDetailList(Common params);
+	
 }

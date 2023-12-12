@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import egovframework.com.adm.eduMgr.service.EduMgrService;
+import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.common.service.CommonService;
@@ -53,6 +55,9 @@ public class CommonController {
     
     @Autowired
     private CommonService commonService;
+
+    @Autowired
+    private EduMgrService eduMgrService;    
     
     
     /**
@@ -549,5 +554,67 @@ public class CommonController {
         }
     }      
 
+    
+    /**
+     * 공통코드목록조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectCommonDetailList.do")
+    @ApiOperation(value = "공통코드", notes = "공통코드목록조회.")
+    public BaseResponse<List<Common>> selectCommonDetailList(HttpServletRequest request, @RequestBody Common params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getLanguageCode())){				
+			return new BaseResponse<List<Common>>(BaseResponseCode.PARAMS_ERROR, "LanguageCode" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		if(StringUtils.isEmpty(params.getGroupId())){				
+			return new BaseResponse<List<Common>>(BaseResponseCode.PARAMS_ERROR, "GroupId" + BaseApiMessage.REQUIRED.getMessage());
+		}		
+		
+		//다국어처리조회
+		if("ko".equals(params.getLanguageCode())) {
+			params.setLanguageCode("kr");
+		}			
+		
+		try {
+			//그룹관리조회
+	        return new BaseResponse<List<Common>>(commonService.selectCommonDetailList(params));
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }    
+        
+    
+    /**
+     * 차수목록조회 
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectBaselineProcSeqList.do")
+    @ApiOperation(value = "차수목록조회", notes = "차수목록조회")
+    public BaseResponse<List<Baseline>> selectBaselineProcSeqList(HttpServletRequest request
+    		,@RequestBody Baseline params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		
+		try {
+			List<Baseline> resultList = eduMgrService.selectBaselineProcSeqList(params);
+	        return new BaseResponse<List<Baseline>>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }      
 	    
 }

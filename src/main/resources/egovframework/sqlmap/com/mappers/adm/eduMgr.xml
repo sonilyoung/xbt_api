@@ -593,5 +593,15 @@
 			COUNT(PROC_CD)
 		FROM XBT_BASELINE WHERE date_format(#{eduStartDate}, '%Y-%m-%d') BETWEEN EDU_START_DATE AND EDU_END_DATE
 	</select>	
+	
+	<!-- 차수목록조회-->
+	<select id="selectBaselineProcSeqList" parameterType="egovframework.com.adm.eduMgr.vo.Baseline" resultType="egovframework.com.adm.eduMgr.vo.Baseline" >			
+		SELECT
+			DISTINCT PROC_YEAR , PROC_CD , PROC_SEQ , EDU_CODE , EDU_NAME 
+		FROM XBT_BASELINE_STUDENT_INFO
+		WHERE EDU_CODE = #{eduCode}
+		AND PROC_YEAR = #{procYear}
+		ORDER BY PROC_CD DESC, EDU_CODE DESC
+	</select> 	
 		
 </mapper>

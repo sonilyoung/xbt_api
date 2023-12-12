@@ -19,7 +19,6 @@ import egovframework.com.adm.userMgr.dao.UserMgrDAO;
 import egovframework.com.adm.userMgr.vo.UserInfo;
 import egovframework.com.stu.learning.dao.LearningDAO;
 import egovframework.com.stu.learning.vo.LearningProblem;
-import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -40,7 +39,6 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
 @Service("EduMgrService")
 public class EduMgrServiceImpl implements EduMgrService {
 
@@ -321,6 +319,7 @@ public class EduMgrServiceImpl implements EduMgrService {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public int insertBaselineCopy(Baseline params) {
 		// TODO Auto-generated method stub
@@ -369,5 +368,12 @@ public class EduMgrServiceImpl implements EduMgrService {
 
 	public int selectBaselineDataCount(Baseline params) {
 		return eduMgrDAO.selectBaselineDataCount(params);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Baseline> selectBaselineProcSeqList(Baseline params) {
+		// TODO Auto-generated method stub
+		return (List<Baseline>) eduMgrDAO.selectBaselineProcSeqList(params);
 	}
 }

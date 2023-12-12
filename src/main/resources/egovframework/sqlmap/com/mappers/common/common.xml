@@ -85,6 +85,45 @@
 		
 	</select>	
 	
+	<!-- 공통코드목록조회 -->
+	<select id="selectCommonDetailList" parameterType="egovframework.com.common.vo.Common" resultType="egovframework.com.common.vo.Common">
+		SELECT
+			CODE_NO,
+			LANGUAGE_CODE,
+			GROUP_ID,
+			CODE_ID,
+			SORT_ORDER,
+			CODE_NAME,
+			CODE_VALUE,
+			CODE_DESC,
+			REMARKS,
+			USE_YN,
+			MAIN_YN,
+			MEMO1,
+			MEMO2,
+			INSERT_ID,
+			INSERT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE
+		FROM
+			XBT_COMMON_CODE
+		WHERE LANGUAGE_CODE = #{languageCode}
+		AND GROUP_ID = #{groupId}
+		AND USE_YN = 'Y'
+		<choose>
+			<when test='memo1 != "" and memo1 != null'>
+				AND MEMO1 = #{memo1}
+			</when>		
+			<when test='memo2 != "" and memo2 != null'>
+				AND MEMO2 = #{memo2}	
+			</when>		
+			<when test='codeValue != "" and codeValue != null'>
+				AND CODE_VALUE = #{codeValue}
+			</when>								
+		</choose>	
+		ORDER BY SORT_ORDER ASC			
+	</select>		
+	
 	<!-- 공통코드분류상세 -->
 	<select id="selectCommonDetail" parameterType="egovframework.com.common.vo.Common" resultType="egovframework.com.common.vo.Common">
 		SELECT
@@ -109,7 +148,7 @@
 			XBT_COMMON_CODE
 		WHERE LANGUAGE_CODE = #{languageCode}
 		AND GROUP_ID = #{groupId}
-		
+		AND USE_YN = 'Y'
 		<choose>
 			<when test='memo1 != "" and memo1 != null'>
 				AND MEMO1 = #{memo1}
@@ -121,7 +160,7 @@
 				AND CODE_VALUE = #{codeValue}
 			</when>								
 		</choose>	
-					
+		ORDER BY SORT_ORDER ASC			
 	</select>		
 		
 	

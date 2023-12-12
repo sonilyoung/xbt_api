@@ -8,7 +8,8 @@
 	<select id="selectUserList" parameterType="egovframework.com.adm.userMgr.vo.UserInfo" resultType="egovframework.com.adm.userMgr.vo.UserInfo" >
 		SELECT 
 			TOT.*,
-			(select Max(XBSI.PROC_SEQ) from XBT_BASELINE_STUDENT_INFO XBSI where XBSI.PROC_CD = TOT.procCd AND XBSI.USER_ID = TOT.USER_ID)as procSeq
+			(select Max(XBSI.PROC_SEQ) from XBT_BASELINE_STUDENT_INFO XBSI where XBSI.PROC_CD = TOT.procCd AND XBSI.USER_ID = TOT.USER_ID)as procSeq,
+			(select Max(XBSI.PASS_YN) from XBT_BASELINE_STUDENT_INFO XBSI where XBSI.USER_ID = TOT.USER_ID)as passYn
 		FROM (				
 			SELECT 
 				USER_NO,
@@ -356,12 +357,13 @@
 			EDU_START_DATE,
 			EDU_END_DATE,
 			ENDING_YN,
-			EVALUATION_YN 
+			EVALUATION_YN
 		FROM
 			XBT_BASELINE_STUDENT_INFO
+		WHERE 1=1
 		<choose>
 			<when test='searchval != "" and searchval != null'>
-				WHERE PROC_NM LIKE CONCAT('%' , #{searchval} , '%')
+				AND PROC_NM LIKE CONCAT('%' , #{searchval} , '%')
 				OR USER_ID LIKE  CONCAT('%' , #{searchval} , '%')
 				OR USER_NM LIKE  CONCAT('%' , #{searchval} , '%')
 				OR EDU_NAME LIKE  CONCAT('%' , #{searchval} , '%')
@@ -369,6 +371,15 @@
 				OR #{searchval} BETWEEN EDU_START_DATE AND EDU_END_DATE 			
 			</when>
 		</choose>
+		<if test='procSeq != "" and procSeq != null'>
+			AND PROC_SEQ = #{procSeq}
+		</if>
+		<if test='procYear != "" and procYear != null'>
+			AND PROC_YEAR = #{procYear}
+		</if>		
+		<if test='eduCode != "" and eduCode != null'>
+			AND EDU_CODE = #{eduCode}
+		</if>				
 		ORDER BY INSERT_DATE DESC		
 	</select>	
 	

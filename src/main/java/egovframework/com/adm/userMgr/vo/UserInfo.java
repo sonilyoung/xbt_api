@@ -9,6 +9,7 @@ public class UserInfo {
 	private Long procCd;
 	private String procSeq;
 	private Long userNo; /*사용자NO*/
+	private String passYn;                     /*합격여부*/        
 	private String userId;                     /*사용자id*/        
 	private String userNm;                     /*사용자명*/        
 	private String userPw;                     /*패스워드*/
