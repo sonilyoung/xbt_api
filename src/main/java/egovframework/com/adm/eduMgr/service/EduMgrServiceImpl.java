@@ -77,12 +77,15 @@ public class EduMgrServiceImpl implements EduMgrService {
 					Menu m = new Menu();
 					m.setMenuCd(params.getMenuList().get(i).get(j));
 					
-					//모듈정보추가
-					m.setModuleId(params.getModuleList().get(i));
-					
 					Menu menu = systemDAO.selectModuleMenu(m);
-					if(menu.getModuleId()!=null) {
-						moduleId = menu.getModuleId();
+					if(menu != null) {
+						if("l".equals(menu.getLearningType())) {
+							//모듈정보추가
+							moduleId = params.getModuleList().get(i);						
+						}else if("e".equals(menu.getLearningType())) {
+							//평가모듈정보추가
+							moduleId = params.getEvaluationModulesList().get(i);							
+						}					
 					}
 					sl.setModuleId(moduleId);
 					sl.setProcCd(baseline.getProcCd());
@@ -163,13 +166,17 @@ public class EduMgrServiceImpl implements EduMgrService {
 					Menu m = new Menu();
 					m.setMenuCd(params.getMenuList().get(i).get(j));
 					
-					//모듈정보추가
-					m.setModuleId(params.getModuleList().get(i));
-					
 					Menu menu = systemDAO.selectModuleMenu(m);
-					if(menu.getModuleId()!=null) {
-						moduleId = menu.getModuleId();
+					if(menu != null) {
+						if("l".equals(menu.getLearningType())) {
+							//모듈정보추가
+							moduleId = params.getModuleList().get(i);						
+						}else if("e".equals(menu.getLearningType())) {
+							//평가모듈정보추가
+							moduleId = params.getEvaluationModulesList().get(i);							
+						}					
 					}
+					
 					sl.setModuleId(moduleId);
 					sl.setProcCd(baseline.getProcCd());
 					sl.setProcNm(baseline.getProcName());
@@ -323,21 +330,26 @@ public class EduMgrServiceImpl implements EduMgrService {
 	@Transactional
 	public int insertBaselineCopy(Baseline params) {
 		// TODO Auto-generated method stub
-		int result = eduMgrDAO.insertBaselineCopy(params);
-		eduMgrDAO.insertBaselineDateCopy(params);
-		//eduMgrDAO.insertBaselineStudentCopy(params);
-		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/d");
 		String targetStartDate = params.getEduStartDate();
 		String targetEndDate = params.getEduEndDate();
 		LocalDate startDate = LocalDate.parse(targetStartDate.replaceAll("-", "/"), formatter);
 		LocalDate endDate = LocalDate.parse(targetEndDate.replaceAll("-", "/"), formatter);
+
 		List<LocalDate> bdate = egovframework.com.global.util.ComUtils.getDatesBetweenTwoDates(startDate, endDate);
-		
 		List<Baseline> dateLit = (List<Baseline>) eduMgrDAO.selectEduDateInfoList(params);
+		
+		params.setTotStudyDate(bdate.size());
+		int result = eduMgrDAO.insertBaselineCopy(params);
+		eduMgrDAO.insertBaselineStudentCopy(params);		
+		
 		if(bdate.size() <= dateLit.size()) {
 			int i = 0;
 			for(LocalDate ld : bdate) {
+				params.setEduStartDate(String.valueOf(String.valueOf(ld)));
+				params.setEduEndDate(String.valueOf(String.valueOf(ld)));
+				eduMgrDAO.insertBaselineDateCopy(params);
+				
 				dateLit.get(i).setProcCd(params.getProcCd());
 				dateLit.get(i).setEduStartDateCopy(String.valueOf(String.valueOf(ld)));
 				dateLit.get(i).setEduEndDateCopy(String.valueOf(String.valueOf(ld)));
@@ -348,6 +360,9 @@ public class EduMgrServiceImpl implements EduMgrService {
 			int i = 0;
 			for(Baseline b : dateLit) {
 				b.setProcCd(params.getProcCd());
+				params.setEduStartDate(String.valueOf(String.valueOf(bdate.get(i))));
+				params.setEduEndDate(String.valueOf(String.valueOf(bdate.get(i))));				
+				eduMgrDAO.insertBaselineDateCopy(params);
 				
 				if(i <= dateLit.size()){
 					b.setEduStartDateCopy(String.valueOf(bdate.get(i)));

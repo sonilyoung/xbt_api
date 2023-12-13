@@ -56,6 +56,10 @@ public class LearningDAO extends EgovAbstractMapper{
 		return (List<?>)selectList(Namespace + ".selectLearnProblemsResultList", params);
 	}	
 	
+	public LearningProblem selectXrayAnswer(LearningProblem params) {
+		return selectOne(Namespace + ".selectXrayAnswer", params);
+	}		
+	
 	public List<?> selectOxLearning(LearningProblem params) {
 		return (List<?>)selectList(Namespace + ".selectOxLearning", params);
 	}		

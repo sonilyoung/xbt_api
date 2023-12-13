@@ -54,7 +54,8 @@ public class Baseline {
 	
 	private List<Student> stuList;
 	private List<List<String>> menuList;
-	private List<Long> modulesList;
+	private List<Long> modulesList;//학습모듈 및 평가모듈을 제외한 다른모듈
+	private List<Long> evaluationModulesList;//평가모듈
 	private List<EduDate> scheduleList;
 	private List<String> userList;
 	private List<Long> moduleList;

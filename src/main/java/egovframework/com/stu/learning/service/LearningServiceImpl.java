@@ -106,6 +106,12 @@ public class LearningServiceImpl implements LearningService {
 	}	
 	
 	@Override
+	public LearningProblem selectXrayAnswer(LearningProblem params) {
+		// TODO Auto-generated method stub
+		return learningDAO.selectXrayAnswer(params);
+	}		
+	
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<LearningProblem> selectOxLearning(LearningProblem params) {
 		// TODO Auto-generated method stub

@@ -461,7 +461,7 @@
 			,STUDY_LVL
 			,#{eduStartDate}
 			,#{eduEndDate}
-			,TOT_STUDY_DATE
+			,#{totStudyDate}
 			,LIMIT_PERSON_CNT
 			,THEORY_QUESTION_CNT
 			,ENDING_STD_SCORE
@@ -507,6 +507,8 @@
 			,now()
 		FROM XBT_BASELINE_EDU_DATE
 		WHERE PROC_CD = #{targetProcCd}
+		AND EDU_START_DATE = #{eduSartDate}
+		AND EDU_END_DATE = #{eduEndDated}
 	</insert>	
 	
 	<!-- 차수사용자 복사 -->

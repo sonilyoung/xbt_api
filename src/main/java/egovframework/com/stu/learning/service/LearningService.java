@@ -47,6 +47,8 @@ public interface LearningService {
 	
 	public List<LearningProblem> selectLearnProblemsResult(LearningProblem params);
 	
+	public LearningProblem selectXrayAnswer(LearningProblem params);
+	
 	public Learning selectLearnAnswer(Learning params);
 	
 	public int updateLearningAnswer(Learning params);

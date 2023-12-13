@@ -9,6 +9,7 @@ public class EduDate {
 	private Long dayNo;
 	private Long procCd;
 	private Long moduleId;
+	private Long evaluationModuleId;
 	private String moduleNm;
 	private String procYear;
 	private String procSeq;

@@ -296,6 +296,32 @@
 		WHERE BAG_SCAN_ID = #{bagScanId}
 	</select>	
 	
+	<!-- 정답문제가져오기 -->
+	<select id="selectXrayAnswer" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
+		SELECT 
+			UNIT_ID
+			<choose>
+				<when test='languageCode == "kr"'>
+					UNIT_NAME,
+				</when>
+				<when test='languageCode == "en"'>
+					UNIT_NAME,	
+				</when>
+				<when test='languageCode == "ch"'>
+					UNIT_NAME,
+				</when>				
+				<when test='languageCode == "jp"'>
+					UNIT_NAME,
+				</when>
+				<otherwise>
+					UNIT_NAME,
+				</otherwise>											
+			</choose>			
+			UNIT_GROUP_CD											
+		FROM XBT_BAG_INFO
+		WHERE BAG_SCAN_ID = #{bagScanId}
+	</select>		
+	
 	
 	<!-- 학습정답확인 -->
 	<select id="selectLearnAnswer" parameterType="egovframework.com.stu.learning.vo.Learning" resultType="egovframework.com.stu.learning.vo.Learning">

@@ -12,6 +12,7 @@ public class LearningImg implements Serializable{
 	private String unitScanId;
 	private String unitId;
 	private String command;
+	private String languageCode;
 	private int studyLvl;
 	//private byte[] imgReal;
 	

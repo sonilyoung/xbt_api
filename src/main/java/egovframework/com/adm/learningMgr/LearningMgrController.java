@@ -78,23 +78,6 @@ public class LearningMgrController {
 		
 		
 		try {
-			
-			if("학습".equals(params.getSearchval())){
-				params.setSearchval("l");
-			}
-			
-			if("평가".equals(params.getSearchval())){
-				params.setSearchval("e");
-			}
-			
-			if("Slide".equals(params.getSearchval())){
-				params.setSearchval("s");
-			}
-			
-			if("Cut".equals(params.getSearchval())){
-				params.setSearchval("c");
-			}
-			
 			List<EduModule> resultList = learningMgrService.selectModuleList(params);
 	        return new BaseResponse<List<EduModule>>(resultList);
         } catch (Exception e) {

@@ -293,7 +293,11 @@ public class EduMgrController {
 		
 		if(StringUtils.isEmpty(params.getModuleList())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleList" + BaseApiMessage.REQUIRED.getCode());
-		}			
+		}		
+		
+		//if(StringUtils.isEmpty(params.getEvaluationModulesList())){				
+			//return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "EvaluationModulesList" + BaseApiMessage.REQUIRED.getCode());
+		//}				
 		
 		if(StringUtils.isEmpty(params.getUserList())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userList" + BaseApiMessage.REQUIRED.getCode());
@@ -444,6 +448,10 @@ public class EduMgrController {
 		if(StringUtils.isEmpty(params.getModuleList())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "moduleList" + BaseApiMessage.REQUIRED.getCode());
 		}			
+		
+		//if(StringUtils.isEmpty(params.getEvaluationModulesList())){				
+			//return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "EvaluationModulesList" + BaseApiMessage.REQUIRED.getCode());
+		//}			
 		
 		if(StringUtils.isEmpty(params.getUserList())){				
 			return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "userList" + BaseApiMessage.REQUIRED.getCode());

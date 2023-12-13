@@ -294,7 +294,16 @@ public class LearningController {
 		}
 		
 		try {
+			
+			LearningProblem lpParams = new LearningProblem();
+			lpParams.setLanguageCode(params.getLanguageCode());
+			lpParams.setBagScanId(params.getBagScanId());
+			LearningProblem lp = learningService.selectXrayAnswer(lpParams);
 			LearningMainImg result = xbtImageService.selectCommonLearningImg(params); 
+			if(lp!=null) {
+				result.setUnitName(lp.getUnitName());
+			}
+			
 			return new BaseResponse<LearningMainImg>(result);
         } catch (Exception e) {
         	LOGGER.error("error:", e);

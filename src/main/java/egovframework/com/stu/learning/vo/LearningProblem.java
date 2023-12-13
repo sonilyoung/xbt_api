@@ -26,6 +26,7 @@ public class LearningProblem{
 	private String unitName;
 	private String openYn;
 	private String passYn;
+	private String unitGroupCd;
 	private int trySeq;
 	private int questionCnt;
 	private byte[] imgReal;//실사
