@@ -66,4 +66,7 @@ public class EduModule {
 	private String actionDivName;                  /*action구분*/
 	private int menuCd;
 	private String searchval;
+	
+	private List<EduModule> moduleList;
+	private List<EduModule> evaluationList;
 }

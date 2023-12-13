@@ -81,13 +81,14 @@ public class EduMgrServiceImpl implements EduMgrService {
 					if(menu != null) {
 						if("l".equals(menu.getLearningType())) {
 							//모듈정보추가
-							moduleId = params.getModuleList().get(i);						
+							moduleId = params.getModuleList().get(i);
+							sl.setModuleId(moduleId);
 						}else if("e".equals(menu.getLearningType())) {
 							//평가모듈정보추가
 							moduleId = params.getEvaluationModulesList().get(i);							
+							sl.setModuleId(moduleId);
 						}					
 					}
-					sl.setModuleId(moduleId);
 					sl.setProcCd(baseline.getProcCd());
 					sl.setProcNm(baseline.getProcName());
 					sl.setMenuCd(menu.getMenuCd());  
@@ -170,14 +171,15 @@ public class EduMgrServiceImpl implements EduMgrService {
 					if(menu != null) {
 						if("l".equals(menu.getLearningType())) {
 							//모듈정보추가
-							moduleId = params.getModuleList().get(i);						
+							moduleId = params.getModuleList().get(i);
+							sl.setModuleId(moduleId);
 						}else if("e".equals(menu.getLearningType())) {
 							//평가모듈정보추가
 							moduleId = params.getEvaluationModulesList().get(i);							
+							sl.setModuleId(moduleId);
 						}					
 					}
 					
-					sl.setModuleId(moduleId);
 					sl.setProcCd(baseline.getProcCd());
 					sl.setProcNm(baseline.getProcName());
 					sl.setMenuCd(menu.getMenuCd());  

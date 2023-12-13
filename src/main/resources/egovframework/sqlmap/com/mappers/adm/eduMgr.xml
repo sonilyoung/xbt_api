@@ -344,6 +344,9 @@
 			AND EDU_START_DATE = #{eduStartDate}
 			AND EDU_END_DATE = #{eduEndDate}	
 		]]>
+		<if test='learningType == "l" or learningType == "e"'>
+			AND LEARNING_TYPE = #{learningType}
+		</if>		
 	</select>	
 	
 	<!-- 교육일정 메뉴목록-->

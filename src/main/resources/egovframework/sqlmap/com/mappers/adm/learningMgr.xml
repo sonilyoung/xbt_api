@@ -46,6 +46,9 @@
 					)
 				</when>
 			</choose>		
+			<if test='learningType == "l" or learningType == "e"'>
+				AND LEARNING_TYPE = #{learningType}
+			</if>
 		ORDER BY MODULE_ID DESC
 				
 	</select>		

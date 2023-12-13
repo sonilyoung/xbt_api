@@ -299,9 +299,9 @@
 	<!-- 정답문제가져오기 -->
 	<select id="selectXrayAnswer" parameterType="egovframework.com.stu.learning.vo.LearningProblem" resultType="egovframework.com.stu.learning.vo.LearningProblem">			
 		SELECT 
-			UNIT_ID
+			UNIT_ID,
 			<choose>
-				<when test='languageCode == "kr"'>
+				<when test='languageCode == "kr" or languageCode == "ko" '>
 					UNIT_NAME,
 				</when>
 				<when test='languageCode == "en"'>

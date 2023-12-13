@@ -124,20 +124,35 @@ public class EduMgrController {
 			baseline.setMenuList(menus);
 			
 			
-			//모듈목록
+			//학습모듈목록
 			List<Long> mlist = new ArrayList<Long>();
 			for(EduDate e : scheduleList) {
 				//메뉴목록
+				e.setLearningType("l");
 				EduDate menuList = eduMgrService.selectEduModuleList(e);
 				if(menuList!=null) {
 					mlist.add(menuList.getModuleId());
 				}else {
-					mlist.add(Long.valueOf(0));
+					mlist.add(null);
 				}
 					 
 			}
-			 
 			baseline.setModulesList(mlist);			
+			
+			//평가모듈목록
+			List<Long> melist = new ArrayList<Long>();
+			for(EduDate e : scheduleList) {
+				//메뉴목록
+				e.setLearningType("e");
+				EduDate menuList = eduMgrService.selectEduModuleList(e);
+				if(menuList!=null) {
+					melist.add(menuList.getModuleId());
+				}else {
+					melist.add(null);
+				}
+					 
+			}
+			baseline.setEvaluationModulesList(melist);				
 			
 			Student stu = new Student();
 			stu.setProcCd(params.getProcCd());

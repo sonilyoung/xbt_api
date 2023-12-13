@@ -69,17 +69,25 @@ public class LearningMgrController {
 	@ResponseBody
     @RequestMapping(value = {"/selectModuleList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
     @ApiOperation(value = "학습관리-xray판독모듈목록", notes = "학습관리-xray판독모듈목록 조회한다.")
-    public BaseResponse<List<EduModule>> selectModuleList(HttpServletRequest request
+    public BaseResponse<EduModule> selectModuleList(HttpServletRequest request
     		, @RequestBody EduModule params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		
 		try {
-			List<EduModule> resultList = learningMgrService.selectModuleList(params);
-	        return new BaseResponse<List<EduModule>>(resultList);
+			//학습목록
+			params.setLearningType("l");
+			List<EduModule> lList = learningMgrService.selectModuleList(params);
+			params.setModuleList(lList);
+			
+			//평가목록
+			params.setLearningType("e");
+			List<EduModule> eList = learningMgrService.selectModuleList(params);
+			params.setEvaluationList(eList);
+			
+	        return new BaseResponse<EduModule>(params);
         } catch (Exception e) {
         	LOGGER.error("error:", e);
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
