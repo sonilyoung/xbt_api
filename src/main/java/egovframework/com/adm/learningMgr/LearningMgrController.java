@@ -94,6 +94,31 @@ public class LearningMgrController {
         }
     }  	
 	
+    /**
+     * 학습관리>모듈관리 리스트 조회
+     * 
+     * @param param
+     * @return Company
+     */
+	@ResponseBody
+    @RequestMapping(value = {"/SelectModuleMgrList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @ApiOperation(value = "학습관리>모듈관리 리스트 조회", notes = "학습관리>모듈관리 리스트 조회.")
+    public BaseResponse<List<EduModule>> SelectModuleMgrList(HttpServletRequest request
+    		, @RequestBody EduModule params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			List<EduModule> lList = learningMgrService.selectModuleList(params);
+	        return new BaseResponse<List<EduModule>>(lList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    } 	
+	
 	
     /**
      * 학습관리-xray판독모듈상세
