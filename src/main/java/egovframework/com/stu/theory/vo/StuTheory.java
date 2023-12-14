@@ -28,6 +28,7 @@ public class StuTheory {
 	private String multiPlusImgName;
 	private byte[] multiPlusImg;
 	private double gainScore;
+	private double dangerScore;
 	private String actionDiv;
 	private String userActionDiv;
 	private String insertId;

@@ -333,7 +333,15 @@
 	         ) 
 			</otherwise>
 		</choose>         
-        )TOT ORDER BY INSERT_DATE DESC
+        )TOT 
+        <if test='searchval != "" and searchval != null'>
+        	WHERE USER_ID = #{searchval}
+				  OR USER_NM = #{searchval}
+				  OR WRITE_DATE = #{searchval}
+				  OR INSERT_DATE = #{searchval}
+				  OR EDU_NAME LIKE CONCAT('%' , #{searchval} , '%')
+        </if>
+        ORDER BY INSERT_DATE DESC
 	</select>		
 
 	<!-- 차수 교육생 정보조회-->
@@ -431,6 +439,7 @@
 				T2.RIGHT_CNT,
 				T2.WRONG_CNT,
 				T2.GAIN_SCORE AS theoryScore,
+				T2.DANGER_SCORE AS dangerScore,
 				(SELECT THEORY_TOTAL_SCORE FROM XBT_BASELINE XB WHERE XB.PROC_CD = T1.PROC_CD)AS THEORY_TOTAL_SCORE,
 				T1.THEORY_SCORE AS gainScore
 			FROM

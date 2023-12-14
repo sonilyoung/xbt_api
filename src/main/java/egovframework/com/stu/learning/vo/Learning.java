@@ -36,6 +36,7 @@ public class Learning{
 	private int theoryQuestionCnt;
 	private int timeLimit;
 	private int slideSpeed;
+	private double dangerScore;
 	private int passScore;
 	private int passTheoryScore;
 	private int passDangerScore;

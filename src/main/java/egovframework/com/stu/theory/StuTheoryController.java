@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import egovframework.com.adm.login.service.LoginService;
+import egovframework.com.adm.system.service.SystemService;
+import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.system.vo.XbtScore;
 import egovframework.com.adm.theory.service.TheoryService;
 import egovframework.com.adm.theory.vo.Theory;
@@ -75,6 +76,9 @@ public class StuTheoryController {
     
     @Autowired
     private XbtScoreService xbtScoreService;  
+ 
+    @Autowired
+    private SystemService systemService;    
     
     
     /**
@@ -126,12 +130,12 @@ public class StuTheoryController {
 		params.setTrySeq(maxKey.getTrySeq());
 		
 		//평가유무확인
-		int processYn = stuTheoryService.selectTheoryProcessYnCount(params);
-		if(processYn == baselineData.getTheoryQuestionCnt()) {
+		int processCnt = stuTheoryService.selectTheoryProcessYnCount(params);
+		if(processCnt > 0) {
 			return new BaseResponse<StuTheory>(BaseResponseCode.ALREADY_STARE, BaseResponseCode.ALREADY_STARE.getMessage());
 		}			
 		
-		//등록된학습문제 체크
+		//등록된이론문제 체크
 		params.setEndYn("N");
 		int problemsCnt = stuTheoryService.selectTheoryProblemsCount(params);
 		
@@ -181,6 +185,9 @@ public class StuTheoryController {
 		}		
 		
 		try {
+			//이론문제가져오기
+			params.setLageGroupCd(login.getEduCode());
+			params.setMiddleGroupCd(login.getEduCode()+params.getMenuCd());			
 			//이론조회
 			StuTheory result = stuTheoryService.selectTheory(params);
 			Theory tr = new Theory();
@@ -283,6 +290,10 @@ public class StuTheoryController {
 		}			
 		
 		try {
+			//이론문제가져오기
+			params.setLageGroupCd(login.getEduCode());
+			params.setMiddleGroupCd(login.getEduCode()+params.getMenuCd());			
+			
 			Learning lp = new Learning();
 			lp.setUserId(login.getUserId());			
 			Learning baselineData = learningService.selectBaseline(lp);
@@ -315,6 +326,9 @@ public class StuTheoryController {
 				s.setProcYear(baselineData.getProcYear());
 				s.setProcSeq(baselineData.getProcSeq());
 				s.setTrySeq(maxKey.getTrySeq());
+				//이론문제가져오기
+				s.setLageGroupCd(login.getEduCode());
+				s.setMiddleGroupCd(login.getEduCode()+params.getMenuCd());				
 				StuTheory answer = stuTheoryService.selectTheoryAnswer(s);
 				s.setAnswerDiv(answer.getAnswerDiv());
 				answer.setQuestionId(s.getQuestionId());
@@ -328,6 +342,10 @@ public class StuTheoryController {
 					answer.setGainScore(0);
 				}
 				
+				
+				//이론문제가져오기
+				answer.setLageGroupCd(login.getEduCode());
+				answer.setMiddleGroupCd(login.getEduCode()+params.getMenuCd());					
 				answer.setUserId(login.getUserId());
 				answer.setProcCd(baselineData.getProcCd());
 				answer.setProcYear(baselineData.getProcYear());
@@ -347,10 +365,10 @@ public class StuTheoryController {
 				return new BaseResponse<Integer>(BaseResponseCode.EDU_DATA, BaseResponseCode.EDU_DATA.getMessage());
 			}
 			
-			//학습종료데이터확인
+			//이론종료데이터확인
 			int baselineCnt = stuTheoryService.selectTheoryBaselineResultCount(params);
 			
-			//학습종료데이터등록
+			//이론종료데이터등록
 			if(baselineCnt <= 0) {
 				StuTheory studyLvl = stuTheoryService.selectStudyLvlTheory(params);
 				params.setStudyLvl(studyLvl.getTrySeq()); 
@@ -358,14 +376,32 @@ public class StuTheoryController {
 			}
 
 			StuTheory gainScore = stuTheoryService.selectTheorySum(params);
-			params.setGainScore(gainScore.getGainScore());
-			if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassTheoryScore())) {//통과
-				params.setPassYn("Y");
-			}else {//과락
-				params.setPassYn("N");
+			
+			Menu pm = new Menu();
+			pm.setLanguageCode("kr");
+			pm.setMenuCd(params.getMenuCd());
+			Menu mn = systemService.selectMenu(pm);
+			if(mn!=null) {
+				if("danger".equals(mn.getLearningType())) {
+					params.setDangerScore(gainScore.getGainScore());
+					if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassDangerScore())) {//통과
+						params.setPassYn("Y");
+					}else {//과락
+						params.setPassYn("N");
+					}
+				}else {
+					params.setGainScore(gainScore.getGainScore());
+					if(gainScore.getGainScore()>=Double.valueOf(baselineData.getPassTheoryScore())) {//통과
+						params.setPassYn("Y");
+					}else {//과락
+						params.setPassYn("N");
+					}					
+				}
+			}else {
+				params.setGainScore(gainScore.getGainScore());
 			}
 			
-			//학습종료 틀린갯수 맞은갯수 확인 
+			//이론종료 틀린갯수 맞은갯수 확인 
 			StuTheory resultCnt = stuTheoryService.selectTheoryResultCount(params);
 			params.setQuestionCnt(resultCnt.getQuestionCnt());
 			params.setWrongCnt(resultCnt.getWrongCnt());

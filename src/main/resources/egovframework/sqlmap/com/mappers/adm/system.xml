@@ -200,8 +200,7 @@
 		FROM
 			XBT_BASELINE_STUDENT_INFO
 		WHERE
-			ENDING_YN = 'N' OR ENDING_YN = 'ING'
-			AND USER_ID = #{userId}
+			USER_ID = #{userId}
 			AND PROC_CD = #{procCd}
 	</select>			
 	

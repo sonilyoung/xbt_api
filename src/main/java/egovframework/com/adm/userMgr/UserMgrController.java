@@ -262,13 +262,6 @@ public class UserMgrController {
 			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "PracticeScore" + BaseApiMessage.REQUIRED.getCode());
 		}
 		
-		if(StringUtils.isEmpty(params.getPracticeHumanScore())){				
-			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "PracticeHumanScore" + BaseApiMessage.REQUIRED.getCode());
-		}
-		
-		if(StringUtils.isEmpty(params.getPracticeCarScore())){				
-			return new BaseResponse<UserBaseline>(BaseResponseCode.PARAMS_ERROR, "PracticeCarScore" + BaseApiMessage.REQUIRED.getCode());
-		}
 		
 		try {
 			//차수조회
@@ -283,6 +276,7 @@ public class UserMgrController {
 				params.setPracticeBeforeScore(params.getPracticeScore());
 				params.setPracticeScore(practiceScore);
 				
+				/*
 				int practiceHumanScore = (params.getPracticeHumanScore() * baseline.getPracticeHumanTotalScore())/100;
 				params.setPracticeHumanBeforeScore(params.getPracticeHumanScore());
 				params.setPracticeHumanScore(practiceHumanScore);
@@ -290,12 +284,14 @@ public class UserMgrController {
 				int practiceCarScore = (params.getPracticeCarScore() * baseline.getPracticeCarTotalScore())/100;
 				params.setPracticeCarBeforeScore(params.getPracticeCarScore());
 				params.setPracticeCarScore(practiceCarScore);				
-				
+				*/
 
 				if("4".equals(eduCodeInfo.getEduCode())){
-					gainScore = eduCodeInfo.getTheoryScore() + practiceHumanScore;
+					gainScore = eduCodeInfo.getTheoryScore() + practiceScore;
+					//gainScore = eduCodeInfo.getTheoryScore() + practiceHumanScore;
 				}else if("6".equals(eduCodeInfo.getEduCode())){
-					gainScore = eduCodeInfo.getTheoryScore() + practiceHumanScore + practiceCarScore;
+					gainScore = eduCodeInfo.getTheoryScore() + practiceScore;
+					//gainScore = eduCodeInfo.getTheoryScore() + practiceHumanScore + practiceCarScore;
 				}else {
 					gainScore = eduCodeInfo.getEvaluationScore() + eduCodeInfo.getTheoryScore() + practiceScore;
 				}	
@@ -304,8 +300,8 @@ public class UserMgrController {
 				result = userMgrService.updateBaselineUser(params);
 				
 				params.setPracticeScore(params.getPracticeBeforeScore());
-				params.setPracticeHumanScore(params.getPracticeHumanBeforeScore());
-				params.setPracticeCarScore(params.getPracticeCarBeforeScore());		
+				//params.setPracticeHumanScore(params.getPracticeHumanBeforeScore());
+				//params.setPracticeCarScore(params.getPracticeCarBeforeScore());		
 			}
 			
 			//합격불합격처리
