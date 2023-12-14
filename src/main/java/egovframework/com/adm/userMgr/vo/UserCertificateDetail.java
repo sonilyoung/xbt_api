@@ -9,6 +9,7 @@ public class UserCertificateDetail {
 	private String procSeq;
 	private String eduCode;
 	private String eduName;
+	private String eduNameEn;
 	private String userId;
 	private String userNm;
 	private String userNmEn;

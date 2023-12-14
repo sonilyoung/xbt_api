@@ -2090,8 +2090,8 @@ public class UserMgrController {
 					return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
 				}		
 				
-				if(StringUtils.isEmpty(ui.getUserIdList())){				
-					return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "UserIdList" + BaseApiMessage.REQUIRED.getCode());
+				if(StringUtils.isEmpty(ui.getUserId())){				
+					return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "userId" + BaseApiMessage.REQUIRED.getCode());
 				}	
 				
 				XbtScore xs = new XbtScore();
