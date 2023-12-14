@@ -55,7 +55,8 @@
 		FROM
 			XBT_THEORY_QUESTION		
 		WHERE QUESTION_ID = #{questionId}
-		
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
+		AND MIDDLE_GROUP_CD = #{middleGroupCd}		
 	</select>	
 	
 				
@@ -235,8 +236,6 @@
 		AND PROC_SEQ = #{procSeq}
 		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
-		AND LAGE_GROUP_CD = #{lageGroupCd} 
-		AND MIDDLE_GROUP_CD = #{middleGroupCd}		
 	</select>	
 	
 	<!-- 난이도 정보 -->
@@ -336,6 +335,7 @@
 			XBT_BASELINE_THEORY 
 		SET 
 			GAIN_SCORE = #{gainScore},
+			DANGER_SCORE = #{dangerScore},
 			PASS_YN = #{passYn},
 			RIGHT_CNT = #{rightCnt},
 			WRONG_CNT = #{wrongCnt}

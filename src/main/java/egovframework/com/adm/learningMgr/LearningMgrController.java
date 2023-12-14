@@ -101,9 +101,9 @@ public class LearningMgrController {
      * @return Company
      */
 	@ResponseBody
-    @RequestMapping(value = {"/SelectModuleMgrList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
+    @RequestMapping(value = {"/selectModuleMgrList.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
     @ApiOperation(value = "학습관리>모듈관리 리스트 조회", notes = "학습관리>모듈관리 리스트 조회.")
-    public BaseResponse<List<EduModule>> SelectModuleMgrList(HttpServletRequest request
+    public BaseResponse<List<EduModule>> selectModuleMgrList(HttpServletRequest request
     		, @RequestBody EduModule params) {
     	Login login = loginService.getLoginInfo(request);
 		if (login == null) {

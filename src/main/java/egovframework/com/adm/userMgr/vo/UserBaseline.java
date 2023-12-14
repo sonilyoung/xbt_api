@@ -23,6 +23,7 @@ public class UserBaseline {
 	private int practiceBeforeScore;
 	private String practiceYn;
 	private int theoryScore;
+	private int dangerScore;
 	private int evaluationScore;
 	private String evaluationYn;
 	private String passYn;

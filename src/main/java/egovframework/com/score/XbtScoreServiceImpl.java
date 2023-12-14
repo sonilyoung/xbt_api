@@ -182,16 +182,16 @@ public class XbtScoreServiceImpl implements XbtScoreService {
 							}else {
 								xs.setDangerPassYn("Y");
 							}						
-						}						
+						}		
+						
+						int totalScore = theoryScore + evaluationScore + practiceScore;
+						xs.setGainScore(totalScore);
 						
 						if(tgtEvaluationScore >= baseline.getPassScore() 
 							&& tgtTheoryScore >= baseline.getPassTheoryScore() 
 							&& tgtPracticeScore >= baseline.getPassPracticeScore()
 							&& tgtDangerScore >= baseline.getPassDangerScore()
 						) {
-							int totalScore = theoryScore + evaluationScore + practiceScore;
-							xs.setGainScore(totalScore);
-							 
 							if(totalScore >= baseline.getEndingStdScore() && dangerScore >= baseline.getPassDangerScore()) {
 								xs.setEndingYn("Y");
 								xs.setPassYn("Y");
@@ -221,10 +221,10 @@ public class XbtScoreServiceImpl implements XbtScoreService {
 							}
 						}
 						
+						int totalScore = evaluationScore;
+						xs.setGainScore(totalScore);						
+						
 						if(tgtEvaluationScore >= baseline.getPassScore()) {
-							int totalScore = evaluationScore;
-							xs.setGainScore(totalScore);
-							 
 							if(totalScore >= baseline.getEndingStdScore()) {
 								xs.setEndingYn("Y");
 								xs.setPassYn("Y");
@@ -274,13 +274,12 @@ public class XbtScoreServiceImpl implements XbtScoreService {
 							}						 
 						}
 						
+						int totalScore = theoryScore + practiceScore;
+						xs.setGainScore(totalScore);						
 						
 						if(tgtTheoryScore >= baseline.getPassTheoryScore() 
 							&& tgtPracticeScore >= baseline.getPassPracticeScore()
 						) {
-							int totalScore = theoryScore + practiceScore;
-							xs.setGainScore(totalScore);
-							 
 							if(totalScore >= baseline.getEndingStdScore()) {
 								xs.setEndingYn("Y");
 								xs.setPassYn("Y");
@@ -343,13 +342,13 @@ public class XbtScoreServiceImpl implements XbtScoreService {
 							}
 						}
 						
+						int totalScore = theoryScore + evaluationScore + practiceScore;
+						xs.setGainScore(totalScore);						
+						
 						if(tgtEvaluationScore >= baseline.getPassScore() 
 							&& tgtTheoryScore >= baseline.getPassTheoryScore() 
 							&& tgtPracticeScore >= baseline.getPassPracticeScore()
 						) {
-							int totalScore = theoryScore + evaluationScore + practiceScore;
-							xs.setGainScore(totalScore);
-							 
 							if(totalScore >= baseline.getEndingStdScore()) {
 								xs.setEndingYn("Y");
 								xs.setPassYn("Y");
