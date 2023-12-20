@@ -11,6 +11,7 @@ public class EduDate {
 	private Long moduleId;
 	private Long evaluationModuleId;
 	private String moduleNm;
+	private String evaluationModuleNm;
 	private String procYear;
 	private String procSeq;
 	private String procNm;

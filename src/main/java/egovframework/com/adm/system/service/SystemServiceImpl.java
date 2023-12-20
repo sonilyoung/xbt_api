@@ -183,5 +183,35 @@ public class SystemServiceImpl implements SystemService {
 		// TODO Auto-generated method stub
 		return systemDAO.updateXrayExcelData(params);
 	}
+
+	@Override
+	public int updateEvaluationProgressingBackup(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.updateEvaluationProgressingBackup(params);
+	}
+
+	@Override
+	public int updateBaselineEvaluationBackup(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.updateBaselineEvaluationBackup(params);
+	}
+
+	@Override
+	public int updateTheoryProgressingBackup(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.updateTheoryProgressingBackup(params);
+	}
+
+	@Override
+	public int updateBaselineTheoryBackup(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.updateBaselineTheoryBackup(params);
+	}
+
+	@Override
+	public int updateBaselineStudentInfoBackup(XbtScore params) {
+		// TODO Auto-generated method stub
+		return systemDAO.updateBaselineStudentInfoBackup(params);
+	}
 	
 }

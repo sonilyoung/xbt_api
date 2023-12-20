@@ -381,6 +381,7 @@ public class StuTheoryController {
 			pm.setLanguageCode("kr");
 			pm.setMenuCd(params.getMenuCd());
 			Menu mn = systemService.selectMenu(pm);
+			params.setLearningType(mn.getLearningType()); 
 			if(mn!=null) {
 				if("danger".equals(mn.getLearningType())) {
 					params.setDangerScore(gainScore.getGainScore());

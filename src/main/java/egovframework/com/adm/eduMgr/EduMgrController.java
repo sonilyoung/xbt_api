@@ -212,8 +212,13 @@ public class EduMgrController {
 				menus.add(dmenus);
 				e.setMenuList(menus);
 				
-				EduDate module = eduMgrService.selectEduModuleList(e);
-				e.setModuleNm(module.getModuleNm());
+				e.setLearningType("l");
+				EduDate lmodule = eduMgrService.selectEduModuleList(e);
+				e.setModuleNm(lmodule.getModuleNm());
+				
+				e.setLearningType("e");
+				EduDate emodule = eduMgrService.selectEduModuleList(e);
+				e.setEvaluationModuleNm(emodule.getModuleNm());				
 			}
 			baseline.setScheduleList(scheduleList);
 	        return new BaseResponse<Baseline>(baseline);

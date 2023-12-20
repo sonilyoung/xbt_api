@@ -105,4 +105,24 @@ public class SystemDAO extends EgovAbstractMapper{
 	public int updateXrayExcelData(XrayContents params) {
 		return update(Namespace + ".updateXrayExcelData", params);
 	}	
+	
+	public int updateEvaluationProgressingBackup(XbtScore params) {
+		return update(Namespace + ".updateEvaluationProgressingBackup", params);
+	}	
+	
+	public int updateBaselineEvaluationBackup(XbtScore params) {
+		return update(Namespace + ".updateBaselineEvaluationBackup", params);
+	}	
+	
+	public int updateTheoryProgressingBackup(XbtScore params) {
+		return update(Namespace + ".updateTheoryProgressingBackup", params);
+	}	
+	
+	public int updateBaselineTheoryBackup(XbtScore params) {
+		return update(Namespace + ".updateBaselineTheoryBackup", params);
+	}	
+	
+	public int updateBaselineStudentInfoBackup(XbtScore params) {
+		return update(Namespace + ".updateBaselineStudentInfoBackup", params);
+	}	
 }

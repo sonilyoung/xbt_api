@@ -72,5 +72,15 @@ public interface SystemService {
 	public int updateBaselineStatus(XbtScore params);
 	
 	public int updateXrayExcelData(XrayContents params);
+	
+	public int updateEvaluationProgressingBackup(XbtScore params);
+	
+	public int updateBaselineEvaluationBackup(XbtScore params);
+	
+	public int updateTheoryProgressingBackup(XbtScore params);
+	
+	public int updateBaselineTheoryBackup(XbtScore params);
+	
+	public int updateBaselineStudentInfoBackup(XbtScore params);
 		
 }

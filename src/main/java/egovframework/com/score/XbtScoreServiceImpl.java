@@ -113,7 +113,7 @@ public class XbtScoreServiceImpl implements XbtScoreService {
 					LOGGER.info("dangerScore:" + dangerScore);
 					xs.setDangerScore(dangerScore);
 					xs.setCommand("danger");
-					systemService.updateXbtScore(xs);					
+					systemService.updateXbtScore(xs);	
 				}
 				
 				//평가점수
@@ -368,6 +368,7 @@ public class XbtScoreServiceImpl implements XbtScoreService {
 				//systemService.updateBaselineStatus(xs);
 				}			
 			}
+			
 			LOGGER.info("=======================사용자 점수 계산 끝=============================");
 		}
 	}

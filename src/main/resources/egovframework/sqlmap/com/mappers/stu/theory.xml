@@ -26,7 +26,9 @@
 			INSERT_DATE
 		FROM
 			XBT_THEORY_QUESTION
-		WHERE LAGE_GROUP_CD = #{lageGroupCd} 
+		WHERE
+		USE_YN = 'Y' 
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
 		AND MIDDLE_GROUP_CD = #{middleGroupCd}
 			ORDER BY RAND() 
 		LIMIT #{questionCnt}
@@ -54,7 +56,9 @@
 			INSERT_DATE
 		FROM
 			XBT_THEORY_QUESTION		
-		WHERE QUESTION_ID = #{questionId}
+		WHERE
+		USE_YN = 'Y'  
+		AND QUESTION_ID = #{questionId}
 		AND LAGE_GROUP_CD = #{lageGroupCd} 
 		AND MIDDLE_GROUP_CD = #{middleGroupCd}		
 	</select>	
@@ -151,7 +155,9 @@
 			now()
 		FROM
 			XBT_THEORY_QUESTION		
-		where LAGE_GROUP_CD = #{lageGroupCd} 
+		WHERE
+		USE_YN = 'Y'  
+		AND LAGE_GROUP_CD = #{lageGroupCd} 
 		AND MIDDLE_GROUP_CD = #{middleGroupCd}	
 			ORDER BY RAND() 
 	</insert>
@@ -331,19 +337,36 @@
 	
 	<!-- 학습종료 결과데이터-->
 	<update id="updateTheoryResult" parameterType="egovframework.com.stu.learning.vo.Learning">	
-		UPDATE 
-			XBT_BASELINE_THEORY 
-		SET 
-			GAIN_SCORE = #{gainScore},
-			DANGER_SCORE = #{dangerScore},
-			PASS_YN = #{passYn},
-			RIGHT_CNT = #{rightCnt},
-			WRONG_CNT = #{wrongCnt}
-		WHERE PROC_CD = #{procCd} 
-		AND PROC_YEAR = #{procYear} 
-		AND PROC_SEQ = #{procSeq}
-		AND TRY_SEQ = #{trySeq}
-		AND USER_ID = #{userId}
+		<choose>
+			<when test='learningType == "danger"'>
+				UPDATE 
+					XBT_BASELINE_THEORY 
+				SET 
+					DANGER_SCORE = #{dangerScore},
+					PASS_YN = #{passYn},
+					DANGER_RIGHT_CNT = #{rightCnt},
+					DANGER_WRONG_CNT = #{wrongCnt}
+				WHERE PROC_CD = #{procCd} 
+				AND PROC_YEAR = #{procYear} 
+				AND PROC_SEQ = #{procSeq}
+				AND TRY_SEQ = #{trySeq}
+				AND USER_ID = #{userId}
+			</when>
+			<otherwise>
+				UPDATE 
+					XBT_BASELINE_THEORY 
+				SET 
+					GAIN_SCORE = #{gainScore},
+					PASS_YN = #{passYn},
+					RIGHT_CNT = #{rightCnt},
+					WRONG_CNT = #{wrongCnt}
+				WHERE PROC_CD = #{procCd} 
+				AND PROC_YEAR = #{procYear} 
+				AND PROC_SEQ = #{procSeq}
+				AND TRY_SEQ = #{trySeq}
+				AND USER_ID = #{userId}							
+			</otherwise>
+		</choose>		
 	</update>		
 		
 </mapper>

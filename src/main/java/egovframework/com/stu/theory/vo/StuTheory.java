@@ -41,6 +41,7 @@ public class StuTheory {
 	private String passYn;
 	private String menuCd;
 	private String eduCode;
+	private String learningType;
 	private int trySeq;
 	private int rightCnt;
 	private int wrongCnt;

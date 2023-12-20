@@ -136,10 +136,13 @@ public class XbtImageServiceImpl implements XbtImageService {
             	//System.out.println("result : "+fileList[i]);
             	try {
             		fileByte = Files.readAllBytes(fileList[i].toPath());
+            		String fileName = fileList[i].getName();
+            		String[] fileNameParts = fileName.split("-");
+            		String lastPart = fileNameParts[fileNameParts.length - 1];        		
             		//System.out.println("fileByte : "+fileByte);
-            		if(fileList[i].getName().contains("101")) {//정면
+            		if(lastPart.contains("101")) {//정면
             			p.setImgFront(fileByte);
-            		}else if(fileList[i].getName().contains("201")) {//측면
+            		}else if(lastPart.contains("201")) {//측면
             			p.setImgSide(fileByte);
             		}
     			} catch (IOException e) {
@@ -184,97 +187,99 @@ public class XbtImageServiceImpl implements XbtImageService {
         	//System.out.println("result : "+fileList[i]);
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
-        		//System.out.println("fileByte : "+fileByte);
+        		String fileName = fileList[i].getName();
+        		String[] fileNameParts = fileName.split("-");
+        		String lastPart = fileNameParts[fileNameParts.length - 1];  
         		
-        		if(fileList[i].getName().contains("101")) {
+        		if(lastPart.contains("101")) {
         			tempFileByte = fileByte;
         		}
         		
-        		if("101".equals(params.getCommand()) && fileList[i].getName().contains("101")) {//정면
+        		if("101".equals(params.getCommand()) && lastPart.contains("101")) {//정면
         			params.setImgFrontColor(fileByte);break;
-        		}else if("102".equals(params.getCommand()) && fileList[i].getName().contains("102")) {
+        		}else if("102".equals(params.getCommand()) && lastPart.contains("102")) {
         			params.setImgFrontColorMineral(fileByte);break;
-        		}else if("103".equals(params.getCommand()) && fileList[i].getName().contains("103")) {
+        		}else if("103".equals(params.getCommand()) && lastPart.contains("103")) {
         			params.setImgFrontColorOrganism(fileByte);break;
-        		}else if("104".equals(params.getCommand()) && fileList[i].getName().contains("104")) {
+        		}else if("104".equals(params.getCommand()) && lastPart.contains("104")) {
         			params.setImgFrontColorReversal(fileByte);break;
-        		}else if("105".equals(params.getCommand()) && fileList[i].getName().contains("105")) {
+        		}else if("105".equals(params.getCommand()) && lastPart.contains("105")) {
         			params.setImgFrontColorBwRate1(fileByte);break;
-        		}else if("106".equals(params.getCommand()) && fileList[i].getName().contains("106")) {
+        		}else if("106".equals(params.getCommand()) && lastPart.contains("106")) {
         			params.setImgFrontColorBwRate2(fileByte);break;
-        		}else if("107".equals(params.getCommand()) && fileList[i].getName().contains("107")) {
+        		}else if("107".equals(params.getCommand()) && lastPart.contains("107")) {
         			params.setImgFrontColorBwRate3(fileByte);break;
-        		}else if("108".equals(params.getCommand()) && fileList[i].getName().contains("108")) {
+        		}else if("108".equals(params.getCommand()) && lastPart.contains("108")) {
         			params.setImgFrontColorBwRate4(fileByte);break;
-        		}else if("109".equals(params.getCommand()) && fileList[i].getName().contains("109")) {
+        		}else if("109".equals(params.getCommand()) && lastPart.contains("109")) {
         			params.setImgFrontColorBwRate5(fileByte);break;
-        		}else if("110".equals(params.getCommand()) && fileList[i].getName().contains("110")) {
+        		}else if("110".equals(params.getCommand()) && lastPart.contains("110")) {
         			params.setImgFrontColorBwRate6(fileByte);break;
-        		}else if("111".equals(params.getCommand()) && fileList[i].getName().contains("111")) {
+        		}else if("111".equals(params.getCommand()) && lastPart.contains("111")) {
         			params.setImgFrontBw(fileByte);break;
-        		}else if("112".equals(params.getCommand()) && fileList[i].getName().contains("112")) {
+        		}else if("112".equals(params.getCommand()) && lastPart.contains("112")) {
         			params.setImgFrontBwMineral(fileByte);break;
-        		}else if("113".equals(params.getCommand()) && fileList[i].getName().contains("113")) {
+        		}else if("113".equals(params.getCommand()) && lastPart.contains("113")) {
         			params.setImgFrontBwOrganism(fileByte);break;
-        		}else if("114".equals(params.getCommand()) && fileList[i].getName().contains("114")) {
+        		}else if("114".equals(params.getCommand()) && lastPart.contains("114")) {
         			params.setImgFrontBwReversal(fileByte);break;
-        		}else if("115".equals(params.getCommand()) && fileList[i].getName().contains("115")) {
+        		}else if("115".equals(params.getCommand()) && lastPart.contains("115")) {
         			params.setImgFrontBwBwRate1(fileByte);break;
-        		}else if("116".equals(params.getCommand()) && fileList[i].getName().contains("116")) {
+        		}else if("116".equals(params.getCommand()) && lastPart.contains("116")) {
         			params.setImgFrontBwBwRate2(fileByte);break;
-        		}else if("117".equals(params.getCommand()) && fileList[i].getName().contains("117")) {
+        		}else if("117".equals(params.getCommand()) && lastPart.contains("117")) {
         			params.setImgFrontBwBwRate3(fileByte);break;
-        		}else if("118".equals(params.getCommand()) && fileList[i].getName().contains("118")) {
+        		}else if("118".equals(params.getCommand()) && lastPart.contains("118")) {
         			params.setImgFrontBwBwRate4(fileByte);break;
-        		}else if("119".equals(params.getCommand()) && fileList[i].getName().contains("119")) {
+        		}else if("119".equals(params.getCommand()) && lastPart.contains("119")) {
         			params.setImgFrontBwBwRate5(fileByte);break;
-        		}else if("120".equals(params.getCommand()) && fileList[i].getName().contains("120")) {
+        		}else if("120".equals(params.getCommand()) && lastPart.contains("120")) {
         			params.setImgFrontBwBwRate6(fileByte);break;
-        		}else if("201".equals(params.getCommand()) && fileList[i].getName().contains("201")) {//측면
+        		}else if("201".equals(params.getCommand()) && lastPart.contains("201")) {//측면
         			params.setImgSideColor(fileByte);break;
-        		}else if("202".equals(params.getCommand()) && fileList[i].getName().contains("202")) {
+        		}else if("202".equals(params.getCommand()) && lastPart.contains("202")) {
         			params.setImgSideColorMineral(fileByte);break;
-        		}else if("203".equals(params.getCommand()) && fileList[i].getName().contains("203")) {
+        		}else if("203".equals(params.getCommand()) && lastPart.contains("203")) {
         			params.setImgSideColorOrganism(fileByte);break;
-        		}else if("204".equals(params.getCommand()) && fileList[i].getName().contains("204")) {
+        		}else if("204".equals(params.getCommand()) && lastPart.contains("204")) {
         			params.setImgSideColorReversal(fileByte);break;
-        		}else if("205".equals(params.getCommand()) && fileList[i].getName().contains("205")) {
+        		}else if("205".equals(params.getCommand()) && lastPart.contains("205")) {
         			params.setImgSideColorBwRate1(fileByte);break;
-        		}else if("206".equals(params.getCommand()) && fileList[i].getName().contains("206")) {
+        		}else if("206".equals(params.getCommand()) && lastPart.contains("206")) {
         			params.setImgSideColorBwRate2(fileByte);break;
-        		}else if("207".equals(params.getCommand()) && fileList[i].getName().contains("207")) {
+        		}else if("207".equals(params.getCommand()) && lastPart.contains("207")) {
         			params.setImgSideColorBwRate3(fileByte);break;
-        		}else if("208".equals(params.getCommand()) && fileList[i].getName().contains("208")) {
+        		}else if("208".equals(params.getCommand()) && lastPart.contains("208")) {
         			params.setImgSideColorBwRate4(fileByte);break;
-        		}else if("209".equals(params.getCommand()) && fileList[i].getName().contains("209")) {
+        		}else if("209".equals(params.getCommand()) && lastPart.contains("209")) {
         			params.setImgSideColorBwRate5(fileByte);break;
-        		}else if("210".equals(params.getCommand()) && fileList[i].getName().contains("210")) {
+        		}else if("210".equals(params.getCommand()) && lastPart.contains("210")) {
         			params.setImgSideColorBwRate6(fileByte);break;
-        		}else if("211".equals(params.getCommand()) && fileList[i].getName().contains("211")) {
+        		}else if("211".equals(params.getCommand()) && lastPart.contains("211")) {
         			params.setImgSideBw(fileByte);break;
-        		}else if("212".equals(params.getCommand()) && fileList[i].getName().contains("212")) {
+        		}else if("212".equals(params.getCommand()) && lastPart.contains("212")) {
         			params.setImgSideBwMinerals(fileByte);break;
-        		}else if("213".equals(params.getCommand()) && fileList[i].getName().contains("213")) {
+        		}else if("213".equals(params.getCommand()) && lastPart.contains("213")) {
         			params.setImgSideBwOrganism(fileByte);break;
-        		}else if("214".equals(params.getCommand()) && fileList[i].getName().contains("214")) {
+        		}else if("214".equals(params.getCommand()) && lastPart.contains("214")) {
         			params.setImgSideBwReversal(fileByte);break;
-        		}else if("215".equals(params.getCommand()) && fileList[i].getName().contains("215")) {
+        		}else if("215".equals(params.getCommand()) && lastPart.contains("215")) {
         			params.setImgSideBwBwRate1(fileByte);break;
-        		}else if("216".equals(params.getCommand()) && fileList[i].getName().contains("216")) {
+        		}else if("216".equals(params.getCommand()) && lastPart.contains("216")) {
         			params.setImgSideBwBwRate2(fileByte);break;
-        		}else if("217".equals(params.getCommand()) && fileList[i].getName().contains("217")) {
+        		}else if("217".equals(params.getCommand()) && lastPart.contains("217")) {
         			params.setImgSideBwBwRate3(fileByte);break;
-        		}else if("218".equals(params.getCommand()) && fileList[i].getName().contains("218")) {
+        		}else if("218".equals(params.getCommand()) && lastPart.contains("218")) {
         			params.setImgSideBwBwRate4(fileByte);break;
-        		}else if("219".equals(params.getCommand()) && fileList[i].getName().contains("219")) {
+        		}else if("219".equals(params.getCommand()) && lastPart.contains("219")) {
         			params.setImgSideBwBwRate5(fileByte);break;
-        		}else if("220".equals(params.getCommand()) && fileList[i].getName().contains("220")) {
+        		}else if("220".equals(params.getCommand()) && lastPart.contains("220")) {
         			params.setImgSideBwBwRate6(fileByte);break;
-        		}else if("403".equals(params.getCommand()) && fileList[i].getName().contains("403")) {//실사이미지
+        		}else if("403".equals(params.getCommand()) && lastPart.contains("403")) {//실사이미지
         			params.setImgReal(fileByte);break;
-        		}else if("401".equals(params.getCommand()) && fileList[i].getName().contains("401")) {//정면위험물품
+        		}else if("401".equals(params.getCommand()) && lastPart.contains("401")) {//정면위험물품
         			params.setImgFrontDanger(fileByte);break;
-        		}else if("402".equals(params.getCommand()) && fileList[i].getName().contains("402")) {//측면위험물품
+        		}else if("402".equals(params.getCommand()) && lastPart.contains("402")) {//측면위험물품
         			params.setImgSideDanger(fileByte);break;
         		}
         		
@@ -318,93 +323,95 @@ public class XbtImageServiceImpl implements XbtImageService {
         	//System.out.println("result : "+fileList[i]);
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
-        		//System.out.println("fileByte : "+fileByte);
+        		String fileName = fileList[i].getName();
+        		String[] fileNameParts = fileName.split("-");
+        		String lastPart = fileNameParts[fileNameParts.length - 1];  
         		
-        		if("101".equals(params.getCommand()) && fileList[i].getName().contains("101")) {//정면
+        		if("101".equals(params.getCommand()) && lastPart.contains("101")) {//정면
         			params.setImgFrontColor(fileByte);break;
-        		}else if("102".equals(params.getCommand()) && fileList[i].getName().contains("102")) {
+        		}else if("102".equals(params.getCommand()) && lastPart.contains("102")) {
         			params.setImgFrontColorMineral(fileByte);break;
-        		}else if("103".equals(params.getCommand()) && fileList[i].getName().contains("103")) {
+        		}else if("103".equals(params.getCommand()) && lastPart.contains("103")) {
         			params.setImgFrontColorOrganism(fileByte);break;
-        		}else if("104".equals(params.getCommand()) && fileList[i].getName().contains("104")) {
+        		}else if("104".equals(params.getCommand()) && lastPart.contains("104")) {
         			params.setImgFrontColorReversal(fileByte);break;
-        		}else if("105".equals(params.getCommand()) && fileList[i].getName().contains("105")) {
+        		}else if("105".equals(params.getCommand()) && lastPart.contains("105")) {
         			params.setImgFrontColorBwRate1(fileByte);break;
-        		}else if("106".equals(params.getCommand()) && fileList[i].getName().contains("106")) {
+        		}else if("106".equals(params.getCommand()) && lastPart.contains("106")) {
         			params.setImgFrontColorBwRate2(fileByte);break;
-        		}else if("107".equals(params.getCommand()) && fileList[i].getName().contains("107")) {
+        		}else if("107".equals(params.getCommand()) && lastPart.contains("107")) {
         			params.setImgFrontColorBwRate3(fileByte);break;
-        		}else if("108".equals(params.getCommand()) && fileList[i].getName().contains("108")) {
+        		}else if("108".equals(params.getCommand()) && lastPart.contains("108")) {
         			params.setImgFrontColorBwRate4(fileByte);break;
-        		}else if("109".equals(params.getCommand()) && fileList[i].getName().contains("109")) {
+        		}else if("109".equals(params.getCommand()) && lastPart.contains("109")) {
         			params.setImgFrontColorBwRate5(fileByte);break;
-        		}else if("110".equals(params.getCommand()) && fileList[i].getName().contains("110")) {
+        		}else if("110".equals(params.getCommand()) && lastPart.contains("110")) {
         			params.setImgFrontColorBwRate6(fileByte);break;
-        		}else if("111".equals(params.getCommand()) && fileList[i].getName().contains("111")) {
+        		}else if("111".equals(params.getCommand()) && lastPart.contains("111")) {
         			params.setImgFrontBw(fileByte);break;
-        		}else if("112".equals(params.getCommand()) && fileList[i].getName().contains("112")) {
+        		}else if("112".equals(params.getCommand()) && lastPart.contains("112")) {
         			params.setImgFrontBwMineral(fileByte);break;
-        		}else if("113".equals(params.getCommand()) && fileList[i].getName().contains("113")) {
+        		}else if("113".equals(params.getCommand()) && lastPart.contains("113")) {
         			params.setImgFrontBwOrganism(fileByte);break;
-        		}else if("114".equals(params.getCommand()) && fileList[i].getName().contains("114")) {
+        		}else if("114".equals(params.getCommand()) && lastPart.contains("114")) {
         			params.setImgFrontBwReversal(fileByte);break;
-        		}else if("115".equals(params.getCommand()) && fileList[i].getName().contains("115")) {
+        		}else if("115".equals(params.getCommand()) && lastPart.contains("115")) {
         			params.setImgFrontBwBwRate1(fileByte);break;
-        		}else if("116".equals(params.getCommand()) && fileList[i].getName().contains("116")) {
+        		}else if("116".equals(params.getCommand()) && lastPart.contains("116")) {
         			params.setImgFrontBwBwRate2(fileByte);break;
-        		}else if("117".equals(params.getCommand()) && fileList[i].getName().contains("117")) {
+        		}else if("117".equals(params.getCommand()) && lastPart.contains("117")) {
         			params.setImgFrontBwBwRate3(fileByte);break;
-        		}else if("118".equals(params.getCommand()) && fileList[i].getName().contains("118")) {
+        		}else if("118".equals(params.getCommand()) && lastPart.contains("118")) {
         			params.setImgFrontBwBwRate4(fileByte);break;
-        		}else if("119".equals(params.getCommand()) && fileList[i].getName().contains("119")) {
+        		}else if("119".equals(params.getCommand()) && lastPart.contains("119")) {
         			params.setImgFrontBwBwRate5(fileByte);break;
-        		}else if("120".equals(params.getCommand()) && fileList[i].getName().contains("120")) {
+        		}else if("120".equals(params.getCommand()) && lastPart.contains("120")) {
         			params.setImgFrontBwBwRate6(fileByte);break;
-        		}else if("201".equals(params.getCommand()) && fileList[i].getName().contains("201")) {//측면
+        		}else if("201".equals(params.getCommand()) && lastPart.contains("201")) {//측면
         			params.setImgSideColor(fileByte);break;
-        		}else if("202".equals(params.getCommand()) && fileList[i].getName().contains("202")) {
+        		}else if("202".equals(params.getCommand()) && lastPart.contains("202")) {
         			params.setImgSideColorMineral(fileByte);break;
-        		}else if("203".equals(params.getCommand()) && fileList[i].getName().contains("203")) {
+        		}else if("203".equals(params.getCommand()) && lastPart.contains("203")) {
         			params.setImgSideColorOrganism(fileByte);break;
-        		}else if("204".equals(params.getCommand()) && fileList[i].getName().contains("204")) {
+        		}else if("204".equals(params.getCommand()) && lastPart.contains("204")) {
         			params.setImgSideColorReversal(fileByte);break;
-        		}else if("205".equals(params.getCommand()) && fileList[i].getName().contains("205")) {
+        		}else if("205".equals(params.getCommand()) && lastPart.contains("205")) {
         			params.setImgSideColorBwRate1(fileByte);break;
-        		}else if("206".equals(params.getCommand()) && fileList[i].getName().contains("206")) {
+        		}else if("206".equals(params.getCommand()) && lastPart.contains("206")) {
         			params.setImgSideColorBwRate2(fileByte);break;
-        		}else if("207".equals(params.getCommand()) && fileList[i].getName().contains("207")) {
+        		}else if("207".equals(params.getCommand()) && lastPart.contains("207")) {
         			params.setImgSideColorBwRate3(fileByte);break;
-        		}else if("208".equals(params.getCommand()) && fileList[i].getName().contains("208")) {
+        		}else if("208".equals(params.getCommand()) && lastPart.contains("208")) {
         			params.setImgSideColorBwRate4(fileByte);break;
-        		}else if("209".equals(params.getCommand()) && fileList[i].getName().contains("209")) {
+        		}else if("209".equals(params.getCommand()) && lastPart.contains("209")) {
         			params.setImgSideColorBwRate5(fileByte);break;
-        		}else if("210".equals(params.getCommand()) && fileList[i].getName().contains("210")) {
+        		}else if("210".equals(params.getCommand()) && lastPart.contains("210")) {
         			params.setImgSideColorBwRate6(fileByte);break;
-        		}else if("211".equals(params.getCommand()) && fileList[i].getName().contains("211")) {
+        		}else if("211".equals(params.getCommand()) && lastPart.contains("211")) {
         			params.setImgSideBw(fileByte);break;
-        		}else if("212".equals(params.getCommand()) && fileList[i].getName().contains("212")) {
+        		}else if("212".equals(params.getCommand()) && lastPart.contains("212")) {
         			params.setImgSideBwMinerals(fileByte);break;
-        		}else if("213".equals(params.getCommand()) && fileList[i].getName().contains("213")) {
+        		}else if("213".equals(params.getCommand()) && lastPart.contains("213")) {
         			params.setImgSideBwOrganism(fileByte);break;
-        		}else if("214".equals(params.getCommand()) && fileList[i].getName().contains("214")) {
+        		}else if("214".equals(params.getCommand()) && lastPart.contains("214")) {
         			params.setImgSideBwReversal(fileByte);break;
-        		}else if("215".equals(params.getCommand()) && fileList[i].getName().contains("215")) {
+        		}else if("215".equals(params.getCommand()) && lastPart.contains("215")) {
         			params.setImgSideBwBwRate1(fileByte);break;
-        		}else if("216".equals(params.getCommand()) && fileList[i].getName().contains("216")) {
+        		}else if("216".equals(params.getCommand()) && lastPart.contains("216")) {
         			params.setImgSideBwBwRate2(fileByte);break;
-        		}else if("217".equals(params.getCommand()) && fileList[i].getName().contains("217")) {
+        		}else if("217".equals(params.getCommand()) && lastPart.contains("217")) {
         			params.setImgSideBwBwRate3(fileByte);break;
-        		}else if("218".equals(params.getCommand()) && fileList[i].getName().contains("218")) {
+        		}else if("218".equals(params.getCommand()) && lastPart.contains("218")) {
         			params.setImgSideBwBwRate4(fileByte);break;
-        		}else if("219".equals(params.getCommand()) && fileList[i].getName().contains("219")) {
+        		}else if("219".equals(params.getCommand()) && lastPart.contains("219")) {
         			params.setImgSideBwBwRate5(fileByte);break;
-        		}else if("220".equals(params.getCommand()) && fileList[i].getName().contains("220")) {
+        		}else if("220".equals(params.getCommand()) && lastPart.contains("220")) {
         			params.setImgSideBwBwRate6(fileByte);break;
-        		}else if("403".equals(params.getCommand()) && fileList[i].getName().contains("403")) {//실사이미지
+        		}else if("403".equals(params.getCommand()) && lastPart.contains("403")) {//실사이미지
         			params.setImgReal(fileByte);break;
-        		}else if("401".equals(params.getCommand()) && fileList[i].getName().contains("401")) {//정면위험물품
+        		}else if("401".equals(params.getCommand()) && lastPart.contains("401")) {//정면위험물품
         			params.setImgFrontDanger(fileByte);break;
-        		}else if("402".equals(params.getCommand()) && fileList[i].getName().contains("402")) {//측면위험물품
+        		}else if("402".equals(params.getCommand()) && lastPart.contains("402")) {//측면위험물품
         			params.setImgSideDanger(fileByte);break;
         		}
         		
@@ -445,93 +452,95 @@ public class XbtImageServiceImpl implements XbtImageService {
         	//System.out.println("result : "+fileList[i]);
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
-        		//System.out.println("fileByte : "+fileByte);
+        		String fileName = fileList[i].getName();
+        		String[] fileNameParts = fileName.split("-");
+        		String lastPart = fileNameParts[fileNameParts.length - 1];  
         		
-        		if("101".equals(params.getCommand()) && fileList[i].getName().contains("101")) {//정면
+        		if("101".equals(params.getCommand()) && lastPart.contains("101")) {//정면
         			params.setImgFrontColor(fileByte);break;
-        		}else if("102".equals(params.getCommand()) && fileList[i].getName().contains("102")) {
+        		}else if("102".equals(params.getCommand()) && lastPart.contains("102")) {
         			params.setImgFrontColorMineral(fileByte);break;
-        		}else if("103".equals(params.getCommand()) && fileList[i].getName().contains("103")) {
+        		}else if("103".equals(params.getCommand()) && lastPart.contains("103")) {
         			params.setImgFrontColorOrganism(fileByte);break;
-        		}else if("104".equals(params.getCommand()) && fileList[i].getName().contains("104")) {
+        		}else if("104".equals(params.getCommand()) && lastPart.contains("104")) {
         			params.setImgFrontColorReversal(fileByte);break;
-        		}else if("105".equals(params.getCommand()) && fileList[i].getName().contains("105")) {
+        		}else if("105".equals(params.getCommand()) && lastPart.contains("105")) {
         			params.setImgFrontColorBwRate1(fileByte);break;
-        		}else if("106".equals(params.getCommand()) && fileList[i].getName().contains("106")) {
+        		}else if("106".equals(params.getCommand()) && lastPart.contains("106")) {
         			params.setImgFrontColorBwRate2(fileByte);break;
-        		}else if("107".equals(params.getCommand()) && fileList[i].getName().contains("107")) {
+        		}else if("107".equals(params.getCommand()) && lastPart.contains("107")) {
         			params.setImgFrontColorBwRate3(fileByte);break;
-        		}else if("108".equals(params.getCommand()) && fileList[i].getName().contains("108")) {
+        		}else if("108".equals(params.getCommand()) && lastPart.contains("108")) {
         			params.setImgFrontColorBwRate4(fileByte);break;
-        		}else if("109".equals(params.getCommand()) && fileList[i].getName().contains("109")) {
+        		}else if("109".equals(params.getCommand()) && lastPart.contains("109")) {
         			params.setImgFrontColorBwRate5(fileByte);break;
-        		}else if("110".equals(params.getCommand()) && fileList[i].getName().contains("110")) {
+        		}else if("110".equals(params.getCommand()) && lastPart.contains("110")) {
         			params.setImgFrontColorBwRate6(fileByte);break;
-        		}else if("111".equals(params.getCommand()) && fileList[i].getName().contains("111")) {
+        		}else if("111".equals(params.getCommand()) && lastPart.contains("111")) {
         			params.setImgFrontBw(fileByte);break;
-        		}else if("112".equals(params.getCommand()) && fileList[i].getName().contains("112")) {
+        		}else if("112".equals(params.getCommand()) && lastPart.contains("112")) {
         			params.setImgFrontBwMineral(fileByte);break;
-        		}else if("113".equals(params.getCommand()) && fileList[i].getName().contains("113")) {
+        		}else if("113".equals(params.getCommand()) && lastPart.contains("113")) {
         			params.setImgFrontBwOrganism(fileByte);break;
-        		}else if("114".equals(params.getCommand()) && fileList[i].getName().contains("114")) {
+        		}else if("114".equals(params.getCommand()) && lastPart.contains("114")) {
         			params.setImgFrontBwReversal(fileByte);break;
-        		}else if("115".equals(params.getCommand()) && fileList[i].getName().contains("115")) {
+        		}else if("115".equals(params.getCommand()) && lastPart.contains("115")) {
         			params.setImgFrontBwBwRate1(fileByte);break;
-        		}else if("116".equals(params.getCommand()) && fileList[i].getName().contains("116")) {
+        		}else if("116".equals(params.getCommand()) && lastPart.contains("116")) {
         			params.setImgFrontBwBwRate2(fileByte);break;
-        		}else if("117".equals(params.getCommand()) && fileList[i].getName().contains("117")) {
+        		}else if("117".equals(params.getCommand()) && lastPart.contains("117")) {
         			params.setImgFrontBwBwRate3(fileByte);break;
-        		}else if("118".equals(params.getCommand()) && fileList[i].getName().contains("118")) {
+        		}else if("118".equals(params.getCommand()) && lastPart.contains("118")) {
         			params.setImgFrontBwBwRate4(fileByte);break;
-        		}else if("119".equals(params.getCommand()) && fileList[i].getName().contains("119")) {
+        		}else if("119".equals(params.getCommand()) && lastPart.contains("119")) {
         			params.setImgFrontBwBwRate5(fileByte);break;
-        		}else if("120".equals(params.getCommand()) && fileList[i].getName().contains("120")) {
+        		}else if("120".equals(params.getCommand()) && lastPart.contains("120")) {
         			params.setImgFrontBwBwRate6(fileByte);break;
-        		}else if("201".equals(params.getCommand()) && fileList[i].getName().contains("201")) {//측면
+        		}else if("201".equals(params.getCommand()) && lastPart.contains("201")) {//측면
         			params.setImgSideColor(fileByte);break;
-        		}else if("202".equals(params.getCommand()) && fileList[i].getName().contains("202")) {
+        		}else if("202".equals(params.getCommand()) && lastPart.contains("202")) {
         			params.setImgSideColorMineral(fileByte);break;
-        		}else if("203".equals(params.getCommand()) && fileList[i].getName().contains("203")) {
+        		}else if("203".equals(params.getCommand()) && lastPart.contains("203")) {
         			params.setImgSideColorOrganism(fileByte);break;
-        		}else if("204".equals(params.getCommand()) && fileList[i].getName().contains("204")) {
+        		}else if("204".equals(params.getCommand()) && lastPart.contains("204")) {
         			params.setImgSideColorReversal(fileByte);break;
-        		}else if("205".equals(params.getCommand()) && fileList[i].getName().contains("205")) {
+        		}else if("205".equals(params.getCommand()) && lastPart.contains("205")) {
         			params.setImgSideColorBwRate1(fileByte);break;
-        		}else if("206".equals(params.getCommand()) && fileList[i].getName().contains("206")) {
+        		}else if("206".equals(params.getCommand()) && lastPart.contains("206")) {
         			params.setImgSideColorBwRate2(fileByte);break;
-        		}else if("207".equals(params.getCommand()) && fileList[i].getName().contains("207")) {
+        		}else if("207".equals(params.getCommand()) && lastPart.contains("207")) {
         			params.setImgSideColorBwRate3(fileByte);break;
-        		}else if("208".equals(params.getCommand()) && fileList[i].getName().contains("208")) {
+        		}else if("208".equals(params.getCommand()) && lastPart.contains("208")) {
         			params.setImgSideColorBwRate4(fileByte);break;
-        		}else if("209".equals(params.getCommand()) && fileList[i].getName().contains("209")) {
+        		}else if("209".equals(params.getCommand()) && lastPart.contains("209")) {
         			params.setImgSideColorBwRate5(fileByte);break;
-        		}else if("210".equals(params.getCommand()) && fileList[i].getName().contains("210")) {
+        		}else if("210".equals(params.getCommand()) && lastPart.contains("210")) {
         			params.setImgSideColorBwRate6(fileByte);break;
-        		}else if("211".equals(params.getCommand()) && fileList[i].getName().contains("211")) {
+        		}else if("211".equals(params.getCommand()) && lastPart.contains("211")) {
         			params.setImgSideBw(fileByte);break;
-        		}else if("212".equals(params.getCommand()) && fileList[i].getName().contains("212")) {
+        		}else if("212".equals(params.getCommand()) && lastPart.contains("212")) {
         			params.setImgSideBwMinerals(fileByte);break;
-        		}else if("213".equals(params.getCommand()) && fileList[i].getName().contains("213")) {
+        		}else if("213".equals(params.getCommand()) && lastPart.contains("213")) {
         			params.setImgSideBwOrganism(fileByte);break;
-        		}else if("214".equals(params.getCommand()) && fileList[i].getName().contains("214")) {
+        		}else if("214".equals(params.getCommand()) && lastPart.contains("214")) {
         			params.setImgSideBwReversal(fileByte);break;
-        		}else if("215".equals(params.getCommand()) && fileList[i].getName().contains("215")) {
+        		}else if("215".equals(params.getCommand()) && lastPart.contains("215")) {
         			params.setImgSideBwBwRate1(fileByte);break;
-        		}else if("216".equals(params.getCommand()) && fileList[i].getName().contains("216")) {
+        		}else if("216".equals(params.getCommand()) && lastPart.contains("216")) {
         			params.setImgSideBwBwRate2(fileByte);break;
-        		}else if("217".equals(params.getCommand()) && fileList[i].getName().contains("217")) {
+        		}else if("217".equals(params.getCommand()) && lastPart.contains("217")) {
         			params.setImgSideBwBwRate3(fileByte);break;
-        		}else if("218".equals(params.getCommand()) && fileList[i].getName().contains("218")) {
+        		}else if("218".equals(params.getCommand()) && lastPart.contains("218")) {
         			params.setImgSideBwBwRate4(fileByte);break;
-        		}else if("219".equals(params.getCommand()) && fileList[i].getName().contains("219")) {
+        		}else if("219".equals(params.getCommand()) && lastPart.contains("219")) {
         			params.setImgSideBwBwRate5(fileByte);break;
-        		}else if("220".equals(params.getCommand()) && fileList[i].getName().contains("220")) {
+        		}else if("220".equals(params.getCommand()) && lastPart.contains("220")) {
         			params.setImgSideBwBwRate6(fileByte);break;
-        		}else if("403".equals(params.getCommand()) && fileList[i].getName().contains("403")) {//실사이미지
+        		}else if("403".equals(params.getCommand()) && lastPart.contains("403")) {//실사이미지
         			params.setImgReal(fileByte);break;
-        		}else if("401".equals(params.getCommand()) && fileList[i].getName().contains("401")) {//정면위험물품
+        		}else if("401".equals(params.getCommand()) && lastPart.contains("401")) {//정면위험물품
         			params.setImgFrontDanger(fileByte);break;
-        		}else if("402".equals(params.getCommand()) && fileList[i].getName().contains("402")) {//측면위험물품
+        		}else if("402".equals(params.getCommand()) && lastPart.contains("402")) {//측면위험물품
         			params.setImgSideDanger(fileByte);break;
         		}
         		
@@ -572,25 +581,27 @@ public class XbtImageServiceImpl implements XbtImageService {
         	//System.out.println("result : "+fileList[i]);
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
-        		//System.out.println("fileByte : "+fileByte);
+        		String fileName = fileList[i].getName();
+        		String[] fileNameParts = fileName.split("-");
+        		String lastPart = fileNameParts[fileNameParts.length - 1];    
         		
-        		if(fileList[i].getName().contains("101")) {//정면
+        		if(lastPart.contains("101")) {//정면
         			result.setImgFront(fileByte);
         		}
         		
-        		if(fileList[i].getName().contains("201")) {//측면
+        		if(lastPart.contains("201")) {//측면
         			result.setImgSide(fileByte);
         		}
         		
-        		if(fileList[i].getName().contains("401")) {//정면위험물품
+        		if(lastPart.contains("401")) {//정면위험물품
         			result.setImgFront(fileByte);
         		}
         		
-        		if(fileList[i].getName().contains("402")) {//측면위험물품
+        		if(lastPart.contains("402")) {//측면위험물품
         			result.setImgSide(fileByte);
         		}        		
         		
-        		if(fileList[i].getName().contains("403")) {//실사이미지
+        		if(lastPart.contains("403")) {//실사이미지
         			result.setImgReal(fileByte);
         		}
         		
@@ -630,15 +641,17 @@ public class XbtImageServiceImpl implements XbtImageService {
         	//System.out.println("result : "+fileList[i]);
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
-        		//System.out.println("fileByte : "+fileByte);
+        		String fileName = fileList[i].getName();
+        		String[] fileNameParts = fileName.split("-");
+        		String lastPart = fileNameParts[fileNameParts.length - 1];  
         		
-        		if(fileList[i].getName().contains("-C") || fileList[i].getName().contains("-101")) {//정면
+        		if(lastPart.contains("-C") || lastPart.contains("-101")) {//정면
         			result.setImgFront(fileByte);
-        		}else if(fileList[i].getName().contains("-B")|| fileList[i].getName().contains("-201")) {//측면
+        		}else if(lastPart.contains("-B")|| lastPart.contains("-201")) {//측면
         			result.setImgSide(fileByte);
-        		}else if(fileList[i].getName().contains("-R")|| fileList[i].getName().contains("-403")|| fileList[i].getName().contains("-401")) {//실사이미지
+        		}else if(lastPart.contains("-R")|| lastPart.contains("-403")|| lastPart.contains("-401")) {//실사이미지
         			result.setImgReal(fileByte);
-        		}else if(fileList[i].getName().contains("threed")) {//3D
+        		}else if(lastPart.contains("threed")) {//3D
         			result.setImgThreed(fileByte);
         		}
         		
@@ -669,93 +682,97 @@ public class XbtImageServiceImpl implements XbtImageService {
         for( int i = 0; i < fileList.length; i++ ) { 
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
-        		if(fileList[i].getName().contains("101")) {//정면
+        		String fileName = fileList[i].getName();
+        		String[] fileNameParts = fileName.split("-");
+        		String lastPart = fileNameParts[fileNameParts.length - 1];           		
+        		
+        		if(lastPart.contains("101")) {//정면
         			params.setImgFront(fileByte);
         			params.setImgFrontColor(fileByte);
-        		}else if(fileList[i].getName().contains("102")) {
+        		}else if(lastPart.contains("102")) {
         			params.setImgFrontColorMineral(fileByte);
-        		}else if(fileList[i].getName().contains("103")) {
+        		}else if(lastPart.contains("103")) {
         			params.setImgFrontColorOrganism(fileByte);
-        		}else if(fileList[i].getName().contains("104")) {
+        		}else if(lastPart.contains("104")) {
         			params.setImgFrontColorReversal(fileByte);
-        		}else if(fileList[i].getName().contains("105")) {
+        		}else if(lastPart.contains("105")) {
         			params.setImgFrontColorBwRate1(fileByte);
-        		}else if(fileList[i].getName().contains("106")) {
+        		}else if(lastPart.contains("106")) {
         			params.setImgFrontColorBwRate2(fileByte);
-        		}else if(fileList[i].getName().contains("107")) {
+        		}else if(lastPart.contains("107")) {
         			params.setImgFrontColorBwRate3(fileByte);
-        		}else if(fileList[i].getName().contains("108")) {
+        		}else if(lastPart.contains("108")) {
         			params.setImgFrontColorBwRate4(fileByte);
-        		}else if(fileList[i].getName().contains("109")) {
+        		}else if(lastPart.contains("109")) {
         			params.setImgFrontColorBwRate5(fileByte);
-        		}else if(fileList[i].getName().contains("110")) {
+        		}else if(lastPart.contains("110")) {
         			params.setImgFrontColorBwRate6(fileByte);
-        		}else if(fileList[i].getName().contains("111")) {
+        		}else if(lastPart.contains("111")) {
         			params.setImgFrontBw(fileByte);
-        		}else if(fileList[i].getName().contains("112")) {
+        		}else if(lastPart.contains("112")) {
         			params.setImgFrontBwMineral(fileByte);
-        		}else if(fileList[i].getName().contains("113")) {
+        		}else if(lastPart.contains("113")) {
         			params.setImgFrontBwOrganism(fileByte);
-        		}else if(fileList[i].getName().contains("114")) {
+        		}else if(lastPart.contains("114")) {
         			params.setImgFrontBwReversal(fileByte);
-        		}else if(fileList[i].getName().contains("115")) {
+        		}else if(lastPart.contains("115")) {
         			params.setImgFrontBwBwRate1(fileByte);
-        		}else if(fileList[i].getName().contains("116")) {
+        		}else if(lastPart.contains("116")) {
         			params.setImgFrontBwBwRate2(fileByte);
-        		}else if(fileList[i].getName().contains("117")) {
+        		}else if(lastPart.contains("117")) {
         			params.setImgFrontBwBwRate3(fileByte);
-        		}else if(fileList[i].getName().contains("118")) {
+        		}else if(lastPart.contains("118")) {
         			params.setImgFrontBwBwRate4(fileByte);
-        		}else if(fileList[i].getName().contains("119")) {
+        		}else if(lastPart.contains("119")) {
         			params.setImgFrontBwBwRate5(fileByte);
-        		}else if(fileList[i].getName().contains("120")) {
+        		}else if(lastPart.contains("120")) {
         			params.setImgFrontBwBwRate6(fileByte);
-        		}else if(fileList[i].getName().contains("201")) {//측면
+        		}else if(lastPart.contains("201")) {//측면
         			params.setImgSide(fileByte);
         			params.setImgSideColor(fileByte);
-        		}else if(fileList[i].getName().contains("202")) {
+        		}else if(lastPart.contains("202")) {
         			params.setImgSideColorMineral(fileByte);
-        		}else if(fileList[i].getName().contains("203")) {
+        		}else if(lastPart.contains("203")) {
         			params.setImgSideColorOrganism(fileByte);
-        		}else if(fileList[i].getName().contains("204")) {
+        		}else if(lastPart.contains("204")) {
         			params.setImgSideColorReversal(fileByte);
-        		}else if(fileList[i].getName().contains("205")) {
+        		}else if(lastPart.contains("205")) {
         			params.setImgSideColorBwRate1(fileByte);
-        		}else if(fileList[i].getName().contains("206")) {
+        		}else if(lastPart.contains("206")) {
         			params.setImgSideColorBwRate2(fileByte);
-        		}else if(fileList[i].getName().contains("207")) {
+        		}else if(lastPart.contains("207")) {
         			params.setImgSideColorBwRate3(fileByte);
-        		}else if(fileList[i].getName().contains("208")) {
+        		}else if(lastPart.contains("208")) {
         			params.setImgSideColorBwRate4(fileByte);
-        		}else if(fileList[i].getName().contains("209")) {
+        		}else if(lastPart.contains("209")) {
         			params.setImgSideColorBwRate5(fileByte);
-        		}else if(fileList[i].getName().contains("210")) {
+        		}else if(lastPart.contains("210")) {
         			params.setImgSideColorBwRate6(fileByte);
-        		}else if(fileList[i].getName().contains("211")) {
+        		}else if(lastPart.contains("211")) {
         			params.setImgSideBw(fileByte);
-        		}else if(fileList[i].getName().contains("212")) {
+        		}else if(lastPart.contains("212")) {
         			params.setImgSideBwMinerals(fileByte);
-        		}else if(fileList[i].getName().contains("213")) {
+        		}else if(lastPart.contains("213")) {
         			params.setImgSideBwOrganism(fileByte);
-        		}else if(fileList[i].getName().contains("214")) {
+        		}else if(lastPart.contains("214")) {
         			params.setImgSideBwReversal(fileByte);
-        		}else if(fileList[i].getName().contains("215")) {
+        		}else if(lastPart.contains("215")) {
         			params.setImgSideBwBwRate1(fileByte);
-        		}else if(fileList[i].getName().contains("216")) {
+        		}else if(lastPart.contains("216")) {
         			params.setImgSideBwBwRate2(fileByte);
-        		}else if(fileList[i].getName().contains("217")) {
+        		}else if(lastPart.contains("217")) {
         			params.setImgSideBwBwRate3(fileByte);
-        		}else if(fileList[i].getName().contains("218")) {
+        		}else if(lastPart.contains("218")) {
         			params.setImgSideBwBwRate4(fileByte);
-        		}else if(fileList[i].getName().contains("219")) {
+        		}else if(lastPart.contains("219")) {
         			params.setImgSideBwBwRate5(fileByte);
-        		}else if(fileList[i].getName().contains("220")) {
+        		}else if(lastPart.contains("220")) {
         			params.setImgSideBwBwRate6(fileByte);
-        		}else if(fileList[i].getName().contains("403")) {//실사이미지
+        		}else if(lastPart.contains("403")) {//실사이미지
         			params.setImgReal(fileByte);
-        		}else if(fileList[i].getName().contains("401")) {//정면위험물품
+        		}else if(lastPart.contains("401")) {//정면위험물품
         			params.setImgFrontDanger(fileByte);
-        		}else if(fileList[i].getName().contains("402")) {//측면위험물품
+        		}else if(lastPart.contains("402")) {//측면위험물품
         			params.setImgSideDanger(fileByte);
         		}
 			} catch (IOException e) {
@@ -795,139 +812,139 @@ public class XbtImageServiceImpl implements XbtImageService {
         for( int i = 0; i < fileList.length; i++ ) { 
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
+        		String fileName = fileList[i].getName();
+        		String[] fileNameParts = fileName.split("-");
+        		String lastPart = fileNameParts[fileNameParts.length - 1];  
         		
-        		System.out.println("이미지명:"+fileList[i].getName());
-        		System.out.println("실사이미지:"+fileList[i].getName().contains("403")); 
-        		
-        		if(fileList[i].getName().contains("101")) {//정면
+        		if(lastPart.contains("101")) {//정면
         			params.setImgFront(fileByte);
         			params.setImgFrontColor(fileByte);
         		}
-        		if(fileList[i].getName().contains("102")) {
+        		if(lastPart.contains("102")) {
         			params.setImgFrontColorMineral(fileByte);
         		}
-        		if(fileList[i].getName().contains("103")) {
+        		if(lastPart.contains("103")) {
         			params.setImgFrontColorOrganism(fileByte);
         		}
-        		if(fileList[i].getName().contains("104")) {
+        		if(lastPart.contains("104")) {
         			params.setImgFrontColorReversal(fileByte);
         		}
-        		if(fileList[i].getName().contains("105")) {
+        		if(lastPart.contains("105")) {
         			params.setImgFrontColorBwRate1(fileByte);
         		}
-        		if(fileList[i].getName().contains("106")) {
+        		if(lastPart.contains("106")) {
         			params.setImgFrontColorBwRate2(fileByte);
         		}
-        		if(fileList[i].getName().contains("107")) {
+        		if(lastPart.contains("107")) {
         			params.setImgFrontColorBwRate3(fileByte);
         		}
-        		if(fileList[i].getName().contains("108")) {
+        		if(lastPart.contains("108")) {
         			params.setImgFrontColorBwRate4(fileByte);
         		}
-        		if(fileList[i].getName().contains("109")) {
+        		if(lastPart.contains("109")) {
         			params.setImgFrontColorBwRate5(fileByte);
         		}
-        		if(fileList[i].getName().contains("110")) {
+        		if(lastPart.contains("110")) {
         			params.setImgFrontColorBwRate6(fileByte);
         		}
-        		if(fileList[i].getName().contains("111")) {
+        		if(lastPart.contains("111")) {
         			params.setImgFrontBw(fileByte);
         		}
-        		if(fileList[i].getName().contains("112")) {
+        		if(lastPart.contains("112")) {
         			params.setImgFrontBwMineral(fileByte);
         		}
-        		if(fileList[i].getName().contains("113")) {
+        		if(lastPart.contains("113")) {
         			params.setImgFrontBwOrganism(fileByte);
         		}
-        		if(fileList[i].getName().contains("114")) {
+        		if(lastPart.contains("114")) {
         			params.setImgFrontBwReversal(fileByte);
         		}
-        		if(fileList[i].getName().contains("115")) {
+        		if(lastPart.contains("115")) {
         			params.setImgFrontBwBwRate1(fileByte);
         		}
-        		if(fileList[i].getName().contains("116")) {
+        		if(lastPart.contains("116")) {
         			params.setImgFrontBwBwRate2(fileByte);
         		}
-        		if(fileList[i].getName().contains("117")) {
+        		if(lastPart.contains("117")) {
         			params.setImgFrontBwBwRate3(fileByte);
         		}
-        		if(fileList[i].getName().contains("118")) {
+        		if(lastPart.contains("118")) {
         			params.setImgFrontBwBwRate4(fileByte);
         		}
-        		if(fileList[i].getName().contains("119")) {
+        		if(lastPart.contains("119")) {
         			params.setImgFrontBwBwRate5(fileByte);
         		}
-        		if(fileList[i].getName().contains("120")) {
+        		if(lastPart.contains("120")) {
         			params.setImgFrontBwBwRate6(fileByte);
         		}
-        		if(fileList[i].getName().contains("201")) {//측면
+        		if(lastPart.contains("201")) {//측면
         			params.setImgSide(fileByte);
         			params.setImgSideColor(fileByte);
         		}
-        		if(fileList[i].getName().contains("202")) {
+        		if(lastPart.contains("202")) {
         			params.setImgSideColorMineral(fileByte);
         		}
-        		if(fileList[i].getName().contains("203")) {
+        		if(lastPart.contains("203")) {
         			params.setImgSideColorOrganism(fileByte);
         		}
-        		if(fileList[i].getName().contains("204")) {
+        		if(lastPart.contains("204")) {
         			params.setImgSideColorReversal(fileByte);
         		}
-        		if(fileList[i].getName().contains("205")) {
+        		if(lastPart.contains("205")) {
         			params.setImgSideColorBwRate1(fileByte);
         		}
-        		if(fileList[i].getName().contains("206")) {
+        		if(lastPart.contains("206")) {
         			params.setImgSideColorBwRate2(fileByte);
         		}
-        		if(fileList[i].getName().contains("207")) {
+        		if(lastPart.contains("207")) {
         			params.setImgSideColorBwRate3(fileByte);
         		}
-        		if(fileList[i].getName().contains("208")) {
+        		if(lastPart.contains("208")) {
         			params.setImgSideColorBwRate4(fileByte);
         		}
-        		if(fileList[i].getName().contains("209")) {
+        		if(lastPart.contains("209")) {
         			params.setImgSideColorBwRate5(fileByte);
         		}
-        		if(fileList[i].getName().contains("210")) {
+        		if(lastPart.contains("210")) {
         			params.setImgSideColorBwRate6(fileByte);
         		}
-        		if(fileList[i].getName().contains("211")) {
+        		if(lastPart.contains("211")) {
         			params.setImgSideBw(fileByte);
         		}
-        		if(fileList[i].getName().contains("212")) {
+        		if(lastPart.contains("212")) {
         			params.setImgSideBwMinerals(fileByte);
         		}
-        		if(fileList[i].getName().contains("213")) {
+        		if(lastPart.contains("213")) {
         			params.setImgSideBwOrganism(fileByte);
         		}
-        		if(fileList[i].getName().contains("214")) {
+        		if(lastPart.contains("214")) {
         			params.setImgSideBwReversal(fileByte);
         		}
-        		if(fileList[i].getName().contains("215")) {
+        		if(lastPart.contains("215")) {
         			params.setImgSideBwBwRate1(fileByte);
         		}
-        		if(fileList[i].getName().contains("216")) {
+        		if(lastPart.contains("216")) {
         			params.setImgSideBwBwRate2(fileByte);
         		}
-        		if(fileList[i].getName().contains("217")) {
+        		if(lastPart.contains("217")) {
         			params.setImgSideBwBwRate3(fileByte);
         		}
-        		if(fileList[i].getName().contains("218")) {
+        		if(lastPart.contains("218")) {
         			params.setImgSideBwBwRate4(fileByte);
         		}
-        		if(fileList[i].getName().contains("219")) {
+        		if(lastPart.contains("219")) {
         			params.setImgSideBwBwRate5(fileByte);
-        		}if(fileList[i].getName().contains("220")) {
+        		}if(lastPart.contains("220")) {
         			params.setImgSideBwBwRate6(fileByte);
         		}
-        		if(fileList[i].getName().contains("403")) {//실사이미지
+        		if(lastPart.contains("403")) {//실사이미지
         			System.out.println("실사이미지~~~~~~~~");
         			params.setImgReal(fileByte);
         		}
-        		if(fileList[i].getName().contains("401")) {//정면위험물품
+        		if(lastPart.contains("401")) {//정면위험물품
         			params.setImgFrontDanger(fileByte);
         		}
-        		if(fileList[i].getName().contains("402")) {//측면위험물품
+        		if(lastPart.contains("402")) {//측면위험물품
         			params.setImgSideDanger(fileByte);
         		}
 			} catch (IOException e) {
@@ -958,17 +975,20 @@ public class XbtImageServiceImpl implements XbtImageService {
         
         //결과유기물
         for( int i = 0; i < fileList.length; i++ ) { 
+    		String fileName = fileList[i].getName();
+    		String[] fileNameParts = fileName.split("-");
+    		String lastPart = fileNameParts[fileNameParts.length - 1];          	
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
-        		if(fileList[i].getName().contains("-1")) {//정면
+        		if(lastPart.contains("-1")) {//정면
         			params.setChoiceImg1(fileByte);
-        		}else if(fileList[i].getName().contains("-2")) {
+        		}else if(lastPart.contains("-2")) {
         			params.setChoiceImg2(fileByte);
-        		}else if(fileList[i].getName().contains("-3")) {
+        		}else if(lastPart.contains("-3")) {
         			params.setChoiceImg3(fileByte);
-        		}else if(fileList[i].getName().contains("-4")) {
+        		}else if(lastPart.contains("-4")) {
         			params.setChoiceImg4(fileByte);
-        		}else if(fileList[i].getName().contains("-Q")) {
+        		}else if(lastPart.contains("-Q")) {
         			params.setMultiPlusImg(fileByte);
         		}
 			} catch (IOException e) {
@@ -1030,9 +1050,12 @@ public class XbtImageServiceImpl implements XbtImageService {
         }   
         
         //결과유기물
-        for( int i = 0; i < fileList.length; i++ ) { 
+        for( int i = 0; i < fileList.length; i++ ) {
+    		String fileName = fileList[i].getName();
+    		String[] fileNameParts = fileName.split("-");
+    		String lastPart = fileNameParts[fileNameParts.length - 1];  
         	try {
-        		if(fileList[i].getName().contains("-threed")) {
+        		if(lastPart.contains("-threed")) {
         			fileThreedByte = Files.readAllBytes(fileList[i].toPath());
                 }else {
             		fileByte = Files.readAllBytes(fileList[i].toPath());

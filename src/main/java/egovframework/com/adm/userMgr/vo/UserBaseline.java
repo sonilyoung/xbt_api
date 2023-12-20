@@ -34,6 +34,9 @@ public class UserBaseline {
 	private int questionCnt;
 	private int rightCnt;
 	private int wrongCnt;
+	private int dangerQuestionCnt;
+	private int dangerRightCnt;
+	private int dangerWrongCnt;	
 	private int evaluationTotalScore;
 	private int theoryTotalScore;
 	private int practiceTotalScore;
