@@ -645,11 +645,11 @@ public class XbtImageServiceImpl implements XbtImageService {
         		String[] fileNameParts = fileName.split("-");
         		String lastPart = fileNameParts[fileNameParts.length - 1];  
         		
-        		if(lastPart.contains("-C") || lastPart.contains("-101")) {//정면
+        		if(lastPart.contains("C") || lastPart.contains("101")) {//정면
         			result.setImgFront(fileByte);
-        		}else if(lastPart.contains("-B")|| lastPart.contains("-201")) {//측면
+        		}else if(lastPart.contains("B")|| lastPart.contains("201")) {//측면
         			result.setImgSide(fileByte);
-        		}else if(lastPart.contains("-R")|| lastPart.contains("-403")|| lastPart.contains("-401")) {//실사이미지
+        		}else if(lastPart.contains("R")|| lastPart.contains("403")|| lastPart.contains("401")) {//실사이미지
         			result.setImgReal(fileByte);
         		}else if(lastPart.contains("threed")) {//3D
         			result.setImgThreed(fileByte);
@@ -938,7 +938,6 @@ public class XbtImageServiceImpl implements XbtImageService {
         			params.setImgSideBwBwRate6(fileByte);
         		}
         		if(lastPart.contains("403")) {//실사이미지
-        			System.out.println("실사이미지~~~~~~~~");
         			params.setImgReal(fileByte);
         		}
         		if(lastPart.contains("401")) {//정면위험물품
