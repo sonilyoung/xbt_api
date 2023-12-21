@@ -974,20 +974,17 @@ public class XbtImageServiceImpl implements XbtImageService {
         
         //결과유기물
         for( int i = 0; i < fileList.length; i++ ) { 
-    		String fileName = fileList[i].getName();
-    		String[] fileNameParts = fileName.split("-");
-    		String lastPart = fileNameParts[fileNameParts.length - 1];          	
         	try {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
-        		if(lastPart.contains("-1")) {//정면
+        		if(fileList[i].getName().contains("-1")) {//정면
         			params.setChoiceImg1(fileByte);
-        		}else if(lastPart.contains("-2")) {
+        		}else if(fileList[i].getName().contains("-2")) {
         			params.setChoiceImg2(fileByte);
-        		}else if(lastPart.contains("-3")) {
+        		}else if(fileList[i].getName().contains("-3")) {
         			params.setChoiceImg3(fileByte);
-        		}else if(lastPart.contains("-4")) {
+        		}else if(fileList[i].getName().contains("-4")) {
         			params.setChoiceImg4(fileByte);
-        		}else if(lastPart.contains("-Q")) {
+        		}else if(fileList[i].getName().contains("-Q")) {
         			params.setMultiPlusImg(fileByte);
         		}
 			} catch (IOException e) {
