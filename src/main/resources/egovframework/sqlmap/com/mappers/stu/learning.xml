@@ -153,6 +153,7 @@
 		WHERE PROC_CD = #{procCd} 
 		AND PROC_YEAR = #{procYear} 
 		AND PROC_SEQ = #{procSeq}
+		AND TRY_SEQ = #{trySeq}
 		AND USER_ID = #{userId}
 	</update>		
 	
