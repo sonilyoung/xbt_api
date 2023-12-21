@@ -69,6 +69,8 @@ public interface SystemService {
 	
 	public int updateXbtEndScore(XbtScore params);
 	
+	public int updateLearningStatus(XbtScore params);
+	
 	public int updateBaselineStatus(XbtScore params);
 	
 	public int updateXrayExcelData(XrayContents params);

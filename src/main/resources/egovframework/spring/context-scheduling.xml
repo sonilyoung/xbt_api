@@ -2,12 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
-	<!--  스계줄러 작업 정의
+	<!--  스계줄러 작업 정의--> 
 	<bean id="xtsStats" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="egovXtsScheduling" />
 		<property name="targetMethod" value="xtsStats" />
 		<property name="concurrent" value="false" />
-	</bean>--> 
+	</bean>
 
 	<!--  통계 트리거 정의 -->
 	<!-- 시작하고 1분후에 실행한다. (milisecond) -->
@@ -18,14 +18,22 @@
 		<property name="startDelay" value="60000" />
 		<property name="repeatInterval" value="60000" />
 	</bean>	--> 
+		
+		
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	   	<property name="jobDetail" ref="xtsStats" />
+	   	<!-- 새벽한시에 실행 -->
+	   	<property name="cronExpression" value="0 1 * * * ?" />
+	</bean>
 
-	<!--  통계 스케줄러 정의, 스케줄러 적용시 아래 주석 제거 필요
+
+	<!--  통계 스케줄러 정의, 스케줄러 적용시 아래 주석 제거 필요--> 
 	<bean id="xtsStatsSummaryScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="xtsStatsTrigger" />
+				<ref bean="cronTrigger" />
 			</list>
 		</property>
-	</bean>--> 
+	</bean>
 	
 </beans>

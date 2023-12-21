@@ -308,6 +308,23 @@
 		WHERE PROC_CD = #{procCd} AND USER_ID = #{userId}
 	</update>	
 	
+	<!--학습데이터 일정종료처리-->
+	<update id="updateLearningStatus" parameterType="egovframework.com.adm.system.vo.XbtScore">			
+		<![CDATA[	
+			UPDATE XBT_STU_LEARNING_PROGRESSING
+			SET END_YN = 'Y'
+			WHERE USER_ID IN (
+					SELECT
+						DISTINCT USER_ID
+					FROM
+						XBT_BASELINE_STUDENT_INFO
+					WHERE
+						ENDING_YN = 'N' OR ENDING_YN = 'ING'
+			) AND INSERT_DATE <> date_format(NOW(), '%Y-%m-%d') AND END_YN = 'N'
+		]]>
+	</update>
+		
+	
 	<!--일정종료처리-->
 	<update id="updateBaselineStatus" parameterType="egovframework.com.adm.system.vo.XbtScore">			
 		UPDATE XBT_BASELINE_STUDENT_INFO            
