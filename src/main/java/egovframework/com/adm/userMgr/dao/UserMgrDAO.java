@@ -3,9 +3,11 @@ package egovframework.com.adm.userMgr.dao;
 import java.util.List;
 
 import egovframework.com.adm.userMgr.vo.CertificationInfo;
+import egovframework.com.adm.userMgr.vo.MenuPin;
 import egovframework.com.adm.userMgr.vo.TeacherInfo;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
+import egovframework.com.adm.userMgr.vo.UserBaselineScore;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
 import egovframework.com.adm.userMgr.vo.UserBaselineSubInfo;
 import egovframework.com.adm.userMgr.vo.UserCertificate;
@@ -170,5 +172,44 @@ public class UserMgrDAO extends EgovAbstractMapper{
 	public int updateEvaluationStudentInfo(UserInfo params) {
 		return delete(Namespace + ".updateEvaluationStudentInfo", params);
 	}	
+	
+	public int updateBaselineTheory(UserInfo params) {
+		return delete(Namespace + ".updateBaselineTheory", params);
+	}
+	
+	public int deleteTheoryProgressing(UserInfo params) {
+		return delete(Namespace + ".deleteTheoryProgressing", params);
+	}
+	
+	public int updateTheoryStudentInfo(UserInfo params) {
+		return delete(Namespace + ".updateTheoryStudentInfo", params);
+	}	
+	
+	public int updateBaselineDanger(UserInfo params) {
+		return delete(Namespace + ".updateBaselineDanger", params);
+	}
+	
+	public int deleteDangerProgressing(UserInfo params) {
+		return delete(Namespace + ".deleteDangerProgressing", params);
+	}
+	
+	public int updateDangerStudentInfo(UserInfo params) {
+		return delete(Namespace + ".updateDangerStudentInfo", params);
+	}	
+	
+	public List<?> selectBaselineStudentScore(UserBaselineScore params) {
+		return (List<?>)selectList(Namespace + ".selectBaselineStudentScore", params);
+	}	
+
+	public List<?> selectMenuPinList(MenuPin params) {
+		return (List<?>)selectList(Namespace + ".selectMenuPinList", params);
+	}	
+	
+	public int insertMenuPin(MenuPin params) {
+		return delete(Namespace + ".insertMenuPin", params);
+	}	
 		
+	public int updateMenuPin(MenuPin params) {
+		return delete(Namespace + ".updateMenuPin", params);
+	}
 }

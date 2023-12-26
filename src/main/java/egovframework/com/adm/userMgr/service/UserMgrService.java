@@ -3,9 +3,11 @@ package egovframework.com.adm.userMgr.service;
 import java.util.List;
 
 import egovframework.com.adm.userMgr.vo.CertificationInfo;
+import egovframework.com.adm.userMgr.vo.MenuPin;
 import egovframework.com.adm.userMgr.vo.TeacherInfo;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
+import egovframework.com.adm.userMgr.vo.UserBaselineScore;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
 import egovframework.com.adm.userMgr.vo.UserBaselineSubInfo;
 import egovframework.com.adm.userMgr.vo.UserCertificate;
@@ -101,4 +103,16 @@ public interface UserMgrService{
 	public int updateFaceYn(UserInfo params);
 	
 	public int deleteEvaluationData(UserInfo params);	
+	
+	public int deleteTheoryData(UserInfo params);	
+	
+	public int deleteDangerData(UserInfo params);	
+	
+	public List<UserBaselineScore> selectBaselineStudentScore(UserBaselineScore params);
+
+	public List<MenuPin> selectMenuPinList(MenuPin params);
+	
+	public int insertMenuPin(MenuPin params);
+	
+	public int updateMenuPin(MenuPin params);
 }

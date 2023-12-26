@@ -31,10 +31,12 @@ import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.system.vo.XbtScore;
 import egovframework.com.adm.userMgr.service.UserMgrService;
 import egovframework.com.adm.userMgr.vo.CertificationInfo;
+import egovframework.com.adm.userMgr.vo.MenuPin;
 import egovframework.com.adm.userMgr.vo.TeacherInfo;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
 import egovframework.com.adm.userMgr.vo.UserBaselinePop;
+import egovframework.com.adm.userMgr.vo.UserBaselineScore;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
 import egovframework.com.adm.userMgr.vo.UserBaselineSubInfo;
 import egovframework.com.adm.userMgr.vo.UserCertificate;
@@ -1036,7 +1038,7 @@ public class UserMgrController {
 			File destFile = new File(FILE_UPLOAD_PATH + File.separator + fmtDate+"_"+excelFile.getOriginalFilename()); // 파일위치 지정
 			
 			excelFile.transferTo(destFile); // 엑셀파일 생성
-			String[] coloumNm = {"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T"};
+			String[] coloumNm = {"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U"};
 			    
 			ExcelReadOption excelReadOption = new ExcelReadOption();
 			excelReadOption.setFilePath(destFile.getAbsolutePath()); //파일경로 추가
@@ -1125,7 +1127,12 @@ public class UserMgrController {
 	    		
 	    		if(!StringUtils.isEmpty(excelData.get("T"))){
 	    			params.setFaceType(excelData.get("T"));//안면인식				
+	    		}	  	
+	    		
+	    		if(!StringUtils.isEmpty(excelData.get("U"))){
+	    			params.setWriteDate(excelData.get("U"));//입교신청일
 	    		}	  	    		
+	            	    		
 	            
 				Common cp = new Common();
 				cp.setLanguageCode("kr");
@@ -2069,6 +2076,84 @@ public class UserMgrController {
         }
     }    
     
+    /**
+     * 이론데이터 초기화
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteTheoryData.do")
+    @ApiOperation(value = "이론데이터 초기화", notes = "이론데이터 초기화")
+    public BaseResponse<UserInfo> deleteTheoryData(HttpServletRequest request, @RequestBody List<UserInfo> params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			int result = 0;
+			for(UserInfo ui : params) {
+				if(StringUtils.isEmpty(ui.getProcCd())){				
+					return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+				}		
+				
+				if(StringUtils.isEmpty(ui.getUserId())){				
+					return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+				}	
+				
+				result = userMgrService.deleteTheoryData(ui);
+			}
+			
+			if(result>0) {
+				return new BaseResponse<UserInfo>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<UserInfo>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }   
+    
+    /**
+     * 위험물데이터 초기화
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/deleteDangerData.do")
+    @ApiOperation(value = "위험물데이터 초기화", notes = "위험물데이터 초기화")
+    public BaseResponse<UserInfo> deleteDangerData(HttpServletRequest request, @RequestBody List<UserInfo> params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			int result = 0;
+			for(UserInfo ui : params) {
+				if(StringUtils.isEmpty(ui.getProcCd())){				
+					return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "ProcCd" + BaseApiMessage.REQUIRED.getCode());
+				}		
+				
+				if(StringUtils.isEmpty(ui.getUserId())){				
+					return new BaseResponse<UserInfo>(BaseResponseCode.PARAMS_ERROR, "UserId" + BaseApiMessage.REQUIRED.getCode());
+				}	
+				
+				result = userMgrService.deleteDangerData(ui);
+			}
+			
+			if(result>0) {
+				return new BaseResponse<UserInfo>(BaseResponseCode.SUCCESS, BaseResponseCode.SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<UserInfo>(BaseResponseCode.FAIL, BaseResponseCode.FAIL.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }       
+    
     
     /**
      * 점수집계 수동실행
@@ -2108,5 +2193,180 @@ public class UserMgrController {
     }       
             
         
+    
+    /**
+     * 차수 교육생 점수조회
+     * 
+     * @param param
+     * @return Company
+     */
+    @PostMapping("/selectBaselineStudentScore.do")
+    @ApiOperation(value = "차수 교육생 점수조회", notes = "차수 교육생 점수조회")
+    public BaseResponse<List<UserBaselineScore>> selectBaselineStudentScore(HttpServletRequest request, @RequestBody UserBaselineScore params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getCommand())){				
+			return new BaseResponse<List<UserBaselineScore>>(BaseResponseCode.PARAMS_ERROR, "Command" + BaseApiMessage.REQUIRED.getCode());
+		}	
+		
+		try {
+			List<UserBaselineScore> resultList = userMgrService.selectBaselineStudentScore(params);
+	        return new BaseResponse<List<UserBaselineScore>>(resultList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }      
+    
+    
+    /**
+     * 메뉴별 핀번호 조회
+     * 
+     * @param param
+     * @return 
+     */
+    @PostMapping("/selectMenuPinList.do")
+    @ApiOperation(value = "메뉴별 핀번호 조회", notes = "메뉴별 핀번호 조회")
+    public BaseResponse<List<MenuPin>> selectMenuPinList(HttpServletRequest request, @RequestBody MenuPin params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+
+			List<MenuPin> resultMenuPinList = userMgrService.selectMenuPinList(params);
+			if(resultMenuPinList != null) {
+				List<MenuPin> resultList = new ArrayList<>();
+				for(MenuPin m : resultList) {
+					String[] tmpStr = m.getPinNumber().split("");
+					m.setPinData(tmpStr);
+				}
+			}
+			
+	        return new BaseResponse<List<MenuPin>>(resultMenuPinList);
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }     
+    
+    
+    /**
+     * 메뉴별 핀번호 등록
+     * 
+     * @param param
+     * @return 
+     */
+    @PostMapping("/insertMenuPin.do")
+    @ApiOperation(value = "메뉴별 핀번호 등록", notes = "메뉴별 핀번호 등록")
+    public BaseResponse<Integer> insertMenuPin(HttpServletRequest request, @RequestBody List<MenuPin> params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			int result = 0;
+			for(MenuPin mp : params) {
+				if(StringUtils.isEmpty(mp.getPinTitle())){				
+					return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PinTitle" + BaseApiMessage.REQUIRED.getCode());
+				}
+				
+				
+				if(StringUtils.isEmpty(mp.getPinkey())){				
+					return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Pinkey" + BaseApiMessage.REQUIRED.getCode());
+				}
+				
+				
+				if(StringUtils.isEmpty(mp.getPinData())){				
+					return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PinData" + BaseApiMessage.REQUIRED.getCode());
+				}else {
+					String pinNumber = "";
+					for(String s : mp.getPinData()) {
+						System.out.println("s:"+ s);
+						pinNumber = pinNumber + s + "";
+						System.out.println("pinNumber:"+ pinNumber);
+					}
+					mp.setPinNumber(pinNumber); 
+				}
+				
+				//공지사항등록
+				mp.setInsertId(login.getUserId());
+				result = userMgrService.insertMenuPin(mp);
+			}
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }        
+    
+    
+    
+    /**
+     * 메뉴별 핀번호 등록
+     * 
+     * @param param
+     * @return 
+     */
+    @PostMapping("/updateMenuPin.do")
+    @ApiOperation(value = "메뉴별 핀번호 수정", notes = "메뉴별 핀번호 수정")
+    public BaseResponse<Integer> updateMenuPin(HttpServletRequest request, @RequestBody List<MenuPin> params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		try {
+			int result = 0;
+			for(MenuPin mp : params) {
+				if(StringUtils.isEmpty(mp.getPinTitle())){				
+					return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PinTitle" + BaseApiMessage.REQUIRED.getCode());
+				}
+				
+				
+				if(StringUtils.isEmpty(mp.getPinkey())){				
+					return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "Pinkey" + BaseApiMessage.REQUIRED.getCode());
+				}
+				
+				
+				if(StringUtils.isEmpty(mp.getPinData())){				
+					return new BaseResponse<Integer>(BaseResponseCode.PARAMS_ERROR, "PinData" + BaseApiMessage.REQUIRED.getCode());
+				}else {
+					String pinNumber = "";
+					for(String s : mp.getPinData()) {
+						pinNumber = pinNumber + s + "";
+					}
+					mp.setPinNumber(pinNumber); 
+				}
+				
+				
+				//공지사항등록
+				mp.setUpdateId(login.getUserId());
+				result = userMgrService.updateMenuPin(mp);
+				
+			}
+			
+			if(result>0) {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_SUCCESS, BaseResponseCode.SAVE_SUCCESS.getMessage());
+			}else {
+				return new BaseResponse<Integer>(BaseResponseCode.SAVE_ERROR, BaseResponseCode.SAVE_ERROR.getMessage());
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }        
+            
         
 }

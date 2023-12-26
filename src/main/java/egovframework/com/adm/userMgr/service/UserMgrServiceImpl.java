@@ -9,9 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import egovframework.com.adm.userMgr.dao.UserMgrDAO;
 import egovframework.com.adm.userMgr.vo.CertificationInfo;
+import egovframework.com.adm.userMgr.vo.MenuPin;
 import egovframework.com.adm.userMgr.vo.TeacherInfo;
 import egovframework.com.adm.userMgr.vo.UserBaseline;
 import egovframework.com.adm.userMgr.vo.UserBaselineDetail;
+import egovframework.com.adm.userMgr.vo.UserBaselineScore;
 import egovframework.com.adm.userMgr.vo.UserBaselineSub;
 import egovframework.com.adm.userMgr.vo.UserBaselineSubInfo;
 import egovframework.com.adm.userMgr.vo.UserCertificate;
@@ -276,5 +278,49 @@ public class UserMgrServiceImpl implements UserMgrService {
 		userMgrDAO.deleteEvaluationProgressing(params);
 		return userMgrDAO.updateEvaluationStudentInfo(params);
 	}
+
+	@Override
+	@Transactional
+	public int deleteTheoryData(UserInfo params) {
+		// TODO Auto-generated method stub
+		userMgrDAO.updateBaselineTheory(params);
+		userMgrDAO.deleteTheoryProgressing(params);
+		return userMgrDAO.updateTheoryStudentInfo(params);
+	}
+
+	@Override
+	@Transactional
+	public int deleteDangerData(UserInfo params) {
+		// TODO Auto-generated method stub
+		userMgrDAO.updateBaselineDanger(params);
+		userMgrDAO.deleteDangerProgressing(params);
+		return userMgrDAO.updateDangerStudentInfo(params);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<UserBaselineScore> selectBaselineStudentScore(UserBaselineScore params) {
+		// TODO Auto-generated method stub
+		return (List<UserBaselineScore>) userMgrDAO.selectBaselineStudentScore(params);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<MenuPin> selectMenuPinList(MenuPin params) {
+		// TODO Auto-generated method stub
+		return (List<MenuPin>) userMgrDAO.selectMenuPinList(params);
+	}
+
+	@Override
+	public int insertMenuPin(MenuPin params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.insertMenuPin(params);
+	}
+
+	@Override
+	public int updateMenuPin(MenuPin params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.updateMenuPin(params);
+	}		
 
 }

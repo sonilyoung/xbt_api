@@ -1482,7 +1482,6 @@
 		FROM
 			XBT_BASELINE_STUDENT_INFO
 		WHERE USER_ID = #{userId}
-		AND PASS_YN != 'ING'
 		ORDER BY PROC_CD DESC, PROC_SEQ ASC
 	</select>	
 	
@@ -1616,16 +1615,242 @@
 		AND USER_ID = #{userId}
 	</update>			
 	
-	
 	<!-- 교육생평가점수 수정 -->
 	<update id="updateEvaluationStudentInfo" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
 		UPDATE XBT_BASELINE_STUDENT_INFO SET 
 		EVALUATION_SCORE = 0 ,
 		EVALUATION_YN = 'N',
 		ENDING_YN = 'N',
+		PASS_YN = 'ING',
+		EVALUATION_PASS_YN = 'ING'
+		WHERE PROC_CD  = #{procCd} 
+		AND USER_ID = #{userId}
+	</update>	
+	
+	<!-- 교육생이론점수 수정 -->
+	<update id="updateBaselineTheory" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
+		UPDATE XBT_BASELINE_THEORY SET 
+		THEORY_SCORE = 0 ,
+		THEORY_YN = 'N',
+		ENDING_YN = 'N',
+		END_YN = 'ING',
 		PASS_YN = 'ING'
+		WHERE PROC_CD  = #{procCd} 
+		AND USER_ID = #{userId}	
+	</update>	
+	
+	<!-- 교육생이론점수 수정 -->
+	<update id="deleteTheoryProgressing" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
+		DELETE FROM XBT_STU_THEORY_PROGRESSING 
+		WHERE PROC_CD  = #{procCd} 
+		AND USER_ID = #{userId}
+		AND LAGE_GROUP_CD = (
+		SELECT
+			EDU_CODE
+		FROM
+			XBT_STU_USER
+		WHERE
+			USER_ID = #{userId}
+		LIMIT 1
+		)
+		AND MIDDLE_GROUP_CD = CONCAT((SELECT EDU_CODE FROM XBT_STU_USER WHERE USER_ID = #{userId} LIMIT 1)
+		, (SELECT MENU_CD FROM XBT_STU_MENU WHERE LEARNING_TYPE = 'theory' AND LANGUAGE_CODE = 'kr'))	
+	</update>			
+	
+	<!-- 교육생이론점수 수정 -->
+	<update id="updateTheoryStudentInfo" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
+		UPDATE XBT_BASELINE_STUDENT_INFO SET 
+		THEORY_SCORE = 0 ,
+		THEORY_YN = 'N',
+		ENDING_YN = 'N',
+		PASS_YN = 'ING',
+		THEORY_PASS_YN = 'ING'
+		WHERE PROC_CD  = #{procCd} 
+		AND USER_ID = #{userId}
+	</update>	
+	
+	<!-- 교육생위험물점수 수정 -->
+	<update id="updateBaselineDanger" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
+		UPDATE XBT_BASELINE_THEORY SET 
+		DANGER_SCORE = 0 ,
+		DANGER_YN = 'N',
+		ENDING_YN = 'N',
+		END_YN = 'ING',
+		PASS_YN = 'ING'
+		WHERE PROC_CD  = #{procCd} 
+		AND USER_ID = #{userId}		
+	</update>	
+	
+	<!-- 교육생위험물점수 수정 -->
+	<update id="deleteDangerProgressing" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
+		DELETE FROM XBT_STU_THEORY_PROGRESSING 
+		WHERE PROC_CD  = #{procCd} 
+		AND USER_ID = #{userId}
+		AND LAGE_GROUP_CD = (
+		SELECT
+			EDU_CODE
+		FROM
+			XBT_STU_USER
+		WHERE
+			USER_ID = #{userId}
+		LIMIT 1
+		)
+		AND MIDDLE_GROUP_CD = CONCAT((SELECT EDU_CODE FROM XBT_STU_USER WHERE USER_ID = #{userId} LIMIT 1)
+		, (SELECT MENU_CD FROM XBT_STU_MENU WHERE LEARNING_TYPE = 'danger' AND LANGUAGE_CODE = 'kr'))	
+	</update>			
+	
+	<!-- 교육생위험물점수 수정 -->
+	<update id="updateDangerStudentInfo" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
+		UPDATE XBT_BASELINE_STUDENT_INFO SET 
+		DANGER_SCORE = 0 ,
+		DANGER_YN = 'N',
+		ENDING_YN = 'N',
+		PASS_YN = 'ING',
+		DANGER_PASS_YN = 'ING'
 		WHERE PROC_CD  = #{procCd} 
 		AND USER_ID = #{userId}
 	</update>	
 		
+		
+	<!-- 차수 교육생 점수조회 -->
+	<select id="selectBaselineStudentScore" parameterType="egovframework.com.adm.userMgr.vo.UserBaselineScore" resultType="egovframework.com.adm.userMgr.vo.UserBaselineScore" >
+		<choose>
+			<when test='command == "evaluation"'>
+				SELECT
+					PROC_CD,
+					(SELECT PROC_NAME  FROM XBT_BASELINE T2 WHERE T2.PROC_CD = T1.PROC_CD)as procNm,
+					PROC_YEAR,
+					PROC_SEQ,
+					USER_ID,
+					(SELECT EDU_CODE  FROM XBT_STU_USER T2 WHERE T2.USER_ID = T1.USER_ID)as eduCode,
+					(SELECT EDU_NAME  FROM XBT_STU_USER T2 WHERE T2.USER_ID = T1.USER_ID)as eduName,
+					(SELECT USER_NM  FROM XBT_STU_USER T2 WHERE T2.USER_ID = T1.USER_ID)as userNm,
+					MODULE_ID,
+					GAIN_SCORE,
+					RIGHT_CNT,
+					WRONG_CNT,
+					RIGHT_CNT+WRONG_CNT AS TOTAL_CNT,
+					BAN_CNT,
+					END_YN,
+					PASS_YN,
+					TEST_DATE
+				FROM
+					XBT_BASELINE_EVALUATION T1
+				WHERE 1=1
+				<if test='procCd != "" and procCd != null'>
+				 AND PROC_CD = #{procCd}
+				</if>
+				<if test='procSeq != "" and procSeq != null'>
+				 AND PROC_SEQ = #{procSeq}
+				</if>				
+				ORDER BY PROC_CD DESC, TEST_DATE DESC
+			
+			</when>
+			<when test='command == "theory"'>
+				SELECT
+					PROC_CD,
+					(SELECT PROC_NAME  FROM XBT_BASELINE T2 WHERE T2.PROC_CD = T1.PROC_CD)as procNm,
+					PROC_YEAR,
+					PROC_SEQ,
+					USER_ID,
+					(SELECT EDU_CODE  FROM XBT_STU_USER T2 WHERE T2.USER_ID = T1.USER_ID)as eduCode,
+					(SELECT EDU_NAME  FROM XBT_STU_USER T2 WHERE T2.USER_ID = T1.USER_ID)as eduName,
+					(SELECT USER_NM  FROM XBT_STU_USER T2 WHERE T2.USER_ID = T1.USER_ID)as userNm,
+					GAIN_SCORE,
+					RIGHT_CNT,
+					WRONG_CNT,
+					RIGHT_CNT+WRONG_CNT AS TOTAL_CNT,
+					END_YN,
+					PASS_YN,
+					TEST_DATE
+				FROM
+					XBT_BASELINE_THEORY T1
+				WHERE 1=1	
+				<if test='procCd != "" and procCd != null'>
+				 AND PROC_CD = #{procCd}
+				</if>
+				<if test='procSeq != "" and procSeq != null'>
+				 AND PROC_SEQ = #{procSeq}
+				</if>						
+					ORDER BY PROC_CD DESC, TEST_DATE DESC				
+			</when>
+			<when test='command == "danger"'>
+				SELECT
+					PROC_CD,
+					(SELECT PROC_NAME  FROM XBT_BASELINE T2 WHERE T2.PROC_CD = T1.PROC_CD)as procNm,
+					PROC_YEAR,
+					PROC_SEQ,
+					USER_ID,
+					(SELECT EDU_CODE  FROM XBT_STU_USER T2 WHERE T2.USER_ID = T1.USER_ID)as eduCode,
+					(SELECT EDU_NAME  FROM XBT_STU_USER T2 WHERE T2.USER_ID = T1.USER_ID)as eduName,
+					(SELECT USER_NM  FROM XBT_STU_USER T2 WHERE T2.USER_ID = T1.USER_ID)as userNm,
+					DANGER_SCORE as gainScore,
+					DANGER_RIGHT_CNT as rightCnt,
+					DANGER_WRONG_CNT as wrongCnt,
+					DANGER_RIGHT_CNT+DANGER_WRONG_CNT AS TOTAL_CNT,
+					END_YN,
+					PASS_YN,
+					TEST_DATE
+				FROM
+					XBT_BASELINE_THEORY T1
+				WHERE 1=1	
+				<if test='procCd != "" and procCd != null'>
+				 AND PROC_CD = #{procCd}
+				</if>
+				<if test='procSeq != "" and procSeq != null'>
+				 AND PROC_SEQ = #{procSeq}
+				</if>						
+					ORDER BY PROC_CD DESC, TEST_DATE DESC				
+			</when>
+		</choose>						
+	</select>
+	
+	
+	<!--이수증명서학생목록-->
+	<select id="selectMenuPinList" parameterType="egovframework.com.adm.userMgr.vo.MenuPin" resultType="egovframework.com.adm.userMgr.vo.MenuPin" >
+		SELECT
+			PWD_NO,
+			PIN_TITLE,
+			PINKEY,
+			PIN_NUMBER,
+			MEMO,
+			INSERT_ID,
+			INSERT_DATE,
+			UPDATE_ID,
+			UPDATE_DATE
+		FROM
+			XBT_MENU_PIN
+		ORDER BY INSERT_DATE DESC, UPDATE_DATE DESC
+	</select>		
+	
+	<!-- 메뉴별 핀번호 등록 -->
+	<insert id="insertMenuPin" parameterType="egovframework.com.adm.userMgr.vo.MenuPin">
+		INSERT INTO corpjun22.XBT_MENU_PIN(
+			PIN_TITLE
+			, PINKEY
+			, PIN_NUMBER
+			, INSERT_ID
+			, INSERT_DATE
+		)VALUES(
+			#{pinTitle}
+			,#{pinkey}
+			,#{pinNumber}
+			,#{insertId}
+			,now()
+		)
+	</insert>	
+	
+	<!-- 메뉴별 핀번호 수정 -->
+	<update id="updateMenuPin" parameterType="egovframework.com.adm.userMgr.vo.MenuPin">
+		UPDATE
+			XBT_MENU_PIN
+		SET
+			PINKEY = #{pinkey},
+			PIN_NUMBER = #{pinNumber},
+			UPDATE_ID = #{updateId},
+			UPDATE_DATE = now()
+		WHERE
+			PIN_TITLE = #{pinTitle}
+	</update>			
+			
 </mapper>

@@ -95,6 +95,19 @@ public class UserInfo {
 	private String faceType;
 	private String faceYn;
 	
+	private int evaluationScore;
+	private String evaluationYn;
+	private String evaluationPassYn;	
+	
+	private int theoryScore;
+	private String theoryYn;
+	private String theoryPassYn;
+	
+	private int dangerScore;
+	private String dangerYn;
+	private String dangerPassYn;
+	
+	private String endingYn;
 	private List<String> userIdList;
 	
 	

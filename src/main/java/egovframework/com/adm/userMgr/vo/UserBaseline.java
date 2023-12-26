@@ -22,10 +22,7 @@ public class UserBaseline {
 	private int practiceScore;
 	private int practiceBeforeScore;
 	private String practiceYn;
-	private int theoryScore;
-	private int dangerScore;
-	private int evaluationScore;
-	private String evaluationYn;
+	
 	private String passYn;
 	private String endingProcessDate;
 	private String eduStartDate;
@@ -51,6 +48,19 @@ public class UserBaseline {
 	private int carGainScore;
 	private int humanGainScore;
 	
+
+	private int evaluationScore;
+	private String evaluationPassYn;	
+	private String evaluationYn;
+	
+	private int theoryScore;
+	private String theoryYn;
+	private String theoryPassYn;
+	
+	private int dangerScore;
+	private String dangerYn;
+	private String dangerPassYn;	
+	private String command;
 	private String searchval;
 	
 	

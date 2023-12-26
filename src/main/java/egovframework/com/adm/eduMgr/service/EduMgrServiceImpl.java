@@ -152,12 +152,12 @@ public class EduMgrServiceImpl implements EduMgrService {
 		eduMgrDAO.deleteEduDateAll(ed);		
 		
 		//평가데이터삭제
-		eduMgrDAO.deleteBaselineEvaluationAll(ed);	
-		eduMgrDAO.deleteBaselineEvaluationResultAll(ed);	
+		//eduMgrDAO.deleteBaselineEvaluationAll(ed);	
+		//eduMgrDAO.deleteBaselineEvaluationResultAll(ed);	
 		
 		//이론평가데이터
-		eduMgrDAO.deleteBaselineTheoryAll(ed);	
-		eduMgrDAO.deleteBaselineTheoryResultAll(ed);			
+		//eduMgrDAO.deleteBaselineTheoryAll(ed);	
+		//eduMgrDAO.deleteBaselineTheoryResultAll(ed);			
 		
 		for(String u : params.getUserList()) {
 			Long moduleId = (long) 0;
