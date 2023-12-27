@@ -1737,8 +1737,8 @@
 				FROM
 					XBT_BASELINE_EVALUATION T1
 				WHERE 1=1
-				<if test='procCd != "" and procCd != null'>
-				 AND PROC_CD = #{procCd}
+				<if test='eduCode != "" and eduCode != null'>
+				 AND EDU_CODE = #{eduCode}
 				</if>
 				<if test='procSeq != "" and procSeq != null'>
 				 AND PROC_SEQ = #{procSeq}
@@ -1766,8 +1766,8 @@
 				FROM
 					XBT_BASELINE_THEORY T1
 				WHERE 1=1	
-				<if test='procCd != "" and procCd != null'>
-				 AND PROC_CD = #{procCd}
+				<if test='eduCode != "" and eduCode != null'>
+				 AND EDU_CODE = #{eduCode}
 				</if>
 				<if test='procSeq != "" and procSeq != null'>
 				 AND PROC_SEQ = #{procSeq}
@@ -1794,8 +1794,8 @@
 				FROM
 					XBT_BASELINE_THEORY T1
 				WHERE 1=1	
-				<if test='procCd != "" and procCd != null'>
-				 AND PROC_CD = #{procCd}
+				<if test='eduCode != "" and eduCode != null'>
+				 AND EDU_CODE = #{eduCode}
 				</if>
 				<if test='procSeq != "" and procSeq != null'>
 				 AND PROC_SEQ = #{procSeq}

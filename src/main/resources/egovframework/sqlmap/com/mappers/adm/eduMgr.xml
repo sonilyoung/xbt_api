@@ -602,7 +602,7 @@
 	<!-- 차수목록조회-->
 	<select id="selectBaselineProcSeqList" parameterType="egovframework.com.adm.eduMgr.vo.Baseline" resultType="egovframework.com.adm.eduMgr.vo.Baseline" >			
 		SELECT
-			DISTINCT PROC_YEAR , PROC_CD , PROC_SEQ , EDU_CODE , EDU_NAME 
+			DISTINCT PROC_YEAR , PROC_SEQ , EDU_CODE
 		FROM XBT_BASELINE_STUDENT_INFO
 		WHERE EDU_CODE = #{eduCode}
 		AND PROC_YEAR = #{procYear}

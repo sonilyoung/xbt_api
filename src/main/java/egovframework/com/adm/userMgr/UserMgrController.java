@@ -2215,9 +2215,11 @@ public class UserMgrController {
 			throw new BaseException(BaseResponseCode.AUTH_FAIL);
 		}
 		
-		if(StringUtils.isEmpty(params.getCommand())){				
-			return new BaseResponse<List<UserBaselineScore>>(BaseResponseCode.PARAMS_ERROR, "Command" + BaseApiMessage.REQUIRED.getCode());
+		if(StringUtils.isEmpty(params.getCommand())){	
+			List<UserBaselineScore> result = new ArrayList<UserBaselineScore>();
+			return new BaseResponse<List<UserBaselineScore>>(result);
 		}	
+		
 		
 		try {
 			List<UserBaselineScore> resultList = userMgrService.selectBaselineStudentScore(params);
