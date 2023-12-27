@@ -1129,9 +1129,16 @@ public class UserMgrController {
 	    			params.setFaceType(excelData.get("T"));//안면인식				
 	    		}	  	
 	    		
-	    		if(!StringUtils.isEmpty(excelData.get("U"))){
-	    			params.setWriteDate(excelData.get("U"));//입교신청일
-	    		}	  	    		
+	    			
+	            // 엑셀 날짜 값을 Java Date 객체로 변환
+	            if(null != excelData.get("U") && !"".equals(excelData.get("U"))){	
+		            // 엑셀 날짜 값을 Java Date 객체로 변환
+		            Date date = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(Double.parseDouble(excelData.get("U")));
+		            // 날짜를 원하는 형식으로 문자열로 변환
+		            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		            String dateString = dateFormat.format(date);		            	
+		            params.setWriteDate(dateString);//입교신청일
+	            }	    			
 	            	    		
 	            
 				Common cp = new Common();

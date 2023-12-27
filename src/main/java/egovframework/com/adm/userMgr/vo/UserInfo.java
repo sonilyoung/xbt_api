@@ -58,7 +58,7 @@ public class UserInfo {
 	private String registNumber;
 	private String employStatusYn;
 	private String lastEdu;
-	private String writeDate;
+	private String writeDate; //입교신청일
 	
 	private String careerStartDate1;
 	private String careerEndDate1;
