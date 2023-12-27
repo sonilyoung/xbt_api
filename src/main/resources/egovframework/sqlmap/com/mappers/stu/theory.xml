@@ -344,6 +344,7 @@
 				SET 
 					DANGER_SCORE = #{dangerScore},
 					PASS_YN = #{passYn},
+					END_YN = 'Y',
 					DANGER_RIGHT_CNT = #{rightCnt},
 					DANGER_WRONG_CNT = #{wrongCnt}
 				WHERE PROC_CD = #{procCd} 
@@ -358,6 +359,7 @@
 				SET 
 					GAIN_SCORE = #{gainScore},
 					PASS_YN = #{passYn},
+					END_YN = 'Y',
 					RIGHT_CNT = #{rightCnt},
 					WRONG_CNT = #{wrongCnt}
 				WHERE PROC_CD = #{procCd} 

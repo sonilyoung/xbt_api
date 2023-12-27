@@ -365,7 +365,13 @@
 			EDU_START_DATE,
 			EDU_END_DATE,
 			ENDING_YN,
-			EVALUATION_YN
+			EVALUATION_YN,
+			THEORY_YN,
+			DANGER_YN,
+			THEORY_PASS_YN,
+			PRACTICE_PASS_YN,
+			EVALUATION_PASS_YN,
+			DANGER_PASS_YN
 		FROM
 			XBT_BASELINE_STUDENT_INFO
 		WHERE 1=1
@@ -1630,9 +1636,7 @@
 	<!-- 교육생이론점수 수정 -->
 	<update id="updateBaselineTheory" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
 		UPDATE XBT_BASELINE_THEORY SET 
-		THEORY_SCORE = 0 ,
-		THEORY_YN = 'N',
-		ENDING_YN = 'N',
+		GAIN_SCORE = 0 ,
 		END_YN = 'ING',
 		PASS_YN = 'ING'
 		WHERE PROC_CD  = #{procCd} 
@@ -1653,8 +1657,11 @@
 			USER_ID = #{userId}
 		LIMIT 1
 		)
-		AND MIDDLE_GROUP_CD = CONCAT((SELECT EDU_CODE FROM XBT_STU_USER WHERE USER_ID = #{userId} LIMIT 1)
-		, (SELECT MENU_CD FROM XBT_STU_MENU WHERE LEARNING_TYPE = 'theory' AND LANGUAGE_CODE = 'kr'))	
+		AND MIDDLE_GROUP_CD IN(
+			SELECT CONCAT (T2.EDU_CODE, T1.MENU_CD) 
+			FROM XBT_STU_MENU T1, (SELECT EDU_CODE FROM XBT_STU_USER WHERE USER_ID = #{userId})T2 
+			WHERE LEARNING_TYPE = 'theory' AND LANGUAGE_CODE = 'kr'		
+		)
 	</update>			
 	
 	<!-- 교육생이론점수 수정 -->
@@ -1673,8 +1680,6 @@
 	<update id="updateBaselineDanger" parameterType="egovframework.com.adm.userMgr.vo.UserInfo">	
 		UPDATE XBT_BASELINE_THEORY SET 
 		DANGER_SCORE = 0 ,
-		DANGER_YN = 'N',
-		ENDING_YN = 'N',
 		END_YN = 'ING',
 		PASS_YN = 'ING'
 		WHERE PROC_CD  = #{procCd} 
@@ -1695,8 +1700,11 @@
 			USER_ID = #{userId}
 		LIMIT 1
 		)
-		AND MIDDLE_GROUP_CD = CONCAT((SELECT EDU_CODE FROM XBT_STU_USER WHERE USER_ID = #{userId} LIMIT 1)
-		, (SELECT MENU_CD FROM XBT_STU_MENU WHERE LEARNING_TYPE = 'danger' AND LANGUAGE_CODE = 'kr'))	
+		AND MIDDLE_GROUP_CD IN(
+			SELECT CONCAT (T2.EDU_CODE, T1.MENU_CD) 
+			FROM XBT_STU_MENU T1, (SELECT EDU_CODE FROM XBT_STU_USER WHERE USER_ID = #{userId})T2 
+			WHERE LEARNING_TYPE = 'danger' AND LANGUAGE_CODE = 'kr'		
+		)		
 	</update>			
 	
 	<!-- 교육생위험물점수 수정 -->
