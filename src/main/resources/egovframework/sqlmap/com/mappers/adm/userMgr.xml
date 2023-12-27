@@ -1851,6 +1851,17 @@
 			UPDATE_DATE = now()
 		WHERE
 			PIN_TITLE = #{pinTitle}
-	</update>			
+	</update>	
+	
+	<!-- 메뉴핀확인 -->
+	<select id="selectCheckMenuPin" parameterType="egovframework.com.adm.userMgr.vo.MenuPin" resultType="int">
+		SELECT
+			count(PWD_NO)
+		FROM
+			XBT_MENU_PIN
+		WHERE
+			CONCAT(PINKEY, PIN_NUMBER) = #{pinNumber}
+			AND PIN_TITLE = #{pinTitle}		
+	</select>			
 			
 </mapper>

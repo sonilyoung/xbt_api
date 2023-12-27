@@ -20,6 +20,8 @@ import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.system.service.SystemService;
 import egovframework.com.adm.system.vo.Notice;
+import egovframework.com.adm.userMgr.service.UserMgrService;
+import egovframework.com.adm.userMgr.vo.MenuPin;
 import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
@@ -29,7 +31,6 @@ import egovframework.com.stu.main.service.MainService;
 import egovframework.com.stu.main.vo.Schedule;
 import egovframework.com.stu.main.vo.Statistics;
 import egovframework.com.stu.main.vo.UserStInfo;
-import egovframework.com.stu.practice.service.PracticeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -61,8 +62,7 @@ public class MainController {
     private MainService mainService; 
     
     @Autowired
-    private PracticeService practiceService;      
-    
+    private UserMgrService userMgrService;
     /**
      * 사용자정보조회
      * 
@@ -436,5 +436,44 @@ public class MainController {
             throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
         }
     }       
-           
+    
+    
+    /**
+     * 메뉴핀 확인
+     * 
+     * @param param
+     * @return 
+     */
+    @PostMapping("/selectCheckMenuPin.do")
+    @ApiOperation(value = "메뉴핀 확인", notes = "메뉴핀 확인")
+    public BaseResponse<MenuPin> selectCheckMenuPin(HttpServletRequest request, @RequestBody MenuPin params) {
+    	Login login = loginService.getLoginInfo(request);
+		if (login == null) {
+			throw new BaseException(BaseResponseCode.AUTH_FAIL);
+		}
+		
+		if(StringUtils.isEmpty(params.getPinData())){				
+			return new BaseResponse<MenuPin>(BaseResponseCode.PARAMS_ERROR, "PinData" + BaseApiMessage.REQUIRED.getCode());
+		}else {
+			String pinNumber = "";
+			for(String s : params.getPinData()) {
+				pinNumber = pinNumber + s + "";
+			}
+			params.setPinNumber(pinNumber); 
+		}
+		
+		try {
+
+			int result = userMgrService.selectCheckMenuPin(params);
+			if(result > 0) {
+				return new BaseResponse<MenuPin>(BaseResponseCode.SUCCESS);
+			}else {
+				return new BaseResponse<MenuPin>(BaseResponseCode.FAIL);
+			}
+			
+        } catch (Exception e) {
+        	LOGGER.error("error:", e);
+            throw new BaseException(BaseResponseCode.UNKONWN_ERROR, e.getMessage());
+        }
+    }    
 }

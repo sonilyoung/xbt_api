@@ -2296,9 +2296,7 @@ public class UserMgrController {
 				}else {
 					String pinNumber = "";
 					for(String s : mp.getPinData()) {
-						System.out.println("s:"+ s);
 						pinNumber = pinNumber + s + "";
-						System.out.println("pinNumber:"+ pinNumber);
 					}
 					mp.setPinNumber(pinNumber); 
 				}

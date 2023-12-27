@@ -115,4 +115,7 @@ public interface UserMgrService{
 	public int insertMenuPin(MenuPin params);
 	
 	public int updateMenuPin(MenuPin params);
+	
+	public int selectCheckMenuPin(MenuPin params);
+	
 }

@@ -321,6 +321,12 @@ public class UserMgrServiceImpl implements UserMgrService {
 	public int updateMenuPin(MenuPin params) {
 		// TODO Auto-generated method stub
 		return userMgrDAO.updateMenuPin(params);
+	}
+
+	@Override
+	public int selectCheckMenuPin(MenuPin params) {
+		// TODO Auto-generated method stub
+		return userMgrDAO.selectCheckMenuPin(params);
 	}		
 
 }
