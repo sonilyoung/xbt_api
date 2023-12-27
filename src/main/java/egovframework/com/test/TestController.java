@@ -45,13 +45,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import egovframework.com.adm.contents.service.ContentsService;
-import egovframework.com.adm.contents.vo.XbtSeq;
-import egovframework.com.adm.login.vo.Login;
-import egovframework.com.adm.system.vo.Notice;
 import egovframework.com.common.service.CommonService;
 import egovframework.com.common.vo.Common;
-import egovframework.com.common.vo.SeqGroupCode;
 import egovframework.com.excel.ExcelRead;
 import egovframework.com.excel.ExcelReadOption;
 import egovframework.com.global.annotation.SkipAuth;
@@ -59,12 +54,10 @@ import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
-import egovframework.com.global.http.exception.BaseException;
 import egovframework.com.global.util.FileReader;
 import egovframework.com.global.util.ImageConvertUtil;
 import egovframework.com.test.service.TestService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.http.MediaType;
 
 /**
  * 테스트
@@ -776,7 +769,6 @@ public class TestController {
 	        //String[] coloumNm = {"A", "C", "D", "E", "F", "H"};
 			
 			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
-			int i = 0;
 			for(LinkedHashMap<String, String> excelData: excelContent){
 				params = new LinkedHashMap<String, Object>();
 	            //row.setHeight((short)1200);
@@ -786,7 +778,6 @@ public class TestController {
 	            params.put("unitId", excelData.get("D"));
 	            
 	            testService.insertXbtBagConstUnitRename(params);
-	            i++;
 			}
 			
 			int result = 1;
@@ -838,7 +829,6 @@ public class TestController {
 			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
 			int result = 0;
 			
-			int i = 0;
 			for(LinkedHashMap<String, String> excelData: excelContent){
 				params = new LinkedHashMap<String, Object>();
 	            //row.setHeight((short)1200);
@@ -860,7 +850,6 @@ public class TestController {
 		            params.put("actionDiv", excelData.get("H"));
 		            
 		            result = testService.insertXbtBagInfoRename(params);
-		            i++;
 				}
 
 			}

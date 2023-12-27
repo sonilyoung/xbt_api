@@ -3,25 +3,20 @@ package egovframework.com.adm.login.service;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.adm.login.dao.UserDAO;
-import egovframework.com.adm.login.dao.UserManageDAO;
 import egovframework.com.adm.login.vo.User;
 import egovframework.com.global.exception.CustomBaseException;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.util.AES256Util;
-import egovframework.com.stu.login.vo.StuLogin;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Service("userService")
+@SuppressWarnings("static-access")
 public class UserServiceImpl extends EgovAbstractServiceImpl implements UserService{
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+	//private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	
     @Resource(name = "UserDAO")
 	private UserDAO repository;		

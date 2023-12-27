@@ -355,7 +355,8 @@ public class SeedCipher {
 		K[1] = pdwRoundKey[nCount++];
 		SeedRound(R0, R1, L0, L1, K);
 
-		if (NoRounds == 16) {
+		int noRounds2 = NoRounds;
+		if (noRounds2 == 16) {
 			K[0] = pdwRoundKey[nCount++];
 			K[1] = pdwRoundKey[nCount++];
 			SeedRound(L0, L1, R0, R1, K);
@@ -421,7 +422,8 @@ public class SeedCipher {
 			EndianChange(R1);
 		}
 
-		if (NoRounds == 16) {
+		int noRounds2 = NoRounds;
+		if (noRounds2 == 16) {
 			K[1] = pdwRoundKey[nCount--];
 			K[0] = pdwRoundKey[nCount--];
 			SeedRound(L0, L1, R0, R1, K);
@@ -585,7 +587,8 @@ public class SeedCipher {
 		EncRoundKeyUpdate0(K, A, B, C, D, 11);
 		pdwRoundKey[nCount++] = K[0];
 		pdwRoundKey[nCount++] = K[1];
-		if (NoRounds == 16) {
+		int noRounds2 = NoRounds;
+		if (noRounds2 == 16) {
 			EncRoundKeyUpdate1(K, A, B, C, D, 12);
 			pdwRoundKey[nCount++] = K[0];
 			pdwRoundKey[nCount++] = K[1];

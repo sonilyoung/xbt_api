@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.stu.practice.vo.UnitGroup;
 import egovframework.com.stu.practice.dao.PracticeDAO;
 import egovframework.com.stu.practice.vo.Practice;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -30,7 +30,7 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
+//@Log4j2
 @Service("PracticeService")
 public class PracticeServiceImpl implements PracticeService {
 
@@ -41,13 +41,13 @@ public class PracticeServiceImpl implements PracticeService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<UnitGroup> selectUnitGroupList(UnitGroup params) {
-		// TODO Auto-generated method stub
+		
 		return (List<UnitGroup>) PracticeDAO.selectUnitGroupList(params);
 	}
 	
 	@Override
 	public UnitGroup selectUnitGroupAnswer(UnitGroup params) {
-		// TODO Auto-generated method stub
+		
 		return PracticeDAO.selectUnitGroupAnswer(params);
 	}
 	
@@ -55,13 +55,13 @@ public class PracticeServiceImpl implements PracticeService {
     @Override
 	@SuppressWarnings("unchecked")
 	public List<Practice> selectUnitList(Practice params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Practice>)PracticeDAO.selectUnitList(params);
 	}
 
 	@Override
 	public Practice selectUnit(Practice params) {
-		// TODO Auto-generated method stub
+		
 		return PracticeDAO.selectUnit(params);
 	}
 

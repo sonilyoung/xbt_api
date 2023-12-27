@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.stu.evaluation.dao.EvaluationDAO;
 import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningProblem;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -30,7 +30,6 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
 @Service("EvaluationService")
 public class EvaluationServiceImpl implements EvaluationService {
 
@@ -40,83 +39,83 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 	@Override
 	public int selectEvaluationProblemsCount(LearningProblem params) {
-		// TODO Auto-generated method stub
+		
 		return evaluationDAO.selectEvaluationProblemsCount(params);
 	}
 
 	@Override
 	public int insertEvaluationProblems(LearningProblem params) {
-		// TODO Auto-generated method stub
+		
 		return evaluationDAO.insertEvaluationProblems(params);
 	}
 	
 	
 	@Override
 	public int updateEvaluationEnd(Learning params) {
-		// TODO Auto-generated method stub
+		
 		return evaluationDAO.updateEvaluationEnd(params);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<LearningProblem> selectEvaluationProblemsList(LearningProblem params) {
-		// TODO Auto-generated method stub
+		
 		return (List<LearningProblem>) evaluationDAO.selectEvaluationProblemsList(params);
 	}
 
 	
 	@Override
 	public Learning selectEvaluationAnswer(Learning params) {
-		// TODO Auto-generated method stub
+		
 		return evaluationDAO.selectEvaluationAnswer(params);
 	}	
 
 	@Override
 	public int selectEvaluationProcessYnCount(LearningProblem params) {
-		// TODO Auto-generated method stub
+		
 		return evaluationDAO.selectEvaluationProcessYnCount(params);
 	}
 		
 	
 	@Override
 	public int updateEvaluationAnswer(Learning params) {
-		// TODO Auto-generated method stub
+		
 		return evaluationDAO.updateEvaluationAnswer(params);
 	}
 
 	@Override
 	public int insertEvaluationResult(Learning params) {
-		// TODO Auto-generated method stub
+		
 		return evaluationDAO.insertEvaluationResult(params);
 	}
 
 	@Override
 	public Learning selectEvaluationSum(Learning params) {
-		// TODO Auto-generated method stub
+		
 		return evaluationDAO.selectEvaluationSum(params);
 	}
 
 	@Override
 	public int updateEvaluationResult(Learning params) {
-		// TODO Auto-generated method stub
+		
 		return evaluationDAO.updateEvaluationResult(params);
 	}
 
 	@Override
 	public Learning selectEvaluationResultCount(Learning params) {
-		// TODO Auto-generated method stub
+		
 		return evaluationDAO.selectEvaluationResultCount(params);
 	}
 
 	@Override
 	public LearningProblem selectEvaluationProblemsMaxkey(LearningProblem params) {
-		// TODO Auto-generated method stub
+		
 		return evaluationDAO.selectEvaluationProblemsMaxkey(params);
 	}
 
 	@Override
 	public int selectEvaluationBaselineResultCount(Learning params) {
-		// TODO Auto-generated method stub
+		
 		return evaluationDAO.selectEvaluationBaselineResultCount(params);
 	}
 

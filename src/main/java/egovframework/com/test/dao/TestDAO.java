@@ -3,13 +3,6 @@ package egovframework.com.test.dao;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import egovframework.com.adm.contents.vo.Language;
-import egovframework.com.adm.contents.vo.UnitGroup;
-import egovframework.com.adm.contents.vo.UnitImg;
-import egovframework.com.adm.contents.vo.UnitInformation;
-import egovframework.com.adm.contents.vo.XbtSeq;
-import egovframework.com.adm.contents.vo.XrayContents;
-import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 

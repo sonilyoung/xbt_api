@@ -3,7 +3,10 @@ package egovframework.com.global.http.exception;
 import egovframework.com.global.http.BaseResponseCode;
 
 public class AbstractBaseException extends RuntimeException {
-	private static final long serialVerionUID = 8342235231880246631L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7909952777336435788L;
 	protected BaseResponseCode responseCode;
 	protected String message;
 	protected Object[] args;

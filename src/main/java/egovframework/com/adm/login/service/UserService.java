@@ -1,7 +1,6 @@
 package egovframework.com.adm.login.service;
 
 import egovframework.com.adm.login.vo.User;
-import egovframework.com.stu.login.vo.StuLogin;
 
 public interface UserService {
 

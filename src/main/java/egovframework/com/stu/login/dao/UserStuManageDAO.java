@@ -1,6 +1,5 @@
 package egovframework.com.stu.login.dao;
 
-import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.login.vo.LoginRequest;
 import egovframework.com.stu.login.vo.StuLogin;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;

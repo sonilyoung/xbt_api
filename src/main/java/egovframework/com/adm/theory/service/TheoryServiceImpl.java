@@ -11,7 +11,7 @@ import egovframework.com.adm.theory.dao.TheoryDAO;
 import egovframework.com.adm.theory.vo.Theory;
 import egovframework.com.adm.theory.vo.TheoryFile;
 import egovframework.com.adm.theory.vo.TheoryGroup;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -32,7 +32,7 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
+//@Log4j2
 @Service("theoryService")
 public class TheoryServiceImpl implements TheoryService {
 
@@ -42,98 +42,99 @@ public class TheoryServiceImpl implements TheoryService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<TheoryGroup> selectTheoryGroupList(TheoryGroup params) {
-		// TODO Auto-generated method stub
+		
 		return (List<TheoryGroup>)theoryDAO.selectTheoryGroupList(params);
 	}
 
 	@Override
 	public int insertTheoryGroup(TheoryGroup params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.insertTheoryGroup(params);
 	}
 
 	@Override
 	public int updateTheoryGroup(TheoryGroup params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.updateTheoryGroup(params);
 	}
 
 	@Override
 	public int deleteTheoryGroup(TheoryGroup params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.deleteTheoryGroup(params);
 	}
 
 	@Override
 	public TheoryGroup selectTheoryGroup(TheoryGroup params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.selectTheoryGroup(params);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Theory> selectTheoryList(Theory params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Theory>)theoryDAO.selectTheoryList(params);
 	}
 
 	@Override
 	public int insertTheory(Theory params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.insertTheory(params);
 	}
 
 	@Override
 	public int updateTheory(Theory params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.updateTheory(params);
 	}
 
 	@Override
 	public int deleteTheory(Theory params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.deleteTheory(params);
 	}
 
 	@Override
 	public Theory selectTheory(Theory params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.selectTheory(params);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<TheoryFile> selectTheoryFileList(TheoryFile params) {
-		// TODO Auto-generated method stub
+		
 		return (List<TheoryFile>) theoryDAO.selectTheoryFileList(params);
 	}
 
 	@Override
 	public TheoryFile selectTheoryFile(TheoryFile params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.selectTheoryFile(params);
 	}
 
 	@Override
 	public int insertTheoryFile(TheoryFile params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.insertTheoryFile(params);
 	}
 
 	@Override
 	public int updateTheoryFile(TheoryFile params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.updateTheoryFile(params);
 	}
 
 	@Override
 	public int deleteTheoryFile(TheoryFile params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.deleteTheoryFile(params);
 	}
 
 	@Override
 	public int insertTheoryExcel(LinkedHashMap<String, Object> params) {
-		// TODO Auto-generated method stub
+		
 		return theoryDAO.insertTheoryExcel(params);
 	}	
 	

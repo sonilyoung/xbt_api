@@ -3,8 +3,6 @@ package egovframework.com.stu.theory.dao;
 import java.util.List;
 
 import egovframework.com.stu.learning.vo.Learning;
-import egovframework.com.stu.learning.vo.LearningProblem;
-import egovframework.com.stu.learning.vo.PointStd;
 import egovframework.com.stu.theory.vo.StuTheory;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;

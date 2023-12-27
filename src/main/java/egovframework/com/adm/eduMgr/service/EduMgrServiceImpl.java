@@ -57,14 +57,14 @@ public class EduMgrServiceImpl implements EduMgrService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Baseline> selectBaselineList(Baseline params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Baseline>) eduMgrDAO.selectBaselineList(params);
 	}
 	
 	@Override
 	@Transactional
 	public int insertBaseline(Baseline params) {
-		// TODO Auto-generated method stub
+		
 		int result = eduMgrDAO.insertBaseline(params);
 		Baseline baseline = eduMgrDAO.selectBaseline(params);
 		
@@ -136,7 +136,7 @@ public class EduMgrServiceImpl implements EduMgrService {
 	@Override
 	@Transactional
 	public int updateBaseline(Baseline params) {
-		// TODO Auto-generated method stub
+		
 		int result = eduMgrDAO.updateBaseline(params);
 		
 		Baseline baseline = eduMgrDAO.selectBaseline(params);
@@ -237,13 +237,13 @@ public class EduMgrServiceImpl implements EduMgrService {
 
 	@Override
 	public int deleteBaseline(Baseline params) {
-		// TODO Auto-generated method stub
+		
 		return eduMgrDAO.deleteBaseline(params);
 	}
 
 	@Override
 	public Baseline selectBaseline(Baseline params) {
-		// TODO Auto-generated method stub
+		
 		return eduMgrDAO.selectBaseline(params);
 	}
 	
@@ -251,79 +251,79 @@ public class EduMgrServiceImpl implements EduMgrService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Student> selectBaselineStudentList(Student params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Student>)eduMgrDAO.selectBaselineStudentList(params);
 	}
 	
 	@Override
 	public Student selectBaselineStudent(Student params) {
-		// TODO Auto-generated method stub
+		
 		return eduMgrDAO.selectBaselineStudent(params);
 	}	
 
 	@Override
 	public int insertBaselineStudent(Student params) {
-		// TODO Auto-generated method stub
+		
 		return eduMgrDAO.insertBaselineStudent(params);
 	}
 
 
 	@Override
 	public int deleteBaselineStudent(Student params) {
-		// TODO Auto-generated method stub
+		
 		return eduMgrDAO.deleteBaselineStudent(params);
 	}	
 	
 	@Override
 	public int deleteBaselineStudentAll(Student params) {
-		// TODO Auto-generated method stub
+		
 		return eduMgrDAO.deleteBaselineStudentAll(params);
 	}		
 		
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<EduDate> selectEduDateList(EduDate params) {
-		// TODO Auto-generated method stub
+		
 		return (List<EduDate>)eduMgrDAO.selectEduDateList(params);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<EduDate> selectEduDateListPop(EduDate params) {
-		// TODO Auto-generated method stub
+		
 		return (List<EduDate>)eduMgrDAO.selectEduDateListPop(params);
 	}
 	
 	
 	@Override
 	public EduDate selectEduModuleList(EduDate params) {
-		// TODO Auto-generated method stub
+		
 		return eduMgrDAO.selectEduModuleList(params);
 	}	
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<EduDate> selectEduMenuList(EduDate params) {
-		// TODO Auto-generated method stub
+		
 		return (List<EduDate>)eduMgrDAO.selectEduMenuList(params);
 	}	
 
 	@Override
 	public int insertEduDate(EduDate params) {
-		// TODO Auto-generated method stub
+		
 		return eduMgrDAO.insertEduDate(params);
 	}
 
 
 	@Override
 	public int deleteEduDate(EduDate params) {
-		// TODO Auto-generated method stub
+		
 		return eduMgrDAO.deleteEduDate(params);
 	}
 	
 	@Override
 	public int deleteEduDateAll(EduDate params) {
-		// TODO Auto-generated method stub
+		
 		return eduMgrDAO.deleteEduDateAll(params);
 	}
 
@@ -331,7 +331,7 @@ public class EduMgrServiceImpl implements EduMgrService {
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public int insertBaselineCopy(Baseline params) {
-		// TODO Auto-generated method stub
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/d");
 		String targetStartDate = params.getEduStartDate();
 		String targetEndDate = params.getEduEndDate();
@@ -390,7 +390,7 @@ public class EduMgrServiceImpl implements EduMgrService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Baseline> selectBaselineProcSeqList(Baseline params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Baseline>) eduMgrDAO.selectBaselineProcSeqList(params);
 	}
 }

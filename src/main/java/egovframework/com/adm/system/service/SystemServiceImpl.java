@@ -11,7 +11,7 @@ import egovframework.com.adm.system.dao.SystemDAO;
 import egovframework.com.adm.system.vo.Menu;
 import egovframework.com.adm.system.vo.Notice;
 import egovframework.com.adm.system.vo.XbtScore;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -32,7 +32,7 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
+//@Log4j2
 @Service("systemService")
 public class SystemServiceImpl implements SystemService {
 
@@ -42,31 +42,31 @@ public class SystemServiceImpl implements SystemService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Notice> selectNoticeList(Notice params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Notice>)systemDAO.selectNoticeList(params);
 	}
 
 	@Override
 	public int insertNotice(Notice params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.insertNotice(params);
 	}
 
 	@Override
 	public int updateNotice(Notice params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.updateNotice(params);
 	}
 
 	@Override
 	public int deleteNotice(Notice params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.deleteNotice(params);
 	}
 
 	@Override
 	public Notice selectNotice(Notice params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.selectNotice(params);
 	}
     
@@ -74,149 +74,149 @@ public class SystemServiceImpl implements SystemService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Menu> selectMenuList(Menu params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Menu>)systemDAO.selectMenuList(params);
 	}
 	
 	@Override
 	public Menu selectModuleMenu(Menu params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.selectModuleMenu(params);
 	}		
 
 	@Override
 	public int insertMenu(Menu params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.insertMenu(params);
 	}
 
 	@Override
 	public int updateMenu(Menu params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.updateMenu(params);
 	}
 
 	@Override
 	public int deleteMenu(Menu params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.deleteMenu(params);
 	}
 
 	@Override
 	public Menu selectMenu(Menu params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.selectMenu(params);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Menu> selectModuleMenuList(Menu params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Menu>) systemDAO.selectModuleMenuList(params);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<XbtScore> selectXbtEndingUserList(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return (List<XbtScore>) systemDAO.selectXbtEndingUserList(params);
 	}
 	
 
 	@Override
 	public XbtScore selectXbtEndingUser(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.selectXbtEndingUser(params);
 	}
 	
 
 	@Override
 	public XbtScore selectTheoryScore(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.selectTheoryScore(params);
 	}
 
 	@Override
 	public XbtScore selectEvaluationScore(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.selectEvaluationScore(params);
 	}
 
 	@Override
 	public XbtScore selectPracticeScore(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.selectPracticeScore(params);
 	}
 
 	@Override
 	public int updateXbtScore(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.updateXbtScore(params);
 	}
 	
 	@Override
 	public XbtScore selectProcessScore(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.selectProcessScore(params);
 	}
 	
 	@Override
 	public XbtScore selectTheoryProcessScore(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.selectTheoryProcessScore(params);
 	}	
 
 	@Override
 	public int updateXbtEndScore(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.updateXbtEndScore(params);
 	}
 	
 	@Override
 	public int updateLearningStatus(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.updateLearningStatus(params);
 	}
 	
 	@Override
 	public int updateBaselineStatus(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.updateBaselineStatus(params);
 	}
 	
 	@Override
 	public int updateXrayExcelData(XrayContents params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.updateXrayExcelData(params);
 	}
 
 	@Override
 	public int updateEvaluationProgressingBackup(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.updateEvaluationProgressingBackup(params);
 	}
 
 	@Override
 	public int updateBaselineEvaluationBackup(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.updateBaselineEvaluationBackup(params);
 	}
 
 	@Override
 	public int updateTheoryProgressingBackup(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.updateTheoryProgressingBackup(params);
 	}
 
 	@Override
 	public int updateBaselineTheoryBackup(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.updateBaselineTheoryBackup(params);
 	}
 
 	@Override
 	public int updateBaselineStudentInfoBackup(XbtScore params) {
-		// TODO Auto-generated method stub
+		
 		return systemDAO.updateBaselineStudentInfoBackup(params);
 	}
 	

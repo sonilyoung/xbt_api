@@ -3,7 +3,6 @@ package egovframework.com.adm.login.dao;
 import egovframework.com.adm.login.vo.User;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Mapper("UserDAO")
 public class UserDAO extends EgovAbstractMapper{

@@ -16,7 +16,7 @@ import egovframework.com.adm.learningMgr.vo.XrayPoint;
 import egovframework.com.adm.learningMgr.vo.XrayPointDetail;
 import egovframework.com.common.dao.CommonDAO;
 import egovframework.com.common.vo.Common;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -37,7 +37,7 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
+//@Log4j2
 @Service("LearningMgrService")
 public class LearningMgrServiceImpl implements LearningMgrService {
 
@@ -49,20 +49,23 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<EduModule> selectModuleList(EduModule params) {
-		// TODO Auto-generated method stub
+		
 		return (List<EduModule>) learningMgrDAO.selectModuleList(params);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<EduModule> selectModuleQuestion(EduModule params) {
-		// TODO Auto-generated method stub
+		
 		return (List<EduModule>) learningMgrDAO.selectModuleQuestion(params);
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<EduModulePop> selectModuleRandom(EduModulePop params) {
-		// TODO Auto-generated method stub
+		
 		return (List<EduModulePop>) learningMgrDAO.selectModuleRandom(params);
 	}
 	
@@ -71,7 +74,7 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 	@Override
 	@Transactional
 	public int insertModule(EduModule params) throws Exception{
-		// TODO Auto-generated method stub
+		
 		//12	학습컷	lc
 		//13	학습슬라이드	ls
 		//24	오답문제풀이컷	oxc
@@ -97,13 +100,13 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 	
 	@Override
 	public int insertModuleQuestion(EduModule params) {
-		// TODO Auto-generated method stub
+		
 		return learningMgrDAO.insertModuleQuestion(params);	
 	}	
 
 	@Override
 	public int updateModule(EduModule params) {
-		// TODO Auto-generated method stub
+		
 		int result = learningMgrDAO.updateModule(params);
 		
 		if(params.getBagList()!=null && params.getBagList().get(0)!=null) {
@@ -123,7 +126,7 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 
 	@Override
 	public int deleteModule(EduModule params) {
-		// TODO Auto-generated method stub
+		
 		int result = learningMgrDAO.deleteModule(params);
 		learningMgrDAO.deleteModuleQuestion(params);
 		return result;
@@ -131,52 +134,56 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 
 	@Override
 	public int deleteModuleQuestion(EduModule params) {
-		// TODO Auto-generated method stub
+		
 		return learningMgrDAO.deleteModuleQuestion(params);
 	}
 	
 	@Override
 	public EduModule selectModule(EduModule params) {
-		// TODO Auto-generated method stub
+		
 		return learningMgrDAO.selectModule(params);
 	}	
 	
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<XrayPoint> getXrayPointList(XrayPoint params) {
-		// TODO Auto-generated method stub
+		
 		return (List<XrayPoint>) learningMgrDAO.getXrayPointList(params);
 	}
 
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<XrayPointDetail> getXrayPointDetailList(XrayPointDetail params) {
-		// TODO Auto-generated method stub
+		
 		return (List<XrayPointDetail>) learningMgrDAO.getXrayPointDetailList(params);
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<EduType> getEduTypeList(EduType params) {
-		// TODO Auto-generated method stub
+		
 		return (List<EduType>) learningMgrDAO.getEduTypeList(params);
 	}
 
 	@Override
 	public EduModule selectXrayModuleContents(EduModule params) {
-		// TODO Auto-generated method stub
+		
 		return learningMgrDAO.selectXrayModuleContents(params);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<EduModulePop> selectModuleXrayPopList(EduModulePop params) {
-		// TODO Auto-generated method stub
+		
 		return (List<EduModulePop>) learningMgrDAO.selectModuleXrayPopList(params);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<PointStd> selectPointStdList(PointStd params) {
-		// TODO Auto-generated method stub
+		
 		return (List<PointStd>)learningMgrDAO.selectPointStdList(params);
 	}
 
@@ -184,7 +191,7 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 	@Transactional
 	@SuppressWarnings("unchecked")
 	public int insertPointStd(PointStd params) throws Exception{
-		// TODO Auto-generated method stub
+		
 		int result = learningMgrDAO.insertPointStd(params);
 		Common c = new Common();
 		c.setLanguageCode("kr");
@@ -200,57 +207,57 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 
 	@Override
 	public int updatePointStd(PointStd params) {
-		// TODO Auto-generated method stub
+		
 		return learningMgrDAO.updatePointStd(params);
 	}
 
 	@Override
 	public int deletePointStd(PointStd params) {
-		// TODO Auto-generated method stub
+		
 		return learningMgrDAO.deletePointStd(params);
 	}
 
 	@Override
 	public PointStd selectPointStd(PointStd params) {
-		// TODO Auto-generated method stub
+		
 		return learningMgrDAO.selectPointStd(params);
 	}	
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<PointStd> selectPointStdDetailList(PointStd params) {
-		// TODO Auto-generated method stub
+		
 		return (List<PointStd>)learningMgrDAO.selectPointStdDetailList(params);
 	}
 
 	@Override
 	public int insertPointStdDetail(PointStd params) {
-		// TODO Auto-generated method stub
+		
 		return learningMgrDAO.insertPointStdDetail(params);
 	}
 
 	@Override
 	public int updatePointStdDetail(PointStd params) {
-		// TODO Auto-generated method stub
+		
 		return learningMgrDAO.updatePointStdDetail(params);
 	}
 
 	@Override
 	public int deletePointStdDetail(PointStd params) {
-		// TODO Auto-generated method stub
+		
 		return learningMgrDAO.deletePointStdDetail(params);
 	}
 
 	@Override
 	public PointStd selectPointStdDetail(PointStd params) {
-		// TODO Auto-generated method stub
+		
 		return learningMgrDAO.selectPointStdDetail(params);
 	}
 
 	@Override
 	@Transactional
 	public int insertModuleMasterCopy(EduModule params){
-		// TODO Auto-generated method stub
+		
 		int result = learningMgrDAO.insertModuleMasterCopy(params);
 		learningMgrDAO.insertModuleDetailCopy(params);
 		return result;
@@ -258,7 +265,7 @@ public class LearningMgrServiceImpl implements LearningMgrService {
 
 	@Override
 	public int insertModuleDetailCopy(EduModule params) {
-		// TODO Auto-generated method stub
+		
 		return learningMgrDAO.insertModuleDetailCopy(params);
 	}	
 	

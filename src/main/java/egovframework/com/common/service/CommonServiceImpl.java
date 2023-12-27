@@ -3,14 +3,13 @@ package egovframework.com.common.service;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
 import egovframework.com.common.dao.CommonDAO;
 import egovframework.com.common.vo.Common;
 import egovframework.com.common.vo.CommonSystemMessage;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -31,7 +30,7 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
+//@Log4j2
 @Service("commonService")
 @SuppressWarnings("unchecked")
 public class CommonServiceImpl implements CommonService {
@@ -42,33 +41,33 @@ public class CommonServiceImpl implements CommonService {
 
 	@Override
 	public List<Common> getCommonGroupList(Common params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Common>) commonDAO.getCommonGroupList(params);
 	}
 
 	@Override
 	public List<Common> selectCommonList(Common params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Common>) commonDAO.selectCommonList(params);
 	}
 
 	@Override
 	public Common selectCommon(Common params) {
-		// TODO Auto-generated method stub
+		
 		return commonDAO.selectCommon(params);
 	}	
 	
 
 	@Override
 	public Common selectCommonDetail(Common params) {
-		// TODO Auto-generated method stub
+		
 		return commonDAO.selectCommonDetail(params);
 	}	
 		
 	
 	@Override
 	public int insertCommonCode(Common params) {
-		// TODO Auto-generated method stub
+		
 		//commonDAO.insertCommonCode(params);
 		int result = commonDAO.insertCommonCodeDetail(params);
 		return result;
@@ -76,19 +75,19 @@ public class CommonServiceImpl implements CommonService {
 
 	@Override
 	public int insertCommonCodeDetail(Common params) {
-		// TODO Auto-generated method stub
+		
 		return commonDAO.insertCommonCodeDetail(params);
 	}
 
 	@Override
 	public int updateCommonCode(Common params) {
-		// TODO Auto-generated method stub
+		
 		return commonDAO.updateCommonCode(params);
 	}
 
 	@Override
 	public int deleteCommonCode(Common params) {
-		// TODO Auto-generated method stub
+		
 		int result = commonDAO.deleteCommonCode(params);
 		commonDAO.deleteCommonCodeDetail(params);
 		return result; 
@@ -96,43 +95,43 @@ public class CommonServiceImpl implements CommonService {
 
 	@Override
 	public CommonSystemMessage selectSystemMessage(CommonSystemMessage params) {
-		// TODO Auto-generated method stub
+		
 		return commonDAO.selectSystemMessage(params);
 	}
 
 	@Override
 	public List<Common> selectLanguageApplyList(Common params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Common>) commonDAO.selectLanguageApplyList(params);
 	}
 
 	@Override
 	public Common selectLanguageApply(Common params) {
-		// TODO Auto-generated method stub
+		
 		return commonDAO.selectLanguageApply(params);
 	}
 
 	@Override
 	public int insertLanguageApply(Common params) {
-		// TODO Auto-generated method stub
+		
 		return commonDAO.insertLanguageApply(params);
 	}
 
 	@Override
 	public int deleteLanguageApply(Common params) {
-		// TODO Auto-generated method stub
+		
 		return commonDAO.deleteLanguageApply(params);
 	}
 
 	@Override
 	public int updateLanguageApply(Common params) {
-		// TODO Auto-generated method stub
+		
 		return commonDAO.updateLanguageApply(params);
 	}
 
 	@Override
 	public List<Common> selectCommonDetailList(Common params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Common>) commonDAO.selectCommonDetailList(params);
 	}
 

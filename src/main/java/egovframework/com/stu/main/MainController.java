@@ -22,7 +22,6 @@ import egovframework.com.adm.system.service.SystemService;
 import egovframework.com.adm.system.vo.Notice;
 import egovframework.com.adm.userMgr.service.UserMgrService;
 import egovframework.com.adm.userMgr.vo.MenuPin;
-import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
@@ -50,7 +49,7 @@ public class MainController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
-    private OfficeMessageSource officeMessageSource;
+    //private OfficeMessageSource officeMessageSource;
 
     @Autowired
     private LoginService loginService;
@@ -340,7 +339,6 @@ public class MainController {
 					List<Integer>level4 = new ArrayList<Integer>();
 					List<Integer>level5 = new ArrayList<Integer>();
 					
-					int i = 0;
 					for(Statistics s : dataList) {
 						if(s.getStudyLvl()==1) {
 							level1.add(s.getGainScore()); 
@@ -373,7 +371,6 @@ public class MainController {
 							level3.add(0);
 							level4.add(0);
 						}
-						i++;
 					}
 					params.setLevel1(level1);				
 					params.setLevel2(level2);				

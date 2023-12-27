@@ -23,7 +23,6 @@ import egovframework.com.adm.theory.vo.TheoryFile;
 import egovframework.com.file.service.FileService;
 import egovframework.com.file.service.XbtImageService;
 import egovframework.com.file.vo.AttachFile;
-import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.exception.BaseResponse;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponseCode;
@@ -54,7 +53,7 @@ public class StuTheoryController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StuTheoryController.class);
 
-    private OfficeMessageSource officeMessageSource;
+    //private OfficeMessageSource officeMessageSource;
 
     @Autowired
     private LoginStuService loginService;
@@ -272,7 +271,8 @@ public class StuTheoryController {
      * @param param
      * @return Company
     */  
-    @PostMapping("/endTheory.do")
+	@PostMapping("/endTheory.do")
+	@SuppressWarnings("unused")
     @ApiOperation(value = "이론종료", notes = "이론종료")
     public BaseResponse<Integer> endTheory(HttpServletRequest request, @RequestBody StuTheory params) {
     	StuLogin login = loginService.getLoginInfo(request);

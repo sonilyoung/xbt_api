@@ -28,7 +28,7 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
 
     @Override
     public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getRolesAndUrl() throws Exception {
-        // TODO Auto-generated method stub
+        
         LinkedHashMap<RequestMatcher, List<ConfigAttribute>> ret =
                 new LinkedHashMap<RequestMatcher, List<ConfigAttribute>>();
         LinkedHashMap<Object, List<ConfigAttribute>> data = securedObjectDAO.getRolesAndUrl();
@@ -41,7 +41,7 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
 
     @Override
     public LinkedHashMap<String, List<ConfigAttribute>> getRolesAndMethod() throws Exception {
-        // TODO Auto-generated method stub
+        
         LinkedHashMap<String, List<ConfigAttribute>> ret =
                 new LinkedHashMap<String, List<ConfigAttribute>>();
         LinkedHashMap<Object, List<ConfigAttribute>> data = securedObjectDAO.getRolesAndMethod();
@@ -54,7 +54,7 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
 
     @Override
     public LinkedHashMap<String, List<ConfigAttribute>> getRolesAndPointcut() throws Exception {
-        // TODO Auto-generated method stub
+        
         LinkedHashMap<String, List<ConfigAttribute>> ret =
                 new LinkedHashMap<String, List<ConfigAttribute>>();
         LinkedHashMap<Object, List<ConfigAttribute>> data = securedObjectDAO.getRolesAndPointcut();
@@ -67,13 +67,13 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
 
     @Override
     public List<ConfigAttribute> getMatchedRequestMapping(String url) throws Exception {
-        // TODO Auto-generated method stub
+        
         return securedObjectDAO.getRegexMatchedRequestMapping(url);
     }
 
     @Override
     public String getHierarchicalRoles() throws Exception {
-        // TODO Auto-generated method stub
+        
         return securedObjectDAO.getHierarchicalRoles();
     }
 

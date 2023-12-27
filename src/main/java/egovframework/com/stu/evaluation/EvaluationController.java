@@ -18,7 +18,6 @@ import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.system.vo.XbtScore;
 import egovframework.com.file.service.XbtImageService;
-import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
@@ -28,8 +27,6 @@ import egovframework.com.stu.evaluation.service.EvaluationService;
 import egovframework.com.stu.learning.service.LearningService;
 import egovframework.com.stu.learning.vo.Learning;
 import egovframework.com.stu.learning.vo.LearningProblem;
-import egovframework.com.stu.learning.vo.PointStd;
-import egovframework.com.stu.theory.vo.StuTheory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -49,7 +46,7 @@ public class EvaluationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EvaluationController.class);
 
-    private OfficeMessageSource officeMessageSource;
+    //private OfficeMessageSource officeMessageSource;
 
     @Autowired
     private LoginService loginService;

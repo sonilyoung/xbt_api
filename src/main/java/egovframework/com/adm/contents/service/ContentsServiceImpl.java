@@ -22,7 +22,6 @@ import egovframework.com.adm.contents.vo.XrayImgContents;
 import egovframework.com.common.service.CommonService;
 import egovframework.com.common.vo.Common;
 import egovframework.com.common.vo.SeqGroupCode;
-import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -43,7 +42,6 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
 @Service("contentsService")
 public class ContentsServiceImpl implements ContentsService {
 
@@ -54,51 +52,52 @@ public class ContentsServiceImpl implements ContentsService {
     private CommonService commonService;    
     
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Language> selectLanguageList(Language params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Language>) contentsDAO.selectLanguageList(params);
 	}
 	
 	@Override
 	public Language selectLanguage(Language params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.selectLanguage(params);
 	}
 	
 	@Override
 	public int updateLanguage(Language params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.updateLanguage(params);
 	}	
 	
 	@Override
 	public int insertLanguage(Language params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.insertLanguage(params);
 	}
 	
 	@Override
 	public int deleteLanguage(Language params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.deleteLanguage(params);
 	}    
     
     
 	@Override
 	public List<UnitGroup> selectUnitGroupList(UnitGroup params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.selectUnitGroupList(params);
 	}
 
 	@Override
 	public UnitGroup selectUnitGroup(UnitGroup params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.selectUnitGroup(params);
 	}	
 	
 	@Override
 	public UnitGroup selectUnitGroupName(UnitGroup params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.selectUnitGroupName(params);
 	}		
 	
@@ -106,7 +105,7 @@ public class ContentsServiceImpl implements ContentsService {
 	@Override
 	@Transactional
 	public int insertUnitGroup(UnitGroup params) {
-		// TODO Auto-generated method stub
+		
 		
 		XbtSeq seq = new XbtSeq();
 		seq.setSeqInfo(SeqGroupCode.XBT_UNIT_GROUP_ID.getCode());
@@ -127,7 +126,7 @@ public class ContentsServiceImpl implements ContentsService {
 
 	@Override
 	public int insertUnitGroupLanguage(Language params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.insertUnitGroupLanguage(params);
 	}
 
@@ -135,7 +134,7 @@ public class ContentsServiceImpl implements ContentsService {
 	
 	@Override
 	public void updateUnitGroup(UnitGroup params) {
-		// TODO Auto-generated method stub
+		
 		contentsDAO.updateUnitGroup(params);
 		//Language param = new Language();
 		
@@ -149,7 +148,7 @@ public class ContentsServiceImpl implements ContentsService {
 	
 	@Override
 	public void updateUnitGroupLanguage(Language params) {
-		// TODO Auto-generated method stub
+		
 		contentsDAO.updateUnitGroupLanguage(params);
 	}	
 	
@@ -157,7 +156,7 @@ public class ContentsServiceImpl implements ContentsService {
 
 	@Override
 	public int insertUnitGroupImg(MultipartFile imgFile, UnitGroup params) throws IOException {
-		// TODO Auto-generated method stub
+		
 		//String imageStr = Base64.encodeBase64String(imgFile.getBytes());
 		//String imageStr = new B(Base64.encodeBase64(imgFile.getBytes()));
 		//log.info("데이터: " + imageStr);
@@ -171,35 +170,36 @@ public class ContentsServiceImpl implements ContentsService {
 	
 	@Override
 	public List<UnitImg> selectUnitList(UnitImg params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.selectUnitList(params);
 	}
 	
 	@Override
 	public UnitImg selectUnit(UnitImg params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.selectUnit(params);
 	}
 
 
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<UnitInformation> selectUnitPopupList(UnitInformation params) {
-		// TODO Auto-generated method stub
+		
 		return (List<UnitInformation>) contentsDAO.selectUnitPopupList(params);
 	}
 	
 
 	@Override
 	public XbtSeq selectXbtSeq(XbtSeq params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.selectXbtSeq(params);
 	}		
 	
 	
 	@Override
 	public int insertUnitImage(MultipartFile imgFile,UnitImg params) throws IOException {
-		// TODO Auto-generated method stub
+		
 		//String imageStr = Base64.encodeBase64String(imgFile.getBytes());
 		//String imageStr = new B(Base64.encodeBase64(imgFile.getBytes()));
 		//log.info("데이터: " + imageStr);
@@ -219,7 +219,7 @@ public class ContentsServiceImpl implements ContentsService {
 	@Override
 	@Transactional
 	public String insertUnit(UnitImg params) {
-		// TODO Auto-generated method stub
+		
 		
 		XbtSeq seq = new XbtSeq();
 		seq.setSeqInfo(SeqGroupCode.XBT_UNIT_ID.getCode());
@@ -245,7 +245,7 @@ public class ContentsServiceImpl implements ContentsService {
 	@Override
 	@Transactional
 	public void updateUnitImg(UnitImg params) throws Exception{
-		// TODO Auto-generated method stub
+		
 		
 		if(contentsDAO.selectUnitBasicInfoCount(params) <= 0) {
 			contentsDAO.insertUnitBasicInfo(params);	
@@ -257,7 +257,7 @@ public class ContentsServiceImpl implements ContentsService {
 				params.setFrontImg(params.getFrontmImg().getBytes());
 				contentsDAO.updateUnitImg(params);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -268,7 +268,7 @@ public class ContentsServiceImpl implements ContentsService {
 				params.setRealImg(params.getRealmImg().getBytes());
 				contentsDAO.updateUnitImg(params);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -279,7 +279,7 @@ public class ContentsServiceImpl implements ContentsService {
 				params.setSideImg(params.getSidemImg().getBytes());
 				contentsDAO.updateUnitImg(params);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -288,13 +288,13 @@ public class ContentsServiceImpl implements ContentsService {
 
 	@Override
 	public int insertUnitMaster(UnitImg params) {
-		// TODO Auto-generated method stub
+		
 		
 		if(params.getFrontmImg()!=null) {
 			try {
 				params.setFrontImg(params.getFrontmImg().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -303,7 +303,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setRealImg(params.getRealmImg().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -312,7 +312,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setSideImg(params.getSidemImg().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -322,19 +322,19 @@ public class ContentsServiceImpl implements ContentsService {
 
 	@Override
 	public int insertUnitDetail(UnitImg params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.insertUnitDetail(params);
 	}
 
 	@Override
 	public int insertUnit3dDetail(UnitImg params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.insertUnit3dDetail(params);
 	}
 
 	@Override
 	public int deleteUnitGroup(UnitGroup params) {
-		// TODO Auto-generated method stub
+		
 		contentsDAO.deleteUnitGroup(params);
 		Language param = new Language();
 		param.setCodeId(params.getUnitGroupCd());
@@ -343,25 +343,25 @@ public class ContentsServiceImpl implements ContentsService {
 
 	@Override
 	public int deleteUnit(UnitImg params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.deleteUnit(params);
 	}
 
 	@Override
 	public int insertUnitGroupImg(UnitGroup params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.insertUnitGroupImg(params);
 	}
 
 	@Override
 	public int deleteUnitGroupImg(UnitGroup params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.deleteUnitGroupImg(params);
 	}
 
 	@Override
 	public int updateUnit(UnitImg params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.updateUnit(params);
 	}
 
@@ -371,13 +371,13 @@ public class ContentsServiceImpl implements ContentsService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<XrayContents> selectXrayContentsList(XrayContents params) {
-		// TODO Auto-generated method stub
+		
 		return (List<XrayContents>)contentsDAO.selectXrayContentsList(params);
 	}
 
 	@Override
 	public int insertXrayContents(XrayContents params) {
-		// TODO Auto-generated method stub
+		
 		
 		XbtSeq seq = new XbtSeq();
 		seq.setSeqInfo(SeqGroupCode.XBT_BAG_ID.getCode());
@@ -391,7 +391,7 @@ public class ContentsServiceImpl implements ContentsService {
 
 	@Override
 	public int updateXrayContents(XrayContents params) {
-		// TODO Auto-generated method stub
+		
 		
 		for(XrayContents x : params.getParamList()) {
 			x.setUpdateId(params.getUpdateId());
@@ -411,7 +411,7 @@ public class ContentsServiceImpl implements ContentsService {
 
 	@Override
 	public int deleteXrayContents(XrayContents params) {
-		// TODO Auto-generated method stub
+		
 		
 		if(!StringUtils.isEmpty(params.getBagScanIds())){
 			for(int i=0; i<params.getBagScanIds().length; i++) {
@@ -425,19 +425,20 @@ public class ContentsServiceImpl implements ContentsService {
 
 	@Override
 	public XrayImgContents selectXrayImgContents(XrayImgContents params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.selectXrayImgContents(params);
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<XrayContents> selectXrayUnitList(XrayContents params) {
-		// TODO Auto-generated method stub
+		
 		return (List<XrayContents>) contentsDAO.selectXrayUnitList(params);
 	}	
 
 	@Override
 	public int insertXrayUnit(XrayContents params) {
-		// TODO Auto-generated method stub
+		
 		
 		contentsDAO.deleteAllXrayUnit(params);
 		
@@ -453,13 +454,13 @@ public class ContentsServiceImpl implements ContentsService {
 	
 	@Override
 	public int deleteAllXrayUnit(XrayContents params) {
-		// TODO Auto-generated method stub
+		
 		return contentsDAO.deleteAllXrayUnit(params);
 	}		
 
 	@Override
 	public int deleteXrayUnit(XrayContents params) {
-		// TODO Auto-generated method stub
+		
 		if(params.getBagConstList().size() > 0) {
 			for(Long p : params.getBagConstList()) {
 				params.setBagContNo(p);
@@ -479,7 +480,7 @@ public class ContentsServiceImpl implements ContentsService {
 
 	@Override
 	public int updateXrayContentsDbImg(XrayImgContents params) {
-		// TODO Auto-generated method stub
+		
 		
 		if(contentsDAO.selectXrayImgContentsCount(params) <= 0) {
 			contentsDAO.insertXrayImgContents(params);	
@@ -489,7 +490,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgReal(params.getMimgReal().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -498,7 +499,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSide(params.getMimgSide().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -507,7 +508,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFront(params.getMimgFront().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}		
@@ -516,7 +517,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontCollar(params.getMimgFrontCollar().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -525,7 +526,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontOrganism(params.getMimgFrontOrganism().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}		
@@ -534,7 +535,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontCollarOutline(params.getMimgFrontCollarOutline().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -543,7 +544,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontCollarReversal(params.getMimgFrontCollarReversal().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -552,7 +553,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontCollarBwRate1(params.getMimgFrontCollarBwRate1().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -561,7 +562,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontCollarBwRate2(params.getMimgFrontCollarBwRate2().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -570,7 +571,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontCollarBwRate3(params.getMimgFrontCollarBwRate3().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -579,7 +580,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontCollarBwRate4(params.getMimgFrontCollarBwRate4().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -588,7 +589,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontCollarBwRate5(params.getMimgFrontCollarBwRate5().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -597,7 +598,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontCollarBwRate6(params.getMimgFrontCollarBwRate6().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -606,7 +607,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontBw(params.getMimgFrontBw().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -615,7 +616,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontMinerals(params.getMimgFrontMinerals().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -624,7 +625,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontOrganism(params.getMimgFrontBwOutline().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -633,7 +634,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontBwReversal(params.getMimgFrontBwReversal().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}			
@@ -643,7 +644,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontBwBwRate1(params.getMimgFrontBwBwRate1().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -652,7 +653,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontBwBwRate2(params.getMimgFrontBwBwRate2().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -661,7 +662,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontBwBwRate3(params.getMimgFrontBwBwRate3().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -670,7 +671,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontBwBwRate4(params.getMimgFrontBwBwRate4().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -679,7 +680,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontBwBwRate5(params.getMimgFrontBwBwRate5().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -688,7 +689,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgFrontBwBwRate6(params.getMimgFrontBwBwRate6().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -697,7 +698,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideCollar(params.getMimgSideCollar().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -706,7 +707,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideOrganism(params.getMimgSideOrganism().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}		
@@ -715,7 +716,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideCollarOutline(params.getMimgSideCollarOutline().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -724,7 +725,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideCollarReversal(params.getMimgSideCollarReversal().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -733,7 +734,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideCollarBwRate1(params.getMimgSideCollarBwRate1().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -742,7 +743,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideCollarBwRate2(params.getMimgSideCollarBwRate2().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -751,7 +752,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideCollarBwRate3(params.getMimgSideCollarBwRate3().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -760,7 +761,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideCollarBwRate4(params.getMimgSideCollarBwRate4().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -769,7 +770,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideCollarBwRate5(params.getMimgSideCollarBwRate5().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -778,7 +779,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideCollarBwRate6(params.getMimgSideCollarBwRate6().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -787,7 +788,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideBw(params.getMimgSideBw().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -796,7 +797,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideMinerals(params.getMimgSideMinerals().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -805,7 +806,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideOrganism(params.getMimgSideBwOutline().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -814,7 +815,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideBwReversal(params.getMimgSideBwReversal().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}			
@@ -824,7 +825,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideBwBwRate1(params.getMimgSideBwBwRate1().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -833,7 +834,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideBwBwRate2(params.getMimgSideBwBwRate2().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -842,7 +843,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideBwBwRate3(params.getMimgSideBwBwRate3().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -851,7 +852,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideBwBwRate4(params.getMimgSideBwBwRate4().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -860,7 +861,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideBwBwRate5(params.getMimgSideBwBwRate5().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}	
@@ -869,7 +870,7 @@ public class ContentsServiceImpl implements ContentsService {
 			try {
 				params.setImgSideBwBwRate6(params.getMimgSideBwBwRate6().getBytes());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}			

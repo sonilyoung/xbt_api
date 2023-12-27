@@ -5,7 +5,6 @@ import java.util.List;
 import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.adm.eduMgr.vo.EduDate;
 import egovframework.com.adm.eduMgr.vo.Student;
-import egovframework.com.stu.learning.vo.LearningProblem;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 

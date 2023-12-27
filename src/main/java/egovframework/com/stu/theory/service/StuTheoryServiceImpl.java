@@ -6,11 +6,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import egovframework.com.stu.learning.vo.Learning;
-import egovframework.com.stu.learning.vo.LearningProblem;
 import egovframework.com.stu.theory.dao.StuTheoryDAO;
 import egovframework.com.stu.theory.vo.StuTheory;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -31,7 +29,7 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
+//@Log4j2
 @Service("StuTheoryService")
 public class StuTheoryServiceImpl implements StuTheoryService {
 
@@ -44,32 +42,32 @@ public class StuTheoryServiceImpl implements StuTheoryService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StuTheory> selectTheoryList(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return (List<StuTheory>) stuTheoryDAO.selectTheoryList(params);
 	}
 	
 	@Override
 	public StuTheory selectTheory(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.selectTheory(params);
 	}
 
 	@Override
 	public StuTheory selectTheoryProblemsMaxkey(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.selectTheoryProblemsMaxkey(params);
 	}
 
 	@Override
 	public int selectTheoryProblemsCount(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.selectTheoryProblemsCount(params);
 	}
 	
 
 	@Override
 	public int insertTheoryProblems(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.insertTheoryProblems(params);
 	}
 	
@@ -77,69 +75,69 @@ public class StuTheoryServiceImpl implements StuTheoryService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StuTheory> selectTheoryProblemsList(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return (List<StuTheory>) stuTheoryDAO.selectTheoryProblemsList(params);
 	}
 
 	@Override
 	public StuTheory selectTheoryAnswer(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.selectTheoryAnswer(params);
 	}
 	
 
 	@Override
 	public int selectTheoryProcessYnCount(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.selectTheoryProcessYnCount(params);
 	}
 	
 
 	@Override
 	public int updateTheoryAnswer(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.updateTheoryAnswer(params);
 	}
 
 	@Override
 	public int selectTheoryBaselineResultCount(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.selectTheoryBaselineResultCount(params);
 	}
 
 	@Override
 	public int insertTheoryResult(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.insertTheoryResult(params);
 	}	
 	
 	@Override
 	public StuTheory selectTheorySum(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.selectTheorySum(params);
 	}
 
 	@Override
 	public StuTheory selectTheoryResultCount(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.selectTheoryResultCount(params);
 	}
 
 	@Override
 	public int updateTheoryEnd(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.updateTheoryEnd(params);
 	}
 
 	@Override
 	public int updateTheoryResult(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.updateTheoryResult(params);
 	}
 
 	@Override
 	public StuTheory selectStudyLvlTheory(StuTheory params) {
-		// TODO Auto-generated method stub
+		
 		return stuTheoryDAO.selectStudyLvlTheory(params);
 	}
 	

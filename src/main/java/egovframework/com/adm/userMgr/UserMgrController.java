@@ -46,7 +46,6 @@ import egovframework.com.common.service.CommonService;
 import egovframework.com.common.vo.Common;
 import egovframework.com.excel.ExcelRead;
 import egovframework.com.excel.ExcelReadOption;
-import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.common.GlobalsProperties;
@@ -75,7 +74,7 @@ public class UserMgrController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserMgrController.class);
 
-    private OfficeMessageSource officeMessageSource;
+    //private OfficeMessageSource officeMessageSource;
 
     @Autowired
     private LoginService loginService;
@@ -102,6 +101,7 @@ public class UserMgrController {
      * @return Company
      */
     @PostMapping("/selectUserList.do")
+    @SuppressWarnings("static-access")
     @ApiOperation(value = "교육생정보관리", notes = "교육생정보를 관리한다.")
     public BaseResponse<List<UserInfo>> getUserList(HttpServletRequest request, @RequestBody UserInfo params) {
     	Login login = loginService.getLoginInfo(request);
@@ -114,7 +114,7 @@ public class UserMgrController {
 			
 			for(UserInfo u : resultList) {
 	        	AES256Util aesUtil = new AES256Util();
-	            String pwEnc = aesUtil.decrypt(u.getUserPw());
+				String pwEnc = aesUtil.decrypt(u.getUserPw());
 	            u.setUserPw(pwEnc);					
 			}
 			
@@ -133,6 +133,7 @@ public class UserMgrController {
      * @return Company
      */
     @PostMapping("/selectUserListPop.do")
+    @SuppressWarnings("static-access")
     @ApiOperation(value = "교육생정보관리", notes = "교육생정보를 관리한다.")
     public BaseResponse<List<UserInfo>> selectUserListPop(HttpServletRequest request, @RequestBody UserInfo params) {
     	Login login = loginService.getLoginInfo(request);
@@ -145,7 +146,7 @@ public class UserMgrController {
 			
 			for(UserInfo u : resultList) {
 	        	AES256Util aesUtil = new AES256Util();
-	            String pwEnc = aesUtil.decrypt(u.getUserPw());
+				String pwEnc = aesUtil.decrypt(u.getUserPw());
 	            u.setUserPw(pwEnc);					
 			}
 			
@@ -332,6 +333,7 @@ public class UserMgrController {
      * @return Company
      */
     @PostMapping("/selectUser.do")
+    @SuppressWarnings("static-access")
     @ApiOperation(value = "교육생 상세정보조회", notes = "교육생 상세정보조회 관리한다.")
     public BaseResponse<UserInfo> selectUser(HttpServletRequest request, @RequestBody UserInfo params) {
     	Login login = loginService.getLoginInfo(request);
@@ -346,7 +348,7 @@ public class UserMgrController {
 		try {
 			UserInfo resultList = userMgrService.selectUser(params);
         	AES256Util aesUtil = new AES256Util();
-            String pwEnc = aesUtil.decrypt(resultList.getUserPw());
+			String pwEnc = aesUtil.decrypt(resultList.getUserPw());
             resultList.setUserPw(pwEnc);			
 	        return new BaseResponse<UserInfo>(resultList);
         } catch (Exception e) {
@@ -425,6 +427,7 @@ public class UserMgrController {
 	 * @return Company
 	 */
 	@PostMapping("/insertStuUser.do")
+	@SuppressWarnings("static-access")
 	@ApiOperation(value = "교육생", notes = "교육생등록.")
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
 	public BaseResponse<Integer> insertStuUser(HttpServletRequest request, @RequestBody UserInfo params) {
@@ -596,7 +599,7 @@ public class UserMgrController {
 			//교육생등록
 			params.setInsertId(params.getUserId());
 	    	AES256Util aesUtil = new AES256Util();
-	        String pwEnc = aesUtil.encrypt("0000");
+			String pwEnc = aesUtil.encrypt("0000");
 	        params.setUserPw(pwEnc);
 			int result = userMgrService.insertUser(params);
 			
@@ -621,6 +624,7 @@ public class UserMgrController {
      * @return Company
      */
     @PostMapping("/insertUser.do")
+    @SuppressWarnings("static-access")
     @ApiOperation(value = "교육생", notes = "교육생등록.")
     public BaseResponse<Integer> insertUser(HttpServletRequest request, @RequestBody UserInfo params) {
     	Login login = loginService.getLoginInfo(request);
@@ -797,7 +801,7 @@ public class UserMgrController {
         	AES256Util aesUtil = new AES256Util();
         	
             //String pwEnc = aesUtil.encrypt(params.getUserPw());
-        	String pwEnc = aesUtil.encrypt("0000");
+			String pwEnc = aesUtil.encrypt("0000");
             params.setUserPw(pwEnc);
 			int result = userMgrService.insertUser(params);
 			
@@ -822,6 +826,7 @@ public class UserMgrController {
      * @return Company
      */
     @PostMapping("/updateUser.do")
+    @SuppressWarnings("static-access")
     @ApiOperation(value = "교육생", notes = "교육생수정.")
     public BaseResponse<Integer> updateUser(HttpServletRequest request, @RequestBody UserInfo params) {
     	Login login = loginService.getLoginInfo(request);
@@ -990,7 +995,7 @@ public class UserMgrController {
 			//교육생등록
 			params.setUpdateId(login.getUserId());
         	AES256Util aesUtil = new AES256Util();
-            String pwEnc = aesUtil.encrypt(params.getUserPw());
+			String pwEnc = aesUtil.encrypt(params.getUserPw());
             params.setUserPw(pwEnc);			
 			int result = userMgrService.updateUser(params);
 			
@@ -1008,6 +1013,7 @@ public class UserMgrController {
     
 	//교육생 엑셀 추가
 	@ResponseBody
+	@SuppressWarnings("static-access")
 	@PostMapping(value="/insertStudentExcel.do" , consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)	
 	public BaseResponse<List<UserInfo>> insertStudentExcel(
@@ -1156,7 +1162,7 @@ public class UserMgrController {
 				}		     
 				
 	        	AES256Util aesUtil = new AES256Util();
-	            String pwEnc = aesUtil.encrypt("0000");
+				String pwEnc = aesUtil.encrypt("0000");
 	            params.setUserPw(pwEnc);				
 	            params.setInsertId(login.getUserId());
 	            
@@ -1271,7 +1277,7 @@ public class UserMgrController {
 			return new BaseResponse<List<UserBaselineSub>>(BaseResponseCode.PARAMS_ERROR, "procYear는 필수값입니다");	
 		}			
 		
-		if(params.getProcCd() == null || "".equals(params.getProcCd())){				
+		if(params.getProcCd() == null){				
 			return new BaseResponse<List<UserBaselineSub>>(BaseResponseCode.PARAMS_ERROR, "procCd는 필수값입니다");	
 		}			
 
@@ -1359,6 +1365,7 @@ public class UserMgrController {
      * @return Company
      */
     @PostMapping("/selectTeacherList.do")
+    @SuppressWarnings("static-access")
     @ApiOperation(value = "강사정보관리", notes = "강사정보를 관리한다.")
     public BaseResponse<List<TeacherInfo>> getTeacherList(HttpServletRequest request, @RequestBody TeacherInfo params) {
     	Login login = loginService.getLoginInfo(request);
@@ -1371,7 +1378,7 @@ public class UserMgrController {
 			
 			for(TeacherInfo u : resultList) {
 	        	AES256Util aesUtil = new AES256Util();
-	            String pwEnc = aesUtil.decrypt(u.getUserPw());
+				String pwEnc = aesUtil.decrypt(u.getUserPw());
 	            u.setUserPw(pwEnc);					
 			}
 			
@@ -1390,6 +1397,7 @@ public class UserMgrController {
      * @return Company
      */
     @PostMapping("/selectTeacher.do")
+    @SuppressWarnings("static-access")
     @ApiOperation(value = "강사 상세정보조회", notes = "강사 상세정보조회 관리한다.")
     public BaseResponse<TeacherInfo> selectTeacher(HttpServletRequest request, @RequestBody TeacherInfo params) {
     	Login login = loginService.getLoginInfo(request);
@@ -1404,7 +1412,7 @@ public class UserMgrController {
 		try {
 			TeacherInfo resultList = userMgrService.selectTeacher(params);
         	AES256Util aesUtil = new AES256Util();
-            String pwEnc = aesUtil.decrypt(resultList.getUserPw());
+			String pwEnc = aesUtil.decrypt(resultList.getUserPw());
             resultList.setUserPw(pwEnc);			
 	        return new BaseResponse<TeacherInfo>(resultList);
         } catch (Exception e) {
@@ -1454,6 +1462,7 @@ public class UserMgrController {
      * @return Company
      */
     @PostMapping("/insertTeacher.do")
+    @SuppressWarnings("static-access")
     @ApiOperation(value = "강사", notes = "강사등록.")
     public BaseResponse<Integer> insertTeacher(HttpServletRequest request, @RequestBody TeacherInfo params) {
     	Login login = loginService.getLoginInfo(request);
@@ -1619,7 +1628,7 @@ public class UserMgrController {
 			//강사등록
 			params.setInsertId(login.getUserId());
         	AES256Util aesUtil = new AES256Util();
-            String pwEnc = aesUtil.encrypt(params.getUserPw());
+			String pwEnc = aesUtil.encrypt(params.getUserPw());
             params.setUserPw(pwEnc);
 			int result = userMgrService.insertTeacher(params);
 			userMgrService.insertUserMaster(params);
@@ -1644,6 +1653,7 @@ public class UserMgrController {
      * @return Company
      */
     @PostMapping("/updateTeacher.do")
+    @SuppressWarnings("static-access")
     @ApiOperation(value = "강사", notes = "강사수정.")
     public BaseResponse<Integer> updateTeacher(HttpServletRequest request, @RequestBody TeacherInfo params) {
     	Login login = loginService.getLoginInfo(request);
@@ -1780,7 +1790,7 @@ public class UserMgrController {
 			//강사등록
 			params.setUpdateId(login.getUserId());
         	AES256Util aesUtil = new AES256Util();
-            String pwEnc = aesUtil.encrypt(params.getUserPw());
+			String pwEnc = aesUtil.encrypt(params.getUserPw());
             params.setUserPw(pwEnc);			
 			int result = userMgrService.updateTeacher(params);
 			userMgrService.updateUserMaster(params);

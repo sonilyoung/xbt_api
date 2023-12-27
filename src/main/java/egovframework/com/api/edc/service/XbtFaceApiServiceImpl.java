@@ -46,8 +46,9 @@ public class XbtFaceApiServiceImpl implements XbtFaceApiService {
     public static final String FACE_ROOT_DIR = GlobalsProperties.getProperty("face.img.path"); 
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public JsonNode insertFaceApi(MultipartFile faceImg, FaceVO params) throws Exception {
-		// TODO Auto-generated method stub
+		
 		LOGGER.info("=========insertFaceApi start=========");
 		
 		AttachFile af = new AttachFile();
@@ -74,7 +75,7 @@ public class XbtFaceApiServiceImpl implements XbtFaceApiService {
         MediaType mediaType = MediaType.parse("multipart/form-data");
 		
         // Create a form body with your parameters
-        RequestBody requestBody = new MultipartBody.Builder()
+		RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("request_id", params.getUserId())//의뢰번호
                 .addFormDataPart("info_key", params.getUserId())//사용자 정보 데이터 키 (유일키)
@@ -111,7 +112,7 @@ public class XbtFaceApiServiceImpl implements XbtFaceApiService {
 	
 	@Override
 	public JsonNode deleteFaceApi(FaceVO params) throws Exception {
-		// TODO Auto-generated method stub
+		
 		LOGGER.info("=========deleteFaceApi start=========");
 		
 		OkHttpClient client = new OkHttpClient().newBuilder()
@@ -145,8 +146,9 @@ public class XbtFaceApiServiceImpl implements XbtFaceApiService {
 		
 	
 	@Override
+	@SuppressWarnings("deprecation")
 	public JsonNode livenessFaceApi(MultipartFile faceImg, FaceVO params) throws Exception {
-		// TODO Auto-generated method stub
+		
 		LOGGER.info("=========livenessFaceApi start=========");
 		
 		AttachFile af = new AttachFile();
@@ -166,7 +168,7 @@ public class XbtFaceApiServiceImpl implements XbtFaceApiService {
         MediaType mediaType = MediaType.parse("multipart/form-data");
 		
         // Create a form body with your parameters
-        RequestBody requestBody = new MultipartBody.Builder()
+		RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("request_id", params.getUserId())//의뢰번호
                 //이미지 데이터 (메타 템플릿
@@ -200,8 +202,9 @@ public class XbtFaceApiServiceImpl implements XbtFaceApiService {
 	}  
 	
 	@Override
+	@SuppressWarnings("deprecation")
 	public JsonNode matchFaceApi(MultipartFile faceImg, FaceVO params) throws Exception {
-		// TODO Auto-generated method stub
+		
 		LOGGER.info("=========matchFaceApi start=========");
 		
 		AttachFile af = new AttachFile();
@@ -220,7 +223,7 @@ public class XbtFaceApiServiceImpl implements XbtFaceApiService {
 		json.put("userId", params.getUserId());
 
 		// JSON 데이터를 문자열로 변환
-		String jsonString = json.toString();
+		//String jsonString = json.toString();
 
 		LOGGER.info("face path: " + FACE_ROOT_DIR+File.separator+params.getUserId()+File.separator+afInfo.getSaveFileName());
 		

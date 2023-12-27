@@ -1,20 +1,13 @@
 package egovframework.com.scheduler.service;
 
-import egovframework.com.adm.eduMgr.service.EduMgrService;
-import egovframework.com.adm.eduMgr.vo.Baseline;
-import egovframework.com.adm.learningMgr.LearningMgrController;
-import egovframework.com.adm.system.service.SystemService;
-import egovframework.com.adm.system.vo.XbtScore;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.adm.system.service.SystemService;
+import egovframework.com.adm.system.vo.XbtScore;
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 
 /**

@@ -3,8 +3,6 @@ package egovframework.com.api.edc;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -18,21 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import egovframework.com.adm.contents.service.ContentsService;
-import egovframework.com.adm.login.service.LoginService;
-import egovframework.com.adm.login.service.UserService;
 import egovframework.com.adm.userMgr.service.UserMgrService;
 import egovframework.com.adm.userMgr.vo.UserInfo;
-import egovframework.com.api.edc.service.EgovXtsEdcPseudoFilterService;
-import egovframework.com.api.edc.service.EgovXtsEdcReinforcementService;
-import egovframework.com.api.edc.service.EgovXtsEdcThreeDimensionService;
-import egovframework.com.api.edc.service.XbtEdcApiService;
 import egovframework.com.api.edc.service.XbtFaceApiService;
-import egovframework.com.api.edc.vo.ApiLog;
 import egovframework.com.api.edc.vo.FaceVO;
-import egovframework.com.api.login.service.ApiLoginService;
 import egovframework.com.file.service.FileStorageService;
-import egovframework.com.file.service.XbtImageService;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.common.GlobalsProperties;
@@ -46,7 +34,7 @@ import io.swagger.annotations.Api;
 @Api(tags = "XTS external API")
 public class XbtFaceApiController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(XbtFaceApiController.class);
+	//private static final Logger LOGGER = LoggerFactory.getLogger(XbtFaceApiController.class);
 	
 	@Autowired
 	private XbtFaceApiService xbtFaceApiService;

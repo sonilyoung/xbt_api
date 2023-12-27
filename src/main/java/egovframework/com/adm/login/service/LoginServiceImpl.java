@@ -1,9 +1,7 @@
 package egovframework.com.adm.login.service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,10 +13,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.adm.login.dao.UserManageDAO;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.login.vo.LoginRequest;
-import egovframework.com.global.exception.CustomBaseException;
-import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.util.AES256Util;
-import egovframework.com.global.util.OfficeClntInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -45,12 +40,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
  *      </pre>
  */
 @Service("loginService")
+@SuppressWarnings("static-access")
 public class LoginServiceImpl implements LoginService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginServiceImpl.class);
     private static final String secretKey = "secretsecretsecretsecretsecret";
     private static final long validityInMilliseconds = 3600000 * 24;
-    private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
     @Autowired
@@ -70,7 +66,7 @@ public class LoginServiceImpl implements LoginService {
         	
             try {
             	AES256Util aesUtil = new AES256Util();
-	            String pwEnc = aesUtil.encrypt(loginRequest.getLoginPw());
+				String pwEnc = aesUtil.encrypt(loginRequest.getLoginPw());
 	
 	            LOGGER.debug("login.getUserNm()    ]" + login.getUserNm() + "[");
 	            LOGGER.debug("login.getUserPw() ]" + login.getUserPw() + "[");

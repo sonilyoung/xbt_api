@@ -1,6 +1,5 @@
 package egovframework.com.file.service;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -42,8 +41,6 @@ import egovframework.com.file.vo.AttachFile;
 import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.http.BaseResponseCode;
 import egovframework.com.global.http.exception.BaseException;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 
 /**
  * FileStorageService 구현체로 서블릿 설치 경로에 파일 저장 (※파일 Storage 결정 시까지 임시로 사용)
@@ -60,7 +57,8 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Autowired
     private ServletContext servletContext;
 
-    private String realPath;
+    @SuppressWarnings("unused")
+	private String realPath;
     
     /*단품 저장경로*/
     public static final String UNIT_ROOT_DIR = GlobalsProperties.getProperty("xray.unitImg.path");    
@@ -102,7 +100,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     
 	@Override
 	public AttachFile createUnitImage(String imgType, AttachFile params, MultipartFile file) throws Exception {
-		// TODO Auto-generated method stub
+		
         AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
@@ -148,7 +146,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     
 	@Override
 	public AttachFile createUnitImageFile(String targetName, AttachFile params, MultipartFile file) throws Exception {
-		// TODO Auto-generated method stub
+		
         AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
@@ -194,7 +192,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     
 	@Override
 	public AttachFile createXrayImageFile(String targetName, AttachFile params, MultipartFile file) throws Exception {
-		// TODO Auto-generated method stub
+		
         AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
@@ -303,8 +301,6 @@ public class FileStorageServiceImpl implements FileStorageService {
     	}
     	
     	FileInputStream fis = null;
-    	new FileInputStream(file);
-    	
     	BufferedInputStream in = null;
     	ByteArrayOutputStream bStream = null;
     	try {
@@ -366,7 +362,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
 	@Override
 	public AttachFile createTheoryImageFile(String fileNameWithoutExtension, Theory params, MultipartFile file) throws Exception {
-		// TODO Auto-generated method stub
+		
         AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
@@ -412,7 +408,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
 	@Override
 	public AttachFile createXrayImageFiles(String targetName, String fileNameWithoutExtension, XrayImgContents params, MultipartFile file) throws Exception {
-		// TODO Auto-generated method stub
+		
         AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
@@ -458,7 +454,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
 	@Override
 	public AttachFile createKaistXrayImageFiles(String targetName, String fileNameWithoutExtension, LearningImg params, MultipartFile file) throws Exception {
-		// TODO Auto-generated method stub
+		
         AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
@@ -505,7 +501,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
 	@Override
 	public void makeKaistSudoImages(JsonNode jdata) throws Exception {
-		// TODO Auto-generated method stub
+		
         try {
         	
         	
@@ -841,7 +837,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
 	@Override
 	public void fileCopy() throws Exception {
-		// TODO Auto-generated method stub
+		
         Path sourceDir = Paths.get(KAIST_SUDO_IMG_RESPONSE_PATH);
         Path targetDir = Paths.get(XRAY_ROOT_DIR);
 
@@ -873,7 +869,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 		
 	@Override
 	public void makeKaistTwodImages(JsonNode jdata) throws Exception {
-		// TODO Auto-generated method stub
+		
         try {
         	//ObjectMapper objectMapper = new ObjectMapper();
             //String bagScanId = objectMapper.writeValueAsString(jdata.get("bagScanId")).asText();;
@@ -908,7 +904,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	
 	@Override
 	public AttachFile createKaistThreedImageFiles(String targetName, String fileNameWithoutExtension, ThreedGeneration params, MultipartFile file) throws Exception {
-		// TODO Auto-generated method stub
+		
         AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();
@@ -958,7 +954,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	
 	@Override
 	public void makeKaistThreedImages(JsonNode jdata) throws Exception {
-		// TODO Auto-generated method stub
+		
         try {
         	//ObjectMapper objectMapper = new ObjectMapper();
             //String bagScanId = objectMapper.writeValueAsString(jdata.get("bagScanId")).asText();;
@@ -1021,7 +1017,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	
 	@Override
 	public AttachFile createImageFile(String userId, AttachFile params, MultipartFile file) throws Exception {
-		// TODO Auto-generated method stub
+		
         AttachFile attachFile = null;
         File newFile = null;
         String originalFileName = file.getOriginalFilename();

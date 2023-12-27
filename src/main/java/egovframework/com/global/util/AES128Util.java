@@ -8,7 +8,6 @@ import java.util.Base64.Decoder;
 import java.util.Base64.Encoder;
 
  
-@SuppressWarnings("restriction")
 public class AES128Util {
     /**
      * 암호화
@@ -17,7 +16,6 @@ public class AES128Util {
      * @param key
      * @return
      */
-    @SuppressWarnings("restriction")
 	public static String encrypt(String input, String key) {
         byte[] crypted = null;
         try {

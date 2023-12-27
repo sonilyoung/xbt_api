@@ -26,7 +26,6 @@ import egovframework.com.adm.learningMgr.vo.XrayPoint;
 import egovframework.com.adm.learningMgr.vo.XrayPointDetail;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
-import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
@@ -50,7 +49,7 @@ public class LearningMgrController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LearningMgrController.class);
 
-    private OfficeMessageSource officeMessageSource;
+    //private OfficeMessageSource officeMessageSource;
 
     @Autowired
     private LoginService loginService;

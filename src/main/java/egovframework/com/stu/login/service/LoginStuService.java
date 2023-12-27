@@ -2,7 +2,6 @@ package egovframework.com.stu.login.service;
 
 import javax.servlet.http.HttpServletRequest;
 
-import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.login.vo.LoginRequest;
 import egovframework.com.stu.login.vo.StuLogin;
 

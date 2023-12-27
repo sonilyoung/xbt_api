@@ -19,7 +19,6 @@ import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.login.vo.LoginRequest;
 import egovframework.com.adm.login.vo.User;
 import egovframework.com.cmm.vo.TokenResponse;
-import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.exception.CustomBaseException;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
@@ -56,7 +55,7 @@ public class LoginController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
-    private OfficeMessageSource officeMessageSource;
+    //private OfficeMessageSource officeMessageSource;
 
     @Autowired
     private LoginService loginService;

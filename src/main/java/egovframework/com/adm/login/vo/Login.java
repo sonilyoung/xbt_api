@@ -1,7 +1,6 @@
 package egovframework.com.adm.login.vo;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import lombok.Data;
 

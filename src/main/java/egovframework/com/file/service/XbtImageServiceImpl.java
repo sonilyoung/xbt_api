@@ -16,7 +16,7 @@ import egovframework.com.common.vo.LearningMainImg;
 import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.util.FileReader;
 import egovframework.com.stu.learning.vo.LearningProblem;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -37,7 +37,7 @@ import lombok.extern.log4j.Log4j2;
  *		
  *      </pre>
  */
-@Log4j2
+//@Log4j2
 @Service("xbtImageService")
 public class XbtImageServiceImpl implements XbtImageService {
 
@@ -110,7 +110,7 @@ public class XbtImageServiceImpl implements XbtImageService {
     
 	@Override
 	public List<LearningProblem> selectLeaningImgList(List<LearningProblem> pList) {
-		// TODO Auto-generated method stub
+		
 		
     	String xrayPath = XRAY_IMG_PATH;
     	List<LearningProblem> result = new ArrayList<LearningProblem>();
@@ -146,7 +146,7 @@ public class XbtImageServiceImpl implements XbtImageService {
             			p.setImgSide(fileByte);
             		}
     			} catch (IOException e) {
-    				// TODO Auto-generated catch block
+    				
     				e.printStackTrace();
     			}
             }
@@ -163,7 +163,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	**/
 	@Override
 	public LearningImg selectLeaningImg(LearningImg params) {
-		// TODO Auto-generated method stub
+		
 		
     	String xrayPath = XRAY_IMG_PATH;
     	
@@ -284,7 +284,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         		}
         		
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         }
@@ -300,7 +300,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	
 	@Override
 	public LearningImg selectPracticeImg(LearningImg params) {
-		// TODO Auto-generated method stub
+		
 		
     	String xrayPath = XRAY_UNITIMG_PATH;
     	
@@ -417,7 +417,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         		
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         }
@@ -429,7 +429,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	
 	@Override
 	public LearningImg selectThreedAngle(LearningImg params) {
-		// TODO Auto-generated method stub
+		
 		
     	String xrayPath = XRAY_UNITIMG_PATH;
     	
@@ -546,7 +546,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         		
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         }
@@ -558,7 +558,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	
 	@Override
 	public LearningMainImg selectCommonLearningImg(LearningImg params) {
-		// TODO Auto-generated method stub
+		
 		LearningMainImg result = new LearningMainImg();
     	String xrayPath = XRAY_IMG_PATH;
     	
@@ -606,7 +606,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         		}
         		
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         }
@@ -618,7 +618,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	
 	@Override
 	public LearningMainImg selectCommonPracticeImg(LearningImg params) {
-		// TODO Auto-generated method stub
+		
 		LearningMainImg result = new LearningMainImg();
     	String xrayPath = XRAY_UNITIMG_PATH;
     	
@@ -656,7 +656,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         		}
         		
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         }
@@ -669,7 +669,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 
 	@Override
 	public LearningImg selectAdmAllUnitImg(LearningImg params) {
-		// TODO Auto-generated method stub
+		
 		String xrayPath = XRAY_UNITIMG_PATH;
 		String scanId = params.getUnitId();	
         String strDirPath = xrayPath+File.separator+scanId; 
@@ -776,7 +776,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         			params.setImgSideDanger(fileByte);
         		}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         }
@@ -788,7 +788,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 
 	@Override
 	public LearningImg selectAdmAllBagImg(LearningImg params, String command) {
-		// TODO Auto-generated method stub
+		
     	String xrayPath = XRAY_IMG_PATH;
     	if("kaist".equals(command)) {
     		xrayPath = KAIST_SUDO_IMG_RESPONSE_PATH;
@@ -947,7 +947,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         			params.setImgSideDanger(fileByte);
         		}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         }
@@ -959,7 +959,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 
 	@Override
 	public Theory selectTheoryImg(Theory params) {
-		// TODO Auto-generated method stub
+		
     	String xrayPath = THEORY_IMG_PATH;
 		String scanId = params.getQuestionId();	
         String strDirPath = xrayPath+File.separator+scanId; 
@@ -988,7 +988,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         			params.setMultiPlusImg(fileByte);
         		}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         }
@@ -999,7 +999,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 
 	@Override
 	public TowdGeneration selectKaistTwodImg(TowdGeneration params) {
-		// TODO Auto-generated method stub
+		
     	String xrayPath = KAIST_TWOD_IMG_RESPONSE_PATH;
 		String scanId = params.getFileName();	
         String strDirPath = xrayPath+File.separator+scanId; 
@@ -1019,7 +1019,7 @@ public class XbtImageServiceImpl implements XbtImageService {
         		fileByte = Files.readAllBytes(fileList[i].toPath());
         			towdGenList.add(fileByte);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         }
@@ -1030,7 +1030,7 @@ public class XbtImageServiceImpl implements XbtImageService {
 	
 	@Override
 	public ThreedGeneration selectKaistThreedImg(ThreedGeneration params) {
-		// TODO Auto-generated method stub
+		
     	String xrayPath = KAIST_THREED_IMG_RESPONSE_PATH;
 		String scanId = params.getUnitId();	
         String strDirPath = xrayPath+File.separator+scanId; 
@@ -1058,7 +1058,7 @@ public class XbtImageServiceImpl implements XbtImageService {
             		threedGenList.add(fileByte);                	
                 }        		
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         }

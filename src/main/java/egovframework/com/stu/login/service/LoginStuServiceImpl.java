@@ -1,6 +1,5 @@
 package egovframework.com.stu.login.service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import egovframework.com.adm.login.vo.Login;
 import egovframework.com.adm.login.vo.LoginRequest;
 import egovframework.com.global.util.AES256Util;
 import egovframework.com.stu.login.dao.UserStuManageDAO;
@@ -42,12 +40,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
  *      </pre>
  */
 @Service("loginStuService")
+@SuppressWarnings("static-access")
 public class LoginStuServiceImpl implements LoginStuService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginStuServiceImpl.class);
     private static final String secretKey = "secretsecretsecretsecretsecret";
     private static final long validityInMilliseconds = 3600000 * 24;
-    private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
     @Autowired
@@ -219,19 +218,19 @@ public class LoginStuServiceImpl implements LoginStuService {
 
 	@Override
 	public StuLogin selectUserId(StuLogin params) {
-		// TODO Auto-generated method stub
+		
 		return repository.selectUserId(params);
 	}
 
 	@Override
 	public int updateUserPwd(StuLogin params) {
-		// TODO Auto-generated method stub
+		
 		return repository.updateUserPwd(params);
 	}	    
 	
 	@Override
 	public StuLogin selectXbtFaceType(StuLogin params) {
-		// TODO Auto-generated method stub
+		
 		return repository.selectXbtFaceType(params);
 	}
 	

@@ -375,7 +375,7 @@ public class XbtScoreServiceImpl implements XbtScoreService {
 
 	@Override
 	public int selectCommonScoreResult(Learning params) throws Exception {
-		// TODO Auto-generated method stub
+		
 		PointStd score = learningDAO.selectPointStdScore(params);
 		
 		int gainScore = 0;

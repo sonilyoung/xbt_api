@@ -19,7 +19,6 @@ import egovframework.com.adm.userMgr.vo.UserBaselineSubInfo;
 import egovframework.com.adm.userMgr.vo.UserCertificate;
 import egovframework.com.adm.userMgr.vo.UserCertificateDetail;
 import egovframework.com.adm.userMgr.vo.UserInfo;
-import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -40,7 +39,6 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
 @Service("UserMgrService")
 public class UserMgrServiceImpl implements UserMgrService {
 
@@ -51,58 +49,58 @@ public class UserMgrServiceImpl implements UserMgrService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<UserInfo> selectUserList(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		return (List<UserInfo>) userMgrDAO.selectUserList(params);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<UserInfo> selectUserListPop(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		return (List<UserInfo>) userMgrDAO.selectUserListPop(params);
 	}	
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<UserInfo> selectDuplicationUserList(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		return (List<UserInfo>) userMgrDAO.selectDuplicationUserList(params);
 	}		
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<UserBaseline> selectBaselineUserList(UserBaseline params) {
-		// TODO Auto-generated method stub
+		
 		return (List<UserBaseline>) userMgrDAO.selectBaselineUserList(params);
 	}
 	
 	@Override
 	public UserBaseline selectBaselineBasicTotalScore(UserBaseline params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.selectBaselineBasicTotalScore(params);
 	}	
 	
 	@Override
 	public UserBaseline selectBaselineEvaluation(UserBaseline params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.selectBaselineEvaluation(params);
 	}	
 	
 	@Override
 	public UserBaseline selectBaselineTherory(UserBaseline params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.selectBaselineTherory(params);
 	}		
 	
 	@Override
 	public UserBaseline selectBaselinePractice(UserBaseline params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.selectBaselinePractice(params);
 	}		
 	
 	@Override
 	public int updateBaselineUser(UserBaseline params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.updateBaselineUser(params);
 	}
 	
@@ -110,170 +108,175 @@ public class UserMgrServiceImpl implements UserMgrService {
 	
 	@Override
 	public UserInfo selectUserCheck(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		return (UserInfo) userMgrDAO.selectUserCheck(params);
 	}	
 
 	@Override
 	public UserInfo selectUser(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		return (UserInfo) userMgrDAO.selectUser(params);
 	}
 
 
 	@Override
 	public int insertUser(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.insertUser(params);
 	}
 	
 	@Override
 	public int insertDuplicationUser(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.insertDuplicationUser(params);
 	}
 
 
 	@Override
 	public int updateUser(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.updateUser(params);
 	}
 
 
 	@Override
 	public int deleteUser(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.deleteUser(params);
 	}	
 	
 	
 	@Override
 	public int deleteDuplicationUser(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.deleteDuplicationUser(params);
 	}	
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<UserBaseline> getUserBaselineList(UserBaseline params) {
-		// TODO Auto-generated method stub
+		
 		return (List<UserBaseline>) userMgrDAO.getUserBaselineList(params);
 	}
 
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<UserBaselineSub> getUserBaselineSubList(UserBaselineSub params) {
-		// TODO Auto-generated method stub
+		
 		return (List<UserBaselineSub>) userMgrDAO.getUserBaselineSubList(params);
 	}
 
 
 	@Override
 	public Object getUserBaselineSubDetail(UserBaselineDetail params) {
-		// TODO Auto-generated method stub
+		
 		return (UserBaselineDetail) userMgrDAO.getUserBaselineSubDetail(params);
 	}
 
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<UserBaselineSubInfo> getUserBaselineSubDetailList(UserBaselineSubInfo params) {
-		// TODO Auto-generated method stub
+		
 		return (List<UserBaselineSubInfo>) userMgrDAO.getUserBaselineSubDetailList(params);
 	}
 
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<TeacherInfo> selectTeacherList(TeacherInfo params) {
-		// TODO Auto-generated method stub
+		
 		return (List<TeacherInfo>) userMgrDAO.selectTeacherList(params);
 	}
 	
 	@Override
 	public TeacherInfo selectTeacherCheck(TeacherInfo params) {
-		// TODO Auto-generated method stub
+		
 		return (TeacherInfo) userMgrDAO.selectTeacherCheck(params);
 	}	
 
 	@Override
 	public TeacherInfo selectTeacher(TeacherInfo params) {
-		// TODO Auto-generated method stub
+		
 		return (TeacherInfo) userMgrDAO.selectTeacher(params);
 	}
 
 
 	@Override
 	public int insertTeacher(TeacherInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.insertTeacher(params);
 	}
 
 
 	@Override
 	public int updateTeacher(TeacherInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.updateTeacher(params);
 	}
 
 
 	@Override
 	public int deleteTeacher(TeacherInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.deleteTeacher(params);
 	}
 
 	public int insertUserMaster(TeacherInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.insertUserMaster(params);
 	}
 
 
 	@Override
 	public int updateUserMaster(TeacherInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.updateUserMaster(params);
 	}
 
 
 	@Override
 	public int deleteUserMaster(TeacherInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.deleteUserMaster(params);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<UserCertificate> selectCertificationUserList(UserCertificate params) {
-		// TODO Auto-generated method stub
+		
 		return (List<UserCertificate>) userMgrDAO.selectCertificationUserList(params);
 	}
 
 	@Override
 	public UserCertificateDetail selectCertificationUser(UserCertificateDetail params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.selectCertificationUser(params);
 	}
 	
 	@Override
 	public UserCertificateDetail selectCertNumber(UserCertificateDetail params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.selectCertNumber(params);
 	}
 
 	@Override
 	public int insertCertNumber(CertificationInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.insertCertNumber(params);
 	}
 
 	@Override
 	public int updateFaceYn(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.updateFaceYn(params);
 	}
 
 	@Override
 	@Transactional
 	public int deleteEvaluationData(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		userMgrDAO.deleteBaselineEvaluation(params);
 		userMgrDAO.deleteEvaluationProgressing(params);
 		return userMgrDAO.updateEvaluationStudentInfo(params);
@@ -282,7 +285,7 @@ public class UserMgrServiceImpl implements UserMgrService {
 	@Override
 	@Transactional
 	public int deleteTheoryData(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		userMgrDAO.updateBaselineTheory(params);
 		userMgrDAO.deleteTheoryProgressing(params);
 		return userMgrDAO.updateTheoryStudentInfo(params);
@@ -291,7 +294,7 @@ public class UserMgrServiceImpl implements UserMgrService {
 	@Override
 	@Transactional
 	public int deleteDangerData(UserInfo params) {
-		// TODO Auto-generated method stub
+		
 		userMgrDAO.updateBaselineDanger(params);
 		userMgrDAO.deleteDangerProgressing(params);
 		return userMgrDAO.updateDangerStudentInfo(params);
@@ -300,32 +303,32 @@ public class UserMgrServiceImpl implements UserMgrService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<UserBaselineScore> selectBaselineStudentScore(UserBaselineScore params) {
-		// TODO Auto-generated method stub
+		
 		return (List<UserBaselineScore>) userMgrDAO.selectBaselineStudentScore(params);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<MenuPin> selectMenuPinList(MenuPin params) {
-		// TODO Auto-generated method stub
+		
 		return (List<MenuPin>) userMgrDAO.selectMenuPinList(params);
 	}
 
 	@Override
 	public int insertMenuPin(MenuPin params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.insertMenuPin(params);
 	}
 
 	@Override
 	public int updateMenuPin(MenuPin params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.updateMenuPin(params);
 	}
 
 	@Override
 	public int selectCheckMenuPin(MenuPin params) {
-		// TODO Auto-generated method stub
+		
 		return userMgrDAO.selectCheckMenuPin(params);
 	}		
 

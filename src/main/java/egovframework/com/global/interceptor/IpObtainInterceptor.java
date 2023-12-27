@@ -30,13 +30,13 @@ public class IpObtainInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler) throws Exception {
 
-        String clientIp = request.getRemoteAddr();
+        //String clientIp = request.getRemoteAddr();
 
-        Login Login = null;// (Login) OfficeUserInfoHelper.getAuthenticatedUser();
+        //Login Login = null;// (Login) OfficeUserInfoHelper.getAuthenticatedUser();
 
-        if (Login != null) {
+        //if (Login != null) {
             //Login.set(clientIp);
-        }
+        //}
 
         return true;
     }

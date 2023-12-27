@@ -37,7 +37,7 @@ public class DateHelper {
 		try {
 			dateTime = format.parse(date.trim());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			
 			//e.printStackTrace();
 			LOGGER.error(e.getMessage());
 		}

@@ -134,7 +134,7 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 
 	@Override
 	public String transImages(LearningImg oj, ApiLogin al, AttachFile af1, AttachFile af2) throws Exception {
-		// TODO Auto-generated method stub
+		
 		
 		LOGGER.info("=========sudoImg start=========");
 		
@@ -192,7 +192,7 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 
 	@Override
 	public JsonNode commandExcute(LearningImg oj, ApiLogin al) throws Exception {
-		// TODO Auto-generated method stub
+		
 		
 		//1.정면이미지전송
 		InetAddress inetAddress = InetAddress.getLocalHost();
@@ -287,7 +287,7 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 
 	@Override
 	public JsonNode selectSudoImg(LearningImg oj, ApiLogin al) throws Exception {	
-		// TODO Auto-generated method stub
+		
 		
 		//1.정면이미지전송
 		InetAddress inetAddress = InetAddress.getLocalHost();
@@ -384,13 +384,13 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 	
 	@Override
 	public int insertApiLog(ApiLog oj) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return egovXtsEdcApiDAO.insertApiLog(oj);
 	}
 
 	@Override
 	public ApiLog selectProgressPer(ApiLog params) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return egovXtsEdcApiDAO.selectProgressPer(params);
 	}
 	
@@ -398,19 +398,19 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<XrayContents> selectKaistXrayContentsList(XrayContents params) {
-		// TODO Auto-generated method stub
+		
 		return (List<XrayContents>)egovXtsEdcApiDAO.selectKaistXrayContentsList(params);
 	}
 	
 	@Override
 	public int insertKaistXrayContents(XrayContents params) {
-		// TODO Auto-generated method stub
+		
 		return egovXtsEdcApiDAO.insertKaistXrayContents(params);
 	}	
 	
 	@Override
 	public JsonNode commandTwodGenExcute(TowdGeneration oj, ApiLogin al) throws Exception {
-		// TODO Auto-generated method stub
+		
 		
 		//1.정면이미지전송
 		InetAddress inetAddress = InetAddress.getLocalHost();
@@ -506,7 +506,7 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 	
 	@Override
 	public JsonNode selectTwodImg(TowdGeneration oj, ApiLogin al) throws Exception {	
-		// TODO Auto-generated method stub
+		
 		
 		//1.정면이미지전송
 		InetAddress inetAddress = InetAddress.getLocalHost();
@@ -647,7 +647,7 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 	
 	@Override
 	public String transThreedImages(ThreedGeneration oj, ApiLogin al, AttachFile af1, AttachFile af2) throws Exception {
-		// TODO Auto-generated method stub
+		
 		
 		LOGGER.info("=========transThreedImages start=========");
 		
@@ -703,7 +703,7 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 	
 	@Override
 	public JsonNode commandThreedGenExcute(ThreedGeneration oj, ApiLogin al) throws Exception {
-		// TODO Auto-generated method stub
+		
 		
 		//1.정면이미지전송
 		InetAddress inetAddress = InetAddress.getLocalHost();
@@ -798,7 +798,7 @@ public class XbtEdcApiServiceImpl implements XbtEdcApiService {
 	
 	@Override
 	public JsonNode selectThreedImg(ThreedGeneration oj, ApiLogin al) throws Exception {	
-		// TODO Auto-generated method stub
+		
 		
 		//1.정면이미지전송
 		InetAddress inetAddress = InetAddress.getLocalHost();

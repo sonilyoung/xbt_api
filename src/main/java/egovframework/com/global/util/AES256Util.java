@@ -10,6 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 
+@SuppressWarnings("static-access")
 public class AES256Util {
     private static String iv;
     private static Key keySpec;
@@ -21,7 +22,7 @@ public class AES256Util {
      * @param key 암/복호화를 위한 키값
      * @throws UnsupportedEncodingException 키값의 길이가 16이하일 경우 발생
      */
-    public AES256Util() throws UnsupportedEncodingException {
+	public AES256Util() throws UnsupportedEncodingException {
         this.iv = SECRET_KEY.substring(0, 16);
         byte[] keyBytes = new byte[16];
         byte[] b = SECRET_KEY.getBytes("UTF-8");

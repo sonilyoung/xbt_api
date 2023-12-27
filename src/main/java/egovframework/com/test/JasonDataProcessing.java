@@ -8,15 +8,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import egovframework.com.api.edc.vo.AiForceLearning;
 import egovframework.com.api.edc.vo.AiForceLearningResult;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
-@Log4j2
+//@Log4j2
 public class JasonDataProcessing {
-
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		 String jsonFilePath = "D:/files/test.json"; // JSON 파일 경로
         // JSON 파일 읽기
         try {
@@ -26,13 +24,12 @@ public class JasonDataProcessing {
 	            
 	            JSONObject jsonObject = new JSONObject(jsonContent);
 	            ArrayList<AiForceLearningResult> result = getAiForceResult(jsonObject);
-	            log.debug("json result:", result);
-	            
+	            System.out.println(result);
 	        } else {
 	            System.out.println("Invalid JSON");
 	        }			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}

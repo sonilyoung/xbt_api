@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.file.service.XbtImageService;
-import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
 import egovframework.com.global.http.BaseResponseCode;
@@ -45,7 +44,7 @@ public class ForceLearningController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ForceLearningController.class);
 
-    private OfficeMessageSource officeMessageSource;
+    //private OfficeMessageSource officeMessageSource;
 
     @Autowired
     private LoginService loginService;

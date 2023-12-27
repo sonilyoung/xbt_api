@@ -12,7 +12,7 @@ import egovframework.com.adm.statistics.vo.StatisticsMainEdu;
 import egovframework.com.adm.statistics.vo.StatisticsMainYear;
 import egovframework.com.adm.statistics.vo.StatisticsPerformance;
 import egovframework.com.adm.statistics.vo.StatisticsPerformanceDetail;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -33,7 +33,7 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
+//@Log4j2
 @Service("StatisticsService")
 public class StatisticsServiceImpl implements StatisticsService {
 
@@ -44,42 +44,42 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatisticsMainEdu> selectMainEduStatistics(StatisticsMainEdu params){
-		// TODO Auto-generated method stub
+		
 		return (List<StatisticsMainEdu>) statisticsDAO.selectMainEduStatistics(params);
 	}    
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatisticsMainYear> selectMainYearStatistics(StatisticsMainYear params){
-		// TODO Auto-generated method stub
+		
 		return (List<StatisticsMainYear>) statisticsDAO.selectMainYearStatistics(params);
 	}    
     
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatisticsPerformance> selectStatisticsLearningList(StatisticsPerformance params) {
-		// TODO Auto-generated method stub
+		
 		return (List<StatisticsPerformance>) statisticsDAO.selectStatisticsLearningList(params);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatisticsPerformanceDetail> selectStatisticsLearning(StatisticsPerformanceDetail params) {
-		// TODO Auto-generated method stub
+		
 		return (List<StatisticsPerformanceDetail>) statisticsDAO.selectStatisticsLearning(params);
 	}	
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatisticsPerformanceDetail> selectStatisticsLearningDetail(StatisticsPerformanceDetail params) {
-		// TODO Auto-generated method stub
+		
 		return (List<StatisticsPerformanceDetail>) statisticsDAO.selectStatisticsLearningDetail(params);
 	}		
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatisticsGroup> selectStatisticsLearningGroupList(StatisticsGroup params) {
-		// TODO Auto-generated method stub
+		
 		return (List<StatisticsGroup>) statisticsDAO.selectStatisticsLearningGroupList(params);
 	}
 	
@@ -87,14 +87,14 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatisticsPerformance> selectStatisticsEvaluationList(StatisticsPerformance params) {
-		// TODO Auto-generated method stub
+		
 		return (List<StatisticsPerformance>) statisticsDAO.selectStatisticsEvaluationList(params);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatisticsPerformanceDetail> selectStatisticsEvaluation(StatisticsPerformanceDetail params) {
-		// TODO Auto-generated method stub
+		
 		return (List<StatisticsPerformanceDetail>) statisticsDAO.selectStatisticsEvaluation(params);
 	}	
 	
@@ -102,21 +102,21 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatisticsGroup> selectStatisticsEvaluationGroupList(StatisticsGroup params) {
-		// TODO Auto-generated method stub
+		
 		return (List<StatisticsGroup>) statisticsDAO.selectStatisticsEvaluationGroupList(params);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatisticsPerformance> selectStatisticsTheoryList(StatisticsPerformance params) {
-		// TODO Auto-generated method stub
+		
 		return (List<StatisticsPerformance>) statisticsDAO.selectStatisticsTheoryList(params);
 	}	
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatisticsPerformanceDetail> selectStatisticsTheory(StatisticsPerformanceDetail params) {
-		// TODO Auto-generated method stub
+		
 		return (List<StatisticsPerformanceDetail>) statisticsDAO.selectStatisticsTheory(params);
 	}	
 	

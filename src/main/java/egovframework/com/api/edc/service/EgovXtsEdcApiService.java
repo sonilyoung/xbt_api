@@ -1,17 +1,9 @@
 package egovframework.com.api.edc.service;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import egovframework.com.adm.contents.vo.Contents;
-import egovframework.com.adm.contents.vo.ContentsMgr;
-import egovframework.com.adm.contents.vo.UnitInformation;
-import egovframework.com.adm.contents.vo.XrayContents;
 import egovframework.com.api.edc.vo.UnitImages;
-import egovframework.com.adm.contents.vo.Language;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.

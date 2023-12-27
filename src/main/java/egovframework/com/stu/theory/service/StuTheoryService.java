@@ -2,8 +2,6 @@ package egovframework.com.stu.theory.service;
 
 import java.util.List;
 
-import egovframework.com.stu.learning.vo.Learning;
-import egovframework.com.stu.learning.vo.LearningProblem;
 import egovframework.com.stu.theory.vo.StuTheory;
 
 /**

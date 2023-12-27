@@ -5,7 +5,6 @@ import java.util.List;
 import egovframework.com.adm.eduMgr.vo.Baseline;
 import egovframework.com.adm.eduMgr.vo.EduDate;
 import egovframework.com.adm.eduMgr.vo.Student;
-import egovframework.com.stu.learning.vo.LearningProblem;
 
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.

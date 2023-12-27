@@ -836,7 +836,6 @@ public final class OfficeStringUtil {
      * @param str String to be decoded
      * @return String decoding String
      */
-	@SuppressWarnings("restriction")
 	@Deprecated
 	public static String decodeString(String str) {
 		Decoder decoder = Base64.getDecoder();
@@ -1459,7 +1458,7 @@ public final class OfficeStringUtil {
 		try {
 			dateTime = format.parse(dtStr.trim());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			
 			//e.printStackTrace();
 			LOGGER.error(e.getMessage());
 		}

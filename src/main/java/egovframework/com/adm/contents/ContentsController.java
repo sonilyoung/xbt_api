@@ -33,7 +33,6 @@ import egovframework.com.common.vo.LearningMainImg;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.file.service.XbtImageService;
 import egovframework.com.file.vo.AttachFile;
-import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.http.BaseApiMessage;
@@ -60,7 +59,7 @@ public class ContentsController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContentsController.class);
 
-    private OfficeMessageSource officeMessageSource;
+    //private OfficeMessageSource officeMessageSource;
 
     @Autowired
     private LoginService loginService;

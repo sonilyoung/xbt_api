@@ -214,7 +214,7 @@ public class UserMgrDAO extends EgovAbstractMapper{
 	}
 	
 	public int selectCheckMenuPin(MenuPin params) {
-		// TODO Auto-generated method stub
+		
 		return selectOne(Namespace + ".selectCheckMenuPin", params);
 	}
 }

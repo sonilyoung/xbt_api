@@ -22,7 +22,6 @@ import egovframework.com.adm.login.service.LoginService;
 import egovframework.com.adm.login.vo.Login;
 import egovframework.com.common.service.CommonService;
 import egovframework.com.common.vo.Common;
-import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.http.BaseApiMessage;
@@ -48,7 +47,7 @@ public class CommonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonController.class);
 
-    private OfficeMessageSource officeMessageSource;
+    //private OfficeMessageSource officeMessageSource;
 
     @Autowired
     private LoginService loginService;

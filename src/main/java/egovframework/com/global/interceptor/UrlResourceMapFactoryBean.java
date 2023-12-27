@@ -34,7 +34,8 @@ public class UrlResourceMapFactoryBean implements FactoryBean<LinkedHashMap<Requ
         return resourcesMap;
     }
 
-    @Override
+	@Override
+	@SuppressWarnings("rawtypes")
 	public Class<LinkedHashMap> getObjectType() {
         return LinkedHashMap.class;
     }

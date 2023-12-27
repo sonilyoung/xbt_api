@@ -6,12 +6,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import egovframework.com.adm.learningMgr.dao.LearningMgrDAO;
 import egovframework.com.stu.main.dao.MainDAO;
 import egovframework.com.stu.main.vo.Schedule;
 import egovframework.com.stu.main.vo.Statistics;
 import egovframework.com.stu.main.vo.UserStInfo;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -32,7 +31,7 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
+//@Log4j2
 @Service("MainService")
 public class MainServiceImpl implements MainService {
 
@@ -41,56 +40,62 @@ public class MainServiceImpl implements MainService {
 
 	@Override
 	public UserStInfo selectBaselineUserInfo(UserStInfo params) {
-		// TODO Auto-generated method stub
+		
 		return mainDAO.selectBaselineUserInfo(params);
 	}
 	
     @Override
 	public Schedule selectDefaultMenu(Schedule params) {
-		// TODO Auto-generated method stub
+		
 		return mainDAO.selectDefaultMenu(params);
 	}	
 
     @Override
 	@SuppressWarnings("unchecked")
 	public List<Schedule> selectScheduleList(Schedule params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Schedule>)mainDAO.selectScheduleList(params);
 	}
     
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Statistics> selectStatisticsMainTitleList(Statistics params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Statistics>)mainDAO.selectStatisticsMainTitleList(params);
 	}    
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Statistics> selectStatisticsTitleList(Statistics params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Statistics>)mainDAO.selectStatisticsTitleList(params);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Statistics> selectStatisticsContensList(Statistics params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Statistics>)mainDAO.selectStatisticsContensList(params);
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Statistics> selectStatisticsWrongAnswerList1(Statistics params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Statistics>)mainDAO.selectStatisticsWrongAnswerList1(params);
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Statistics> selectStatisticsWrongAnswerList2(Statistics params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Statistics>)mainDAO.selectStatisticsWrongAnswerList2(params);
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Statistics> selectStatisticsWrongAnswerList3(Statistics params) {
-		// TODO Auto-generated method stub
+		
 		return (List<Statistics>)mainDAO.selectStatisticsWrongAnswerList3(params);
 	}
 

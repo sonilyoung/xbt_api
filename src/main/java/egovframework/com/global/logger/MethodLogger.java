@@ -40,11 +40,11 @@ public class MethodLogger implements Filter {
         String uri = httpServletRequest.getRequestURI();
 
         //request 내용 확인
-        String reqContent = new String(httpServletRequest.getContentAsByteArray());
+        //String reqContent = new String(httpServletRequest.getContentAsByteArray());
 
         // response 내용 상태 정보, 내용 확인
         int httpStatus = httpServletResponse.getStatusCode();
-        String resContent = new String(httpServletResponse.getContentAsByteArray());
+        //String resContent = new String(httpServletResponse.getContentAsByteArray());
 
         //주의 : response를 클라이언트에서 볼 수 있도록 하려면 response를 복사해야 한다. response를 콘솔에 보여주면 내용이 사라진다.
         httpServletResponse.copyBodyToResponse();
@@ -68,13 +68,13 @@ public class MethodLogger implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

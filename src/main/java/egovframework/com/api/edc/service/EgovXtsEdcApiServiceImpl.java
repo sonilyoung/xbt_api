@@ -9,12 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import egovframework.com.api.edc.dao.EgovXtsEdcApiDAO;
 import egovframework.com.api.edc.vo.UnitImages;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -38,9 +37,11 @@ import okhttp3.Response;
  *
  *      </pre>
  */
-@Log4j2
+//@Log4j2
 @Service("EgovXtsEdcApiService")
 public class EgovXtsEdcApiServiceImpl implements EgovXtsEdcApiService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovXtsEdcApiServiceImpl.class);
 
 	private String empUrl = "http://127.0.0.1:8080/test/selectEmpUnitImage.do";
 	
@@ -49,12 +50,13 @@ public class EgovXtsEdcApiServiceImpl implements EgovXtsEdcApiService {
 
 	@Override
 	public int saveEmpUnitImage(UnitImages params) throws IOException {
-		// TODO Auto-generated method stub
+		
 		return egovXtsEdcApiDAO.saveEmpUnitImage(params);
 	}
 
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public Map<String, Object> selectEmpUnitImage(UnitImages params) throws Exception {
 		OkHttpClient client = new OkHttpClient().newBuilder()
 				  .build();
@@ -64,15 +66,14 @@ public class EgovXtsEdcApiServiceImpl implements EgovXtsEdcApiService {
 				  .build();
 		Response response = client.newCall(request).execute();
 		
-		log.info("=================엠폴통신결과==================");
+		LOGGER.info("=================엠폴통신결과==================");
 		String result = response.body().string();
-		log.info(result);
+		LOGGER.info(result);
 		Gson gson = new Gson();
 		//UnitImages ui = gson.fromJson(result, UnitImages.class);
 		Map<String, Object> map = gson.fromJson(result, Map.class);
 		//ObjectMapper objectMapper = new ObjectMapper();
 		//UnitImages ui = objectMapper.convertValue(result, UnitImages.class);
-		log.info(map);
 		response.close();
 		return map;
 	}	

@@ -1,6 +1,5 @@
 package egovframework.com.common.dao;
 
-import java.util.HashMap;
 import java.util.List;
 
 import egovframework.com.common.vo.Common;
@@ -50,7 +49,7 @@ public class CommonDAO extends EgovAbstractMapper{
 	}
 
 	public CommonSystemMessage selectSystemMessage(CommonSystemMessage params) {
-		// TODO Auto-generated method stub
+		
 		return selectOne(Namespace + ".selectSystemMessage", params);
 	}	
 	

@@ -8,7 +8,6 @@ import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
-import egovframework.com.adm.login.vo.Login;
 import egovframework.com.global.common.Globals;
 import egovframework.com.global.common.GlobalsProperties;
 import egovframework.com.global.common.vo.FileVO;
@@ -35,7 +33,7 @@ public class PathUtil implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PathUtil.class);
     private static String baseDir = Globals.UPLOAD_BASE_PATH;
-    private static SimpleDateFormat YYYYMMDDhhmmss = new SimpleDateFormat("YYYYMMddHHmmss");
+    //private static SimpleDateFormat YYYYMMDDhhmmss = new SimpleDateFormat("YYYYMMddHHmmss");
 
     public void afterPropertiesSet() {
 
@@ -47,13 +45,15 @@ public class PathUtil implements InitializingBean {
     }
 
     public static String getBaseDirWithCompanyID() {
-        Login Login = null;// (Login) OfficeUserInfoHelper.getAuthenticatedUser();
+    	return baseDir;
+        /*
+    	Login Login = null;// (Login) OfficeUserInfoHelper.getAuthenticatedUser();
         if (Login == null) {
             return baseDir;
         } else {
             return "";// StringUtils.join(new String[] {baseDir, Login.getCompanyId()},
                       // File.separator);
-        }
+        }*/
     }
 
     public static String getFullPathOfFile(String subDir) {

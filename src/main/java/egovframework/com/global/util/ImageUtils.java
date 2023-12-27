@@ -90,8 +90,7 @@ public class ImageUtils {
 		int imgWidth = bi.getWidth();
 		int imgHeight = bi.getHeight();
 		LOGGER.debug("image width : " + imgWidth + ", height : " + imgHeight);
-		Graphics2D g2 = null;
-		g2 = bi.createGraphics();
+		//Graphics2D g2 = bi.createGraphics();
 		Font font = new Font("Default", Font.BOLD, 9);
 		FontRenderContext frc = new FontRenderContext(null, true, true);
 		Rectangle2D r2 = font.getStringBounds(imageText, frc);

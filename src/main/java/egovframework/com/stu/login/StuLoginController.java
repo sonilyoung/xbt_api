@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +20,6 @@ import egovframework.com.adm.login.service.UserService;
 import egovframework.com.adm.login.vo.LoginRequest;
 import egovframework.com.adm.login.vo.User;
 import egovframework.com.cmm.vo.TokenResponse;
-import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.exception.CustomBaseException;
 import egovframework.com.global.http.BaseApiMessage;
 import egovframework.com.global.http.BaseResponse;
@@ -62,7 +60,7 @@ public class StuLoginController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StuLoginController.class);
 
-    private OfficeMessageSource officeMessageSource;
+    //private OfficeMessageSource officeMessageSource;
 
     @Autowired
     private LoginStuService loginStuService;
@@ -192,6 +190,7 @@ public class StuLoginController {
     
     
     @PostMapping("/updateUserPwd.do")
+    @SuppressWarnings("static-access")
     @ApiOperation(value = "updateUserPwd", notes = "updateUserPwd.")
     public BaseResponse<StuLogin> resetPwd(HttpServletRequest request, @RequestBody StuLogin params) throws UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException {
         
@@ -219,7 +218,7 @@ public class StuLoginController {
         params.setPwPrior(login.getUserPw());
         
         AES256Util aesUtil = new AES256Util();
-        String pwEnc = aesUtil.encrypt(params.getUserPw());
+		String pwEnc = aesUtil.encrypt(params.getUserPw());
         params.setUserPw(pwEnc);
         int result = loginStuService.updateUserPwd(params);
         

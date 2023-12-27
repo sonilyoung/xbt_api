@@ -26,12 +26,12 @@ import org.springframework.stereotype.Service;
  */
 
 @Service("Util")
+@SuppressWarnings("static-access")
 public class ComponentChecker extends AbstractServiceImpl implements ApplicationContextAware{
 	
 
 	public static ApplicationContext context;
 	
-	@SuppressWarnings("static-access")
 	public void setApplicationContext(ApplicationContext context)
 		throws BeansException {
 		

@@ -2,7 +2,6 @@ package egovframework.com.stu.main.dao;
 
 import java.util.List;
 
-import egovframework.com.adm.userMgr.vo.UserInfo;
 import egovframework.com.stu.main.vo.Schedule;
 import egovframework.com.stu.main.vo.Statistics;
 import egovframework.com.stu.main.vo.UserStInfo;

@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -46,7 +45,7 @@ public class ImageConvertUtil {
                 result = 1;
         		
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}        	
         	LOGGER.info("-------------------------END Convert Success ----------------------------- " +i+ "번째");

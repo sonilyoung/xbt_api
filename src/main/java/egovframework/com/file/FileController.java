@@ -1,14 +1,9 @@
 
 package egovframework.com.file;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
@@ -17,16 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import egovframework.com.adm.login.service.LoginService;
-import egovframework.com.adm.system.vo.Notice;
-import egovframework.com.adm.theory.vo.TheoryFile;
-import egovframework.com.common.service.CommonService;
-import egovframework.com.file.service.FileService;
 import egovframework.com.file.service.FileStorageService;
 import egovframework.com.file.vo.AttachFile;
-import egovframework.com.global.OfficeMessageSource;
 import egovframework.com.global.annotation.SkipAuth;
 import egovframework.com.global.authorization.SkipAuthLevel;
 import egovframework.com.global.http.BaseApiMessage;
@@ -49,23 +37,13 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "Login Management API")
 public class FileController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileController.class);
+    //private static final Logger LOGGER = LoggerFactory.getLogger(FileController.class);
 
-    private OfficeMessageSource officeMessageSource;
+    //private OfficeMessageSource officeMessageSource;
 
-    @Autowired
-    private LoginService loginService;
-    
-    @Autowired
-    private CommonService commonService;
-    
     @Autowired
     private FileStorageService fileStorageService;
     
-    
-    @Autowired
-    private FileService fileService;    
-
     /**
      * xray 이미지 업로드 
      * 
@@ -81,7 +59,7 @@ public class FileController {
             @RequestPart(value = "files", required = false) MultipartFile[] files,
             @RequestPart(value = "params", required = false) AttachFile params)
             throws Exception {
-        Long atchFileId = null;
+        //Long atchFileId = null;
         List<AttachFile> saveFiles = null;
         
 		

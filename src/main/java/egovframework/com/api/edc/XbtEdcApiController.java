@@ -29,8 +29,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import egovframework.com.adm.contents.service.ContentsService;
 import egovframework.com.adm.contents.vo.XbtSeq;
 import egovframework.com.adm.contents.vo.XrayContents;
-import egovframework.com.adm.login.service.LoginService;
-import egovframework.com.adm.login.vo.Login;
 import egovframework.com.api.edc.service.EgovXtsEdcApiService;
 import egovframework.com.api.edc.service.EgovXtsEdcPseudoFilterService;
 import egovframework.com.api.edc.service.EgovXtsEdcReinforcementService;
@@ -88,9 +86,6 @@ public class XbtEdcApiController {
 	@Autowired
 	private XbtEdcApiService xbtEdcApiService;	
 	
-    @Autowired
-    private LoginService loginService;	
-    
     @Autowired
     private FileStorageService fileStorageService;    
     

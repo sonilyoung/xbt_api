@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import egovframework.com.test.dao.TestDAO;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 /**
  * 사용자관리에 관한 비지니스 클래스를 정의한다.
@@ -28,7 +28,7 @@ import lombok.extern.log4j.Log4j2;
  *
  *      </pre>
  */
-@Log4j2
+//@Log4j2
 @Service("TestService")
 public class TestServiceImpl implements TestService {
 
@@ -37,59 +37,59 @@ public class TestServiceImpl implements TestService {
 
 	@Override
 	public int insertXbtBagConstUnitTemp(LinkedHashMap<String,Object> params) {
-		// TODO Auto-generated method stub
+		
 		return testDAO.insertXbtBagConstUnitTemp(params);
 	}
 	
 	@Transactional
 	@Override
 	public int insertXbtBagConstUnitReal(LinkedHashMap<String,Object> params) {
-		// TODO Auto-generated method stub
+		
 		return testDAO.insertXbtBagConstUnitTemp(params);
 	}	
 
 	@Override
 	public int insertXbtBagInfoTemp(LinkedHashMap<String, Object> params) {
-		// TODO Auto-generated method stub
+		
 		return testDAO.insertXbtBagInfoTemp(params);
 	}
 	
 	
 	@Override
 	public int insertUnitTemp(LinkedHashMap<String, Object> params) {
-		// TODO Auto-generated method stub
+		
 		return testDAO.insertUnitTemp(params);
 	}
 		
 	@Override
 	public int insertXbtBagConstUnitRename(LinkedHashMap<String, Object> params) {
-		// TODO Auto-generated method stub
+		
 		return testDAO.insertXbtBagConstUnitRename(params);
 	}
 	
 	@Override
 	public int insertXbtBagInfoRename(LinkedHashMap<String, Object> params) {
-		// TODO Auto-generated method stub
+		
 		return testDAO.insertXbtBagInfoRename(params);
 	}
 
 
 	@Override
 	public int insertUnitRename(LinkedHashMap<String, Object> params) {
-		// TODO Auto-generated method stub
+		
 		return testDAO.insertUnitRename(params);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<LinkedHashMap<String, Object>> selectXrayBagData(LinkedHashMap<String, Object> params) {
-		// TODO Auto-generated method stub
+		
 		return (List<LinkedHashMap<String, Object>>)testDAO.selectXrayBagData(params);
 	}	
 
 	@Override
 	public int updateXrayBagData(LinkedHashMap<String, Object> params) {
-		// TODO Auto-generated method stub
+		
 		return testDAO.updateXrayBagData(params);
 	}
 
