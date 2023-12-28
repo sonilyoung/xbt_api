@@ -199,26 +199,33 @@ public class EduMgrController {
 			List<EduDate> scheduleList = eduMgrService.selectEduDateList(ed);
 			List<List<EduDate>> menus = new ArrayList<List<EduDate>>();
 			List<EduDate> dmenus = new ArrayList<EduDate>();
-			for(EduDate e : scheduleList) {
-				//메뉴목록
-				menus = new ArrayList<List<EduDate>>();
-				dmenus = new ArrayList<EduDate>();
-				List<EduDate> menuList = eduMgrService.selectEduMenuList(e);
-				for(EduDate m : menuList) {
-					dmenus.add(m); 
+			
+			if(scheduleList!=null) {
+				for(EduDate e : scheduleList) {
+					//메뉴목록
+					menus = new ArrayList<List<EduDate>>();
+					dmenus = new ArrayList<EduDate>();
+					List<EduDate> menuList = eduMgrService.selectEduMenuList(e);
+					for(EduDate m : menuList) {
+						dmenus.add(m); 
+					}
+					menus.add(dmenus);
+					e.setMenuList(menus);
+					
+					e.setLearningType("l");
+					EduDate lmodule = eduMgrService.selectEduModuleList(e);
+					if(lmodule!=null) {
+						e.setModuleNm(lmodule.getModuleNm());
+					}
+					
+					e.setLearningType("e");
+					EduDate emodule = eduMgrService.selectEduModuleList(e);
+					if(emodule!=null) {
+						e.setEvaluationModuleNm(emodule.getModuleNm());				
+					}
 				}
-				menus.add(dmenus);
-				e.setMenuList(menus);
-				
-				e.setLearningType("l");
-				EduDate lmodule = eduMgrService.selectEduModuleList(e);
-				e.setModuleNm(lmodule.getModuleNm());
-				
-				e.setLearningType("e");
-				EduDate emodule = eduMgrService.selectEduModuleList(e);
-				e.setEvaluationModuleNm(emodule.getModuleNm());				
+				baseline.setScheduleList(scheduleList);
 			}
-			baseline.setScheduleList(scheduleList);
 	        return new BaseResponse<Baseline>(baseline);
 	    } catch (Exception e) {
 	    	LOGGER.error("error:", e);
