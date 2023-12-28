@@ -561,7 +561,7 @@ public class XbtEdcApiController {
 	@ResponseBody
 	@RequestMapping(value = {"/selectThreedImg.do"}, method = RequestMethod.POST, produces = "application/json; charset=utf8")
 	@SkipAuth(skipAuthLevel = SkipAuthLevel.SKIP_ALL)
-    public  BaseResponse<JsonNode> selectSudoImg(HttpServletRequest request
+    public  BaseResponse<JsonNode> selectThreedImg(HttpServletRequest request
     		,@RequestBody ThreedGeneration params) throws Exception{		
 			ApiLogin login = apiLoginService.createToken(request);
 			LOGGER.info("params : " + params);
