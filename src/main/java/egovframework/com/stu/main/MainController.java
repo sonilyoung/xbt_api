@@ -263,10 +263,19 @@ public class MainController {
 				}
 			}			
 			
+			//평가문제 메뉴 필터링
 			List<Schedule> menu2St = menu2.stream().filter(m -> (
 				!(m.getMenuCd().equals("21") && "false".equals(m.getMenuFlag()))
 				&&!(m.getMenuCd().equals("22") && "false".equals(m.getMenuFlag())))
 			).collect(Collectors.toList());	
+			
+			//이론문제 메뉴 필터링
+			menu2St = menu2St.stream().filter(m -> (
+					!(m.getMenuCd().equals("43") && "false".equals(m.getMenuFlag()))
+					&&!(m.getMenuCd().equals("53") && "false".equals(m.getMenuFlag())))
+			).collect(Collectors.toList());	
+			
+			
 			menu2Result.addAll(menu2St);
 			
 			params.setPMenuCd("3");
