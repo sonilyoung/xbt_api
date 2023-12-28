@@ -1745,11 +1745,8 @@
 				FROM
 					XBT_BASELINE_EVALUATION T1
 				WHERE 1=1
-				<if test='eduCode != "" and eduCode != null'>
-				 AND EDU_CODE = #{eduCode}
-				</if>
-				<if test='procSeq != "" and procSeq != null'>
-				 AND PROC_SEQ = #{procSeq}
+				<if test='testDate != "" and testDate != null'>
+				 AND TEST_DATE = #{testDate}
 				</if>				
 				ORDER BY PROC_CD DESC, TEST_DATE DESC
 			
@@ -1774,11 +1771,8 @@
 				FROM
 					XBT_BASELINE_THEORY T1
 				WHERE 1=1	
-				<if test='eduCode != "" and eduCode != null'>
-				 AND EDU_CODE = #{eduCode}
-				</if>
-				<if test='procSeq != "" and procSeq != null'>
-				 AND PROC_SEQ = #{procSeq}
+				<if test='testDate != "" and testDate != null'>
+				 AND TEST_DATE = #{testDate}
 				</if>						
 					ORDER BY PROC_CD DESC, TEST_DATE DESC				
 			</when>
@@ -1802,11 +1796,8 @@
 				FROM
 					XBT_BASELINE_THEORY T1
 				WHERE 1=1	
-				<if test='eduCode != "" and eduCode != null'>
-				 AND EDU_CODE = #{eduCode}
-				</if>
-				<if test='procSeq != "" and procSeq != null'>
-				 AND PROC_SEQ = #{procSeq}
+				<if test='testDate != "" and testDate != null'>
+				 AND TEST_DATE = #{testDate}
 				</if>						
 					ORDER BY PROC_CD DESC, TEST_DATE DESC				
 			</when>
